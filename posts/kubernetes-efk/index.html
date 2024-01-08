@@ -1,0 +1,1927 @@
+<!DOCTYPE html>
+<html 
+      
+      
+      
+      data-bs-theme="light" itemscope="" itemtype="http://schema.org/WebPage" lang="en">
+  <head><meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+
+
+
+
+
+
+      
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?display=swap&amp;family=&#43;JetBrains&#43;Mono&amp;family=JetBrains&#43;Mono%3Aital%2Cwght%400%2C600%3B1%2C600..900" rel="stylesheet">
+
+    <link rel="manifest" href="https://blog.mletter.cn/manifest.webmanifest" />
+
+<meta name="description" content="Kubernetes 中比较流行的日志收集解决方案是 Elasticsearch、Fluentd 和 Kibana（EFK）技术栈，也是官方现在比较推荐的一种方案。
+Elasticsearch 是一个实时的、分布式的可扩展的搜索引擎，允许进行全文、结构化搜索，它通常用于索引和搜索大量日志数据，也可用于搜索许多不同类型的" />
+
+
+
+
+
+
+<meta property="og:title" content="kubernetes基于EFK的日志落地实现" />
+<meta property="og:description" content="Kubernetes 中比较流行的日志收集解决方案是 Elasticsearch、Fluentd 和 Kibana（EFK）技术栈，也是官方现在比较推荐的一种方案。
+Elasticsearch 是一个实时的、分布式的可扩展的搜索引擎，允许进行全文、结构化搜索，它通常用于索引和搜索大量日志数据，也可用于搜索许多不同类型的文档。
+Elasticsearch 通常与 Kibana 一起部署，Kibana 是 Elasticsearch 的一个功能强大的数据可视化 Dashboard，Kibana 允许你通过 web 界面来浏览Elasticsearch 日志数据。
+Fluentd是一个流行的开源数据收集器，我们将在 Kubernetes 集群节点上安装 Fluentd，通过获取容器日志文件、过滤和转换日志数据，然后将数据传递到 Elasticsearch 集群，在该集群中对其进行索引和存储。
+我们先来配置启动一个可扩展的 Elasticsearch 集群，然后在 Kubernetes 集群中创建一个 Kibana 应用，最后通过 DaemonSet 来运行 Fluentd，以便它在每个 Kubernetes 工作节点上都可以运行一个 Pod。
+安装 Elasticsearch 集群 先创建一个命名空间，我们将在其中安装所有日志相关的资源对象。
+1kubectl create ns kube-logging 环境准备 ElasticSearch 安装有最低安装要求，如果安装后 Pod 无法正常启动，请检查是否符合最低要求的配置，要求如下：
+节点 CPU最低要求 内存最低要求 elasticsearch-master 核心数&gt;2 内存&gt;2G elasticsearch-data 核心数&gt;1 内存&gt;2G elasticsearch-client 核心数&gt;1 内存&gt;2G 集群节点信息
+集群 节点类型 副本数目 存储大小 网络模式 描述 elasticsearch master 3 5Gi ClusterIP 主节点 elasticsearch-data data 3 50Gi ClusterIP 数据节点 elasticsearch-client client 2 无 NodePort 负责处理用户请求 建议使用 StorageClass 来做持久化存储，当然如果你是线上环境建议使用 Local PV 或者 Ceph RBD 之类的存储来持久化 Elasticsearch 的数据。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://blog.mletter.cn/posts/kubernetes-efk/" /><meta property="og:image" content="https://fc.sinaimg.cn/large/005Czbxjgy1hkmevv8ozyj31ds0iqn0i.jpg" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2023-12-08T00:00:00+00:00" />
+<meta property="article:modified_time" content="2023-12-08T00:00:00+00:00" />
+<meta itemprop="name" content="kubernetes基于EFK的日志落地实现">
+<meta itemprop="description" content="Kubernetes 中比较流行的日志收集解决方案是 Elasticsearch、Fluentd 和 Kibana（EFK）技术栈，也是官方现在比较推荐的一种方案。
+Elasticsearch 是一个实时的、分布式的可扩展的搜索引擎，允许进行全文、结构化搜索，它通常用于索引和搜索大量日志数据，也可用于搜索许多不同类型的文档。
+Elasticsearch 通常与 Kibana 一起部署，Kibana 是 Elasticsearch 的一个功能强大的数据可视化 Dashboard，Kibana 允许你通过 web 界面来浏览Elasticsearch 日志数据。
+Fluentd是一个流行的开源数据收集器，我们将在 Kubernetes 集群节点上安装 Fluentd，通过获取容器日志文件、过滤和转换日志数据，然后将数据传递到 Elasticsearch 集群，在该集群中对其进行索引和存储。
+我们先来配置启动一个可扩展的 Elasticsearch 集群，然后在 Kubernetes 集群中创建一个 Kibana 应用，最后通过 DaemonSet 来运行 Fluentd，以便它在每个 Kubernetes 工作节点上都可以运行一个 Pod。
+安装 Elasticsearch 集群 先创建一个命名空间，我们将在其中安装所有日志相关的资源对象。
+1kubectl create ns kube-logging 环境准备 ElasticSearch 安装有最低安装要求，如果安装后 Pod 无法正常启动，请检查是否符合最低要求的配置，要求如下：
+节点 CPU最低要求 内存最低要求 elasticsearch-master 核心数&gt;2 内存&gt;2G elasticsearch-data 核心数&gt;1 内存&gt;2G elasticsearch-client 核心数&gt;1 内存&gt;2G 集群节点信息
+集群 节点类型 副本数目 存储大小 网络模式 描述 elasticsearch master 3 5Gi ClusterIP 主节点 elasticsearch-data data 3 50Gi ClusterIP 数据节点 elasticsearch-client client 2 无 NodePort 负责处理用户请求 建议使用 StorageClass 来做持久化存储，当然如果你是线上环境建议使用 Local PV 或者 Ceph RBD 之类的存储来持久化 Elasticsearch 的数据。"><meta itemprop="datePublished" content="2023-12-08T00:00:00+00:00" />
+<meta itemprop="dateModified" content="2023-12-08T00:00:00+00:00" />
+<meta itemprop="wordCount" content="2133"><meta itemprop="image" content="https://fc.sinaimg.cn/large/005Czbxjgy1hkmevv8ozyj31ds0iqn0i.jpg">
+<meta itemprop="keywords" content="kubernetes," /><meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://fc.sinaimg.cn/large/005Czbxjgy1hkmevv8ozyj31ds0iqn0i.jpg"/>
+
+<meta name="twitter:title" content="kubernetes基于EFK的日志落地实现"/>
+<meta name="twitter:description" content="Kubernetes 中比较流行的日志收集解决方案是 Elasticsearch、Fluentd 和 Kibana（EFK）技术栈，也是官方现在比较推荐的一种方案。
+Elasticsearch 是一个实时的、分布式的可扩展的搜索引擎，允许进行全文、结构化搜索，它通常用于索引和搜索大量日志数据，也可用于搜索许多不同类型的文档。
+Elasticsearch 通常与 Kibana 一起部署，Kibana 是 Elasticsearch 的一个功能强大的数据可视化 Dashboard，Kibana 允许你通过 web 界面来浏览Elasticsearch 日志数据。
+Fluentd是一个流行的开源数据收集器，我们将在 Kubernetes 集群节点上安装 Fluentd，通过获取容器日志文件、过滤和转换日志数据，然后将数据传递到 Elasticsearch 集群，在该集群中对其进行索引和存储。
+我们先来配置启动一个可扩展的 Elasticsearch 集群，然后在 Kubernetes 集群中创建一个 Kibana 应用，最后通过 DaemonSet 来运行 Fluentd，以便它在每个 Kubernetes 工作节点上都可以运行一个 Pod。
+安装 Elasticsearch 集群 先创建一个命名空间，我们将在其中安装所有日志相关的资源对象。
+1kubectl create ns kube-logging 环境准备 ElasticSearch 安装有最低安装要求，如果安装后 Pod 无法正常启动，请检查是否符合最低要求的配置，要求如下：
+节点 CPU最低要求 内存最低要求 elasticsearch-master 核心数&gt;2 内存&gt;2G elasticsearch-data 核心数&gt;1 内存&gt;2G elasticsearch-client 核心数&gt;1 内存&gt;2G 集群节点信息
+集群 节点类型 副本数目 存储大小 网络模式 描述 elasticsearch master 3 5Gi ClusterIP 主节点 elasticsearch-data data 3 50Gi ClusterIP 数据节点 elasticsearch-client client 2 无 NodePort 负责处理用户请求 建议使用 StorageClass 来做持久化存储，当然如果你是线上环境建议使用 Local PV 或者 Ceph RBD 之类的存储来持久化 Elasticsearch 的数据。"/>
+
+
+
+    <title>
+
+
+kubernetes基于EFK的日志落地实现 - Posts - </title>
+
+  
+  
+  
+
+
+    <link href="/css/hb.4caa23f100cace35f7c4334374263b9d071605f8e0756cc12bc2e421f42609c8.css" rel="stylesheet" />
+
+
+
+
+
+
+<script
+  src="/js/init.b980cf5ff873691f491c400ab7f55079eb2d1eef456f2eec75db7cf3d8c9dcc7.js"
+  
+    integrity="sha256-uYDPX/hzaR9JHEAKt/VQeestHu9Fby7sddt889jJ3Mc="
+  ></script>
+
+
+
+
+
+
+  </head>
+  <body 
+><noscript>
+  <div class="alert alert-danger text-center rounded-0" role="alert"><svg aria-hidden="true" class="bi bi-exclamation-square-fillbi bi-exclamation-square-fill hi-svg-inline me-2" fill="currentColor" height="1em" viewBox="0 0 16 16" width="1em" xmlns="http://www.w3.org/2000/svg">
+  <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zm6 4c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 4.995A.905.905 0 0 1 8 4m.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2"/>
+</svg>Your browser does not support JavaScript.</div>
+</noscript>
+
+
+
+    
+<header class="hb-header"
+  >
+  
+
+  <nav class="hb-header-nav navbar navbar-expand-lg">
+    
+  <div class="hb-announcement-bar text-center px-1 py-2 w-100 overflow-hidden border-bottom border-secondary">
+          <a
+            class="hb-announcement text-decoration-none text-truncate active"
+            href="/bulletin/2024/0108/">2024年本站大更新啦,查看更新内容轻点我哦<svg aria-hidden="true" class="bi bi-arrow-rightbi bi-arrow-right hi-svg-inline ms-1" fill="currentColor" height="1em" viewBox="0 0 16 16" width="1em" xmlns="http://www.w3.org/2000/svg">
+  <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8"/>
+</svg></a>
+  </div>
+
+
+
+    <div
+      class="container-fluid">
+      
+
+
+  <a
+    class="navbar-brand d-flex align-items-center"
+    href="/">人间只是春</a>
+
+      <div class="d-flex order-5">
+        
+<div class="search-modal-toggle hb-header-search-form position-relative d-flex ms-lg-1">
+  <button
+    type="button"
+    class="hb-header-search-icon border-0 bg-transparent px-2"
+    aria-label="Toggle search">
+    <svg aria-hidden="true" class="bi bi-searchbi bi-search hi-svg-inline" fill="currentColor" height="1em" viewBox="0 0 16 16" width="1em" xmlns="http://www.w3.org/2000/svg">
+  <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+</svg>
+  </button>
+  <input
+    class="form-control rounded-5 d-none d-lg-block ms-lg-1"
+    placeholder="Search" />
+    <span class="hb-header-search-keys position-absolute d-none d-lg-block">
+        <kbd>CTRL</kbd>
+        <kbd>K</kbd>
+    </span>
+</div>
+
+
+
+        <button
+          class="navbar-toggler border-0 shadow-none"
+          type="button"
+          data-bs-toggle="offcanvas"
+          data-bs-target="#hb-header-content"
+          aria-controls="hb-header-content"
+          aria-label="Toggle navigation"><svg aria-hidden="true" class="bi bi-three-dotsbi bi-three-dots hi-svg-inline" fill="currentColor" height="1.25em" viewBox="0 0 16 16" width="1.25em" xmlns="http://www.w3.org/2000/svg">
+  <path d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3m5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3m5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3"/>
+</svg>
+        </button>
+        
+
+      </div>
+      <div
+        class="offcanvas offcanvas-lg offcanvas-end"
+        tabindex="-1"
+        id="hb-header-content"
+        aria-labelledby="hb-header-content-label">
+        <div class="offcanvas-header">
+          <h5 class="offcanvas-title" id="hb-header-content-label">人间只是春</h5>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="offcanvas"
+            aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body">
+          
+          <ul class="hb-header-menus navbar-nav flex-row flex-wrap"></ul>
+          
+          
+          <ul class="hb-header-panel navbar-nav flex-row flex-wrap">
+              <li class="nav-item py-2 py-lg-1 col-12 col-lg-auto">
+                <hr class="d-lg-none my-2 text-body-50" />
+              </li>
+            
+  <li class="nav-item col-6 col-lg-auto d-flex align-items-center">
+<a
+  class="hb-social btn btn-link nav-link py-2 px-0 px-lg-2 d-flex justify-content-center align-items-center"
+  href="beilanzhisen@163.com"
+  target="_blank"
+  rel="nofollow me"
+  title="Gmail"><svg aria-hidden="true" class="hi-svg-inline hb-social-icon" fill="currentColor" height="1em" role="img" viewBox="0 0 24 24" width="1em" xmlns="http://www.w3.org/2000/svg"><title>Gmail</title><path d="M24 5.457v13.909c0 .904-.732 1.636-1.636 1.636h-3.819V11.73L12 16.64l-6.545-4.91v9.273H1.636A1.636 1.636 0 0 1 0 19.366V5.457c0-2.023 2.309-3.178 3.927-1.964L5.455 4.64 12 9.548l6.545-4.91 1.528-1.145C21.69 2.28 24 3.434 24 5.457z"/></svg>
+    <span class="hb-social-text d-lg-none ms-1">Gmail</span>
+</a>
+
+  </li>
+
+  <li class="nav-item py-2 py-lg-1 col-12 col-lg-auto">
+    <div class="vr d-none d-lg-flex h-100 mx-lg-2 text-body"></div>
+    <hr class="d-lg-none my-2 text-body-50" />
+  </li>
+
+
+<li class="theme-toggle nav-item dropdown col-6 col-lg-auto d-flex flex-column justify-content-center">
+  <a
+    class="btn btn-link nav-link py-2 px-0 px-lg-2 d-flex justify-content-start justify-content-lg-center align-items-center"
+    href="#"
+    role="button"
+    data-bs-toggle="dropdown"
+    aria-expanded="false"
+  >
+    <svg aria-hidden="true" class="bi bi-circle-halfbi bi-circle-half hi-svg-inline my-1 theme-toggle-icon" fill="currentColor" height="1em" viewBox="0 0 16 16" width="1em" xmlns="http://www.w3.org/2000/svg">
+  <path d="M8 15A7 7 0 1 0 8 1zm0 1A8 8 0 1 1 8 0a8 8 0 0 1 0 16"/>
+</svg>
+    <span class="d-lg-none ms-1">Theme</span>
+  </a>
+
+  <ul class="theme-toggle-menu dropdown-menu dropdown-menu-end">
+      <li>
+        <button
+          class="theme-toggle-item dropdown-item d-flex align-items-center justify-content-center"
+          data-bs-theme-value="auto"
+        >
+          <span class="theme-toggle-item-icon me-1 d-flex align-items-center">
+            <svg aria-hidden="true" class="bi bi-circle-halfbi bi-circle-half hi-svg-inline my-1" fill="currentColor" height="1em" viewBox="0 0 16 16" width="1em" xmlns="http://www.w3.org/2000/svg">
+  <path d="M8 15A7 7 0 1 0 8 1zm0 1A8 8 0 1 1 8 0a8 8 0 0 1 0 16"/>
+</svg>
+          </span>
+          Auto
+        </button>
+      </li>
+      <li>
+        <button
+          class="theme-toggle-item dropdown-item d-flex align-items-center justify-content-center"
+          data-bs-theme-value="dark"
+        >
+          <span class="theme-toggle-item-icon me-1 d-flex align-items-center">
+            <svg aria-hidden="true" class="bi bi-moon-starsbi bi-moon-stars hi-svg-inline my-1" fill="currentColor" height="1em" viewBox="0 0 16 16" width="1em" xmlns="http://www.w3.org/2000/svg">
+  <path d="M6 .278a.77.77 0 0 1 .08.858 7.2 7.2 0 0 0-.878 3.46c0 4.021 3.278 7.277 7.318 7.277q.792-.001 1.533-.16a.79.79 0 0 1 .81.316.73.73 0 0 1-.031.893A8.35 8.35 0 0 1 8.344 16C3.734 16 0 12.286 0 7.71 0 4.266 2.114 1.312 5.124.06A.75.75 0 0 1 6 .278M4.858 1.311A7.27 7.27 0 0 0 1.025 7.71c0 4.02 3.279 7.276 7.319 7.276a7.32 7.32 0 0 0 5.205-2.162q-.506.063-1.029.063c-4.61 0-8.343-3.714-8.343-8.29 0-1.167.242-2.278.681-3.286"/>
+  <path d="M10.794 3.148a.217.217 0 0 1 .412 0l.387 1.162c.173.518.579.924 1.097 1.097l1.162.387a.217.217 0 0 1 0 .412l-1.162.387a1.73 1.73 0 0 0-1.097 1.097l-.387 1.162a.217.217 0 0 1-.412 0l-.387-1.162A1.73 1.73 0 0 0 9.31 6.593l-1.162-.387a.217.217 0 0 1 0-.412l1.162-.387a1.73 1.73 0 0 0 1.097-1.097zM13.863.099a.145.145 0 0 1 .274 0l.258.774c.115.346.386.617.732.732l.774.258a.145.145 0 0 1 0 .274l-.774.258a1.16 1.16 0 0 0-.732.732l-.258.774a.145.145 0 0 1-.274 0l-.258-.774a1.16 1.16 0 0 0-.732-.732l-.774-.258a.145.145 0 0 1 0-.274l.774-.258c.346-.115.617-.386.732-.732z"/>
+</svg>
+          </span>
+          Dark
+        </button>
+      </li>
+      <li>
+        <button
+          class="theme-toggle-item dropdown-item d-flex align-items-center justify-content-center"
+          data-bs-theme-value="light"
+        >
+          <span class="theme-toggle-item-icon me-1 d-flex align-items-center">
+            <svg aria-hidden="true" class="bi bi-brightness-highbi bi-brightness-high hi-svg-inline my-1" fill="currentColor" height="1em" viewBox="0 0 16 16" width="1em" xmlns="http://www.w3.org/2000/svg">
+  <path d="M8 11a3 3 0 1 1 0-6 3 3 0 0 1 0 6m0 1a4 4 0 1 0 0-8 4 4 0 0 0 0 8M8 0a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 0m0 13a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 13m8-5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2a.5.5 0 0 1 .5.5M3 8a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2A.5.5 0 0 1 3 8m10.657-5.657a.5.5 0 0 1 0 .707l-1.414 1.415a.5.5 0 1 1-.707-.708l1.414-1.414a.5.5 0 0 1 .707 0m-9.193 9.193a.5.5 0 0 1 0 .707L3.05 13.657a.5.5 0 0 1-.707-.707l1.414-1.414a.5.5 0 0 1 .707 0m9.193 2.121a.5.5 0 0 1-.707 0l-1.414-1.414a.5.5 0 0 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .707M4.464 4.465a.5.5 0 0 1-.707 0L2.343 3.05a.5.5 0 1 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .708"/>
+</svg>
+          </span>
+          Light
+        </button>
+      </li>
+  </ul>
+</li>
+
+
+
+          </ul>
+          
+        </div>
+      </div>
+    </div>
+    
+
+  </nav>
+  
+
+</header>
+
+
+
+    
+
+    <div 
+      
+      class="hb-main container hb-main container">
+  <div class="hb-blog-main-container">
+  <div class="hb-blog-main">
+    <div class="container-fluid px-0 mb-4">
+    <nav aria-label="breadcrumb">
+      <ol class="hb-breadcrumb breadcrumb">
+          <li class="breadcrumb-item">
+            <a href="/" title="">Home</a>
+          </li>
+          <li class="breadcrumb-item">
+            <a href="/posts/" title="Posts">Posts</a>
+          </li><li class="breadcrumb-item active" aria-current="page">
+          <a href="/posts/kubernetes-efk/" title="kubernetes基于EFK的日志落地实现">kubernetes基于EFK的日志落地实现</a>
+        </li>
+      </ol>
+    </nav>
+  </div>
+
+
+    <div class="hb-blog-post position-relative">
+      <div class="hb-blog-post-intro hb-module mb-2">
+        <h1 class="hb-blog-post-title">kubernetes基于EFK的日志落地实现</h1>
+        <div class="hb-blog-post-meta">
+          
+
+          <span class="hb-blog-post-date">December 8, 2023</span>
+
+          <span class="hb-blog-post-reading-time">11 min read</span>
+
+          
+    
+      <span class="hb-blog-post-taxonomy-meta">
+        <a
+          class="hb-blog-post-taxonomy hb-blog-post-taxonomy-category badge bg-secondary text-decoration-none fw-normal me-1"
+          href="/categories/kubernetes/">kubernetes</a>
+      </span>
+      <span class="hb-blog-post-taxonomy-meta">
+        <a
+          class="hb-blog-post-taxonomy hb-blog-post-taxonomy-tag badge bg-secondary text-decoration-none fw-normal me-1"
+          href="/tags/kubernetes/">kubernetes</a>
+      </span>
+        </div>
+      </div>
+        <div class="hb-blog-post-toc text-body-secondary position-sticky overflow-y-auto">
+
+<div class="hb-module pb-1">
+  <div class="h6 d-none d-md-block">On this page</div>
+  <hr class="d-none d-md-block" />
+  <div class="d-grid d-block d-md-none mb-2">
+    <button
+      class="btn btn-light d-flex align-items-center justify-content-between collapsed"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target=".hb-blog-post-toc-collapse"
+      aria-expanded="false"
+      aria-controls="collapse-toc">
+      <span>On this page</span>
+      <svg aria-hidden="true" class="bi bi-chevron-expandbi bi-chevron-expand hi-svg-inline ms-2" fill="currentColor" height="1.25rem" viewBox="0 0 16 16" width="1.25rem" xmlns="http://www.w3.org/2000/svg">
+  <path fill-rule="evenodd" d="M3.646 9.146a.5.5 0 0 1 .708 0L8 12.793l3.646-3.647a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 0-.708m0-2.292a.5.5 0 0 0 .708 0L8 3.207l3.646 3.647a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 0 0 0 .708"/>
+</svg>
+    </button>
+  </div>
+  <div class="px-2 px-md-0">
+    <div id="collapse-toc" class="collapse hb-blog-post-toc-collapse"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#安装-elasticsearch-集群">安装 Elasticsearch 集群</a>
+      <ul>
+        <li><a href="#环境准备">环境准备</a></li>
+        <li><a href="#准备生成证书文件">准备生成证书文件</a></li>
+        <li><a href="#准备安装elastic集群">准备安装Elastic集群</a></li>
+      </ul>
+    </li>
+    <li><a href="#安装kibana">安装Kibana</a></li>
+    <li><a href="#部署fluentd">部署Fluentd</a>
+      <ul>
+        <li><a href="#工作原理">工作原理</a></li>
+        <li><a href="#日志源配置">日志源配置</a></li>
+        <li><a href="#过滤">过滤</a></li>
+        <li><a href="#路由设置">路由设置</a></li>
+        <li><a href="#开始部署fluentd">开始部署Fluentd</a></li>
+      </ul>
+    </li>
+    <li><a href="#关于保留指定标签的问题">关于保留指定标签的问题</a></li>
+  </ul>
+</nav></div>
+  </div>
+</div>
+
+
+        </div>
+      <div class="hb-blog-post-main">
+
+  <div class="hb-module p-0 text-center">
+    
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <picture>
+  <img
+    class="hb-featured-img img-fluid p-1 bg-body-secondary border w-100"
+    src="https://fc.sinaimg.cn/large/005Czbxjgy1hkmevv8ozyj31ds0iqn0i.jpg"
+    alt="kubernetes基于EFK的日志落地实现"
+    
+    
+    
+    
+    
+    
+     />
+</picture>
+
+  </div>
+
+        <div
+          class="hb-blog-post-content hb-module"
+          >
+
+          <p>Kubernetes 中比较流行的日志收集解决方案是 <code>Elasticsearch</code>、<code>Fluentd</code> 和 <code>Kibana</code>（EFK）技术栈，也是官方现在比较推荐的一种方案。</p>
+<p><code>Elasticsearch</code> 是一个实时的、分布式的可扩展的搜索引擎，允许进行全文、结构化搜索，它通常用于索引和搜索大量日志数据，也可用于搜索许多不同类型的文档。</p>
+<p><code>Elasticsearch</code> 通常与 <code>Kibana</code> 一起部署，<code>Kibana</code> 是 <code>Elasticsearch</code> 的一个功能强大的数据可视化 Dashboard，<code>Kibana</code> 允许你通过 web 界面来浏览<code>Elasticsearch</code> 日志数据。</p>
+<p><code>Fluentd</code>是一个流行的开源数据收集器，我们将在 Kubernetes 集群节点上安装 <code>Fluentd</code>，通过获取容器日志文件、过滤和转换日志数据，然后将数据传递到 Elasticsearch 集群，在该集群中对其进行索引和存储。</p>
+<p>我们先来配置启动一个可扩展的 Elasticsearch 集群，然后在 Kubernetes 集群中创建一个 Kibana 应用，最后通过 DaemonSet 来运行 Fluentd，以便它在每个 Kubernetes 工作节点上都可以运行一个 Pod。</p>
+<h2 id="安装-elasticsearch-集群">安装 Elasticsearch 集群</h2>
+<p>先创建一个命名空间，我们将在其中安装所有日志相关的资源对象。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="ln">1</span><span class="cl">kubectl create ns kube-logging
+</span></span></code></pre></div><h3 id="环境准备">环境准备</h3>
+<p><code>ElasticSearch</code> 安装有最低安装要求，如果安装后 Pod 无法正常启动，请检查是否符合最低要求的配置，要求如下：</p>
+<table>
+<thead>
+<tr>
+<th>节点</th>
+<th>CPU最低要求</th>
+<th>内存最低要求</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>elasticsearch-master</td>
+<td>核心数&gt;2</td>
+<td>内存&gt;2G</td>
+</tr>
+<tr>
+<td>elasticsearch-data</td>
+<td>核心数&gt;1</td>
+<td>内存&gt;2G</td>
+</tr>
+<tr>
+<td>elasticsearch-client</td>
+<td>核心数&gt;1</td>
+<td>内存&gt;2G</td>
+</tr>
+</tbody>
+</table>
+<p>集群节点信息</p>
+<table>
+<thead>
+<tr>
+<th>集群</th>
+<th>节点类型</th>
+<th>副本数目</th>
+<th>存储大小</th>
+<th>网络模式</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>elasticsearch</td>
+<td>master</td>
+<td>3</td>
+<td>5Gi</td>
+<td>ClusterIP</td>
+<td>主节点</td>
+</tr>
+<tr>
+<td>elasticsearch-data</td>
+<td>data</td>
+<td>3</td>
+<td>50Gi</td>
+<td>ClusterIP</td>
+<td>数据节点</td>
+</tr>
+<tr>
+<td>elasticsearch-client</td>
+<td>client</td>
+<td>2</td>
+<td>无</td>
+<td>NodePort</td>
+<td>负责处理用户请求</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>建议使用 <code>StorageClass</code> 来做持久化存储，当然如果你是线上环境建议使用 Local PV 或者 Ceph RBD 之类的存储来持久化 Elasticsearch 的数据。</p>
+</blockquote>
+<p>由于 ElasticSearch 7.x 版本默认安装了 X-Pack 插件，并且部分功能免费，需要我们配置一些安全证书文件。</p>
+<h3 id="准备生成证书文件">准备生成证书文件</h3>
+<blockquote>
+<p>注意：由于我们采用的是<code>containerd</code>所以使用<code>nerdctl</code>来运行一个容器</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="ln"> 1</span><span class="cl">mkdir -p elastic-certs
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl">nerdctl run --name elastic-certs -v elastic-certs:/app -it -w /app elasticsearch:7.17.3 /bin/sh -c  <span class="se">\
+</span></span></span><span class="line"><span class="ln"> 3</span><span class="cl"><span class="se"></span>  <span class="s2">&#34;elasticsearch-certutil ca --out /app/elastic-stack-ca.p12 --pass &#39;&#39; &amp;&amp; \
+</span></span></span><span class="line"><span class="ln"> 4</span><span class="cl"><span class="s2">    elasticsearch-certutil cert --name security-master --dns \
+</span></span></span><span class="line"><span class="ln"> 5</span><span class="cl"><span class="s2">    security-master --ca /app/elastic-stack-ca.p12 --pass &#39;&#39; --ca-pass &#39;&#39; --out /app/elastic-certificates.p12&#34;</span>
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl"><span class="c1"># 找到nerdctl挂载的目录</span>
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl"><span class="nb">cd</span> /var/lib/nerdctl/1935db59/volumes/default/elastic-certs/_data/ <span class="c1"># 这个每个人是不一样的 可以自己搜索一下</span>
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl">
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl">mv * /root/elastic-certs/
+</span></span><span class="line"><span class="ln">10</span><span class="cl"><span class="nb">cd</span> /root/elastic-certs/ <span class="o">&amp;&amp;</span> openssl pkcs12 -nodes -passin pass:<span class="s1">&#39;&#39;</span> -in elastic-certificates.p12 -out elastic-certificate.pem
+</span></span></code></pre></div><ol start="2">
+<li>添加证书到<code>kubernetes</code></li>
+</ol>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="ln">1</span><span class="cl">kubectl create secret -n kube-logging generic elastic-certs --from-file<span class="o">=</span>elastic-certificates.p12
+</span></span><span class="line"><span class="ln">2</span><span class="cl"><span class="c1"># 设置集群用户名和密码</span>
+</span></span><span class="line"><span class="ln">3</span><span class="cl">kubectl create secret -n kube-logging generic elastic-auth --from-literal<span class="o">=</span><span class="nv">username</span><span class="o">=</span>elastic --from-literal<span class="o">=</span><span class="nv">password</span><span class="o">=</span>elastic-master
+</span></span></code></pre></div><h3 id="准备安装elastic集群">准备安装Elastic集群</h3>
+<ol>
+<li>采用<code>Helm</code>的方式来添加<code>elasticsearch</code>仓库</li>
+</ol>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="ln">1</span><span class="cl">helm repo add elastic https://helm.elastic.co
+</span></span><span class="line"><span class="ln">2</span><span class="cl">helm repo update
+</span></span></code></pre></div><p>ElaticSearch 安装需要安装三次，分别安装 Master、Data、Client 节点，Master 节点负责集群间的管理工作；Data 节点负责存储数据；Client 节点负责代理 ElasticSearch Cluster 集群，负载均衡。
+2. 拉取elasticsearch</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="ln">1</span><span class="cl">helm pull elastic/elasticsearch --untar --version 7.17.3
+</span></span><span class="line"><span class="ln">2</span><span class="cl"><span class="nb">cd</span> elasticsearch/
+</span></span></code></pre></div><p>在Chart目录下创建对应节点节点的<code>values</code>文件
+以下是<code>master-value.yaml</code></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="ln"> 1</span><span class="cl"><span class="c"># 设置集群名称</span><span class="w">
+</span></span></span><span class="line"><span class="ln"> 2</span><span class="cl"><span class="w"></span><span class="nt">clusterName</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;elasticsearch&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="ln"> 3</span><span class="cl"><span class="w"></span><span class="c"># 设置节点名称</span><span class="w">
+</span></span></span><span class="line"><span class="ln"> 4</span><span class="cl"><span class="w"></span><span class="nt">nodeGroup</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;master&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="ln"> 5</span><span class="cl"><span class="w"></span><span class="c"># 设置角色</span><span class="w">
+</span></span></span><span class="line"><span class="ln"> 6</span><span class="cl"><span class="w"></span><span class="nt">roles</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="ln"> 7</span><span class="cl"><span class="w">  </span><span class="nt">master</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;true&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="ln"> 8</span><span class="cl"><span class="w">  </span><span class="nt">ingest</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;false&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="ln"> 9</span><span class="cl"><span class="w">  </span><span class="nt">data</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;false&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="ln">10</span><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="ln">11</span><span class="cl"><span class="w"></span><span class="c"># 镜像</span><span class="w">
+</span></span></span><span class="line"><span class="ln">12</span><span class="cl"><span class="w"></span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;docker.elastic.co/elasticsearch/elasticsearch&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="ln">13</span><span class="cl"><span class="w"></span><span class="nt">imageTag</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;7.17.3&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="ln">14</span><span class="cl"><span class="w"></span><span class="nt">imagePullPolicy</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;IfNotPresent&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="ln">15</span><span class="cl"><span class="w"></span><span class="c"># 副本数</span><span class="w">
+</span></span></span><span class="line"><span class="ln">16</span><span class="cl"><span class="w"></span><span class="nt">replicas</span><span class="p">:</span><span class="w"> </span><span class="m">3</span><span class="w">
+</span></span></span><span class="line"><span class="ln">17</span><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="ln">18</span><span class="cl"><span class="w"></span><span class="c"># ---资源配置---</span><span class="w">
+</span></span></span><span class="line"><span class="ln">19</span><span class="cl"><span class="w"></span><span class="nt">esJavaOpts</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;-Xmx1g -Xms1g&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="ln">20</span><span class="cl"><span class="w"></span><span class="nt">resources</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="ln">21</span><span class="cl"><span class="w">  </span><span class="nt">requests</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="ln">22</span><span class="cl"><span class="w">    </span><span class="nt">cpu</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;2000m&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="ln">23</span><span class="cl"><span class="w">    </span><span class="nt">memory</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;2Gi&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="ln">24</span><span class="cl"><span class="w">  </span><span class="nt">limits</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="ln">25</span><span class="cl"><span class="w">    </span><span class="nt">cpu</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;2000m&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="ln">26</span><span class="cl"><span class="w">    </span><span class="nt">memory</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;2Gi&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="ln">27</span><span class="cl"><span class="w"></span><span class="c"># 数据持久卷配置</span><span class="w">
+</span></span></span><span class="line"><span class="ln">28</span><span class="cl"><span class="w"></span><span class="nt">persistence</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="ln">29</span><span class="cl"><span class="w">  </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+</span></span></span><span class="line"><span class="ln">30</span><span class="cl"><span class="w"></span><span class="c"># 存储数据大小配置</span><span class="w">
+</span></span></span><span class="line"><span class="ln">31</span><span class="cl"><span class="w"></span><span class="nt">volumeClaimTemplate</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="ln">32</span><span class="cl"><span class="w">  </span><span class="nt">storageClassName</span><span class="p">:</span><span class="w"> </span><span class="l">managed-nfs-storage</span><span class="w"> </span><span class="c"># 定义你自己的存储类</span><span class="w">
+</span></span></span><span class="line"><span class="ln">33</span><span class="cl"><span class="w">  </span><span class="nt">accessModes</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s1">&#39;ReadWriteOnce&#39;</span><span class="p">]</span><span class="w">
+</span></span></span><span class="line"><span class="ln">34</span><span class="cl"><span class="w">  </span><span class="nt">resources</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="ln">35</span><span class="cl"><span class="w">    </span><span class="nt">requests</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="ln">36</span><span class="cl"><span class="w">      </span><span class="nt">storage</span><span class="p">:</span><span class="w"> </span><span class="l">5Gi</span><span class="w">
+</span></span></span><span class="line"><span class="ln">37</span><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="ln">38</span><span class="cl"><span class="w"></span><span class="c"># ---安全设置---</span><span class="w">
+</span></span></span><span class="line"><span class="ln">39</span><span class="cl"><span class="w"></span><span class="c"># 设置协议，可配置为 http、https</span><span class="w">
+</span></span></span><span class="line"><span class="ln">40</span><span class="cl"><span class="w"></span><span class="nt">protocol</span><span class="p">:</span><span class="w"> </span><span class="l">http</span><span class="w">
+</span></span></span><span class="line"><span class="ln">41</span><span class="cl"><span class="w"></span><span class="c"># 证书挂载配置，这里我们挂入上面创建的证书</span><span class="w">
+</span></span></span><span class="line"><span class="ln">42</span><span class="cl"><span class="w"></span><span class="nt">secretMounts</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="ln">43</span><span class="cl"><span class="w">  </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">elastic-certs</span><span class="w">
+</span></span></span><span class="line"><span class="ln">44</span><span class="cl"><span class="w">    </span><span class="nt">secretName</span><span class="p">:</span><span class="w"> </span><span class="l">elastic-certs</span><span class="w">
+</span></span></span><span class="line"><span class="ln">45</span><span class="cl"><span class="w">    </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l">/usr/share/elasticsearch/config/certs</span><span class="w">
+</span></span></span><span class="line"><span class="ln">46</span><span class="cl"><span class="w">    </span><span class="nt">defaultMode</span><span class="p">:</span><span class="w"> </span><span class="m">0755</span><span class="w">
+</span></span></span><span class="line"><span class="ln">47</span><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="ln">48</span><span class="cl"><span class="w"></span><span class="c"># 允许您在/usr/share/elasticsearch/config/中添加任何自定义配置文件,例如 elasticsearch.yml、log4j2.properties</span><span class="w">
+</span></span></span><span class="line"><span class="ln">49</span><span class="cl"><span class="w"></span><span class="c"># ElasticSearch 7.x 默认安装了 x-pack 插件，部分功能免费，这里我们配置下</span><span class="w">
+</span></span></span><span class="line"><span class="ln">50</span><span class="cl"><span class="w"></span><span class="c"># 下面注掉的部分为配置 https 证书，配置此部分还需要配置 helm 参数 protocol 值改为 https</span><span class="w">
+</span></span></span><span class="line"><span class="ln">51</span><span class="cl"><span class="w"></span><span class="nt">esConfig</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="ln">52</span><span class="cl"><span class="w">  </span><span class="nt">elasticsearch.yml</span><span class="p">:</span><span class="w"> </span><span class="p">|</span><span class="sd">
+</span></span></span><span class="line"><span class="ln">53</span><span class="cl"><span class="sd">    xpack.security.enabled: true
+</span></span></span><span class="line"><span class="ln">54</span><span class="cl"><span class="sd">    xpack.security.transport.ssl.enabled: true
+</span></span></span><span class="line"><span class="ln">55</span><span class="cl"><span class="sd">    xpack.security.transport.ssl.verification_mode: certificate
+</span></span></span><span class="line"><span class="ln">56</span><span class="cl"><span class="sd">    xpack.security.transport.ssl.keystore.path: /usr/share/elasticsearch/config/certs/elastic-certificates.p12
+</span></span></span><span class="line"><span class="ln">57</span><span class="cl"><span class="sd">    xpack.security.transport.ssl.truststore.path: /usr/share/elasticsearch/config/certs/elastic-certificates.p12
+</span></span></span><span class="line"><span class="ln">58</span><span class="cl"><span class="sd">    # xpack.security.http.ssl.enabled: true
+</span></span></span><span class="line"><span class="ln">59</span><span class="cl"><span class="sd">    # xpack.security.http.ssl.truststore.path: /usr/share/elasticsearch/config/certs/elastic-certificates.p12
+</span></span></span><span class="line"><span class="ln">60</span><span class="cl"><span class="sd">    # xpack.security.http.ssl.keystore.path: /usr/share/elasticsearch/config/certs/elastic-certificates.p12</span><span class="w">    
+</span></span></span><span class="line"><span class="ln">61</span><span class="cl"><span class="w"></span><span class="c"># 环境变量配置，这里引入上面设置的用户名、密码 secret 文件</span><span class="w">
+</span></span></span><span class="line"><span class="ln">62</span><span class="cl"><span class="w"></span><span class="nt">extraEnvs</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="ln">63</span><span class="cl"><span class="w">  </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">ELASTIC_USERNAME</span><span class="w">
+</span></span></span><span class="line"><span class="ln">64</span><span class="cl"><span class="w">    </span><span class="nt">valueFrom</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="ln">65</span><span class="cl"><span class="w">      </span><span class="nt">secretKeyRef</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="ln">66</span><span class="cl"><span class="w">        </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">elastic-auth</span><span class="w">
+</span></span></span><span class="line"><span class="ln">67</span><span class="cl"><span class="w">        </span><span class="nt">key</span><span class="p">:</span><span class="w"> </span><span class="l">username</span><span class="w">
+</span></span></span><span class="line"><span class="ln">68</span><span class="cl"><span class="w">  </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">ELASTIC_PASSWORD</span><span class="w">
+</span></span></span><span class="line"><span class="ln">69</span><span class="cl"><span class="w">    </span><span class="nt">valueFrom</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="ln">70</span><span class="cl"><span class="w">      </span><span class="nt">secretKeyRef</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="ln">71</span><span class="cl"><span class="w">        </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">elastic-auth</span><span class="w">
+</span></span></span><span class="line"><span class="ln">72</span><span class="cl"><span class="w">        </span><span class="nt">key</span><span class="p">:</span><span class="w"> </span><span class="l">password</span><span class="w">
+</span></span></span><span class="line"><span class="ln">73</span><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="ln">74</span><span class="cl"><span class="w"></span><span class="c"># ---调度设置---</span><span class="w">
+</span></span></span><span class="line"><span class="ln">75</span><span class="cl"><span class="w"></span><span class="c"># 设置调度策略</span><span class="w">
+</span></span></span><span class="line"><span class="ln">76</span><span class="cl"><span class="w"></span><span class="c"># - hard：只有当有足够的节点时 Pod 才会被调度，并且它们永远不会出现在同一个节点上</span><span class="w">
+</span></span></span><span class="line"><span class="ln">77</span><span class="cl"><span class="w"></span><span class="c"># - soft：尽最大努力调度</span><span class="w">
+</span></span></span><span class="line"><span class="ln">78</span><span class="cl"><span class="w"></span><span class="nt">antiAffinity</span><span class="p">:</span><span class="w"> </span><span class="s1">&#39;soft&#39;</span><span class="w">
+</span></span></span><span class="line"><span class="ln">79</span><span class="cl"><span class="w"></span><span class="nt">tolerations</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="ln">80</span><span class="cl"><span class="w">   </span>- <span class="nt">operator</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;Exists&#34;</span><span class="w"> </span><span class="c"># 容忍全部污点</span><span class="w">
+</span></span></span></code></pre></div><p>以下是<code>data-value.yaml</code>的内容</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="ln"> 1</span><span class="cl"><span class="c"># 设置集群名称</span><span class="w">
+</span></span></span><span class="line"><span class="ln"> 2</span><span class="cl"><span class="w"></span><span class="nt">clusterName</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;elasticsearch&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="ln"> 3</span><span class="cl"><span class="w"></span><span class="c"># 设置节点名称</span><span class="w">
+</span></span></span><span class="line"><span class="ln"> 4</span><span class="cl"><span class="w"></span><span class="nt">nodeGroup</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;data&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="ln"> 5</span><span class="cl"><span class="w"></span><span class="c"># 设置角色</span><span class="w">
+</span></span></span><span class="line"><span class="ln"> 6</span><span class="cl"><span class="w"></span><span class="nt">roles</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="ln"> 7</span><span class="cl"><span class="w">  </span><span class="nt">master</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;false&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="ln"> 8</span><span class="cl"><span class="w">  </span><span class="nt">ingest</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;true&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="ln"> 9</span><span class="cl"><span class="w">  </span><span class="nt">data</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;true&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="ln">10</span><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="ln">11</span><span class="cl"><span class="w"></span><span class="c"># 镜像</span><span class="w">
+</span></span></span><span class="line"><span class="ln">12</span><span class="cl"><span class="w"></span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;docker.elastic.co/elasticsearch/elasticsearch&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="ln">13</span><span class="cl"><span class="w"></span><span class="nt">imageTag</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;7.17.3&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="ln">14</span><span class="cl"><span class="w"></span><span class="nt">imagePullPolicy</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;IfNotPresent&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="ln">15</span><span class="cl"><span class="w"></span><span class="c"># 副本数</span><span class="w">
+</span></span></span><span class="line"><span class="ln">16</span><span class="cl"><span class="w"></span><span class="nt">replicas</span><span class="p">:</span><span class="w"> </span><span class="m">3</span><span class="w">
+</span></span></span><span class="line"><span class="ln">17</span><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="ln">18</span><span class="cl"><span class="w"></span><span class="c"># ---资源配置---</span><span class="w">
+</span></span></span><span class="line"><span class="ln">19</span><span class="cl"><span class="w"></span><span class="nt">esJavaOpts</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;-Xmx1g -Xms1g&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="ln">20</span><span class="cl"><span class="w"></span><span class="nt">resources</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="ln">21</span><span class="cl"><span class="w">  </span><span class="nt">requests</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="ln">22</span><span class="cl"><span class="w">    </span><span class="nt">cpu</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;1000m&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="ln">23</span><span class="cl"><span class="w">    </span><span class="nt">memory</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;2Gi&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="ln">24</span><span class="cl"><span class="w">  </span><span class="nt">limits</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="ln">25</span><span class="cl"><span class="w">    </span><span class="nt">cpu</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;1000m&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="ln">26</span><span class="cl"><span class="w">    </span><span class="nt">memory</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;2Gi&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="ln">27</span><span class="cl"><span class="w"></span><span class="c"># 数据持久卷配置</span><span class="w">
+</span></span></span><span class="line"><span class="ln">28</span><span class="cl"><span class="w"></span><span class="nt">persistence</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="ln">29</span><span class="cl"><span class="w">  </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+</span></span></span><span class="line"><span class="ln">30</span><span class="cl"><span class="w"></span><span class="c"># 存储数据大小配置</span><span class="w">
+</span></span></span><span class="line"><span class="ln">31</span><span class="cl"><span class="w"></span><span class="nt">volumeClaimTemplate</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="ln">32</span><span class="cl"><span class="w">  </span><span class="nt">storageClassName</span><span class="p">:</span><span class="w"> </span><span class="l">managed-nfs-storage</span><span class="w"> </span><span class="c"># 定义你自己的存储类</span><span class="w">
+</span></span></span><span class="line"><span class="ln">33</span><span class="cl"><span class="w">  </span><span class="nt">accessModes</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s1">&#39;ReadWriteOnce&#39;</span><span class="p">]</span><span class="w">
+</span></span></span><span class="line"><span class="ln">34</span><span class="cl"><span class="w">  </span><span class="nt">resources</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="ln">35</span><span class="cl"><span class="w">    </span><span class="nt">requests</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="ln">36</span><span class="cl"><span class="w">      </span><span class="nt">storage</span><span class="p">:</span><span class="w"> </span><span class="l">20Gi</span><span class="w">
+</span></span></span><span class="line"><span class="ln">37</span><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="ln">38</span><span class="cl"><span class="w"></span><span class="c"># ---安全设置---</span><span class="w">
+</span></span></span><span class="line"><span class="ln">39</span><span class="cl"><span class="w"></span><span class="c"># 设置协议，可配置为 http、https</span><span class="w">
+</span></span></span><span class="line"><span class="ln">40</span><span class="cl"><span class="w"></span><span class="nt">protocol</span><span class="p">:</span><span class="w"> </span><span class="l">http</span><span class="w">
+</span></span></span><span class="line"><span class="ln">41</span><span class="cl"><span class="w"></span><span class="c"># 证书挂载配置，这里我们挂入上面创建的证书</span><span class="w">
+</span></span></span><span class="line"><span class="ln">42</span><span class="cl"><span class="w"></span><span class="nt">secretMounts</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="ln">43</span><span class="cl"><span class="w">  </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">elastic-certs</span><span class="w">
+</span></span></span><span class="line"><span class="ln">44</span><span class="cl"><span class="w">    </span><span class="nt">secretName</span><span class="p">:</span><span class="w"> </span><span class="l">elastic-certs</span><span class="w">
+</span></span></span><span class="line"><span class="ln">45</span><span class="cl"><span class="w">    </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l">/usr/share/elasticsearch/config/certs</span><span class="w">
+</span></span></span><span class="line"><span class="ln">46</span><span class="cl"><span class="w">    </span><span class="nt">defaultMode</span><span class="p">:</span><span class="w"> </span><span class="m">0755</span><span class="w">
+</span></span></span><span class="line"><span class="ln">47</span><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="ln">48</span><span class="cl"><span class="w"></span><span class="c"># 允许您在/usr/share/elasticsearch/config/中添加任何自定义配置文件,例如 elasticsearch.yml、log4j2.properties</span><span class="w">
+</span></span></span><span class="line"><span class="ln">49</span><span class="cl"><span class="w"></span><span class="c"># ElasticSearch 7.x 默认安装了 x-pack 插件，部分功能免费，这里我们配置下</span><span class="w">
+</span></span></span><span class="line"><span class="ln">50</span><span class="cl"><span class="w"></span><span class="c"># 下面注掉的部分为配置 https 证书，配置此部分还需要配置 helm 参数 protocol 值改为 https</span><span class="w">
+</span></span></span><span class="line"><span class="ln">51</span><span class="cl"><span class="w"></span><span class="nt">esConfig</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="ln">52</span><span class="cl"><span class="w">  </span><span class="nt">elasticsearch.yml</span><span class="p">:</span><span class="w"> </span><span class="p">|</span><span class="sd">
+</span></span></span><span class="line"><span class="ln">53</span><span class="cl"><span class="sd">    xpack.security.enabled: true
+</span></span></span><span class="line"><span class="ln">54</span><span class="cl"><span class="sd">    xpack.security.transport.ssl.enabled: true
+</span></span></span><span class="line"><span class="ln">55</span><span class="cl"><span class="sd">    xpack.security.transport.ssl.verification_mode: certificate
+</span></span></span><span class="line"><span class="ln">56</span><span class="cl"><span class="sd">    xpack.security.transport.ssl.keystore.path: /usr/share/elasticsearch/config/certs/elastic-certificates.p12
+</span></span></span><span class="line"><span class="ln">57</span><span class="cl"><span class="sd">    xpack.security.transport.ssl.truststore.path: /usr/share/elasticsearch/config/certs/elastic-certificates.p12
+</span></span></span><span class="line"><span class="ln">58</span><span class="cl"><span class="sd">    # xpack.security.http.ssl.enabled: true
+</span></span></span><span class="line"><span class="ln">59</span><span class="cl"><span class="sd">    # xpack.security.http.ssl.truststore.path: /usr/share/elasticsearch/config/certs/elastic-certificates.p12
+</span></span></span><span class="line"><span class="ln">60</span><span class="cl"><span class="sd">    # xpack.security.http.ssl.keystore.path: /usr/share/elasticsearch/config/certs/elastic-certificates.p12</span><span class="w">    
+</span></span></span><span class="line"><span class="ln">61</span><span class="cl"><span class="w"></span><span class="c"># 环境变量配置，这里引入上面设置的用户名、密码 secret 文件</span><span class="w">
+</span></span></span><span class="line"><span class="ln">62</span><span class="cl"><span class="w"></span><span class="nt">extraEnvs</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="ln">63</span><span class="cl"><span class="w">  </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">ELASTIC_USERNAME</span><span class="w">
+</span></span></span><span class="line"><span class="ln">64</span><span class="cl"><span class="w">    </span><span class="nt">valueFrom</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="ln">65</span><span class="cl"><span class="w">      </span><span class="nt">secretKeyRef</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="ln">66</span><span class="cl"><span class="w">        </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">elastic-auth</span><span class="w">
+</span></span></span><span class="line"><span class="ln">67</span><span class="cl"><span class="w">        </span><span class="nt">key</span><span class="p">:</span><span class="w"> </span><span class="l">username</span><span class="w">
+</span></span></span><span class="line"><span class="ln">68</span><span class="cl"><span class="w">  </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">ELASTIC_PASSWORD</span><span class="w">
+</span></span></span><span class="line"><span class="ln">69</span><span class="cl"><span class="w">    </span><span class="nt">valueFrom</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="ln">70</span><span class="cl"><span class="w">      </span><span class="nt">secretKeyRef</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="ln">71</span><span class="cl"><span class="w">        </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">elastic-auth</span><span class="w">
+</span></span></span><span class="line"><span class="ln">72</span><span class="cl"><span class="w">        </span><span class="nt">key</span><span class="p">:</span><span class="w"> </span><span class="l">password</span><span class="w">
+</span></span></span></code></pre></div><p>以下是<code>client-value.yaml</code></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="ln"> 1</span><span class="cl"><span class="c"># 设置集群名称</span><span class="w">
+</span></span></span><span class="line"><span class="ln"> 2</span><span class="cl"><span class="w"></span><span class="nt">clusterName</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;elasticsearch&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="ln"> 3</span><span class="cl"><span class="w"></span><span class="c"># 设置节点名称</span><span class="w">
+</span></span></span><span class="line"><span class="ln"> 4</span><span class="cl"><span class="w"></span><span class="nt">nodeGroup</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;client&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="ln"> 5</span><span class="cl"><span class="w"></span><span class="c"># 设置角色</span><span class="w">
+</span></span></span><span class="line"><span class="ln"> 6</span><span class="cl"><span class="w"></span><span class="nt">roles</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="ln"> 7</span><span class="cl"><span class="w">  </span><span class="nt">master</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;false&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="ln"> 8</span><span class="cl"><span class="w">  </span><span class="nt">ingest</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;false&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="ln"> 9</span><span class="cl"><span class="w">  </span><span class="nt">data</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;false&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="ln">10</span><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="ln">11</span><span class="cl"><span class="w"></span><span class="c"># 镜像</span><span class="w">
+</span></span></span><span class="line"><span class="ln">12</span><span class="cl"><span class="w"></span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;docker.elastic.co/elasticsearch/elasticsearch&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="ln">13</span><span class="cl"><span class="w"></span><span class="nt">imageTag</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;7.17.3&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="ln">14</span><span class="cl"><span class="w"></span><span class="nt">imagePullPolicy</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;IfNotPresent&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="ln">15</span><span class="cl"><span class="w"></span><span class="c"># 副本数</span><span class="w">
+</span></span></span><span class="line"><span class="ln">16</span><span class="cl"><span class="w"></span><span class="nt">replicas</span><span class="p">:</span><span class="w"> </span><span class="m">1</span><span class="w">
+</span></span></span><span class="line"><span class="ln">17</span><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="ln">18</span><span class="cl"><span class="w"></span><span class="c"># ---资源配置---</span><span class="w">
+</span></span></span><span class="line"><span class="ln">19</span><span class="cl"><span class="w"></span><span class="nt">esJavaOpts</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;-Xmx1g -Xms1g&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="ln">20</span><span class="cl"><span class="w"></span><span class="nt">resources</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="ln">21</span><span class="cl"><span class="w">  </span><span class="nt">requests</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="ln">22</span><span class="cl"><span class="w">    </span><span class="nt">cpu</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;1000m&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="ln">23</span><span class="cl"><span class="w">    </span><span class="nt">memory</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;2Gi&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="ln">24</span><span class="cl"><span class="w">  </span><span class="nt">limits</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="ln">25</span><span class="cl"><span class="w">    </span><span class="nt">cpu</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;1000m&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="ln">26</span><span class="cl"><span class="w">    </span><span class="nt">memory</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;2Gi&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="ln">27</span><span class="cl"><span class="w"></span><span class="c"># 数据持久卷配置</span><span class="w">
+</span></span></span><span class="line"><span class="ln">28</span><span class="cl"><span class="w"></span><span class="nt">persistence</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="ln">29</span><span class="cl"><span class="w">  </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="w">
+</span></span></span><span class="line"><span class="ln">30</span><span class="cl"><span class="w"></span><span class="c"># ---安全设置---</span><span class="w">
+</span></span></span><span class="line"><span class="ln">31</span><span class="cl"><span class="w"></span><span class="c"># 设置协议，可配置为 http、https</span><span class="w">
+</span></span></span><span class="line"><span class="ln">32</span><span class="cl"><span class="w"></span><span class="nt">protocol</span><span class="p">:</span><span class="w"> </span><span class="l">http</span><span class="w">
+</span></span></span><span class="line"><span class="ln">33</span><span class="cl"><span class="w"></span><span class="c"># 证书挂载配置，这里我们挂入上面创建的证书</span><span class="w">
+</span></span></span><span class="line"><span class="ln">34</span><span class="cl"><span class="w"></span><span class="nt">secretMounts</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="ln">35</span><span class="cl"><span class="w">  </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">elastic-certs</span><span class="w">
+</span></span></span><span class="line"><span class="ln">36</span><span class="cl"><span class="w">    </span><span class="nt">secretName</span><span class="p">:</span><span class="w"> </span><span class="l">elastic-certs</span><span class="w">
+</span></span></span><span class="line"><span class="ln">37</span><span class="cl"><span class="w">    </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l">/usr/share/elasticsearch/config/certs</span><span class="w">
+</span></span></span><span class="line"><span class="ln">38</span><span class="cl"><span class="w">    </span><span class="nt">defaultMode</span><span class="p">:</span><span class="w"> </span><span class="m">0755</span><span class="w">
+</span></span></span><span class="line"><span class="ln">39</span><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="ln">40</span><span class="cl"><span class="w"></span><span class="c"># 允许您在/usr/share/elasticsearch/config/中添加任何自定义配置文件,例如 elasticsearch.yml、log4j2.properties</span><span class="w">
+</span></span></span><span class="line"><span class="ln">41</span><span class="cl"><span class="w"></span><span class="c"># ElasticSearch 7.x 默认安装了 x-pack 插件，部分功能免费，这里我们配置下</span><span class="w">
+</span></span></span><span class="line"><span class="ln">42</span><span class="cl"><span class="w"></span><span class="c"># 下面注掉的部分为配置 https 证书，配置此部分还需要配置 helm 参数 protocol 值改为 https</span><span class="w">
+</span></span></span><span class="line"><span class="ln">43</span><span class="cl"><span class="w"></span><span class="nt">esConfig</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="ln">44</span><span class="cl"><span class="w">  </span><span class="nt">elasticsearch.yml</span><span class="p">:</span><span class="w"> </span><span class="p">|</span><span class="sd">
+</span></span></span><span class="line"><span class="ln">45</span><span class="cl"><span class="sd">    xpack.security.enabled: true
+</span></span></span><span class="line"><span class="ln">46</span><span class="cl"><span class="sd">    xpack.security.transport.ssl.enabled: true
+</span></span></span><span class="line"><span class="ln">47</span><span class="cl"><span class="sd">    xpack.security.transport.ssl.verification_mode: certificate
+</span></span></span><span class="line"><span class="ln">48</span><span class="cl"><span class="sd">    xpack.security.transport.ssl.keystore.path: /usr/share/elasticsearch/config/certs/elastic-certificates.p12
+</span></span></span><span class="line"><span class="ln">49</span><span class="cl"><span class="sd">    xpack.security.transport.ssl.truststore.path: /usr/share/elasticsearch/config/certs/elastic-certificates.p12
+</span></span></span><span class="line"><span class="ln">50</span><span class="cl"><span class="sd">    # xpack.security.http.ssl.enabled: true
+</span></span></span><span class="line"><span class="ln">51</span><span class="cl"><span class="sd">    # xpack.security.http.ssl.truststore.path: /usr/share/elasticsearch/config/certs/elastic-certificates.p12
+</span></span></span><span class="line"><span class="ln">52</span><span class="cl"><span class="sd">    # xpack.security.http.ssl.keystore.path: /usr/share/elasticsearch/config/certs/elastic-certificates.p12</span><span class="w">    
+</span></span></span><span class="line"><span class="ln">53</span><span class="cl"><span class="w"></span><span class="c"># 环境变量配置，这里引入上面设置的用户名、密码 secret 文件</span><span class="w">
+</span></span></span><span class="line"><span class="ln">54</span><span class="cl"><span class="w"></span><span class="nt">extraEnvs</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="ln">55</span><span class="cl"><span class="w">  </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">ELASTIC_USERNAME</span><span class="w">
+</span></span></span><span class="line"><span class="ln">56</span><span class="cl"><span class="w">    </span><span class="nt">valueFrom</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="ln">57</span><span class="cl"><span class="w">      </span><span class="nt">secretKeyRef</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="ln">58</span><span class="cl"><span class="w">        </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">elastic-auth</span><span class="w">
+</span></span></span><span class="line"><span class="ln">59</span><span class="cl"><span class="w">        </span><span class="nt">key</span><span class="p">:</span><span class="w"> </span><span class="l">username</span><span class="w">
+</span></span></span><span class="line"><span class="ln">60</span><span class="cl"><span class="w">  </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">ELASTIC_PASSWORD</span><span class="w">
+</span></span></span><span class="line"><span class="ln">61</span><span class="cl"><span class="w">    </span><span class="nt">valueFrom</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="ln">62</span><span class="cl"><span class="w">      </span><span class="nt">secretKeyRef</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="ln">63</span><span class="cl"><span class="w">        </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">elastic-auth</span><span class="w">
+</span></span></span><span class="line"><span class="ln">64</span><span class="cl"><span class="w">        </span><span class="nt">key</span><span class="p">:</span><span class="w"> </span><span class="l">password</span><span class="w">
+</span></span></span><span class="line"><span class="ln">65</span><span class="cl"><span class="w">        
+</span></span></span><span class="line"><span class="ln">66</span><span class="cl"><span class="w"></span><span class="c"># ----服务设置----</span><span class="w">
+</span></span></span><span class="line"><span class="ln">67</span><span class="cl"><span class="w"></span><span class="nt">service</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="ln">68</span><span class="cl"><span class="w">  </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l">NodePort</span><span class="w">
+</span></span></span><span class="line"><span class="ln">69</span><span class="cl"><span class="w">  </span><span class="nt">nodePort</span><span class="p">:</span><span class="w"> </span><span class="s1">&#39;30200&#39;</span><span class="w">
+</span></span></span></code></pre></div><ol start="3">
+<li>开始部署相关节点</li>
+</ol>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="ln">1</span><span class="cl">helm upgrade --install elasticsearch-master -f master-values.yaml --namespace kube-logging ./ <span class="c1"># 部署master</span>
+</span></span><span class="line"><span class="ln">2</span><span class="cl">helm upgrade --install elasticsearch-data -f data-values.yaml --namespace kube-logging ./ <span class="c1"># 部署data</span>
+</span></span><span class="line"><span class="ln">3</span><span class="cl">helm upgrade --install elasticsearch-client -f client-values.yaml --namespace kube-logging ./  <span class="c1"># 部署 client</span>
+</span></span></code></pre></div><p>正常情况下看到所有节点都处于<code>running</code>状态即可</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="ln">1</span><span class="cl"><span class="o">[</span>root@Online-Beijing-master1 elasticsearch<span class="o">]</span><span class="c1"># kubectl get pods -n kube-logging</span>
+</span></span><span class="line"><span class="ln">2</span><span class="cl">NAME                     READY   STATUS    RESTARTS   AGE
+</span></span><span class="line"><span class="ln">3</span><span class="cl">elasticsearch-client-0   1/1     Running   <span class="m">0</span>          13m
+</span></span><span class="line"><span class="ln">4</span><span class="cl">elasticsearch-data-0     1/1     Running   <span class="m">0</span>          17m
+</span></span><span class="line"><span class="ln">5</span><span class="cl">elasticsearch-data-1     1/1     Running   <span class="m">0</span>          17m
+</span></span><span class="line"><span class="ln">6</span><span class="cl">elasticsearch-data-2     1/1     Running   <span class="m">0</span>          17m
+</span></span><span class="line"><span class="ln">7</span><span class="cl">elasticsearch-master-0   1/1     Running   <span class="m">0</span>          43m
+</span></span><span class="line"><span class="ln">8</span><span class="cl">elasticsearch-master-1   1/1     Running   <span class="m">0</span>          43m
+</span></span><span class="line"><span class="ln">9</span><span class="cl">elasticsearch-master-2   1/1     Running   <span class="m">0</span>          43m
+</span></span></code></pre></div><h2 id="安装kibana">安装Kibana</h2>
+<p>依旧使用<code>helm</code>的方式进行部署</p>
+<ol>
+<li>使用<code>helm pull</code>拉取<code>Kibana</code>包来进行解压</li>
+</ol>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="ln">1</span><span class="cl">helm pull elastic/kibana --untar --version 7.17.3
+</span></span><span class="line"><span class="ln">2</span><span class="cl"><span class="nb">cd</span> kibana
+</span></span></code></pre></div><ol start="2">
+<li>定义一个名字为<code>custom-value.yaml</code>的文件</li>
+</ol>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="ln"> 1</span><span class="cl"><span class="c"># 指定镜像与镜像版本</span><span class="w">
+</span></span></span><span class="line"><span class="ln"> 2</span><span class="cl"><span class="w"></span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="s1">&#39;kibana&#39;</span><span class="w">
+</span></span></span><span class="line"><span class="ln"> 3</span><span class="cl"><span class="w"></span><span class="nt">imageTag</span><span class="p">:</span><span class="w"> </span><span class="s1">&#39;7.17.3&#39;</span><span class="w">
+</span></span></span><span class="line"><span class="ln"> 4</span><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="ln"> 5</span><span class="cl"><span class="w"></span><span class="c"># 配置 ElasticSearch 地址</span><span class="w">
+</span></span></span><span class="line"><span class="ln"> 6</span><span class="cl"><span class="w"></span><span class="nt">elasticsearchHosts</span><span class="p">:</span><span class="w"> </span><span class="s1">&#39;http://elasticsearch-client:9200&#39;</span><span class="w">
+</span></span></span><span class="line"><span class="ln"> 7</span><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="ln"> 8</span><span class="cl"><span class="w"></span><span class="c"># 环境变量配置，这里引入上面设置的用户名、密码 secret 文件</span><span class="w">
+</span></span></span><span class="line"><span class="ln"> 9</span><span class="cl"><span class="w"></span><span class="nt">extraEnvs</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="ln">10</span><span class="cl"><span class="w">  </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s1">&#39;ELASTICSEARCH_USERNAME&#39;</span><span class="w">
+</span></span></span><span class="line"><span class="ln">11</span><span class="cl"><span class="w">    </span><span class="nt">valueFrom</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="ln">12</span><span class="cl"><span class="w">      </span><span class="nt">secretKeyRef</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="ln">13</span><span class="cl"><span class="w">        </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">elastic-auth</span><span class="w">
+</span></span></span><span class="line"><span class="ln">14</span><span class="cl"><span class="w">        </span><span class="nt">key</span><span class="p">:</span><span class="w"> </span><span class="l">username</span><span class="w">
+</span></span></span><span class="line"><span class="ln">15</span><span class="cl"><span class="w">  </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s1">&#39;ELASTICSEARCH_PASSWORD&#39;</span><span class="w">
+</span></span></span><span class="line"><span class="ln">16</span><span class="cl"><span class="w">    </span><span class="nt">valueFrom</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="ln">17</span><span class="cl"><span class="w">      </span><span class="nt">secretKeyRef</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="ln">18</span><span class="cl"><span class="w">        </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">elastic-auth</span><span class="w">
+</span></span></span><span class="line"><span class="ln">19</span><span class="cl"><span class="w">        </span><span class="nt">key</span><span class="p">:</span><span class="w"> </span><span class="l">password</span><span class="w">
+</span></span></span><span class="line"><span class="ln">20</span><span class="cl"><span class="w"></span><span class="nt">resources</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="ln">21</span><span class="cl"><span class="w">  </span><span class="nt">requests</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="ln">22</span><span class="cl"><span class="w">    </span><span class="nt">cpu</span><span class="p">:</span><span class="w"> </span><span class="s1">&#39;500m&#39;</span><span class="w">
+</span></span></span><span class="line"><span class="ln">23</span><span class="cl"><span class="w">    </span><span class="nt">memory</span><span class="p">:</span><span class="w"> </span><span class="s1">&#39;1Gi&#39;</span><span class="w">
+</span></span></span><span class="line"><span class="ln">24</span><span class="cl"><span class="w">  </span><span class="nt">limits</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="ln">25</span><span class="cl"><span class="w">    </span><span class="nt">cpu</span><span class="p">:</span><span class="w"> </span><span class="s1">&#39;500m&#39;</span><span class="w">
+</span></span></span><span class="line"><span class="ln">26</span><span class="cl"><span class="w">    </span><span class="nt">memory</span><span class="p">:</span><span class="w"> </span><span class="s1">&#39;1Gi&#39;</span><span class="w">
+</span></span></span><span class="line"><span class="ln">27</span><span class="cl"><span class="w"></span><span class="c"># kibana 配置中添加语言配置，设置 kibana 为中文</span><span class="w">
+</span></span></span><span class="line"><span class="ln">28</span><span class="cl"><span class="w"></span><span class="nt">kibanaConfig</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="ln">29</span><span class="cl"><span class="w">  </span><span class="nt">kibana.yml</span><span class="p">:</span><span class="w"> </span><span class="p">|</span><span class="sd">
+</span></span></span><span class="line"><span class="ln">30</span><span class="cl"><span class="sd">    i18n.locale: &#34;zh-CN&#34;</span><span class="w">    
+</span></span></span><span class="line"><span class="ln">31</span><span class="cl"><span class="w"></span><span class="nt">service</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="ln">32</span><span class="cl"><span class="w">  </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l">NodePort</span><span class="w">
+</span></span></span><span class="line"><span class="ln">33</span><span class="cl"><span class="w">  </span><span class="nt">nodePort</span><span class="p">:</span><span class="w"> </span><span class="s1">&#39;30601&#39;</span><span class="w">
+</span></span></span></code></pre></div><ol start="3">
+<li>部署<code>kibana</code></li>
+</ol>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="ln">1</span><span class="cl">helm install kibana -f custom-value.yaml --namespace kube-logging .
+</span></span></code></pre></div><h2 id="部署fluentd">部署Fluentd</h2>
+<p>Fluentd 是一个高效的日志聚合器，是用 Ruby 编写的，并且可以很好地扩展。对于大部分企业来说，Fluentd 足够高效并且消耗的资源相对较少，另外一个工具 <code>Fluent-bit</code> 更轻量级，占用资源更少，但是插件相对 Fluentd 来说不够丰富，所以整体来说，Fluentd 更加成熟，使用更加广泛，所以这里我们使用 Fluentd 来作为日志收集工具。</p>
+<h3 id="工作原理">工作原理</h3>
+<p>Fluentd 通过一组给定的数据源抓取日志数据，处理后（转换成结构化的数据格式）将它们转发给其他服务，比如 Elasticsearch、对象存储等等。Fluentd 支持超过 300 个日志存储和分析服务，所以在这方面是非常灵活的。主要运行步骤如下：</p>
+<ul>
+<li>首先 Fluentd 从多个日志源获取数据</li>
+<li>结构化并且标记这些数据</li>
+<li>然后根据匹配的标签将数据发送到多个目标服务去</li>
+<li><a
+  href="https://docs.fluentd.org/quickstart"
+  
+  target="_blank" rel="noopener noreferrer">官方文档</a></li>
+</ul>
+<p>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <picture>
+  <img
+    class="img-fluid"
+    src="https://img14.360buyimg.com/ddimg/jfs/t1/177175/31/35833/30306/64cb08eeF5ba90f46/1da6311bbbec8921.jpg"
+    alt="image.png"
+    loading="lazy"
+    
+    
+    
+    
+    
+     />
+</picture>
+</p>
+<h3 id="日志源配置">日志源配置</h3>
+<p>比如我们这里为了收集 Kubernetes 节点上的所有容器日志，就需要做如下的日志源配置：</p>
+<ul>
+<li>id：表示引用该日志源的唯一标识符，该标识可用于进一步过滤和路由结构化日志数据</li>
+<li>type：Fluentd 内置的指令，tail 表示 Fluentd 从上次读取的位置通过 tail 不断获取数据，另外一个是 http 表示通过一个 GET 请求来收集数据。</li>
+<li>path：<code>tail</code> 类型下的特定参数，告诉 Fluentd 采集 /var/log/containers 目录下的所有日志，这是 docker 在 Kubernetes 节点上用来存储运行容器 stdout 输出日志数据的目录。</li>
+<li>pos_file：检查点，如果 Fluentd 程序重新启动了，它将使用此文件中的位置来恢复日志数据收集。</li>
+<li>tag：用来将日志源与目标或者过滤器匹配的自定义字符串，Fluentd 匹配源/目标标签来路由日志数据。</li>
+</ul>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-conf" data-lang="conf"><span class="line"><span class="ln"> 1</span><span class="cl"><span class="err">&lt;</span><span class="nv">source</span><span class="err">&gt;</span>
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl">  <span class="err">@</span><span class="nv">id</span> <span class="nv">fluentd-containers.log</span>
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl">  <span class="err">@</span><span class="nv">type</span> <span class="nv">tail</span>                             <span class="c"># Fluentd 内置的输入方式，其原理是不停地从源文件中获取新的日志,类似于tail命令
+</span></span></span><span class="line"><span class="ln"> 4</span><span class="cl"><span class="c"></span>  <span class="nv">path</span> <span class="err">/</span><span class="nv">var</span><span class="err">/</span><span class="nv">log</span><span class="err">/</span><span class="nv">containers</span><span class="err">/*</span><span class="nv">.log</span>         <span class="c"># 挂载的宿主机容器日志地址
+</span></span></span><span class="line"><span class="ln"> 5</span><span class="cl"><span class="c"></span>  <span class="nv">pos_file</span> <span class="err">/</span><span class="nv">var</span><span class="err">/</span><span class="nv">log</span><span class="err">/</span><span class="nv">es-containers.log.pos</span>
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl">  <span class="nv">tag</span> <span class="nv">raw.kubernetes.</span><span class="err">*</span>                   <span class="c"># 设置日志标签
+</span></span></span><span class="line"><span class="ln"> 7</span><span class="cl"><span class="c"></span>  <span class="nv">read_from_head</span> <span class="kc">true</span>
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl">  <span class="err">&lt;</span><span class="nv">parse</span><span class="err">&gt;</span>                                <span class="c"># 多行格式化成JSON
+</span></span></span><span class="line"><span class="ln"> 9</span><span class="cl"><span class="c"></span>    <span class="err">@</span><span class="nv">type</span> <span class="nv">multi_format</span>                   <span class="c"># 使用 multi-format-parser 解析器插件
+</span></span></span><span class="line"><span class="ln">10</span><span class="cl"><span class="c"></span>    <span class="err">&lt;</span><span class="nv">pattern</span><span class="err">&gt;</span>
+</span></span><span class="line"><span class="ln">11</span><span class="cl">      <span class="nv">format</span> <span class="nv">json</span>                        <span class="c"># JSON 解析器
+</span></span></span><span class="line"><span class="ln">12</span><span class="cl"><span class="c"></span>      <span class="nv">time_key</span> <span class="nv">time</span>                      <span class="c"># 指定事件时间的时间字段
+</span></span></span><span class="line"><span class="ln">13</span><span class="cl"><span class="c"></span>      <span class="nv">time_format</span> <span class="err">%</span><span class="nv">Y-</span><span class="err">%</span><span class="nv">m-</span><span class="err">%</span><span class="nv">dT</span><span class="err">%</span><span class="nv">H</span><span class="err">:%</span><span class="nv">M</span><span class="err">:%</span><span class="nv">S.</span><span class="err">%</span><span class="nv">NZ</span>  <span class="c"># 时间格式
+</span></span></span><span class="line"><span class="ln">14</span><span class="cl"><span class="c"></span>    <span class="err">&lt;/</span><span class="nv">pattern</span><span class="err">&gt;</span>
+</span></span><span class="line"><span class="ln">15</span><span class="cl">    <span class="err">&lt;</span><span class="nv">pattern</span><span class="err">&gt;</span>
+</span></span><span class="line"><span class="ln">16</span><span class="cl">      <span class="nv">format</span> <span class="err">/^(?&lt;</span><span class="nv">time</span><span class="err">&gt;</span><span class="nv">.</span><span class="err">+</span><span class="p">)</span> <span class="err">(?&lt;</span><span class="nv">stream</span><span class="err">&gt;</span><span class="nv">stdout</span><span class="err">|</span><span class="nv">stderr</span><span class="p">)</span> <span class="err">[^</span> <span class="err">]*</span> <span class="err">(?&lt;</span><span class="nv">log</span><span class="err">&gt;</span><span class="nv">.</span><span class="err">*</span><span class="p">)</span><span class="err">$/</span>
+</span></span><span class="line"><span class="ln">17</span><span class="cl">      <span class="nv">time_format</span> <span class="err">%</span><span class="nv">Y-</span><span class="err">%</span><span class="nv">m-</span><span class="err">%</span><span class="nv">dT</span><span class="err">%</span><span class="nv">H</span><span class="err">:%</span><span class="nv">M</span><span class="err">:%</span><span class="nv">S.</span><span class="err">%</span><span class="nv">N</span><span class="err">%:</span><span class="nv">z</span>
+</span></span><span class="line"><span class="ln">18</span><span class="cl">    <span class="err">&lt;/</span><span class="nv">pattern</span><span class="err">&gt;</span>
+</span></span><span class="line"><span class="ln">19</span><span class="cl">  <span class="err">&lt;/</span><span class="nv">parse</span><span class="err">&gt;</span>
+</span></span><span class="line"><span class="ln">20</span><span class="cl"><span class="err">&lt;/</span><span class="nv">source</span><span class="err">&gt;</span>
+</span></span></code></pre></div><h3 id="过滤">过滤</h3>
+<p>由于 Kubernetes 集群中应用太多，也还有很多历史数据，所以我们可以只将某些应用的日志进行收集，比如我们只采集具有<code> discovery-log=true</code> 这个 Label 标签的 Pod 日志，这个时候就需要使用 filter。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-conf" data-lang="conf"><span class="line"><span class="ln"> 1</span><span class="cl"><span class="c"># 删除无用的属性
+</span></span></span><span class="line"><span class="ln"> 2</span><span class="cl"><span class="c"></span><span class="err">&lt;</span><span class="nv">filter</span> <span class="nv">kubernetes.</span><span class="err">**&gt;</span>
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl">  <span class="err">@</span><span class="nv">type</span> <span class="nv">record_transformer</span>
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl">  <span class="nv">remove_keys</span> <span class="err">$</span><span class="nv">.docker.container_id</span><span class="p">,</span><span class="err">$</span><span class="nv">.kubernetes.container_image_id</span><span class="p">,</span><span class="err">$</span><span class="nv">.kubernetes.pod_id</span><span class="p">,</span><span class="err">$</span><span class="nv">.kubernetes.namespace_id</span><span class="p">,</span><span class="err">$</span><span class="nv">.kubernetes.master_url</span><span class="p">,</span><span class="err">$</span><span class="nv">.kubernetes.labels.pod-template-hash</span>
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl"><span class="err">&lt;/</span><span class="nv">filter</span><span class="err">&gt;</span>
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl"><span class="c"># 只保留具有discovery-log=true标签的Pod日志
+</span></span></span><span class="line"><span class="ln"> 7</span><span class="cl"><span class="c"></span><span class="err">&lt;</span><span class="nv">filter</span> <span class="nv">kubernetes.</span><span class="err">**&gt;</span>
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl">  <span class="err">@</span><span class="nv">id</span> <span class="nv">filter_log</span>
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl">  <span class="err">@</span><span class="nv">type</span> <span class="nv">grep</span>
+</span></span><span class="line"><span class="ln">10</span><span class="cl">  <span class="err">&lt;</span><span class="nv">regexp</span><span class="err">&gt;</span>
+</span></span><span class="line"><span class="ln">11</span><span class="cl">    <span class="nv">key</span> <span class="err">$</span><span class="nv">.kubernetes.labels.discovery-log</span>
+</span></span><span class="line"><span class="ln">12</span><span class="cl">    <span class="nv">pattern</span> <span class="err">^</span><span class="kc">true</span><span class="err">$</span>
+</span></span><span class="line"><span class="ln">13</span><span class="cl">  <span class="err">&lt;/</span><span class="nv">regexp</span><span class="err">&gt;</span>
+</span></span><span class="line"><span class="ln">14</span><span class="cl"><span class="err">&lt;/</span><span class="nv">filter</span><span class="err">&gt;</span>
+</span></span></code></pre></div><h3 id="路由设置">路由设置</h3>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-conf" data-lang="conf"><span class="line"><span class="ln"> 1</span><span class="cl"><span class="err">&lt;</span><span class="k">match</span> <span class="err">**&gt;</span>
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl">  <span class="err">@</span><span class="nv">id</span> <span class="nv">elasticsearch</span>
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl">  <span class="err">@</span><span class="nv">type</span> <span class="nv">elasticsearch</span>
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl">  <span class="err">@</span><span class="nv">log_level</span> <span class="nv">info</span>
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl">  <span class="nv">include_tag_key</span> <span class="kc">true</span>
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl">  <span class="nv">type_name</span> <span class="nv">fluentd</span>
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl">  <span class="kt">host</span> <span class="s">&#34;#{ENV[&#39;OUTPUT_HOST&#39;]}&#34;</span>
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl">  <span class="nv">port</span> <span class="s">&#34;#{ENV[&#39;OUTPUT_PORT&#39;]}&#34;</span>
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl">  <span class="nv">logstash_format</span> <span class="kc">true</span>
+</span></span><span class="line"><span class="ln">10</span><span class="cl">  <span class="err">&lt;</span><span class="nv">buffer</span><span class="err">&gt;</span>
+</span></span><span class="line"><span class="ln">11</span><span class="cl">    <span class="err">@</span><span class="nv">type</span> <span class="nv">file</span>
+</span></span><span class="line"><span class="ln">12</span><span class="cl">    <span class="nv">path</span> <span class="err">/</span><span class="nv">var</span><span class="err">/</span><span class="nv">log</span><span class="err">/</span><span class="nv">fluentd-buffers</span><span class="err">/</span><span class="nv">kubernetes.system.buffer</span>
+</span></span><span class="line"><span class="ln">13</span><span class="cl">    <span class="nv">flush_mode</span> <span class="nv">interval</span>
+</span></span><span class="line"><span class="ln">14</span><span class="cl">    <span class="nv">retry_type</span> <span class="nv">exponential_backoff</span>
+</span></span><span class="line"><span class="ln">15</span><span class="cl">    <span class="nv">flush_thread_count</span> <span class="nv">2</span>
+</span></span><span class="line"><span class="ln">16</span><span class="cl">    <span class="nv">flush_interval</span> <span class="nv">5s</span>
+</span></span><span class="line"><span class="ln">17</span><span class="cl">    <span class="nv">retry_forever</span>
+</span></span><span class="line"><span class="ln">18</span><span class="cl">    <span class="nv">retry_max_interval</span> <span class="nv">30</span>
+</span></span><span class="line"><span class="ln">19</span><span class="cl">    <span class="nv">chunk_limit_size</span> <span class="s">&#34;#{ENV[&#39;OUTPUT_BUFFER_CHUNK_LIMIT&#39;]}&#34;</span>
+</span></span><span class="line"><span class="ln">20</span><span class="cl">    <span class="nv">queue_limit_length</span> <span class="s">&#34;#{ENV[&#39;OUTPUT_BUFFER_QUEUE_LIMIT&#39;]}&#34;</span>
+</span></span><span class="line"><span class="ln">21</span><span class="cl">    <span class="nv">overflow_action</span> <span class="nv">block</span>
+</span></span><span class="line"><span class="ln">22</span><span class="cl">  <span class="err">&lt;/</span><span class="nv">buffer</span><span class="err">&gt;</span>
+</span></span><span class="line"><span class="ln">23</span><span class="cl"><span class="err">&lt;/</span><span class="k">match</span><span class="err">&gt;</span>
+</span></span></code></pre></div><ul>
+<li>match：标识一个目标标签，后面是一个匹配日志源的正则表达式，我们这里想要捕获所有的日志并将它们发送给 Elasticsearch，所以需要配置成**。</li>
+<li>id：目标的一个唯一标识符。</li>
+<li>type：支持的输出插件标识符，我们这里要输出到 Elasticsearch，所以配置成 elasticsearch，这是 Fluentd 的一个内置插件。</li>
+<li>log_level：指定要捕获的日志级别，我们这里配置成 info，表示任何该级别或者该级别以上（INFO、WARNING、ERROR）的日志都将被路由到 Elsasticsearch。</li>
+<li>host/port：定义 Elasticsearch 的地址，也可以配置认证信息，我们的 Elasticsearch 不需要认证，所以这里直接指定 host 和 port 即可。</li>
+<li>logstash_format：Elasticsearch 服务对日志数据构建反向索引进行搜索，将 logstash_format 设置为 true，Fluentd 将会以 logstash 格式来转发结构化的日志数据。</li>
+<li>Buffer： Fluentd 允许在目标不可用时进行缓存，比如，如果网络出现故障或者 Elasticsearch 不可用的时候。缓冲区配置也有助于降低磁盘的 IO。</li>
+</ul>
+<h3 id="开始部署fluentd">开始部署Fluentd</h3>
+<p>要收集 Kubernetes 集群的日志，直接用<code>DasemonSet</code> 控制器来部署 Fluentd 应用，这样，它就可以从 Kubernetes 节点上采集日志，确保在集群中的每个节点上始终运行一个 Fluentd 容器。当然可以直接使用 Helm 来进行一键安装，为了能够了解更多实现细节，我们这里还是采用手动方法来进行安装。</p>
+<ul>
+<li><a
+  href="https://docs.fluentd.org/container-deployment/kubernetes"
+  
+  target="_blank" rel="noopener noreferrer">安装文档</a></li>
+</ul>
+<ol>
+<li>首先创建<code>fluentd</code>的<code>configmap</code></li>
+</ol>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="ln">  1</span><span class="cl"><span class="c"># fluentd-configmap.yaml</span><span class="w">
+</span></span></span><span class="line"><span class="ln">  2</span><span class="cl"><span class="w"></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">ConfigMap</span><span class="w">
+</span></span></span><span class="line"><span class="ln">  3</span><span class="cl"><span class="w"></span><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">v1</span><span class="w">
+</span></span></span><span class="line"><span class="ln">  4</span><span class="cl"><span class="w"></span><span class="nt">metadata</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="ln">  5</span><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">fluentd-conf</span><span class="w">
+</span></span></span><span class="line"><span class="ln">  6</span><span class="cl"><span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l">kube-logging</span><span class="w">
+</span></span></span><span class="line"><span class="ln">  7</span><span class="cl"><span class="w"></span><span class="nt">data</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="ln">  8</span><span class="cl"><span class="w">  </span><span class="c"># containerd的容器日志</span><span class="w">
+</span></span></span><span class="line"><span class="ln">  9</span><span class="cl"><span class="w">  </span><span class="nt">containerd.input.conf</span><span class="p">:</span><span class="w"> </span><span class="p">|-</span><span class="sd">
+</span></span></span><span class="line"><span class="ln"> 10</span><span class="cl"><span class="sd">    &lt;source&gt;
+</span></span></span><span class="line"><span class="ln"> 11</span><span class="cl"><span class="sd">      @id containerd-fluentd-beta.log         # 唯一Id：运行时+收集插件+环境
+</span></span></span><span class="line"><span class="ln"> 12</span><span class="cl"><span class="sd">      @type tail                              # Fluentd 内置的输入方式，其原理是不停地从源文件中获取新的日志
+</span></span></span><span class="line"><span class="ln"> 13</span><span class="cl"><span class="sd">      path /var/log/containers/*.log          # Docker 容器日志路径
+</span></span></span><span class="line"><span class="ln"> 14</span><span class="cl"><span class="sd">      pos_file /var/log/es-containers.log.pos  # 记录读取的位置
+</span></span></span><span class="line"><span class="ln"> 15</span><span class="cl"><span class="sd">      tag raw.kubernetes.*                    # 设置日志标签
+</span></span></span><span class="line"><span class="ln"> 16</span><span class="cl"><span class="sd">      read_from_head true                     # 从头读取
+</span></span></span><span class="line"><span class="ln"> 17</span><span class="cl"><span class="sd">      &lt;parse&gt;                                 # 多行格式化成JSON
+</span></span></span><span class="line"><span class="ln"> 18</span><span class="cl"><span class="sd">        # 可以使用我们介绍过的 multiline 插件实现多行日志
+</span></span></span><span class="line"><span class="ln"> 19</span><span class="cl"><span class="sd">        @type multi_format                    # 使用 multi-format-parser 解析器插件
+</span></span></span><span class="line"><span class="ln"> 20</span><span class="cl"><span class="sd">        &lt;pattern&gt;
+</span></span></span><span class="line"><span class="ln"> 21</span><span class="cl"><span class="sd">          format json                         # JSON解析器
+</span></span></span><span class="line"><span class="ln"> 22</span><span class="cl"><span class="sd">          time_key time                       # 指定事件时间的时间字段
+</span></span></span><span class="line"><span class="ln"> 23</span><span class="cl"><span class="sd">          time_format %Y-%m-%dT%H:%M:%S.%NZ   # 时间格式
+</span></span></span><span class="line"><span class="ln"> 24</span><span class="cl"><span class="sd">        &lt;/pattern&gt;
+</span></span></span><span class="line"><span class="ln"> 25</span><span class="cl"><span class="sd">        &lt;pattern&gt;
+</span></span></span><span class="line"><span class="ln"> 26</span><span class="cl"><span class="sd">          format /^(?&lt;time&gt;.+) (?&lt;stream&gt;stdout|stderr) [^ ]* (?&lt;log&gt;.*)$/
+</span></span></span><span class="line"><span class="ln"> 27</span><span class="cl"><span class="sd">          time_format %Y-%m-%dT%H:%M:%S.%N%:z
+</span></span></span><span class="line"><span class="ln"> 28</span><span class="cl"><span class="sd">        &lt;/pattern&gt;
+</span></span></span><span class="line"><span class="ln"> 29</span><span class="cl"><span class="sd">      &lt;/parse&gt;
+</span></span></span><span class="line"><span class="ln"> 30</span><span class="cl"><span class="sd">    &lt;/source&gt;
+</span></span></span><span class="line"><span class="ln"> 31</span><span class="cl"><span class="sd">
+</span></span></span><span class="line"><span class="ln"> 32</span><span class="cl"><span class="sd">    # 在日志输出中检测异常(多行日志)，并将其作为一条日志转发
+</span></span></span><span class="line"><span class="ln"> 33</span><span class="cl"><span class="sd">    # https://github.com/GoogleCloudPlatform/fluent-plugin-detect-exceptions
+</span></span></span><span class="line"><span class="ln"> 34</span><span class="cl"><span class="sd">    &lt;match raw.kubernetes.**&gt;           # 匹配tag为raw.kubernetes.**日志信息
+</span></span></span><span class="line"><span class="ln"> 35</span><span class="cl"><span class="sd">      @id raw.kubernetes
+</span></span></span><span class="line"><span class="ln"> 36</span><span class="cl"><span class="sd">      @type detect_exceptions           # 使用detect-exceptions插件处理异常栈信息
+</span></span></span><span class="line"><span class="ln"> 37</span><span class="cl"><span class="sd">      remove_tag_prefix raw             # 移除 raw 前缀
+</span></span></span><span class="line"><span class="ln"> 38</span><span class="cl"><span class="sd">      message log
+</span></span></span><span class="line"><span class="ln"> 39</span><span class="cl"><span class="sd">      multiline_flush_interval 5
+</span></span></span><span class="line"><span class="ln"> 40</span><span class="cl"><span class="sd">    &lt;/match&gt;
+</span></span></span><span class="line"><span class="ln"> 41</span><span class="cl"><span class="sd">
+</span></span></span><span class="line"><span class="ln"> 42</span><span class="cl"><span class="sd">    &lt;filter **&gt;  # 拼接日志
+</span></span></span><span class="line"><span class="ln"> 43</span><span class="cl"><span class="sd">      @id filter_concat
+</span></span></span><span class="line"><span class="ln"> 44</span><span class="cl"><span class="sd">      @type concat                # Fluentd Filter 插件，用于连接多个日志中分隔的多行日志
+</span></span></span><span class="line"><span class="ln"> 45</span><span class="cl"><span class="sd">      key message
+</span></span></span><span class="line"><span class="ln"> 46</span><span class="cl"><span class="sd">      multiline_end_regexp /\n$/  # 以换行符“\n”拼接
+</span></span></span><span class="line"><span class="ln"> 47</span><span class="cl"><span class="sd">      separator &#34;&#34;
+</span></span></span><span class="line"><span class="ln"> 48</span><span class="cl"><span class="sd">    &lt;/filter&gt;
+</span></span></span><span class="line"><span class="ln"> 49</span><span class="cl"><span class="sd">
+</span></span></span><span class="line"><span class="ln"> 50</span><span class="cl"><span class="sd">    # 添加 Kubernetes metadata 数据
+</span></span></span><span class="line"><span class="ln"> 51</span><span class="cl"><span class="sd">    &lt;filter kubernetes.**&gt;
+</span></span></span><span class="line"><span class="ln"> 52</span><span class="cl"><span class="sd">      @id filter_kubernetes_metadata
+</span></span></span><span class="line"><span class="ln"> 53</span><span class="cl"><span class="sd">      @type kubernetes_metadata
+</span></span></span><span class="line"><span class="ln"> 54</span><span class="cl"><span class="sd">    &lt;/filter&gt;
+</span></span></span><span class="line"><span class="ln"> 55</span><span class="cl"><span class="sd">
+</span></span></span><span class="line"><span class="ln"> 56</span><span class="cl"><span class="sd">    # 修复 ES 中的 JSON 字段
+</span></span></span><span class="line"><span class="ln"> 57</span><span class="cl"><span class="sd">    # 插件地址：https://github.com/repeatedly/fluent-plugin-multi-format-parser
+</span></span></span><span class="line"><span class="ln"> 58</span><span class="cl"><span class="sd">    &lt;filter kubernetes.**&gt;
+</span></span></span><span class="line"><span class="ln"> 59</span><span class="cl"><span class="sd">      @id filter_parser
+</span></span></span><span class="line"><span class="ln"> 60</span><span class="cl"><span class="sd">      @type parser                # multi-format-parser多格式解析器插件
+</span></span></span><span class="line"><span class="ln"> 61</span><span class="cl"><span class="sd">      key_name log                # 在要解析的日志中指定字段名称
+</span></span></span><span class="line"><span class="ln"> 62</span><span class="cl"><span class="sd">      reserve_data true           # 在解析结果中保留原始键值对
+</span></span></span><span class="line"><span class="ln"> 63</span><span class="cl"><span class="sd">      remove_key_name_field true  # key_name 解析成功后删除字段
+</span></span></span><span class="line"><span class="ln"> 64</span><span class="cl"><span class="sd">      &lt;parse&gt;
+</span></span></span><span class="line"><span class="ln"> 65</span><span class="cl"><span class="sd">        @type multi_format
+</span></span></span><span class="line"><span class="ln"> 66</span><span class="cl"><span class="sd">        &lt;pattern&gt;
+</span></span></span><span class="line"><span class="ln"> 67</span><span class="cl"><span class="sd">          format json
+</span></span></span><span class="line"><span class="ln"> 68</span><span class="cl"><span class="sd">        &lt;/pattern&gt;
+</span></span></span><span class="line"><span class="ln"> 69</span><span class="cl"><span class="sd">        &lt;pattern&gt;
+</span></span></span><span class="line"><span class="ln"> 70</span><span class="cl"><span class="sd">          format none
+</span></span></span><span class="line"><span class="ln"> 71</span><span class="cl"><span class="sd">        &lt;/pattern&gt;
+</span></span></span><span class="line"><span class="ln"> 72</span><span class="cl"><span class="sd">      &lt;/parse&gt;
+</span></span></span><span class="line"><span class="ln"> 73</span><span class="cl"><span class="sd">    &lt;/filter&gt;
+</span></span></span><span class="line"><span class="ln"> 74</span><span class="cl"><span class="sd">
+</span></span></span><span class="line"><span class="ln"> 75</span><span class="cl"><span class="sd">    # 删除一些多余的属性
+</span></span></span><span class="line"><span class="ln"> 76</span><span class="cl"><span class="sd">    &lt;filter kubernetes.**&gt;
+</span></span></span><span class="line"><span class="ln"> 77</span><span class="cl"><span class="sd">      @type record_transformer
+</span></span></span><span class="line"><span class="ln"> 78</span><span class="cl"><span class="sd">      remove_keys $.docker.container_id,$.kubernetes.container_image_id,$.kubernetes.pod_id,$.kubernetes.namespace_id,$.kubernetes.master_url,$.kubernetes.labels.pod-template-hash
+</span></span></span><span class="line"><span class="ln"> 79</span><span class="cl"><span class="sd">    &lt;/filter&gt;
+</span></span></span><span class="line"><span class="ln"> 80</span><span class="cl"><span class="sd">
+</span></span></span><span class="line"><span class="ln"> 81</span><span class="cl"><span class="sd">    # 只保留具有kubernetes.log.kubernetes.log/fluentd标签的Pod日志
+</span></span></span><span class="line"><span class="ln"> 82</span><span class="cl"><span class="sd">    &lt;filter kubernetes.**&gt;
+</span></span></span><span class="line"><span class="ln"> 83</span><span class="cl"><span class="sd">      @id filter_log
+</span></span></span><span class="line"><span class="ln"> 84</span><span class="cl"><span class="sd">      @type grep
+</span></span></span><span class="line"><span class="ln"> 85</span><span class="cl"><span class="sd">      &lt;regexp&gt;
+</span></span></span><span class="line"><span class="ln"> 86</span><span class="cl"><span class="sd">        key $.kubernetes.labels.kubernetes.log/fluentd
+</span></span></span><span class="line"><span class="ln"> 87</span><span class="cl"><span class="sd">        pattern ^true$
+</span></span></span><span class="line"><span class="ln"> 88</span><span class="cl"><span class="sd">      &lt;/regexp&gt;
+</span></span></span><span class="line"><span class="ln"> 89</span><span class="cl"><span class="sd">    &lt;/filter&gt;</span><span class="w">    
+</span></span></span><span class="line"><span class="ln"> 90</span><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="ln"> 91</span><span class="cl"><span class="w">  </span><span class="c">###### 监听配置，一般用于日志聚合用 ######</span><span class="w">
+</span></span></span><span class="line"><span class="ln"> 92</span><span class="cl"><span class="w">  </span><span class="nt">forward.input.conf</span><span class="p">:</span><span class="w"> </span><span class="p">|-</span><span class="sd">
+</span></span></span><span class="line"><span class="ln"> 93</span><span class="cl"><span class="sd">    # 监听通过TCP发送的消息
+</span></span></span><span class="line"><span class="ln"> 94</span><span class="cl"><span class="sd">    &lt;source&gt;
+</span></span></span><span class="line"><span class="ln"> 95</span><span class="cl"><span class="sd">      @id forward
+</span></span></span><span class="line"><span class="ln"> 96</span><span class="cl"><span class="sd">      @type forward
+</span></span></span><span class="line"><span class="ln"> 97</span><span class="cl"><span class="sd">    &lt;/source&gt;</span><span class="w">    
+</span></span></span><span class="line"><span class="ln"> 98</span><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="ln"> 99</span><span class="cl"><span class="w">  </span><span class="nt">output.conf</span><span class="p">:</span><span class="w"> </span><span class="p">|-</span><span class="sd">
+</span></span></span><span class="line"><span class="ln">100</span><span class="cl"><span class="sd">    &lt;match **&gt;
+</span></span></span><span class="line"><span class="ln">101</span><span class="cl"><span class="sd">      @id elasticsearch
+</span></span></span><span class="line"><span class="ln">102</span><span class="cl"><span class="sd">      @type elasticsearch
+</span></span></span><span class="line"><span class="ln">103</span><span class="cl"><span class="sd">      @log_level info
+</span></span></span><span class="line"><span class="ln">104</span><span class="cl"><span class="sd">      include_tag_key true
+</span></span></span><span class="line"><span class="ln">105</span><span class="cl"><span class="sd">      host elasticsearch-client
+</span></span></span><span class="line"><span class="ln">106</span><span class="cl"><span class="sd">      port 9200
+</span></span></span><span class="line"><span class="ln">107</span><span class="cl"><span class="sd">      user elastic # FLUENT_ELASTICSEARCH_USER | FLUENT_ELASTICSEARCH_PASSWORD
+</span></span></span><span class="line"><span class="ln">108</span><span class="cl"><span class="sd">      password elastic-master
+</span></span></span><span class="line"><span class="ln">109</span><span class="cl"><span class="sd">      logstash_format true
+</span></span></span><span class="line"><span class="ln">110</span><span class="cl"><span class="sd">      logstash_prefix kubernetes-cluster
+</span></span></span><span class="line"><span class="ln">111</span><span class="cl"><span class="sd">      request_timeout 30s
+</span></span></span><span class="line"><span class="ln">112</span><span class="cl"><span class="sd">      &lt;buffer&gt;
+</span></span></span><span class="line"><span class="ln">113</span><span class="cl"><span class="sd">        @type file
+</span></span></span><span class="line"><span class="ln">114</span><span class="cl"><span class="sd">        path /var/log/fluentd-buffers/kubernetes.system.buffer
+</span></span></span><span class="line"><span class="ln">115</span><span class="cl"><span class="sd">        flush_mode interval
+</span></span></span><span class="line"><span class="ln">116</span><span class="cl"><span class="sd">        retry_type exponential_backoff
+</span></span></span><span class="line"><span class="ln">117</span><span class="cl"><span class="sd">        flush_thread_count 2
+</span></span></span><span class="line"><span class="ln">118</span><span class="cl"><span class="sd">        flush_interval 5s
+</span></span></span><span class="line"><span class="ln">119</span><span class="cl"><span class="sd">        retry_forever
+</span></span></span><span class="line"><span class="ln">120</span><span class="cl"><span class="sd">        retry_max_interval 30
+</span></span></span><span class="line"><span class="ln">121</span><span class="cl"><span class="sd">        chunk_limit_size 2M
+</span></span></span><span class="line"><span class="ln">122</span><span class="cl"><span class="sd">        queue_limit_length 8
+</span></span></span><span class="line"><span class="ln">123</span><span class="cl"><span class="sd">        overflow_action block
+</span></span></span><span class="line"><span class="ln">124</span><span class="cl"><span class="sd">      &lt;/buffer&gt;
+</span></span></span><span class="line"><span class="ln">125</span><span class="cl"><span class="sd">    &lt;/match&gt;</span><span class="w">    
+</span></span></span></code></pre></div><ol start="2">
+<li>创建相关的Rbac权限</li>
+</ol>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="ln"> 1</span><span class="cl"><span class="nn">---</span><span class="w">
+</span></span></span><span class="line"><span class="ln"> 2</span><span class="cl"><span class="w"></span><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">v1</span><span class="w">
+</span></span></span><span class="line"><span class="ln"> 3</span><span class="cl"><span class="w"></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">ServiceAccount</span><span class="w">
+</span></span></span><span class="line"><span class="ln"> 4</span><span class="cl"><span class="w"></span><span class="nt">metadata</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="ln"> 5</span><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">fluentd</span><span class="w">
+</span></span></span><span class="line"><span class="ln"> 6</span><span class="cl"><span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l">kube-logging</span><span class="w">
+</span></span></span><span class="line"><span class="ln"> 7</span><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="ln"> 8</span><span class="cl"><span class="w"></span><span class="nn">---</span><span class="w">
+</span></span></span><span class="line"><span class="ln"> 9</span><span class="cl"><span class="w"></span><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">rbac.authorization.k8s.io/v1</span><span class="w">
+</span></span></span><span class="line"><span class="ln">10</span><span class="cl"><span class="w"></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">ClusterRole</span><span class="w">
+</span></span></span><span class="line"><span class="ln">11</span><span class="cl"><span class="w"></span><span class="nt">metadata</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="ln">12</span><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">fluentd</span><span class="w">
+</span></span></span><span class="line"><span class="ln">13</span><span class="cl"><span class="w"></span><span class="nt">rules</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="ln">14</span><span class="cl"><span class="w"></span>- <span class="nt">apiGroups</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="ln">15</span><span class="cl"><span class="w">  </span>- <span class="s2">&#34;&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="ln">16</span><span class="cl"><span class="w">  </span><span class="nt">resources</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="ln">17</span><span class="cl"><span class="w">  </span>- <span class="l">pods</span><span class="w">
+</span></span></span><span class="line"><span class="ln">18</span><span class="cl"><span class="w">  </span>- <span class="l">namespaces</span><span class="w">
+</span></span></span><span class="line"><span class="ln">19</span><span class="cl"><span class="w">  </span><span class="nt">verbs</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="ln">20</span><span class="cl"><span class="w">  </span>- <span class="l">get</span><span class="w">
+</span></span></span><span class="line"><span class="ln">21</span><span class="cl"><span class="w">  </span>- <span class="l">list</span><span class="w">
+</span></span></span><span class="line"><span class="ln">22</span><span class="cl"><span class="w">  </span>- <span class="l">watch</span><span class="w">
+</span></span></span><span class="line"><span class="ln">23</span><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="ln">24</span><span class="cl"><span class="w"></span><span class="nn">---</span><span class="w">
+</span></span></span><span class="line"><span class="ln">25</span><span class="cl"><span class="w"></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">ClusterRoleBinding</span><span class="w">
+</span></span></span><span class="line"><span class="ln">26</span><span class="cl"><span class="w"></span><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">rbac.authorization.k8s.io/v1</span><span class="w">
+</span></span></span><span class="line"><span class="ln">27</span><span class="cl"><span class="w"></span><span class="nt">metadata</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="ln">28</span><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">fluentd</span><span class="w">
+</span></span></span><span class="line"><span class="ln">29</span><span class="cl"><span class="w"></span><span class="nt">roleRef</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="ln">30</span><span class="cl"><span class="w">  </span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">ClusterRole</span><span class="w">
+</span></span></span><span class="line"><span class="ln">31</span><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">fluentd</span><span class="w">
+</span></span></span><span class="line"><span class="ln">32</span><span class="cl"><span class="w">  </span><span class="nt">apiGroup</span><span class="p">:</span><span class="w"> </span><span class="l">rbac.authorization.k8s.io</span><span class="w">
+</span></span></span><span class="line"><span class="ln">33</span><span class="cl"><span class="w"></span><span class="nt">subjects</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="ln">34</span><span class="cl"><span class="w"></span>- <span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">ServiceAccount</span><span class="w">
+</span></span></span><span class="line"><span class="ln">35</span><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">fluentd</span><span class="w">
+</span></span></span><span class="line"><span class="ln">36</span><span class="cl"><span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l">kube-logging</span><span class="w">
+</span></span></span></code></pre></div><ol start="3">
+<li>创建<code>fluentd</code>的<code>daemonset</code></li>
+</ol>
+<blockquote>
+<p>这个是最新的版本还在研究中,用下面的版本。</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="ln"> 1</span><span class="cl"><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">apps/v1</span><span class="w">
+</span></span></span><span class="line"><span class="ln"> 2</span><span class="cl"><span class="w"></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">DaemonSet</span><span class="w">
+</span></span></span><span class="line"><span class="ln"> 3</span><span class="cl"><span class="w"></span><span class="nt">metadata</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="ln"> 4</span><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">fluentd</span><span class="w">
+</span></span></span><span class="line"><span class="ln"> 5</span><span class="cl"><span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l">kube-logging</span><span class="w">
+</span></span></span><span class="line"><span class="ln"> 6</span><span class="cl"><span class="w">  </span><span class="nt">labels</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="ln"> 7</span><span class="cl"><span class="w">    </span><span class="nt">k8s-app</span><span class="p">:</span><span class="w"> </span><span class="l">fluentd-logging</span><span class="w">
+</span></span></span><span class="line"><span class="ln"> 8</span><span class="cl"><span class="w">    </span><span class="nt">version</span><span class="p">:</span><span class="w"> </span><span class="l">v1</span><span class="w">
+</span></span></span><span class="line"><span class="ln"> 9</span><span class="cl"><span class="w"></span><span class="nt">spec</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="ln">10</span><span class="cl"><span class="w">  </span><span class="nt">selector</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="ln">11</span><span class="cl"><span class="w">    </span><span class="nt">matchLabels</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="ln">12</span><span class="cl"><span class="w">      </span><span class="nt">k8s-app</span><span class="p">:</span><span class="w"> </span><span class="l">fluentd-logging</span><span class="w">
+</span></span></span><span class="line"><span class="ln">13</span><span class="cl"><span class="w">      </span><span class="nt">version</span><span class="p">:</span><span class="w"> </span><span class="l">v1</span><span class="w">
+</span></span></span><span class="line"><span class="ln">14</span><span class="cl"><span class="w">  </span><span class="nt">template</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="ln">15</span><span class="cl"><span class="w">    </span><span class="nt">metadata</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="ln">16</span><span class="cl"><span class="w">      </span><span class="nt">labels</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="ln">17</span><span class="cl"><span class="w">        </span><span class="nt">k8s-app</span><span class="p">:</span><span class="w"> </span><span class="l">fluentd-logging</span><span class="w">
+</span></span></span><span class="line"><span class="ln">18</span><span class="cl"><span class="w">        </span><span class="nt">version</span><span class="p">:</span><span class="w"> </span><span class="l">v1</span><span class="w">
+</span></span></span><span class="line"><span class="ln">19</span><span class="cl"><span class="w">    </span><span class="nt">spec</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="ln">20</span><span class="cl"><span class="w">      </span><span class="nt">serviceAccount</span><span class="p">:</span><span class="w"> </span><span class="l">fluentd</span><span class="w">
+</span></span></span><span class="line"><span class="ln">21</span><span class="cl"><span class="w">      </span><span class="nt">serviceAccountName</span><span class="p">:</span><span class="w"> </span><span class="l">fluentd</span><span class="w">
+</span></span></span><span class="line"><span class="ln">22</span><span class="cl"><span class="w">      </span><span class="nt">tolerations</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="ln">23</span><span class="cl"><span class="w">      </span>- <span class="nt">key</span><span class="p">:</span><span class="w"> </span><span class="l">node-role.kubernetes.io/control-plane</span><span class="w">
+</span></span></span><span class="line"><span class="ln">24</span><span class="cl"><span class="w">        </span><span class="nt">effect</span><span class="p">:</span><span class="w"> </span><span class="l">NoSchedule</span><span class="w">
+</span></span></span><span class="line"><span class="ln">25</span><span class="cl"><span class="w">      </span>- <span class="nt">key</span><span class="p">:</span><span class="w"> </span><span class="l">node-role.kubernetes.io/master</span><span class="w">
+</span></span></span><span class="line"><span class="ln">26</span><span class="cl"><span class="w">        </span><span class="nt">effect</span><span class="p">:</span><span class="w"> </span><span class="l">NoSchedule</span><span class="w">
+</span></span></span><span class="line"><span class="ln">27</span><span class="cl"><span class="w">      </span><span class="nt">containers</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="ln">28</span><span class="cl"><span class="w">      </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">fluentd</span><span class="w">
+</span></span></span><span class="line"><span class="ln">29</span><span class="cl"><span class="w">        </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l">fluent/fluentd-kubernetes-daemonset:v1-debian-elasticsearch</span><span class="w">
+</span></span></span><span class="line"><span class="ln">30</span><span class="cl"><span class="w">        </span><span class="nt">env</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="ln">31</span><span class="cl"><span class="w">          </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">K8S_NODE_NAME</span><span class="w">
+</span></span></span><span class="line"><span class="ln">32</span><span class="cl"><span class="w">            </span><span class="nt">valueFrom</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="ln">33</span><span class="cl"><span class="w">              </span><span class="nt">fieldRef</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="ln">34</span><span class="cl"><span class="w">                </span><span class="nt">fieldPath</span><span class="p">:</span><span class="w"> </span><span class="l">spec.nodeName</span><span class="w">
+</span></span></span><span class="line"><span class="ln">35</span><span class="cl"><span class="w">          </span>- <span class="nt">name</span><span class="p">:</span><span class="w">  </span><span class="l">FLUENT_ELASTICSEARCH_HOST</span><span class="w">
+</span></span></span><span class="line"><span class="ln">36</span><span class="cl"><span class="w">            </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;elasticsearch-client-headless.kube-logging.svc.cluster.local&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="ln">37</span><span class="cl"><span class="w">          </span>- <span class="nt">name</span><span class="p">:</span><span class="w">  </span><span class="l">FLUENT_ELASTICSEARCH_PORT</span><span class="w">
+</span></span></span><span class="line"><span class="ln">38</span><span class="cl"><span class="w">            </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;9200&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="ln">39</span><span class="cl"><span class="w">          </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">FLUENT_ELASTICSEARCH_SCHEME</span><span class="w">
+</span></span></span><span class="line"><span class="ln">40</span><span class="cl"><span class="w">            </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;http&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="ln">41</span><span class="cl"><span class="w">          </span><span class="c"># Option to configure elasticsearch plugin with self signed certs</span><span class="w">
+</span></span></span><span class="line"><span class="ln">42</span><span class="cl"><span class="w">          </span><span class="c"># ================================================================</span><span class="w">
+</span></span></span><span class="line"><span class="ln">43</span><span class="cl"><span class="w">          </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">FLUENT_ELASTICSEARCH_SSL_VERIFY</span><span class="w">
+</span></span></span><span class="line"><span class="ln">44</span><span class="cl"><span class="w">            </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;true&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="ln">45</span><span class="cl"><span class="w">          </span><span class="c"># Option to configure elasticsearch plugin with tls</span><span class="w">
+</span></span></span><span class="line"><span class="ln">46</span><span class="cl"><span class="w">          </span><span class="c"># ================================================================</span><span class="w">
+</span></span></span><span class="line"><span class="ln">47</span><span class="cl"><span class="w">          </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">FLUENT_ELASTICSEARCH_SSL_VERSION</span><span class="w">
+</span></span></span><span class="line"><span class="ln">48</span><span class="cl"><span class="w">            </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;TLSv1_2&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="ln">49</span><span class="cl"><span class="w">          </span><span class="c"># X-Pack Authentication</span><span class="w">
+</span></span></span><span class="line"><span class="ln">50</span><span class="cl"><span class="w">          </span><span class="c"># =====================</span><span class="w">
+</span></span></span><span class="line"><span class="ln">51</span><span class="cl"><span class="w">          </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">FLUENT_ELASTICSEARCH_USER</span><span class="w">
+</span></span></span><span class="line"><span class="ln">52</span><span class="cl"><span class="w">            </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;elastic&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="ln">53</span><span class="cl"><span class="w">          </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">FLUENT_ELASTICSEARCH_PASSWORD</span><span class="w">
+</span></span></span><span class="line"><span class="ln">54</span><span class="cl"><span class="w">            </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;elastic-master&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="ln">55</span><span class="cl"><span class="w">		  </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">FLUENT_ELASTICSEARCH_LOGSTASH_PREFIX</span><span class="w">
+</span></span></span><span class="line"><span class="ln">56</span><span class="cl"><span class="w">		    </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;kubernetes-cluster&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="ln">57</span><span class="cl"><span class="w">        </span><span class="nt">resources</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="ln">58</span><span class="cl"><span class="w">          </span><span class="nt">limits</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="ln">59</span><span class="cl"><span class="w">            </span><span class="nt">memory</span><span class="p">:</span><span class="w"> </span><span class="l">200Mi</span><span class="w">
+</span></span></span><span class="line"><span class="ln">60</span><span class="cl"><span class="w">          </span><span class="nt">requests</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="ln">61</span><span class="cl"><span class="w">            </span><span class="nt">cpu</span><span class="p">:</span><span class="w"> </span><span class="l">100m</span><span class="w">
+</span></span></span><span class="line"><span class="ln">62</span><span class="cl"><span class="w">            </span><span class="nt">memory</span><span class="p">:</span><span class="w"> </span><span class="l">200Mi</span><span class="w">
+</span></span></span><span class="line"><span class="ln">63</span><span class="cl"><span class="w">        </span><span class="nt">volumeMounts</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="ln">64</span><span class="cl"><span class="w">        </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">varlog</span><span class="w">
+</span></span></span><span class="line"><span class="ln">65</span><span class="cl"><span class="w">          </span><span class="nt">mountPath</span><span class="p">:</span><span class="w"> </span><span class="l">/var/log</span><span class="w">
+</span></span></span><span class="line"><span class="ln">66</span><span class="cl"><span class="w">        </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">fluentconfig</span><span class="w">
+</span></span></span><span class="line"><span class="ln">67</span><span class="cl"><span class="w">          </span><span class="nt">mountPath</span><span class="p">:</span><span class="w"> </span><span class="l">/fluentd/etc/custom</span><span class="w">
+</span></span></span><span class="line"><span class="ln">68</span><span class="cl"><span class="w">        </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">dockercontainerlogdirectory</span><span class="w">
+</span></span></span><span class="line"><span class="ln">69</span><span class="cl"><span class="w">          </span><span class="nt">mountPath</span><span class="p">:</span><span class="w"> </span><span class="l">/var/log/pods</span><span class="w">
+</span></span></span><span class="line"><span class="ln">70</span><span class="cl"><span class="w">          </span><span class="nt">readOnly</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+</span></span></span><span class="line"><span class="ln">71</span><span class="cl"><span class="w">      </span><span class="nt">terminationGracePeriodSeconds</span><span class="p">:</span><span class="w"> </span><span class="m">30</span><span class="w">
+</span></span></span><span class="line"><span class="ln">72</span><span class="cl"><span class="w">      </span><span class="nt">volumes</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="ln">73</span><span class="cl"><span class="w">      </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">varlog</span><span class="w">
+</span></span></span><span class="line"><span class="ln">74</span><span class="cl"><span class="w">        </span><span class="nt">hostPath</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="ln">75</span><span class="cl"><span class="w">          </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l">/var/log</span><span class="w">
+</span></span></span><span class="line"><span class="ln">76</span><span class="cl"><span class="w">      </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">fluentconfig</span><span class="w">
+</span></span></span><span class="line"><span class="ln">77</span><span class="cl"><span class="w">        </span><span class="nt">configMap</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="ln">78</span><span class="cl"><span class="w">          </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">fluentd-conf</span><span class="w">
+</span></span></span><span class="line"><span class="ln">79</span><span class="cl"><span class="w">      </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">dockercontainerlogdirectory</span><span class="w">
+</span></span></span><span class="line"><span class="ln">80</span><span class="cl"><span class="w">        </span><span class="nt">hostPath</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="ln">81</span><span class="cl"><span class="w">          </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l">/var/log/pods</span><span class="w">
+</span></span></span></code></pre></div><p>麻烦用下面的进行部署</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="ln"> 1</span><span class="cl"><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">apps/v1</span><span class="w">
+</span></span></span><span class="line"><span class="ln"> 2</span><span class="cl"><span class="w"></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">DaemonSet</span><span class="w">
+</span></span></span><span class="line"><span class="ln"> 3</span><span class="cl"><span class="w"></span><span class="nt">metadata</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="ln"> 4</span><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">fluentd</span><span class="w">
+</span></span></span><span class="line"><span class="ln"> 5</span><span class="cl"><span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l">kube-logging</span><span class="w">
+</span></span></span><span class="line"><span class="ln"> 6</span><span class="cl"><span class="w">  </span><span class="nt">labels</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="ln"> 7</span><span class="cl"><span class="w">    </span><span class="nt">app</span><span class="p">:</span><span class="w"> </span><span class="l">fluentd</span><span class="w">
+</span></span></span><span class="line"><span class="ln"> 8</span><span class="cl"><span class="w">    </span><span class="nt">kubernetes.io/cluster-service</span><span class="p">:</span><span class="w"> </span><span class="s1">&#39;true&#39;</span><span class="w">
+</span></span></span><span class="line"><span class="ln"> 9</span><span class="cl"><span class="w"></span><span class="nt">spec</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="ln">10</span><span class="cl"><span class="w">  </span><span class="nt">selector</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="ln">11</span><span class="cl"><span class="w">    </span><span class="nt">matchLabels</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="ln">12</span><span class="cl"><span class="w">      </span><span class="nt">app</span><span class="p">:</span><span class="w"> </span><span class="l">fluentd</span><span class="w">
+</span></span></span><span class="line"><span class="ln">13</span><span class="cl"><span class="w">  </span><span class="nt">template</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="ln">14</span><span class="cl"><span class="w">    </span><span class="nt">metadata</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="ln">15</span><span class="cl"><span class="w">      </span><span class="nt">labels</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="ln">16</span><span class="cl"><span class="w">        </span><span class="nt">app</span><span class="p">:</span><span class="w"> </span><span class="l">fluentd</span><span class="w">
+</span></span></span><span class="line"><span class="ln">17</span><span class="cl"><span class="w">        </span><span class="nt">kubernetes.io/cluster-service</span><span class="p">:</span><span class="w"> </span><span class="s1">&#39;true&#39;</span><span class="w">
+</span></span></span><span class="line"><span class="ln">18</span><span class="cl"><span class="w">    </span><span class="nt">spec</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="ln">19</span><span class="cl"><span class="w">      </span><span class="nt">tolerations</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="ln">20</span><span class="cl"><span class="w">        </span>- <span class="nt">key</span><span class="p">:</span><span class="w"> </span><span class="l">node-role.kubernetes.io/master</span><span class="w">
+</span></span></span><span class="line"><span class="ln">21</span><span class="cl"><span class="w">          </span><span class="nt">effect</span><span class="p">:</span><span class="w"> </span><span class="l">NoSchedule</span><span class="w">
+</span></span></span><span class="line"><span class="ln">22</span><span class="cl"><span class="w">      </span><span class="nt">serviceAccountName</span><span class="p">:</span><span class="w"> </span><span class="l">fluentd</span><span class="w">
+</span></span></span><span class="line"><span class="ln">23</span><span class="cl"><span class="w">      </span><span class="nt">containers</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="ln">24</span><span class="cl"><span class="w">        </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">fluentd</span><span class="w">
+</span></span></span><span class="line"><span class="ln">25</span><span class="cl"><span class="w">          </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l">quay.io/fluentd_elasticsearch/fluentd:v3.4.0</span><span class="w">
+</span></span></span><span class="line"><span class="ln">26</span><span class="cl"><span class="w">          </span><span class="nt">volumeMounts</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="ln">27</span><span class="cl"><span class="w">            </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">fluentconfig</span><span class="w">
+</span></span></span><span class="line"><span class="ln">28</span><span class="cl"><span class="w">              </span><span class="nt">mountPath</span><span class="p">:</span><span class="w"> </span><span class="l">/etc/fluent/config.d</span><span class="w">
+</span></span></span><span class="line"><span class="ln">29</span><span class="cl"><span class="w">            </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">varlog</span><span class="w">
+</span></span></span><span class="line"><span class="ln">30</span><span class="cl"><span class="w">              </span><span class="nt">mountPath</span><span class="p">:</span><span class="w"> </span><span class="l">/var/log</span><span class="w">
+</span></span></span><span class="line"><span class="ln">31</span><span class="cl"><span class="w">      </span><span class="nt">volumes</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="ln">32</span><span class="cl"><span class="w">        </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">fluentconfig</span><span class="w">
+</span></span></span><span class="line"><span class="ln">33</span><span class="cl"><span class="w">          </span><span class="nt">configMap</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="ln">34</span><span class="cl"><span class="w">            </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">fluentd-conf</span><span class="w">
+</span></span></span><span class="line"><span class="ln">35</span><span class="cl"><span class="w">        </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">varlog</span><span class="w">
+</span></span></span><span class="line"><span class="ln">36</span><span class="cl"><span class="w">          </span><span class="nt">hostPath</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="ln">37</span><span class="cl"><span class="w">            </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l">/var/log</span><span class="w">
+</span></span></span></code></pre></div><h2 id="关于保留指定标签的问题">关于保留指定标签的问题</h2>
+<p>部署完成以后我发现一直有一个小问题，就是无论我如何设置<code>label</code>都无法让<code>elasticsearch</code>获取到正常的数据。</p>
+<p>根据这个问题，我进行了更细致的排查。现在得出了如下的结论。</p>
+<ol>
+<li>
+<p>可能是由于我对知识的缺乏，我定义的是<code>Deployment</code>当中的<code>label</code>标签，但是这个<code>label</code>标识只作用于<code>Deployment</code>本身，通常用作<code>kubernete</code>集群中的选择器匹配，例如我们的<code>Service</code>要去匹配某个<code>Deployment</code>。</p>
+</li>
+<li>
+<p>关于<code>spec.template.metadata.labels</code>，我发现这个才是我们正确要匹配的<code>label</code>标签选项，因为这些标签用于标识<code>Deployment</code>所创建的<code>Pod</code></p>
+</li>
+<li>
+<p>所以最后总结出来的问题就是，我们上面的<code>fluentd</code>中写的过滤插件<code> key $.kubernetes.labels.kubernetes.log/fluentd</code>中所匹配的<code>label</code>标签应当是<code>spec.template.metadata.labels</code>的<code>label</code></p>
+</li>
+</ol>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="ln"> 1</span><span class="cl"><span class="nt">spec</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="ln"> 2</span><span class="cl"><span class="w">  </span><span class="nt">replicas</span><span class="p">:</span><span class="w"> </span><span class="m">2</span><span class="w">
+</span></span></span><span class="line"><span class="ln"> 3</span><span class="cl"><span class="w">  </span><span class="nt">selector</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="ln"> 4</span><span class="cl"><span class="w">    </span><span class="nt">matchLabels</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="ln"> 5</span><span class="cl"><span class="w">      </span><span class="nt">app</span><span class="p">:</span><span class="w"> </span><span class="l">canary</span><span class="w">
+</span></span></span><span class="line"><span class="ln"> 6</span><span class="cl"><span class="w">  </span><span class="nt">template</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="ln"> 7</span><span class="cl"><span class="w">    </span><span class="nt">metadata</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="ln"> 8</span><span class="cl"><span class="w">      </span><span class="nt">creationTimestamp</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="w">
+</span></span></span><span class="line"><span class="ln"> 9</span><span class="cl"><span class="w">      </span><span class="nt">labels</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="ln">10</span><span class="cl"><span class="w">        </span><span class="nt">app</span><span class="p">:</span><span class="w"> </span><span class="l">canary</span><span class="w">
+</span></span></span><span class="line"><span class="ln">11</span><span class="cl"><span class="w">        </span><span class="nt">kubernetes.log/fluentd</span><span class="p">:</span><span class="w"> </span><span class="s1">&#39;true&#39;</span><span class="w">
+</span></span></span></code></pre></div>
+
+        </div>
+<ul class="hb-blog-post-nav nav justify-content-between mb-3">
+  
+    <li class="nav-item my-1">
+      <a class="nav-link p-0 d-flex align-items-center" href="/posts/%E5%B7%9D%E8%A5%BF%E4%B9%8B%E6%97%85/"><svg aria-hidden="true" class="bi bi-arrow-left-circlebi bi-arrow-left-circle hi-svg-inline me-2" fill="currentColor" height="1.5em" viewBox="0 0 16 16" width="1.5em" xmlns="http://www.w3.org/2000/svg">
+  <path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8m15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0m-4.5-.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5z"/>
+</svg>旅行日记-四川·阿坝甘孜藏族自治州</a>
+    </li>
+  
+  
+</ul>
+
+
+
+
+
+
+  <div id="content-comments" class="hb-blog-post-comments hb-module mb-3">
+<div id="twikoo-comments"></div>
+
+
+  </div>
+
+
+
+      </div>
+    </div>
+    
+
+  </div>
+  <div class="hb-blog-sidebar pe-lg-1">
+  
+  <div
+    class="hb-blog-sidebar-profile hb-module d-flex flex-column justify-content-center align-items-center">
+      
+      
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+  
+    <picture>
+    <source srcset="/images/avatar_hu3b524e9b8f8772a6019da4ead2865f01_9176_ab72abc4ab1538a4c57546e4ff08f6d1.webp" type="image/webp" />
+  <img
+    class="hb-blog-sidebar-profile-img rounded-circle img-fluid mb-3"
+    src="https://blog.mletter.cn/images/avatar_hu3b524e9b8f8772a6019da4ead2865f01_9176_100x0_resize_box_3.d4ab93c1a773c431e0dd90cd83a48519.png"
+    alt=""
+    loading="lazy"
+    height="100"
+    width="100"
+    
+    
+    
+     />
+</picture>
+
+    <p class="hb-blog-sidebar-profile-title text-center h5 mb-2">
+      人间只是春
+    </p>
+    <p class="hb-blog-sidebar-profile-desc text-center mb-2">
+      喜马拉雅的山顶永远不会有万家灯火
+    </p>
+    <p class="hb-blog-sidebar-profile-meta mb-0">
+        <span class="mx-1"><svg aria-hidden="true" class="bi bi-geo-altbi bi-geo-alt hi-svg-inline me-1" fill="currentColor" height="1em" viewBox="0 0 16 16" width="1em" xmlns="http://www.w3.org/2000/svg">
+  <path d="M12.166 8.94c-.524 1.062-1.234 2.12-1.96 3.07A32 32 0 0 1 8 14.58a32 32 0 0 1-2.206-2.57c-.726-.95-1.436-2.008-1.96-3.07C3.304 7.867 3 6.862 3 6a5 5 0 0 1 10 0c0 .862-.305 1.867-.834 2.94M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10"/>
+  <path d="M8 8a2 2 0 1 1 0-4 2 2 0 0 1 0 4m0 1a3 3 0 1 0 0-6 3 3 0 0 0 0 6"/>
+</svg>China·HangZhou</span>
+    </p>
+      <div class="hb-footer-socials d-flex mb-0 mt-1 justify-content-center">
+          
+          
+<a
+  class="hb-social p-2"
+  href="https://space.bilibili.com/%25!s%28int64=477276392%29"
+  target="_blank"
+  rel="nofollow me"
+  title="Bilibili"><svg aria-hidden="true" class="hi-svg-inline hb-social-icon" fill="currentColor" height="1.75em" role="img" style="color: #fb7299;" viewBox="0 0 24 24" width="1.75em" xmlns="http://www.w3.org/2000/svg"><title>Bilibili</title><path d="M17.813 4.653h.854c1.51.054 2.769.578 3.773 1.574 1.004.995 1.524 2.249 1.56 3.76v7.36c-.036 1.51-.556 2.769-1.56 3.773s-2.262 1.524-3.773 1.56H5.333c-1.51-.036-2.769-.556-3.773-1.56S.036 18.858 0 17.347v-7.36c.036-1.511.556-2.765 1.56-3.76 1.004-.996 2.262-1.52 3.773-1.574h.774l-1.174-1.12a1.234 1.234 0 0 1-.373-.906c0-.356.124-.658.373-.907l.027-.027c.267-.249.573-.373.92-.373.347 0 .653.124.92.373L9.653 4.44c.071.071.134.142.187.213h4.267a.836.836 0 0 1 .16-.213l2.853-2.747c.267-.249.573-.373.92-.373.347 0 .662.151.929.4.267.249.391.551.391.907 0 .355-.124.657-.373.906zM5.333 7.24c-.746.018-1.373.276-1.88.773-.506.498-.769 1.13-.786 1.894v7.52c.017.764.28 1.395.786 1.893.507.498 1.134.756 1.88.773h13.334c.746-.017 1.373-.275 1.88-.773.506-.498.769-1.129.786-1.893v-7.52c-.017-.765-.28-1.396-.786-1.894-.507-.497-1.134-.755-1.88-.773zM8 11.107c.373 0 .684.124.933.373.25.249.383.569.4.96v1.173c-.017.391-.15.711-.4.96-.249.25-.56.374-.933.374s-.684-.125-.933-.374c-.25-.249-.383-.569-.4-.96V12.44c0-.373.129-.689.386-.947.258-.257.574-.386.947-.386zm8 0c.373 0 .684.124.933.373.25.249.383.569.4.96v1.173c-.017.391-.15.711-.4.96-.249.25-.56.374-.933.374s-.684-.125-.933-.374c-.25-.249-.383-.569-.4-.96V12.44c.017-.391.15-.711.4-.96.249-.249.56-.373.933-.373Z"/></svg>
+</a>
+
+          
+          
+<a
+  class="hb-social p-2"
+  href="mailto:beilanzhisen@163.com"
+  target="_blank"
+  rel="nofollow me"
+  title="Email"><svg aria-hidden="true" class="bi bi-envelope-fillbi bi-envelope-fill hi-svg-inline hb-social-icon" fill="currentColor" height="1.75em" style="color: %!s(bool=true);" viewBox="0 0 16 16" width="1.75em" xmlns="http://www.w3.org/2000/svg">
+  <path d="M.05 3.555A2 2 0 0 1 2 2h12a2 2 0 0 1 1.95 1.555L8 8.414zM0 4.697v7.104l5.803-3.558zM6.761 8.83l-6.57 4.027A2 2 0 0 0 2 14h12a2 2 0 0 0 1.808-1.144l-6.57-4.027L8 9.586zm3.436-.586L16 11.801V4.697z"/>
+</svg>
+</a>
+
+      </div>
+  </div>
+
+  <div class="hb-blog-sidebar-posts hb-module">
+    <ul class="nav nav-underline nav-fill" role="tablist">
+        <li class="nav-item" role="presentation">
+          <button
+            class="nav-link active"
+            id="recent-posts-tab"
+            data-bs-toggle="tab"
+            data-bs-target="#recent-posts"
+            type="button"
+            role="tab"
+            aria-controls="recent-posts"
+            aria-selected="true">
+            Recent
+          </button>
+        </li>
+    </ul>
+
+    <div class="tab-content mt-2">
+        <div
+          class="tab-pane slide active"
+          id="recent-posts"
+          role="tabpanel"
+          aria-labelledby="recent-posts-tab"
+          tabindex="0">
+          
+  <div class="slide">
+  <div class="slide-inner row row-cols-1">
+      <div class="slide-item px-0">
+        
+<div
+  class="hb-blog-post-card card border-0 overflow-hidden h-100 bg-transparent mb-0">
+    
+<a
+  class="card-img-top overflow-hidden border border-secondary-subtle text-body text-decoration-none mt-2"
+  href="/bulletin/2024/0108/">
+    
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <picture>
+  <img
+    class="hb-blog-post-card-img"
+    src="https://fc.sinaimg.cn/large/005Czbxjgy1hlmcj1fb04j31hc0u0u0x.jpg"
+    alt="2024年站点更新内容通知"
+    loading="lazy"
+    
+    
+    
+    
+    
+     />
+</picture>
+
+</a>
+
+  <div class="card-body px-0 py-2 d-flex flex-column">
+    <div class="hb-blog-post-title card-title h5 py-1">
+      <a
+        class="hb-blog-post-title-link d-block"
+        title="2024年站点更新内容通知"
+        href="/bulletin/2024/0108/">2024年站点更新内容通知</a>
+    </div>
+  </div>
+</div>
+
+      </div>
+      <div class="slide-item px-0">
+        
+<div
+  class="hb-blog-post-card card border-0 overflow-hidden h-100 bg-transparent mb-0">
+    
+<a
+  class="card-img-top overflow-hidden border border-secondary-subtle text-body text-decoration-none mt-2"
+  href="/posts/kubernetes-efk/">
+    
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <picture>
+  <img
+    class="hb-blog-post-card-img"
+    src="https://fc.sinaimg.cn/large/005Czbxjgy1hkmevv8ozyj31ds0iqn0i.jpg"
+    alt="kubernetes基于EFK的日志落地实现"
+    loading="lazy"
+    
+    
+    
+    
+    
+     />
+</picture>
+
+</a>
+
+  <div class="card-body px-0 py-2 d-flex flex-column">
+    <div class="hb-blog-post-title card-title h5 py-1">
+      <a
+        class="hb-blog-post-title-link d-block"
+        title="kubernetes基于EFK的日志落地实现"
+        href="/posts/kubernetes-efk/">kubernetes基于EFK的日志落地实现</a>
+    </div>
+  </div>
+</div>
+
+      </div>
+      <div class="slide-item px-0">
+        
+<div
+  class="hb-blog-post-card card border-0 overflow-hidden h-100 bg-transparent mb-0">
+    
+<a
+  class="card-img-top overflow-hidden border border-secondary-subtle text-body text-decoration-none mt-2"
+  href="/posts/%E5%B7%9D%E8%A5%BF%E4%B9%8B%E6%97%85/">
+    
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <picture>
+  <img
+    class="hb-blog-post-card-img"
+    src="https://img11.360buyimg.com/ddimg/jfs/t1/236840/40/3995/133210/6563505dFfe136e64/32c8465a255f4bc7.jpg"
+    alt="旅行日记-四川·阿坝甘孜藏族自治州"
+    loading="lazy"
+    
+    
+    
+    
+    
+     />
+</picture>
+
+</a>
+
+  <div class="card-body px-0 py-2 d-flex flex-column">
+    <div class="hb-blog-post-title card-title h5 py-1">
+      <a
+        class="hb-blog-post-title-link d-block"
+        title="旅行日记-四川·阿坝甘孜藏族自治州"
+        href="/posts/%E5%B7%9D%E8%A5%BF%E4%B9%8B%E6%97%85/">旅行日记-四川·阿坝甘孜藏族自治州</a>
+    </div>
+  </div>
+</div>
+
+      </div>
+      <div class="slide-item px-0">
+        
+<div
+  class="hb-blog-post-card card border-0 overflow-hidden h-100 bg-transparent mb-0">
+    
+<a
+  class="card-img-top overflow-hidden border border-secondary-subtle text-body text-decoration-none mt-2"
+  href="/posts/kubernetes%E7%9A%84%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1/">
+    
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <picture>
+  <img
+    class="hb-blog-post-card-img"
+    src="https://img13.360buyimg.com/ddimg/jfs/t1/164078/6/34165/22231/654ba81fFe1bf21d7/9d02bd791b795b3b.jpg"
+    alt="Kubernetes的架构设计和对象属性基本理解"
+    loading="lazy"
+    
+    
+    
+    
+    
+     />
+</picture>
+
+</a>
+
+  <div class="card-body px-0 py-2 d-flex flex-column">
+    <div class="hb-blog-post-title card-title h5 py-1">
+      <a
+        class="hb-blog-post-title-link d-block"
+        title="Kubernetes的架构设计和对象属性基本理解"
+        href="/posts/kubernetes%E7%9A%84%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1/">Kubernetes的架构设计和对象属性基本理解</a>
+    </div>
+  </div>
+</div>
+
+      </div>
+      <div class="slide-item px-0">
+        
+<div
+  class="hb-blog-post-card card border-0 overflow-hidden h-100 bg-transparent mb-0">
+    
+<a
+  class="card-img-top overflow-hidden border border-secondary-subtle text-body text-decoration-none mt-2"
+  href="/posts/wecho/">
+    
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <picture>
+  <img
+    class="hb-blog-post-card-img"
+    src="https://ydschool-online.nosdn.127.net/tiku/f291c1c8d5dccacd2b95ef4fdc68d07cefd0e92562794e5bcdd21a9729b3455d.jpg"
+    alt="维扣-专属你的拍照摄影社区"
+    loading="lazy"
+    
+    
+    
+    
+    
+     />
+</picture>
+
+</a>
+
+  <div class="card-body px-0 py-2 d-flex flex-column">
+    <div class="hb-blog-post-title card-title h5 py-1">
+      <a
+        class="hb-blog-post-title-link d-block"
+        title="维扣-专属你的拍照摄影社区"
+        href="/posts/wecho/"><span class="text-danger">
+  <svg aria-hidden="true" class="bi bi-pinbi bi-pin hi-svg-inline me-1" fill="currentColor" height=".85em" viewBox="0 0 16 16" width=".85em" xmlns="http://www.w3.org/2000/svg">
+  <path d="M4.146.146A.5.5 0 0 1 4.5 0h7a.5.5 0 0 1 .5.5c0 .68-.342 1.174-.646 1.479-.126.125-.25.224-.354.298v4.431l.078.048c.203.127.476.314.751.555C12.36 7.775 13 8.527 13 9.5a.5.5 0 0 1-.5.5h-4v4.5c0 .276-.224 1.5-.5 1.5s-.5-1.224-.5-1.5V10h-4a.5.5 0 0 1-.5-.5c0-.973.64-1.725 1.17-2.189A6 6 0 0 1 5 6.708V2.277a3 3 0 0 1-.354-.298C4.342 1.674 4 1.179 4 .5a.5.5 0 0 1 .146-.354m1.58 1.408-.002-.001zm-.002-.001.002.001A.5.5 0 0 1 6 2v5a.5.5 0 0 1-.276.447h-.002l-.012.007-.054.03a5 5 0 0 0-.827.58c-.318.278-.585.596-.725.936h7.792c-.14-.34-.407-.658-.725-.936a5 5 0 0 0-.881-.61l-.012-.006h-.002A.5.5 0 0 1 10 7V2a.5.5 0 0 1 .295-.458 1.8 1.8 0 0 0 .351-.271c.08-.08.155-.17.214-.271H5.14q.091.15.214.271a1.8 1.8 0 0 0 .37.282"/>
+</svg>
+</span>
+维扣-专属你的拍照摄影社区</a>
+    </div>
+  </div>
+</div>
+
+      </div>
+  </div>
+  
+<button class="slide-control-left">
+  <svg aria-hidden="true" class="bi bi-arrow-left-circlebi bi-arrow-left-circle hi-svg-inline slide-control-left-icon" fill="currentColor" height="2em" viewBox="0 0 16 16" width="2em" xmlns="http://www.w3.org/2000/svg">
+  <path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8m15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0m-4.5-.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5z"/>
+</svg>
+  <span class="visually-hidden">Left</span>
+</button>
+<button class="slide-control-right">
+  <svg aria-hidden="true" class="bi bi-arrow-right-circlebi bi-arrow-right-circle hi-svg-inline slide-control-right-icon" fill="currentColor" height="2em" viewBox="0 0 16 16" width="2em" xmlns="http://www.w3.org/2000/svg">
+  <path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8m15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0M4.5 7.5a.5.5 0 0 0 0 1h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5z"/>
+</svg>
+  <span class="visually-hidden">Right</span>
+</button>
+
+</div>
+
+
+        </div>
+    </div>
+  </div>
+
+  <div class="hb-blog-sidebar-taxonomies hb-module">
+    
+<ul class="nav nav-underline nav-justified mb-2" role="tablist">
+    <li class="nav-item" role="presentation">
+      <button
+        class="nav-link active"
+        id="taxonomy-categories-tab"
+        data-bs-toggle="tab"
+        data-bs-target="#taxonomy-categories-tab-pane"
+        type="button"
+        role="tab"
+        aria-controls="taxonomy-categories-tab-pane"
+        aria-selected="true">Categories</button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button
+        class="nav-link"
+        id="taxonomy-tags-tab"
+        data-bs-toggle="tab"
+        data-bs-target="#taxonomy-tags-tab-pane"
+        type="button"
+        role="tab"
+        aria-controls="taxonomy-tags-tab-pane"
+        aria-selected="false">Tags</button>
+    </li>
+</ul>
+<div class="tab-content">
+    <div
+      class="tab-pane fade show active"
+      id="taxonomy-categories-tab-pane"
+      role="tabpanel"
+      aria-labelledby="taxonomy-categories-tab"
+      tabindex="0">
+        <a
+          class="taxonomy-term taxonomy-term-categories btn btn-sm btn-outline-secondary p-1 me-1 mb-1"
+          href="/categories/kubernetes/">
+          <span class="taxonomy-term-title">kubernetes</span>
+            <small class="taxonomy-term-count border rounded px-1">20</small>
+        </a>
+        <a
+          class="taxonomy-term taxonomy-term-categories btn btn-sm btn-outline-secondary p-1 me-1 mb-1"
+          href="/categories/ansible/">
+          <span class="taxonomy-term-title">ansible</span>
+            <small class="taxonomy-term-count border rounded px-1">3</small>
+        </a>
+        <a
+          class="taxonomy-term taxonomy-term-categories btn btn-sm btn-outline-secondary p-1 me-1 mb-1"
+          href="/categories/docker/">
+          <span class="taxonomy-term-title">docker</span>
+            <small class="taxonomy-term-count border rounded px-1">2</small>
+        </a>
+        <a
+          class="taxonomy-term taxonomy-term-categories btn btn-sm btn-outline-secondary p-1 me-1 mb-1"
+          href="/categories/%E6%97%85%E8%A1%8C%E6%97%A5%E8%AE%B0/">
+          <span class="taxonomy-term-title">旅行日记</span>
+            <small class="taxonomy-term-count border rounded px-1">2</small>
+        </a>
+        <a
+          class="taxonomy-term taxonomy-term-categories btn btn-sm btn-outline-secondary p-1 me-1 mb-1"
+          href="/categories/mysql/">
+          <span class="taxonomy-term-title">mysql</span>
+            <small class="taxonomy-term-count border rounded px-1">1</small>
+        </a>
+        <a
+          class="taxonomy-term taxonomy-term-categories btn btn-sm btn-outline-secondary p-1 me-1 mb-1"
+          href="/categories/nginx/">
+          <span class="taxonomy-term-title">nginx</span>
+            <small class="taxonomy-term-count border rounded px-1">1</small>
+        </a>
+        <a
+          class="taxonomy-term taxonomy-term-categories btn btn-sm btn-outline-secondary p-1 me-1 mb-1"
+          href="/categories/redis/">
+          <span class="taxonomy-term-title">redis</span>
+            <small class="taxonomy-term-count border rounded px-1">1</small>
+        </a>
+        <a
+          class="taxonomy-term taxonomy-term-categories btn btn-sm btn-outline-secondary p-1 me-1 mb-1"
+          href="/categories/%E4%B8%AA%E4%BA%BA%E9%A1%B9%E7%9B%AE/">
+          <span class="taxonomy-term-title">个人项目</span>
+            <small class="taxonomy-term-count border rounded px-1">1</small>
+        </a>
+        <a
+          class="taxonomy-term taxonomy-term-categories btn btn-sm btn-outline-secondary p-1 me-1 mb-1"
+          href="/categories/%E5%B7%A5%E5%85%B7%E5%88%86%E4%BA%AB/">
+          <span class="taxonomy-term-title">工具分享</span>
+            <small class="taxonomy-term-count border rounded px-1">1</small>
+        </a>
+        <a
+          class="taxonomy-term taxonomy-term-categories btn btn-sm btn-outline-secondary p-1 me-1 mb-1"
+          href="/categories/%E6%97%A5%E5%B8%B8%E6%91%84%E5%BD%B1/">
+          <span class="taxonomy-term-title">日常摄影</span>
+            <small class="taxonomy-term-count border rounded px-1">1</small>
+        </a>
+    </div>
+    <div
+      class="tab-pane fade"
+      id="taxonomy-tags-tab-pane"
+      role="tabpanel"
+      aria-labelledby="taxonomy-tags-tab"
+      tabindex="0">
+        <a
+          class="taxonomy-term taxonomy-term-tags btn btn-sm btn-outline-secondary p-1 me-1 mb-1"
+          href="/tags/kubernetes/">
+          <span class="taxonomy-term-title">kubernetes</span>
+            <small class="taxonomy-term-count border rounded px-1">20</small>
+        </a>
+        <a
+          class="taxonomy-term taxonomy-term-tags btn btn-sm btn-outline-secondary p-1 me-1 mb-1"
+          href="/tags/ansible/">
+          <span class="taxonomy-term-title">ansible</span>
+            <small class="taxonomy-term-count border rounded px-1">3</small>
+        </a>
+        <a
+          class="taxonomy-term taxonomy-term-tags btn btn-sm btn-outline-secondary p-1 me-1 mb-1"
+          href="/tags/%E6%97%A5%E8%AE%B0/">
+          <span class="taxonomy-term-title">日记</span>
+            <small class="taxonomy-term-count border rounded px-1">3</small>
+        </a>
+        <a
+          class="taxonomy-term taxonomy-term-tags btn btn-sm btn-outline-secondary p-1 me-1 mb-1"
+          href="/tags/docker/">
+          <span class="taxonomy-term-title">docker</span>
+            <small class="taxonomy-term-count border rounded px-1">2</small>
+        </a>
+        <a
+          class="taxonomy-term taxonomy-term-tags btn btn-sm btn-outline-secondary p-1 me-1 mb-1"
+          href="/tags/api/">
+          <span class="taxonomy-term-title">API</span>
+            <small class="taxonomy-term-count border rounded px-1">1</small>
+        </a>
+        <a
+          class="taxonomy-term taxonomy-term-tags btn btn-sm btn-outline-secondary p-1 me-1 mb-1"
+          href="/tags/api-server/">
+          <span class="taxonomy-term-title">api-server</span>
+            <small class="taxonomy-term-count border rounded px-1">1</small>
+        </a>
+        <a
+          class="taxonomy-term taxonomy-term-tags btn btn-sm btn-outline-secondary p-1 me-1 mb-1"
+          href="/tags/configmap/">
+          <span class="taxonomy-term-title">configmap</span>
+            <small class="taxonomy-term-count border rounded px-1">1</small>
+        </a>
+        <a
+          class="taxonomy-term taxonomy-term-tags btn btn-sm btn-outline-secondary p-1 me-1 mb-1"
+          href="/tags/coredns/">
+          <span class="taxonomy-term-title">coredns</span>
+            <small class="taxonomy-term-count border rounded px-1">1</small>
+        </a>
+        <a
+          class="taxonomy-term taxonomy-term-tags btn btn-sm btn-outline-secondary p-1 me-1 mb-1"
+          href="/tags/dashboard/">
+          <span class="taxonomy-term-title">dashboard</span>
+            <small class="taxonomy-term-count border rounded px-1">1</small>
+        </a>
+        <a
+          class="taxonomy-term taxonomy-term-tags btn btn-sm btn-outline-secondary p-1 me-1 mb-1"
+          href="/tags/etcd/">
+          <span class="taxonomy-term-title">etcd</span>
+            <small class="taxonomy-term-count border rounded px-1">1</small>
+        </a>
+    </div>
+</div>
+
+  </div>
+
+
+</div>
+
+</div>
+
+    </div>
+    
+
+    <footer class="hb-footer pt-4 pt-md-5 pb-2 pb-md-3 bg-body-tertiary">
+  <div class="container-fluid container-lg px-4 px-md-3">
+
+    <div class="row"><div class="hb-footer-site-info col mb-2 text-center">
+
+  <div class="h5">人生不过一场山川而已</div>
+  <ul class="list-unstyled small mb-2">
+  </ul>
+
+</div>
+
+
+    </div>
+
+  </div>
+</footer>
+
+
+
+
+
+
+
+
+
+
+<script
+  src="/js/hb.45b92db4c9e744e95404d884107b20bb2451a48955649f6af550b240c3b548c5.js"
+  integrity="sha256-RbkttMnnROlUBNiEEHsguyRRpIlVZJ9q9VCyQMO1SMU="
+  defer></script>
+
+
+  
+<script src="https://cdn.staticfile.org/twikoo/1.6.16/twikoo.all.min.js"></script>
+<script>
+  twikoo.init({
+    envId: '',
+    el: '#twikoo-comments',
+    region: '',
+    path: location.pathname,
+    lang: 'en'
+  });
+</script>
+
+
+
+
+
+
+
+  
+
+
+
+
+
+<script>
+  if ('serviceWorker' in navigator) {
+  window.addEventListener('DOMContentLoaded', function() {
+    navigator.serviceWorker.register('\/sw.js');
+  });
+}
+</script>
+
+<script src="/js/search.ca3f08bec50140ac47f971d6d5d40cd7532cc253f971950506c848ed218fef3f.js" defer></script>
+
+
+
+
+  </body>
+</html>

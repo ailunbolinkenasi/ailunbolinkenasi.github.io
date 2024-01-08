@@ -1,0 +1,283 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>kubernetes on </title>
+    <link>https://blog.mletter.cn/tags/kubernetes/</link>
+    <description>Recent content in kubernetes on </description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Fri, 08 Dec 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://blog.mletter.cn/tags/kubernetes/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>kubernetes基于EFK的日志落地实现</title>
+      <link>https://blog.mletter.cn/posts/kubernetes-efk/</link>
+      <pubDate>Fri, 08 Dec 2023 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.mletter.cn/posts/kubernetes-efk/</guid>
+      <description>Kubernetes 中比较流行的日志收集解决方案是 Elasticsearch、Fluentd 和 Kibana（EFK）技术栈，也是官方现在比较推荐的一种方案。
+Elasticsearch 是一个实时的、分布式的可扩展的搜索引擎，允许进行全文、结构化搜索，它通常用于索引和搜索大量日志数据，也可用于搜索许多不同类型的文档。
+Elasticsearch 通常与 Kibana 一起部署，Kibana 是 Elasticsearch 的一个功能强大的数据可视化 Dashboard，Kibana 允许你通过 web 界面来浏览Elasticsearch 日志数据。
+Fluentd是一个流行的开源数据收集器，我们将在 Kubernetes 集群节点上安装 Fluentd，通过获取容器日志文件、过滤和转换日志数据，然后将数据传递到 Elasticsearch 集群，在该集群中对其进行索引和存储。
+我们先来配置启动一个可扩展的 Elasticsearch 集群，然后在 Kubernetes 集群中创建一个 Kibana 应用，最后通过 DaemonSet 来运行 Fluentd，以便它在每个 Kubernetes 工作节点上都可以运行一个 Pod。
+安装 Elasticsearch 集群 先创建一个命名空间，我们将在其中安装所有日志相关的资源对象。
+1kubectl create ns kube-logging 环境准备 ElasticSearch 安装有最低安装要求，如果安装后 Pod 无法正常启动，请检查是否符合最低要求的配置，要求如下：
+节点 CPU最低要求 内存最低要求 elasticsearch-master 核心数&amp;gt;2 内存&amp;gt;2G elasticsearch-data 核心数&amp;gt;1 内存&amp;gt;2G elasticsearch-client 核心数&amp;gt;1 内存&amp;gt;2G 集群节点信息
+集群 节点类型 副本数目 存储大小 网络模式 描述 elasticsearch master 3 5Gi ClusterIP 主节点 elasticsearch-data data 3 50Gi ClusterIP 数据节点 elasticsearch-client client 2 无 NodePort 负责处理用户请求 建议使用 StorageClass 来做持久化存储，当然如果你是线上环境建议使用 Local PV 或者 Ceph RBD 之类的存储来持久化 Elasticsearch 的数据。</description>
+    </item>
+    
+    <item>
+      <title>Kubernetes的架构设计和对象属性基本理解</title>
+      <link>https://blog.mletter.cn/posts/kubernetes%E7%9A%84%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1/</link>
+      <pubDate>Tue, 07 Nov 2023 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.mletter.cn/posts/kubernetes%E7%9A%84%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1/</guid>
+      <description>为什么需要kubernetes？ 大规模多节点容器调度 快速扩缩容 故障自愈 弹性伸缩 技术趋势 一致性、不锁定 早期型多的一些服务都属于单体服务、单节点、单进程的一种单体服务架构，后续随着技术的发展衍生出了容器技术。容器技术其实也不能满足我们的多节点、分布式的应用架构体系，从而衍生出了kubernetes容器编排引擎。 那么我们来看一下早期单体容器架构
+其实对于容器化技术带来了那些优势呢?
+其实我觉得容器化带来的最大的优势就是交付和部署的优势 那么随之而来带来的问题是:
+那么由于Docker的容器镜像可以在A、B、C任意一台机器上运行,那么是否可以当A机器所运行的镜像挂掉以后自动的帮我在B机器上进行重启呢?
+okey 带着这个问题 一起往下进行。
+kubernes组件 先看一张官方给出的kubernetes的架构图 图中列出了kubernetes的组成以及相对应的组件
+ControlPlane: 控制平面节点 Node: 工作节点 Kubelet: 用于控制staticPod,其主要就是用来控制静态Pod，因为静态Pod不受ApiServer的影响。 Oh 不插一句嘴 学到了一个新的命令
+1# jq命令是一个用于处理json的命令 2kubectl get deploy wecho-canary -o json | jq .spec okey 继续&amp;hellip; 我们时长谈起到的control-plane实际上并不是一台机器他只是一个抽象出来的概念,实际上我们是在说所谓的control-plane层面的组件。也就是说这些组件可以运行在控制面的机器上同时也可以运行在Node机器上
+kubernetes核心概念 ResourceObject: 是我认为相对而言kubernetes集群当中比较核心的资源对象,其实也就是我们所说的Pod、Deployment、Daemonset等kubernetes的资源类型 对于一个Pod而言,kubernetes对其定义的键值无非以下的几种 1[root@Online-Beijing-master1 ~]# kubectl get deploy wecho-canary -o json | jq keys 2[ 3 &amp;#34;apiVersion&amp;#34;, 4 &amp;#34;kind&amp;#34;, 5 &amp;#34;metadata&amp;#34;, 6 &amp;#34;spec&amp;#34;, // spec描述的是Pod预期的状态 7 &amp;#34;status&amp;#34; 8] 你可以通过kubectl api-resource来获取kubernetes相对应的资源类型。</description>
+    </item>
+    
+    <item>
+      <title>OpenEBS存储的使用</title>
+      <link>https://blog.mletter.cn/posts/openebs/</link>
+      <pubDate>Sun, 14 May 2023 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.mletter.cn/posts/openebs/</guid>
+      <description>OpenEBS存储使用 OpenEBS 是一种模拟了 AWS 的 EBS、阿里云的云盘等块存储实现的基于容器的存储开源软件。OpenEBS 是一种基于 CAS(Container Attached Storage) 理念的容器解决方案，其核心理念是存储和应用一样采用微服务架构，并通过 Kubernetes 来做资源编排。其架构实现上，每个卷的 Controller 都是一个单独的 Pod，且与应用 Pod 在同一个节点，卷的数据使用多个 Pod 进行管理。
+OpenEBS 有很多组件，可以分为以下几类：
+控制平面组件 - 管理 OpenEBS 卷容器，通常会用到容器编排软件的功能 数据平面组件 - 为应用程序提供数据存储，包含 Jiva 和 cStor 两个存储后端 节点磁盘管理器 - 发现、监控和管理连接到 Kubernetes 节点的媒体 与云原生工具的整合 - 与 Prometheus、Grafana、Fluentd 和 Jaeger 进行整合。 控制平面 OpenEBS 上下文中的控制平面是指部署在集群中的一组工具或组件，它们负责：
+管理 kubernetes 工作节点上可用的存储 配置和管理数据引擎 与 CSI 接口以管理卷的生命周期 与 CSI 和其他工具进行接口，执行快照、克隆、调整大小、备份、恢复等操作。 集成到其他工具中，如 Prometheus/Grafana 以进行遥测和监控 集成到其他工具中进行调试、故障排除或日志管理 OpenEBS 控制平面由一组微服务组成，这些微服务本身由 Kubernetes 管理，使 OpenEBS 真正成为 Kubernetes 原生的。由 OpenEBS 控制平面管理的配置被保存为 Kubernetes 自定义资源。控制平面的功能可以分解为以下各个阶段：</description>
+    </item>
+    
+    <item>
+      <title>Traekfik基础使用指南</title>
+      <link>https://blog.mletter.cn/posts/traefik/</link>
+      <pubDate>Fri, 07 Apr 2023 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.mletter.cn/posts/traefik/</guid>
+      <description>Traekfik是什么 Traefik 是一种开源 边缘路由器，它使您发布服务成为一种有趣而轻松的体验。它代表您的系统接收请求并找出哪些组件负责处理它们。
+Traefik 的与众不同之处在于，除了它的许多功能之外，它还可以自动为您的服务发现正确的配置。当 Traefik 检查您的基础架构时，奇迹就会发生，它会在其中找到相关信息并发现哪个服务服务于哪个请求。
+Traefik 原生兼容所有主要的集群技术，例如 Kubernetes、Docker、Docker Swarm、AWS、Mesos、Marathon，等等；并且可以同时处理很多。（它甚至适用于在裸机上运行的遗留软件。）
+使用 Traefik，无需维护和同步单独的配置文件：一切都自动实时发生（无需重启，无连接中断）。使用 Traefik，您可以花时间为系统开发和部署新功能，而不是配置和维护其工作状态。
+边缘路由器 Traefik 是一个Edge Router，这意味着它是您平台的大门，它拦截并路由每个传入请求：它知道确定哪些服务处理哪些请求的所有逻辑和每条规则（基于path，host，标头，等等…）。
+自动服务发现 传统上边缘路由器（或反向代理）需要一个配置文件，其中包含到您的服务的每条可能路径，Traefik 从服务本身获取它们。部署您的服务，您附加信息告诉 Traefik 服务可以处理的请求的特征。
+首先，当启动 Traefik 时，需要定义 entrypoints（入口点），然后，根据连接到这些 entrypoints 的路由来分析传入的请求，来查看他们是否与一组规则相匹配，如果匹配，则路由可能会将请求通过一系列中间件转换过后再转发到你的服务上去。在了解 Traefik 之前有几个核心概念我们必须要了解：
+Providers 用来自动发现平台上的服务，可以是编排工具、容器引擎或者 key-value 存储等，比如 Docker、Kubernetes、File Entrypoints 监听传入的流量（端口等…），是网络入口点，它们定义了接收请求的端口（HTTP 或者 TCP）。 Routers 分析请求（host, path, headers, SSL, …），负责将传入请求连接到可以处理这些请求的服务上去。 Services 将请求转发给你的应用（load balancing, …），负责配置如何获取最终将处理传入请求的实际服务。 Middlewares 中间件，用来修改请求或者根据请求来做出一些判断（authentication, rate limiting, headers, …），中间件被附件到路由上，是一种在请求发送到你的服务之前（或者在服务的响应发送到客户端之前）调整请求的一种方法。 部署Traefik Traefik的配置可以使用两种方式：静态配置和动态配置
+静态配置：在 Traefik 中定义静态配置选项有三种不同的、互斥的即你只能同时使用一种）方式。 在配置文件中 在命令行参数中 作为环境变量 动态配置：Traefik从提供者处获取其动态配置：无论是编排器、服务注册表还是普通的旧配置文件。 1# 使用Helm的方式进行部署Traefik2.9.x 2[root@Online-Beijing-master1 ~]# helm repo add traefik https://traefik.</description>
+    </item>
+    
+    <item>
+      <title>Kubernetes-本地存储</title>
+      <link>https://blog.mletter.cn/posts/localstoage/</link>
+      <pubDate>Wed, 22 Mar 2023 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.mletter.cn/posts/localstoage/</guid>
+      <description>本地存储 前面我们有通过 hostPath 或者 emptyDir 的方式来持久化我们的数据，但是显然我们还需要更加可靠的存储来保存应用的持久化数据，这样容器在重建后，依然可以使用之前的数据。但是存储资源和 CPU 资源以及内存资源有很大不同，为了屏蔽底层的技术实现细节，让用户更加方便的使用，Kubernetes 便引入了 PV 和 PVC 两个重要的资源对象来实现对存储的管理。
+PersistentVolume PV 的全称是：PersistentVolume（持久化卷），是对底层共享存储的一种抽象，PV 由管理员进行创建和配置，它和具体的底层的共享存储技术的实现方式有关，比如 Ceph、GlusterFS、NFS、hostPath 等，都是通过插件机制完成与共享存储的对接。
+PersistentVolumeClaim PVC 的全称是：PersistentVolumeClaim（持久化卷声明），PVC 是用户存储的一种声明，PVC 和 Pod 比较类似，Pod 消耗的是节点，PVC 消耗的是 PV 资源，Pod 可以请求 CPU 和内存，而 PVC 可以请求特定的存储空间和访问模式。对于真正使用存储的用户不需要关心底层的存储实现细节，只需要直接使用 PVC 即可。
+但是通过 PVC 请求到一定的存储空间也很有可能不足以满足应用对于存储设备的各种需求，而且不同的应用程序对于存储性能的要求可能也不尽相同，比如读写速度、并发性能等，为了解决这一问题，Kubernetes 又为我们引入了一个新的资源对象：StorageClass，通过 StorageClass 的定义，管理员可以将存储资源定义为某种类型的资源，比如快速存储、慢速存储等，用户根据 StorageClass 的描述就可以非常直观的知道各种存储资源的具体特性了，这样就可以根据应用的特性去申请合适的存储资源了，此外 StorageClass 还可以为我们自动生成 PV，免去了每次手动创建的麻烦。
+HostPath 我们上面提到了 PV 是对底层存储技术的一种抽象，PV 一般都是由管理员来创建和配置的，我们首先来创建一个 hostPath 类型的 PersistentVolume。Kubernetes 支持 hostPath 类型的 PersistentVolume 使用节点上的文件或目录来模拟附带网络的存储，但是需要注意的是在生产集群中，我们不会使用 hostPath，集群管理员会提供网络存储资源，比如 NFS 共享卷或 Ceph 存储卷，集群管理员还可以使用 StorageClasses 来设置动态提供存储。因为 Pod 并不是始终固定在某个节点上面的，所以要使用 hostPath 的话我们就需要将 Pod 固定在某个节点上，这样显然就大大降低了应用的容错性。</description>
+    </item>
+    
+    <item>
+      <title>Ingress的简单使用</title>
+      <link>https://blog.mletter.cn/posts/ingress/</link>
+      <pubDate>Wed, 08 Mar 2023 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.mletter.cn/posts/ingress/</guid>
+      <description>什么是Ingress Ingress 是对集群中服务的外部访问进行管理的 API 对象，典型的访问方式是 HTTP。
+Ingress 可以提供负载均衡、SSL 终结和基于名称的虚拟托管。
+Ingress 公开从集群外部到集群内服务的 HTTP 和 HTTPS 路由。 流量路由由 Ingress 资源上定义的规则控制。
+下面是一个将所有流量都发送到同一 Service 的简单 Ingress 示例：
+Ingress 其实就是从 Kuberenets 集群外部访问集群的一个入口，将外部的请求转发到集群内不同的 Service 上，其实就相当于 nginx、haproxy 等负载均衡代理服务器，可能你会觉得我们直接使用 nginx 就实现了，但是只使用 nginx 这种方式有很大缺陷，每次有新服务加入的时候怎么改 Nginx 配置？不可能让我们去手动更改或者滚动更新前端的 Nginx Pod 吧？那我们再加上一个服务发现的工具比如 consul 如何？貌似是可以，对吧？Ingress 实际上就是这样实现的，只是服务发现的功能自己实现了，不需要使用第三方的服务了，然后再加上一个域名规则定义，路由信息的刷新依靠 Ingress Controller 来提供。
+Ingress Controller 可以理解为一个监听器，通过不断地监听 kube-apiserver，实时的感知后端 Service、Pod 的变化，当得到这些信息变化后，Ingress Controller 再结合 Ingress 的配置，更新反向代理负载均衡器，达到服务发现的作用。其实这点和服务发现工具 consul、 consul-template 非常类似。
+现在可以供大家使用的 Ingress Controller 有很多，比如 traefik、nginx-controller、Kubernetes Ingress Controller for Kong、HAProxy Ingress controller，当然你也可以自己实现一个 Ingress Controller，现在普遍用得较多的是 traefik 和 nginx-controller，traefik 的性能较 nginx-controller 差，但是配置使用要简单许多，我们这里会重点给大家介绍 nginx-controller 以及 traefik 的使用。</description>
+    </item>
+    
+    <item>
+      <title>CacheDNS和DNS缓存</title>
+      <link>https://blog.mletter.cn/posts/coredns/</link>
+      <pubDate>Sun, 26 Feb 2023 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.mletter.cn/posts/coredns/</guid>
+      <description>如果在集群规模较大并发较高的情况下我们仍然需要对 DNS 进行优化，典型的就是大家比较熟悉的 CoreDNS 会出现超时5s的情况。
+超时原因 在 iptables 模式下（默认情况下），每个服务的 kube-proxy 在主机网络名称空间的 nat 表中创建一些 iptables 规则。 比如在集群中具有两个 DNS 服务器实例的 kube-dns 服务，其相关规则大致如下所示：
+1(1) -A PREROUTING -m comment --comment &amp;#34;kubernetes service portals&amp;#34; -j KUBE-SERVICES 2&amp;lt;...&amp;gt; 3(2) -A KUBE-SERVICES -d 10.96.0.10/32 -p udp -m comment --comment &amp;#34;kube-system/kube-dns:dns cluster IP&amp;#34; -m udp --dport 53 -j KUBE-SVC-TCOU7JCQXEZGVUNU 4&amp;lt;...&amp;gt; 5(3) -A KUBE-SVC-TCOU7JCQXEZGVUNU -m comment --comment &amp;#34;kube-system/kube-dns:dns&amp;#34; -m statistic --mode random --probability 0.50000000000 -j KUBE-SEP-LLLB6FGXBLX6PZF7 6(4) -A KUBE-SVC-TCOU7JCQXEZGVUNU -m comment --comment &amp;#34;kube-system/kube-dns:dns&amp;#34; -j KUBE-SEP-LRVEW52VMYCOUSMZ 7&amp;lt;.</description>
+    </item>
+    
+    <item>
+      <title>使用Kubeadm创建一个高可用的ETCD集群</title>
+      <link>https://blog.mletter.cn/posts/install-etcd-ha/</link>
+      <pubDate>Sun, 26 Feb 2023 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.mletter.cn/posts/install-etcd-ha/</guid>
+      <description>使用Kubeadm创建一个高可用的Etcd集群 默认情况下，kubeadm 在每个控制平面节点上运行一个本地 etcd 实例。也可以使用外部的 etcd 集群，并在不同的主机上提供 etcd 实例。 这两种方法的区别在 高可用拓扑的选项 页面中阐述。
+这个任务将指导你创建一个由三个成员组成的高可用外部 etcd 集群，该集群在创建过程中可被 kubeadm 使用。
+准备开始 三个可以通过 2379 和 2380 端口相互通信的主机。本文档使用这些作为默认端口。不过，它们可以通过 kubeadm 的配置文件进行自定义。 每个主机必须安装 systemd 和 bash 兼容的 shell。 每台主机必须安装有容器运行时、kubelet 和 kubeadm 每个主机都应该能够访问 Kubernetes 容器镜像仓库 (registry.k8s.io)， 或者使用 kubeadm config images list/pull 列出/拉取所需的 etcd 镜像。 本指南将把 etcd 实例设置为由 kubelet 管理的静态 Pod。 一些可以用来在主机间复制文件的基础设施。例如 ssh 和 scp 就可以满足需求。 本次容器运行时采用Containerd作为Runtime
+将Kubelet配置为Etcd的服务启动管理器 你必须在要运行 etcd 的所有主机上执行此操作。
+1cat &amp;lt;&amp;lt; EOF &amp;gt; /usr/lib/systemd/system/kubelet.service.d/20-etcd-service-manager.conf 2[Service] 3ExecStart= 4ExecStart=/usr/bin/kubelet --address=127.</description>
+    </item>
+    
+    <item>
+      <title>ConfigMap和Secret的使用</title>
+      <link>https://blog.mletter.cn/posts/configmapandservice/</link>
+      <pubDate>Tue, 14 Feb 2023 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.mletter.cn/posts/configmapandservice/</guid>
+      <description>ConfigMap ConfigMap 是一种 API 对象，用来将非机密性的数据保存到键值对中。使用时， Pods 可以将其用作环境变量、命令行参数或者存储卷中的配置文件。
+ConfigMap 将你的环境配置信息和 容器镜像 解耦，便于应用配置的修改。 ConfigMap 在设计上不是用来保存大量数据的。在 ConfigMap 中保存的数据不可超过1MiB(这其实是ETCD的要求哈哈哈)。如果你需要保存超出此尺寸限制的数据，你可能希望考虑挂载存储卷 或者使用独立的数据库或者文件服务。
+这是一个 ConfigMap 的示例，它的一些键只有一个值，其他键的值看起来像是 配置的片段格式。
+通过Key和Value这种键值对来进行写入数据 1apiVersion: v1 2kind: ConfigMap 3metadata: 4 name: game-demo 5data: 6 # 类属性键；每一个键都映射到一个简单的值 7 player_initial_lives: &amp;#34;3&amp;#34; 8 ui_properties_file_name: &amp;#34;user-interface.properties&amp;#34; 9 # 类文件键,一般用来保存一个文件到指定目录 10 game.properties: | 11 enemy.types=aliens,monsters 12 player.maximum-lives=5 13 user-interface.properties: | 14 color.good=purple 15 color.bad=yellow 16 allow.textmode=true 你可以使用四种方式来使用 ConfigMap 配置 Pod 中的容器：
+在容器命令和参数内 容器的环境变量 在只读卷里面添加一个文件，让应用来读取 编写代码在 Pod 中运行，使用 Kubernetes API 来读取 ConfigMap 通过环境变量的方式使用ConfigMap 首先我们创建一个Deployment然后通过Env环境变量的方式进行使用ConfigMap</description>
+    </item>
+    
+    <item>
+      <title>HorizontalPodAutoscaler</title>
+      <link>https://blog.mletter.cn/posts/horizontalpodautoscaler/</link>
+      <pubDate>Tue, 14 Feb 2023 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.mletter.cn/posts/horizontalpodautoscaler/</guid>
+      <description>HorizontalPodAutoscaler HPA官方文档 在Kubernetes 中HorizontalPodAutoscaler自动更新工作负载资源 （例如 Deployment 或者 StatefulSet）， 目的是自动扩缩工作负载以满足需求。
+水平扩缩意味着对增加的负载的响应是部署更多的 Pod。 这与垂直(Vertical)扩缩不同，对于 Kubernetes， 垂直扩缩意味着将更多资源（例如：内存或 CPU）分配给已经为工作负载运行的 Pod。
+如果负载减少，并且Pod的数量高于配置的最小值，HorizontalPodAutoscaler 会指示工作负载资源（Deployment、StatefulSet 或其他类似资源）缩减。
+水平Pod自动扩缩不适用于无法扩缩的对象: 例如DemonSet这种
+我们可以简单的通过 kubectl autoscale 命令来创建一个 HPA 资源对象，HPA Controller默认30s轮询一次（可通过 kube-controller-manager 的--horizontal-pod-autoscaler-sync-period 参数进行设置），查询指定的资源中的 Pod 资源使用率，并且与创建时设定的值和指标做对比，从而实现自动伸缩的功能。
+HorizontalPodAutoscaler 是如何工作的 Kubernetes 将水平 Pod 自动扩缩实现为一个间歇运行的控制回路（它不是一个连续的过程）。间隔由 kube-controller-manager 的 --horizontal-pod-autoscaler-sync-period 参数设置（默认间隔为 15 秒）。
+在每个时间段内，控制器管理器都会根据每个 HorizontalPodAutoscaler 定义中指定的指标查询资源利用率。 控制器管理器找到由 scaleTargetRef 定义的目标资源，然后根据目标资源的 .spec.selector 标签选择 Pod， 并从资源指标 API（针对每个 Pod 的资源指标）或自定义指标获取指标 API（适用于所有其他指标）
+对于按 Pod 统计的资源指标（如 CPU），控制器从资源指标 API 中获取每一个 HorizontalPodAutoscaler 指定的 Pod 的度量值，如果设置了目标使用率，控制器获取每个 Pod 中的容器资源使用情况， 并计算资源使用率。如果设置了 target 值，将直接使用原始数据（不再计算百分比）。 接下来，控制器根据平均的资源使用率或原始值计算出扩缩的比例，进而计算出目标副本数。 如果 Pod 使用自定义指示，控制器机制与资源指标类似，区别在于自定义指标只使用原始值，而不是使用率。 如果 Pod 使用对象指标和外部指标（每个指标描述一个对象信息）。 这个指标将直接根据目标设定值相比较，并生成一个上面提到的扩缩比例。 在 autoscaling/v2 版本 API 中，这个指标也可以根据 Pod 数量平分后再计算。 HorizontalPodAutoscaler的常见用途是将其配置为从聚合 API （metrics.</description>
+    </item>
+    
+    <item>
+      <title>Kubernetes中Api-Server简单解读</title>
+      <link>https://blog.mletter.cn/posts/api-server/</link>
+      <pubDate>Tue, 07 Feb 2023 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.mletter.cn/posts/api-server/</guid>
+      <description>访问控制概览 Kubernetes API的每个请求都会经过多阶段的访问控制之后才会被接受,这一阶段包括认证、授权、以及准入控制(Admission Control)等
+认证插件 x509证书：使用x509证书只需要API Server启动的时候配置 --client-ca-file=SOMEFILE。在证书认证的时候,其CN域名做用户名,而组织机构用作group名。 静态Token文件：使用静态Token文件认证只需要在API Server启动的时候配置 --token-auth-file=SOMEFILE。该文件为csv格式,每行至少包括三列token、username、user id 引导Token 为了支持平滑的启动和引导新的集群,kubernetes包含了一种动态管理的持有令牌类型,称作启动引导令牌(Bootstrap Token) 这些令牌以Secret的形式保存在kube-system的名称空间中,可以动态的管理和创建。 控制器管理器包含的TokenCleaner控制器能够在启动引导令牌过期时将其删除。 在使用kubeadm部署kubernetes的时候,可以通过kubeadm token list进行查询。 ServiceAccount：是kubernetes自动生成的,并且会自动挂载到容器的/run/secrets/kubernetes.io/serviceaccount目录当中 Webhook令牌身份认证 --authentication-token-webhook-config-file：指向一个配置文件,其中描述如何访问远程的Webhook服务 --authentication-token-webhook-cache-ttl：用来设定身份认证决定的缓存时间。默认为2分钟。 静态Token用法 新建一个存放静态Token的目录 1mkdir -p /etc/kubernetes/auth 将Token内容写入到文件当中 注意：该文件格式为CSV格式，其实你也可以随便写:happy:
+1描述： Token值 用户名称 用户ID 可选组名 2kube-token,kubeadminer,1000,&amp;#34;group1,group2,group3&amp;#34; 假设这是我们请求名称空间的请求: curl -k -v -XGET -H &amp;quot;Authrization: Bearer kube-token&amp;quot; https://api.k8s.version.cn:6443/api/v1/namespaces/default
+正常请求会返回，因为我没有创建这个kube-token
+1{ 2 &amp;#34;kind&amp;#34;: &amp;#34;Status&amp;#34;, 3 &amp;#34;apiVersion&amp;#34;: &amp;#34;v1&amp;#34;, 4 &amp;#34;metadata&amp;#34;: { 5 6 }, 7 &amp;#34;status&amp;#34;: &amp;#34;Failure&amp;#34;, 8 &amp;#34;message&amp;#34;: &amp;#34;namespaces \&amp;#34;default\&amp;#34; is forbidden: User \&amp;#34;system:anonymous\&amp;#34; cannot get resource \&amp;#34;namespaces\&amp;#34; in API group \&amp;#34;\&amp;#34; in the namespace \&amp;#34;default\&amp;#34;&amp;#34;, 9 &amp;#34;reason&amp;#34;: &amp;#34;Forbidden&amp;#34;, 10 &amp;#34;details&amp;#34;: { 11 &amp;#34;name&amp;#34;: &amp;#34;default&amp;#34;, 12 &amp;#34;kind&amp;#34;: &amp;#34;namespaces&amp;#34; 13 }, 14 &amp;#34;code&amp;#34;: 403 设置API Server 注意： 操作的时候请备份你的API Server文件，这是一个好习惯.</description>
+    </item>
+    
+    <item>
+      <title>kubernetes-dashboard</title>
+      <link>https://blog.mletter.cn/posts/kubernetes-dashboard/</link>
+      <pubDate>Fri, 03 Feb 2023 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.mletter.cn/posts/kubernetes-dashboard/</guid>
+      <description>官方WebUI部署 Dashboard 安装部署 从官方仓库部署
+1[root@containerd-kube-master ~]# kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.6.1/aio/deploy/recommended.yaml 如果无法下载请新建dashboard.yaml复制以下内容进行应用
+1# Copyright 2017 The Kubernetes Authors. 2# 3# Licensed under the Apache License, Version 2.0 (the &amp;#34;License&amp;#34;); 4# you may not use this file except in compliance with the License. 5# You may obtain a copy of the License at 6# 7# http://www.apache.org/licenses/LICENSE-2.0 8# 9# Unless required by applicable law or agreed to in writing, software 10# distributed under the License is distributed on an &amp;#34;AS IS&amp;#34; BASIS, 11# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</description>
+    </item>
+    
+    <item>
+      <title>kubernetes1.22.0单节点集群部署</title>
+      <link>https://blog.mletter.cn/posts/install-kubernetes/</link>
+      <pubDate>Thu, 29 Dec 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.mletter.cn/posts/install-kubernetes/</guid>
+      <description>kubernetes1.22.10部署 准备工作 兼容的 Linux 主机。Kubernetes 项目为基于 Debian 和 Red Hat 的 Linux 发行版以及那些没有包管理器的发行版提供了通用说明。 每台机器 2 GB 或更多 RAM（任何更少都会为您的应用程序留下很小的空间）。 2 个 CPU 或更多。 集群中所有机器之间的完整网络连接（公共或专用网络都可以）。 每个节点的唯一主机名、MAC 地址和 product_uuid。有关更多详细信息，请参见此处。 您的机器上的某些端口是开放的。有关更多详细信息，请参见此处。 交换Swap分区。必须禁用Swap才能使 kubelet 正常工作。 我的服务器配置列表 没有必要按照我的这个配置去操作个人建议实验环境：正常演示环境2核2G就够了
+需要开放的端口 虽然 etcd 端口包含在控制平面部分，但您也可以在外部或自定义端口上托管自己的 etcd 集群。 可以覆盖所有默认端口号。当使用自定义端口时，这些端口需要打开而不是此处提到的默认值。 一个常见的例子是 API 服务器端口，有时会切换到 443。或者，默认端口保持原样，API 服务器放在负载均衡器后面，该负载均衡器监听 443 并将请求路由到默认端口上的 API 服务器。
+准备主机地址 修改每一台主机的/etc/hosts配置 1# vim /etc/hosts 210.1.6.45 containerd-kube-master 310.1.6.46 containerd-kube-work1 410.1.6.47 containerd-kube-work2 关闭swap分区以及防火墙 进入fstab后找到你挂载的swap分区注释即可.
+1[root@bogon ~]# swapoff -a 2[root@localhost ~]# echo &amp;#34;vm.swappiness = 0&amp;#34; &amp;gt;&amp;gt; /etc/sysctl.</description>
+    </item>
+    
+    <item>
+      <title>利用Kubeadm进行多Master高可用部署</title>
+      <link>https://blog.mletter.cn/posts/install-kubernetes-ha/</link>
+      <pubDate>Thu, 29 Dec 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.mletter.cn/posts/install-kubernetes-ha/</guid>
+      <description>利用Kubeadm创建高可用集群 使用具有堆叠的控制平面节点。这种方法所需基础设施较少。etcd 成员和控制平面节点位于同一位置。 使用外部 etcd 集群。这种方法所需基础设施较多。控制平面的节点和 etcd 成员是分开的。 在下一步之前，你应该仔细考虑哪种方法更好地满足你的应用程序和环境的需求。 高可用拓扑选项 讲述了每种方法的优缺点。 如何安装Kubectl和Kubeadm 如何安装外部的Etcd集群 参与主机列表 IP CPU 内存 硬盘 角色 10.1.6.48 8 16 100 control-plane1 10.1.6.24 8 16 100 control-plane2 10.1.6.45 8 16 100 control-plane3 10.1.6.46 8 16 100 work1 10.1.6.43 8 16 100 work2 10.1.6.47 8 16 100 work3 10.1.6.213 4 4 20 HA+KP1 10.1.6.214 4 4 20 HA+KP2 10.1.6.215 Load_Balancer_IP 10.1.6.51 8 16 100 Etcd1 10.1.6.52 8 16 100 Etcd2 10.</description>
+    </item>
+    
+    <item>
+      <title>Kubernetes低版本中内存泄漏问题</title>
+      <link>https://blog.mletter.cn/posts/kubernetes-%E5%86%85%E5%AD%98%E6%B3%84%E6%BC%8F/</link>
+      <pubDate>Sat, 08 Oct 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.mletter.cn/posts/kubernetes-%E5%86%85%E5%AD%98%E6%B3%84%E6%BC%8F/</guid>
+      <description>Kubernetes中Cgroup泄漏问题 Cgorup文档: https://www.kernel.org/doc/Documentation/cgroup-v1/memory.txt
+绝大多数的kubernetes集群都有这个隐患。只不过一般情况下，泄漏得比较慢，还没有表现出来而已。
+一个pod可能泄漏两个memory cgroup数量配额。即使pod百分之百发生泄漏， 那也需要一个节点销毁过三万多个pod之后，才会造成后续pod创建失败。
+一旦表现出来，这个节点就彻底不可用了，必须重启才能恢复。
+故障表现 该内容的故障信息已经提交给Github: https://github.com/kubernetes/kubernetes/issues/112940 我在服务器中更新Pod出现如下错误 cannot allocate memory
+1unable to ensure pod container exists: failed to create container for [kubepods burstable podd5dafc96-2bcd-40db-90fd-c75758746a7a] : mkdir /sys/fs/cgroup/memory/kubepods/burstable/podd5dafc96-2bcd-40db-90fd-c75758746a7a: cannot allocate memory 使用dmesg查看系统日志的错误内容信息
+1SLUB: Unable to allocate memory on node -1 服务器配置信息 操作系统: CentOS Linux release 7.9.2009 (Core) 系统内核: 3.10.0-1160.el7.x86_64 Kubernetes: 1.17.9 dockerVersion: 20.10.7 问题原因1 Kubernetes在1.9版本开启了对kmem的支持,因此 1.9以后的所有版本都有该问题，但必须搭配3.x内核的机器才会出问题。一旦出现会导致新 pod 无法创建，已有 pod不受影响，但pod 漂移到有问题的节点就会失败，直接影响业务稳定性。因为是内存泄露，直接重启机器可以暂时解决，但还会再次出现。 cgroup的kmem account特性在3.x 内核上有内存泄露问题，如果开启了kmem account特性会导致可分配内存越来越少，直到无法创建新 pod 或节点异常。</description>
+    </item>
+    
+    <item>
+      <title>有关于Kubernetes中影响Pod调度的问题</title>
+      <link>https://blog.mletter.cn/posts/%E6%9C%89%E5%85%B3%E5%BD%B1%E5%93%8Dpod%E8%B0%83%E5%BA%A6%E7%9A%84%E9%97%AE%E9%A2%98/</link>
+      <pubDate>Tue, 21 Dec 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.mletter.cn/posts/%E6%9C%89%E5%85%B3%E5%BD%B1%E5%93%8Dpod%E8%B0%83%E5%BA%A6%E7%9A%84%E9%97%AE%E9%A2%98/</guid>
+      <description>此问题引出的是生产环境中所有的资源完全充足,但是会出现更新Pod、删除Pod、新建Pod无法调度的情况。
+生产环境解决问题办法 找到问题跟原所在,默认的maxPods: 110,K8S默认一个节点上的pod调度数是110，当前有限制pod数的需求。 vim /var/lib/kubelet/config.yaml
+1maxPods: 110 # 修改为maxPods: 330 影响Pod调度的情况 requests资源限制 requests：是一种硬限制,Kubernetes在进行Pod请求调度的时候,节点的可用资源必须满足500m的CPU才能进行调度,且使用最大限制为1个CPU,如果该Pod超过请求的最大限制,则Kubernetes将会把该Pod进行Kill重启。 1resources: 2 limits: 3 cpu: &amp;#39;1&amp;#39; 4 requests: 5 cpu: 500m 当你设置request为500m以及limit为1000m的时候,当你使用 kubectl describe node查看节点资源的时候可能会与你设置的请求量不符合,这是以你Pod 的实际使用量为标准的。
+节点标签的Label 标签选择器： kubectl label node kubernetes-node1 env_role=dev 通过此命令对相应的节点加入标签 kubectl label node 节点名称 标签名称 1spec: 2 nodeSelector: 3 env_role: dev 当然,你也可以通过kubectl get node --show-labels命令查看当前节点的标签
+1NAME STATUS ROLES AGE VERSION LABELS 2master1 Ready,SchedulingDisabled master 141d v1.17.9 beta.kubernetes.io/arch=amd64,beta.kubernetes.io/os=linux,kubernetes.io/arch=amd64,kubernetes.io/hostname=master1,kubernetes.io/os=linux,node-role.kubernetes.io/master= 3master2 Ready,SchedulingDisabled master 139d v1.</description>
+    </item>
+    
+    <item>
+      <title>kubernetes-离线部署Skywallking</title>
+      <link>https://blog.mletter.cn/posts/kubernetes-skywallking/</link>
+      <pubDate>Wed, 07 Apr 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.mletter.cn/posts/kubernetes-skywallking/</guid>
+      <description>注意：请各位记住把所有离线包全拿到本地…
+在线部署chartmuseum 直接使用最简单的 docker run 方式，使用local 本地存储方式，通过 -v 映射到宿主机 /opt/charts 更多支持安装方式见官网
+1mkdir /opt/charts 2docker run -d \ 3 -p 8080:8080 \ 4 -e DEBUG=1 \ 5 -e STORAGE=local \ 6 -e STORAGE_LOCAL_ROOTDIR=/charts \ 7 -v /opt/charts:/charts \ 8 chartmuseum/chartmuseum:latest 下载Skywalking包 1git clone https://github.com/apache/skywalking-kubernetes.git 2# 更换仓库 3cd skywalking-kubernetes-master/chart/skywalking/ 4vim Chats.yaml 5dependencies: 6 - name: elasticsearch 7 version: ~7.12.1 # 官网的版本号为7.5.1 最新的elastic版本为7.12.1 8 repository: http://localhost:8080 # 修改为你本地的Repo地址 9 condition: elasticsearch.enabled 添加elasticsearch仓库 1helm repo add elastic https://helm.</description>
+    </item>
+    
+    <item>
+      <title>kubernetes-Service解读</title>
+      <link>https://blog.mletter.cn/posts/kubernetes-service/</link>
+      <pubDate>Mon, 13 Apr 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.mletter.cn/posts/kubernetes-service/</guid>
+      <description>Service的简单理解 Service 是一种抽象的对象，它定义了一组 Pod 的逻辑集合和一个用于访问它们的策略，其实这个概念和微服务非常类似。一个 Serivce 下面包含的 Pod 集合是由 Label Selector 来决定的。
+假如我们后端运行了3个副本，这些副本都是可以替代的，因为前端并不关心它们使用的是哪一个后端服务。尽管由于各种原因后端的 Pod 集合会发送变化，但是前端却不需要知道这些变化，也不需要自己用一个列表来记录这些后端的服务，Service 的这种抽象就可以帮我们达到这种解耦的目的。
+三种IP 在继续往下学习 Service 之前，我们需要先弄明白 Kubernetes 系统中的三种IP，因为经常有同学混乱。
+NodeIP：Node 节点的 IP 地址 PodIP: Pod 的 IP 地址 ClusterIP: Service 的 IP 地址 首先，NodeIP是Kubernetes集群中节点的物理网卡IP地址(一般为内网)，所有属于这个网络的服务器之间都可以直接通信，所以Kubernetes集群外要想访问Kubernetes集群内部的某个节点或者服务，肯定得通过Node P进行通信（这个时候一般是通过外网 IP 了）
+然后PodIP是每个Pod的IP地址，它是网络插件进行分配的，前面我们已经讲解过
+最后ClusterIP是一个虚拟的IP，仅仅作用于Kubernetes Service 这个对象，由Kubernetes自己来进行管理和分配地址。
+定义Servcie 定义 Service 的方式和我们前面定义的各种资源对象的方式类型，例如，假定我们有一组 Pod 服务，它们对外暴露了 8080 端口，同时都被打上了 app=beijing-nginx 这样的标签，那么我们就可以像下面这样来定义一个 Service 对象
+apiVersion: v1 kind: Service metadata: name: public-beijing-nginx-service spec: selector: app: beijing-nginx ports: - protocol: TCP port: 80 targetPort: 80 # 可以理解成是service的访问端口 name: beijing-nginx-http 然后通过的使用 kubectl create -f myservice.</description>
+    </item>
+    
+    <item>
+      <title>kubernetes-部署NACOS</title>
+      <link>https://blog.mletter.cn/posts/kubernetes-nacos/</link>
+      <pubDate>Tue, 07 Apr 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.mletter.cn/posts/kubernetes-nacos/</guid>
+      <description>简单安装使用 最新版本应该是1.4.1
+1git clone https://github.com/nacos-group/nacos-k8s.git 简单使用 如果你使用简单方式快速启动,请注意这是没有使用持久化卷的,可能存在数据丢失风险:!!! 1cd nacos-k8s 2chmod +x quick-startup.sh 3./quick-startup.sh 演示使用 服务注册 1curl -X PUT &amp;#39;http://cluster-ip:8848/nacos/v1/ns/instance?serviceName=nacos.naming.serviceName&amp;amp;ip=20.18.7.10&amp;amp;port=8080&amp;#39; 服务发现 1curl -X GET &amp;#39;http://cluster-ip:8848/nacos/v1/ns/instance/list?serviceName=nacos.naming.serviceName&amp;#39; 发布配置 1curl -X POST &amp;#34;http://cluster-ip:8848/nacos/v1/cs/configs?dataId=nacos.cfg.dataId&amp;amp;group=test&amp;amp;content=helloWorld&amp;#34; 获取配置 1curl -X GET &amp;#34;http://cluster-ip:8848/nacos/v1/cs/configs?dataId=nacos.cfg.dataId&amp;amp;group=test&amp;#34; 高级用法 在高级使用中,Nacos在K8S拥有自动扩容缩容和数据持久特性,请注意如果需要使用这部分功能请使用PVC持久卷,Nacos的自动扩容缩容需要依赖持久卷,以及数据持久化也是一样,本例中使用的是NFS来使用PVC.
+部署NFS nfs-client-provisioner 可动态为kubernetes提供pv卷，是Kubernetes的简易NFS的外部provisioner，本身不提供NFS，需要现有的NFS服务器提供存储。持久卷目录的命名规则为: ${namespace}-${pvcName}-${pvName}
+创建角色
+1kubectl create -f deploy/nfs/rbac.yaml 修改NFS的yaml
+1vim nacos-k8s/deploy/nfs/deployment.yaml 2apiVersion: v1 3kind: ServiceAccount 4metadata: 5 name: nfs-client-provisioner 6--- 7kind: Deployment 8apiVersion: apps/v1 9metadata: 10 name: nfs-client-provisioner 11spec: 12 replicas: 1 13 strategy: 14 type: Recreate 15 selector: 16 matchLabels: 17 app: nfs-client-provisioner 18 template: 19 metadata: 20 labels: 21 app: nfs-client-provisioner 22 spec: 23 serviceAccount: nfs-client-provisioner 24 containers: 25 - name: nfs-client-provisioner 26 image: quay.</description>
+    </item>
+    
+    <item>
+      <title>kubernetes-Scheduler简单详解</title>
+      <link>https://blog.mletter.cn/posts/scheduler/</link>
+      <pubDate>Sat, 14 Mar 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.mletter.cn/posts/scheduler/</guid>
+      <description>kube-scheduler 是 kubernetes 的核心组件之一，主要负责整个集群资源的调度功能，根据特定的调度算法和策略，将 Pod 调度到最优的工作节点上面去，从而更加合理、更加充分的利用集群的资源，这也是我们选择使用 kubernetes 一个非常重要的理由。如果一门新的技术不能帮助企业节约成本、提供效率，我相信是很难推进的。
+调度流程 kube-scheduler 提供的默认调度器能够满足我们绝大多数的要求，我们前面和大家接触的示例也基本上用的默认的策略，都可以保证我们的 Pod 可以被分配到资源充足的节点上运行。但是在实际的线上项目中，可能我们自己会比 kubernetes 更加了解我们自己的应用，比如我们希望一个 Pod 只能运行在特定的几个节点上，或者这几个节点只能用来运行特定类型的应用，这就需要我们的调度器能够可控。
+发起创建Deployment请求-&amp;gt;API Server,这个时候APIServer会进行一系列的逻辑处理,例如: 鉴权、查看你是否有权限操作、Deployment创建是否合法等等,然后将请求存储到etcd当中并且转发给Controller Manager Controller Manager会监听API Server,这个时候假设监听到的是一个创建Deployment的请求,则会把请求转发到Deployment Controller Deployment Controller接受到请求后创建ReplicaSet,然后ReplicaSet Controller会根据yaml当中定义的template模板来进行创建Pod,然后返回给API Server 在创建之初的Pod属性中nodeName为空,也就是没有被调度过的,这个时候调度器就会对它进行调度,调度去watchPod对象,然后分析那个节点最适合这个Pod,然后将节点的名字通过类似于bind的这种方法写入到nodeName当中。 然后该节点的kubelet会进行一系列的判断,然后进入Create Pod的流程,然后进行一系列的CNI和CSI的过程。 这也就是我们常说的往往越简单的东西,背后实现的越复杂。
+调度阶段 kube-scheduler调度分为两个阶段
+predicate: 过滤阶段，过滤不符合条件的节点。 priority: 优先级排序，选择优先级最高的节点，也就是给节点打分。 Predicates策略 PodFitsHostPorts: 检查是否有Host Ports冲突 PodFitsPorts: 同上 PodFitsResources: 检查Node的资源是否充足，包括允许的Pod数量、CPU、内存、GPU个数以及其他的OpaqueIntResources。 HostName:检查pod.Spec.NodeName是否与候选节点一致 MatchNodeSelector:检查候选节点的pod.Spec.NodeSelector是否匹配 NoVolumeZoneConflict:检查volume zone是否冲突 Priority策略 SelectorSpreadPriority: 优先减少节点上属于同一个Service或Replication Controller的Pod数量。 InterPodAffinityPriority: 优先将Pod调度到相同的拓扑上 LeastRequestedPriority:优先调度到请求资源少的节点上 BalancedResourceAllocation: 优先平衡各节点的资源使用 NodePreferAvoidPodsPriority:权重判断 太多了可以自己去官网了解一下，这些策略都可以通过scheduler配置文件去配置，其实一般来说我们不太需要，我觉得kubernetes的调度是最让我们省心的。
+资源需求 requests:属于调度器调度的时候所参考的指标，也就是说我这个应用最少需要250m的cpu和256m的内存才能运行。 1kind: Deployment 2apiVersion: apps/v1 3metadata: 4 name: nginx-deployment 5 namespace: default 6 labels: 7 app: nginx 8 version: qa 9spec: 10 replicas: 2 11 selector: 12 matchLabels: 13 app: nginx 14 version: qa 15 template: 16 metadata: 17 creationTimestamp: null 18 labels: 19 app: nginx 20 version: qa 21 spec: 22 volumes: 23 - name: host-time 24 hostPath: 25 path: /etc/localtime 26 type: &amp;#39;&amp;#39; 27 containers: 28 - name: nginx 29 image: nginx:latest 30 ports: 31 - name: http-web 32 containerPort: 80 33 protocol: TCP 34 resources: 35 limits: 36 cpu: &amp;#39;1&amp;#39; 37 memory: 2Gi 38 requests: 39 cpu: 250m 40 memory: 256Mi 可以查看你节点的一些资源状态</description>
+    </item>
+    
+  </channel>
+</rss>

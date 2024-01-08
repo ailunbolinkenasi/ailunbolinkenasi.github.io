@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>dashboard on </title>
+    <link>https://blog.mletter.cn/tags/dashboard/</link>
+    <description>Recent content in dashboard on </description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Fri, 03 Feb 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://blog.mletter.cn/tags/dashboard/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>kubernetes-dashboard</title>
+      <link>https://blog.mletter.cn/posts/kubernetes-dashboard/</link>
+      <pubDate>Fri, 03 Feb 2023 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.mletter.cn/posts/kubernetes-dashboard/</guid>
+      <description>官方WebUI部署 Dashboard 安装部署 从官方仓库部署
+1[root@containerd-kube-master ~]# kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.6.1/aio/deploy/recommended.yaml 如果无法下载请新建dashboard.yaml复制以下内容进行应用
+1# Copyright 2017 The Kubernetes Authors. 2# 3# Licensed under the Apache License, Version 2.0 (the &amp;#34;License&amp;#34;); 4# you may not use this file except in compliance with the License. 5# You may obtain a copy of the License at 6# 7# http://www.apache.org/licenses/LICENSE-2.0 8# 9# Unless required by applicable law or agreed to in writing, software 10# distributed under the License is distributed on an &amp;#34;AS IS&amp;#34; BASIS, 11# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</description>
+    </item>
+    
+  </channel>
+</rss>

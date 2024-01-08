@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>configmap on </title>
+    <link>https://blog.mletter.cn/tags/configmap/</link>
+    <description>Recent content in configmap on </description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Tue, 14 Feb 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://blog.mletter.cn/tags/configmap/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>ConfigMap和Secret的使用</title>
+      <link>https://blog.mletter.cn/posts/configmapandservice/</link>
+      <pubDate>Tue, 14 Feb 2023 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.mletter.cn/posts/configmapandservice/</guid>
+      <description>ConfigMap ConfigMap 是一种 API 对象，用来将非机密性的数据保存到键值对中。使用时， Pods 可以将其用作环境变量、命令行参数或者存储卷中的配置文件。
+ConfigMap 将你的环境配置信息和 容器镜像 解耦，便于应用配置的修改。 ConfigMap 在设计上不是用来保存大量数据的。在 ConfigMap 中保存的数据不可超过1MiB(这其实是ETCD的要求哈哈哈)。如果你需要保存超出此尺寸限制的数据，你可能希望考虑挂载存储卷 或者使用独立的数据库或者文件服务。
+这是一个 ConfigMap 的示例，它的一些键只有一个值，其他键的值看起来像是 配置的片段格式。
+通过Key和Value这种键值对来进行写入数据 1apiVersion: v1 2kind: ConfigMap 3metadata: 4 name: game-demo 5data: 6 # 类属性键；每一个键都映射到一个简单的值 7 player_initial_lives: &amp;#34;3&amp;#34; 8 ui_properties_file_name: &amp;#34;user-interface.properties&amp;#34; 9 # 类文件键,一般用来保存一个文件到指定目录 10 game.properties: | 11 enemy.types=aliens,monsters 12 player.maximum-lives=5 13 user-interface.properties: | 14 color.good=purple 15 color.bad=yellow 16 allow.textmode=true 你可以使用四种方式来使用 ConfigMap 配置 Pod 中的容器：
+在容器命令和参数内 容器的环境变量 在只读卷里面添加一个文件，让应用来读取 编写代码在 Pod 中运行，使用 Kubernetes API 来读取 ConfigMap 通过环境变量的方式使用ConfigMap 首先我们创建一个Deployment然后通过Env环境变量的方式进行使用ConfigMap</description>
+    </item>
+    
+  </channel>
+</rss>

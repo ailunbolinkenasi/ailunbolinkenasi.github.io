@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>mysql on </title>
+    <link>https://blog.mletter.cn/categories/mysql/</link>
+    <description>Recent content in mysql on </description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Wed, 20 Jul 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://blog.mletter.cn/categories/mysql/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>MySQL小小优化思路简单版本</title>
+      <link>https://blog.mletter.cn/posts/mysql-%E4%BC%98%E5%8C%96/</link>
+      <pubDate>Wed, 20 Jul 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.mletter.cn/posts/mysql-%E4%BC%98%E5%8C%96/</guid>
+      <description>MySQL性能优化-优化思路 大概的优化思路分为以下几个内容
+硬件层面优化 系统层面优化 MySQL版本选择优化 MySQL三层结构及参数优化 MySQL开发规范 MySQL的索引优化 MySQL的事务以及锁优化 MySQL架构优化 MySQL安全优化 PS: 优化是有风险的,如果你要优化就要变更。
+硬件层面优化 这个地方就略过了就是一些加大硬件配置的需求.
+系统层面优化 id: 空闲状态,如果数值越大,表示空闲状态越多。如果可能达到0的情况下,表示当前CPU的核心处于满负荷状态。 us: 表示当前CPU核心数量的使用率。 sy: 表示CPU与内核交互的频率,内核与CPU处理请求的占用,如果此参数高,表示内核很忙。 wa: CPU从内存中刷数据到硬盘中的占用,可能会出现I/O的问题。 1[root@mysql-master ~]# top 2top - 15:05:11 up 35 days, 5:54, 2 users, load average: 0.00, 0.01, 0.05 3Tasks: 225 total, 2 running, 223 sleeping, 0 stopped, 0 zombie 4%Cpu0 : 0.0 us, 0.0 sy, 0.0 ni,100.0 id, 0.0 wa, 0.0 hi, 0.0 si, 0.0 st 5%Cpu1 : 0.</description>
+    </item>
+    
+  </channel>
+</rss>

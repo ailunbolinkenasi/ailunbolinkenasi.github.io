@@ -1,4 +1,41 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>ansible on</title><link>https://blog.mletter.cn/tags/ansible/</link><description>Recent content in ansible on</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Mon, 29 Aug 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://blog.mletter.cn/tags/ansible/index.xml" rel="self" type="application/rss+xml"/><item><title>Ansible-任务控制</title><link>https://blog.mletter.cn/posts/ansible-task/</link><pubDate>Mon, 29 Aug 2022 00:00:00 +0000</pubDate><guid>https://blog.mletter.cn/posts/ansible-task/</guid><description>Ansible-with_items 通过with_items进行循环 语法
-{{ item }}: 为读取with_items的固定写法 with_items: 是一个列表,下面可以有多个不同的内容 1- hosts: test 2 remote_user: root 3 gather_facts: false 4 vars_files: ./public_vars.yaml 5 tasks: 6 - name: Services Http start 7 service: name={{ item }} state=started 8 with_items: 9 - httpd 10 - firewalld 普通写法 1- hosts: test 2 remote_user: root 3 gather_facts: false 4 vars_files: ./public_vars.yaml 5 tasks: 6 - name: Set authorized_key in dest hosts 7 authorized_key: 8 user: root 9 key: &amp;#34;{{ lookup(&amp;#39;file&amp;#39;, &amp;#39;/root/.</description></item><item><title>Ansible变量相关内容</title><link>https://blog.mletter.cn/posts/ansible-vrables/</link><pubDate>Mon, 15 Aug 2022 00:00:00 +0000</pubDate><guid>https://blog.mletter.cn/posts/ansible-vrables/</guid><description>Ansible怎么定义变量 通过playbook中的play进行变量的定义 通过inventory主机清单进行变量定义 通过执行playbook的时候增加-e选项进行定义 通过Playbook中的vars定义变量 在Playbook中通过写入vars语法定义变量 通过{{变量名}}进行引用! 1- hosts: test 2 remote_user: root 3 vars: 4 - httpd_package: httpd 5 tasks: 6 - name: Install DepencyEnvorment 7 yum: 8 name: {{httpd_package}} 9 state: present 10 update_cache: yes 通过定义变量文件进行使用 定义一个名字为public_vars.yaml的变量配置文件 1depence: [&amp;#39;openssl-devel&amp;#39;,&amp;#39;pcre-devel&amp;#39;,&amp;#39;zlib-devel&amp;#39;] 注意: 当你引用了变量文件中的变量,请在读取变量的时候增加双引号&amp;quot;&amp;quot;
-1- hosts: test 2 remote_user: root 3 vars_files: 4 - ./public_vars.yaml 5 - ./public_vars2.yaml # 如果是多个变量的话 6 tasks: 7 - name: &amp;#34;Install De&amp;#34; 8 yum: 9 name: &amp;#34;{{depence}}&amp;#34; # 通过双引号去引入变量内容,不然会报错 10 state: present 11 update_cache: no 通过编辑inventory主机清单进定义 这种方法一般用的很少 1[test] 210.</description></item><item><title>Playbook的一些简单使用</title><link>https://blog.mletter.cn/posts/playbook/</link><pubDate>Fri, 01 Apr 2022 00:00:00 +0000</pubDate><guid>https://blog.mletter.cn/posts/playbook/</guid><description>playbook是由一个或多个&amp;quot;play&amp;quot;组成的列表 playbook的主要功能在于将预定义的一组主机，装扮成事先通过ansible中的task定义好的角色。 Task实际是调用ansible的一个module，将多个play组织在一个playbook中， 即可以让它们联合起来，按事先编排的机制执行预定义的动作 Playbook采用YAML语言编写 1--- 2- hosts: test # 指定主机列表 3 remote_user: root # 远程操作以什么身份执行 4 tasks: 5 - name: Install Redis # 提示字段,表示当前处于什么进度 6 command: install redis # 当前执行的具体命令操作 1.0 PlayBook核心元素 Hosts：playbook中的每一个play的目的都是为了让特定主机以某个指定的用户身份执行任务,hosts用于指定要执行指定任务的主机，须事先定义在主机清单中.详细请看 remote_user: 可用于Host和task中。也可以通过指定其通过sudo的方式在远程主机上执行任务，其可用于play全局或某任务.此外，甚至可以在sudo时使用sudo_user指定sudo时切换的用户. varniables: 内置变量或自定义变量在playbook中调用 Templates模板 : 可替换模板文件中的变量并实现一些简单逻辑的文件 Handlers和notify: 结合使用，由特定条件触发的操作，满足条件方才执行，否则不执行 tags: 指定某条任务执行，用于选择运行playbook中的部分代码. 1ansible-playbook -C hello.yaml -C 选项检查剧本是否成功,并不实际执行 1.0.1 忽略错误信息 也可以使用ignore_errors来忽略错误信息
-1tasks: 2 - name: run this 3 shell: /usr/bin/ls || /bin/true 4 ignore_errors: True 1.0.2 常用选项 --check: 只检测可能会发生的改变,但是不会执行 --list-hosts: 列出运行任务的主机 --limit: 主机列表,只针对主机列表中的主机执行 -v: 显示过程 --list-tasks: 查看任务列表 1ansible-playbook hello.</description></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>ansible on </title>
+    <link>https://blog.mletter.cn/tags/ansible/</link>
+    <description>Recent content in ansible on </description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Mon, 29 Aug 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://blog.mletter.cn/tags/ansible/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Ansible-任务控制</title>
+      <link>https://blog.mletter.cn/posts/ansible-task/</link>
+      <pubDate>Mon, 29 Aug 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.mletter.cn/posts/ansible-task/</guid>
+      <description>Ansible-with_items 通过with_items进行循环 语法
+{{ item }}: 为读取with_items的固定写法 with_items: 是一个列表,下面可以有多个不同的内容 1- hosts: test 2 remote_user: root 3 gather_facts: false 4 vars_files: ./public_vars.yaml 5 tasks: 6 - name: Services Http start 7 service: name={{ item }} state=started 8 with_items: 9 - httpd 10 - firewalld 普通写法 1- hosts: test 2 remote_user: root 3 gather_facts: false 4 vars_files: ./public_vars.yaml 5 tasks: 6 - name: Set authorized_key in dest hosts 7 authorized_key: 8 user: root 9 key: &amp;#34;{{ lookup(&amp;#39;file&amp;#39;, &amp;#39;/root/.</description>
+    </item>
+    
+    <item>
+      <title>Ansible变量相关内容</title>
+      <link>https://blog.mletter.cn/posts/ansible-vrables/</link>
+      <pubDate>Mon, 15 Aug 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.mletter.cn/posts/ansible-vrables/</guid>
+      <description>Ansible怎么定义变量 通过playbook中的play进行变量的定义 通过inventory主机清单进行变量定义 通过执行playbook的时候增加-e选项进行定义 通过Playbook中的vars定义变量 在Playbook中通过写入vars语法定义变量 通过{{变量名}}进行引用! 1- hosts: test 2 remote_user: root 3 vars: 4 - httpd_package: httpd 5 tasks: 6 - name: Install DepencyEnvorment 7 yum: 8 name: {{httpd_package}} 9 state: present 10 update_cache: yes 通过定义变量文件进行使用 定义一个名字为public_vars.yaml的变量配置文件 1depence: [&amp;#39;openssl-devel&amp;#39;,&amp;#39;pcre-devel&amp;#39;,&amp;#39;zlib-devel&amp;#39;] 注意: 当你引用了变量文件中的变量,请在读取变量的时候增加双引号&amp;quot;&amp;quot;
+1- hosts: test 2 remote_user: root 3 vars_files: 4 - ./public_vars.yaml 5 - ./public_vars2.yaml # 如果是多个变量的话 6 tasks: 7 - name: &amp;#34;Install De&amp;#34; 8 yum: 9 name: &amp;#34;{{depence}}&amp;#34; # 通过双引号去引入变量内容,不然会报错 10 state: present 11 update_cache: no 通过编辑inventory主机清单进定义 这种方法一般用的很少 1[test] 210.</description>
+    </item>
+    
+    <item>
+      <title>Playbook的一些简单使用</title>
+      <link>https://blog.mletter.cn/posts/playbook/</link>
+      <pubDate>Fri, 01 Apr 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.mletter.cn/posts/playbook/</guid>
+      <description>playbook是由一个或多个&amp;quot;play&amp;quot;组成的列表 playbook的主要功能在于将预定义的一组主机，装扮成事先通过ansible中的task定义好的角色。 Task实际是调用ansible的一个module，将多个play组织在一个playbook中， 即可以让它们联合起来，按事先编排的机制执行预定义的动作 Playbook采用YAML语言编写 1--- 2- hosts: test # 指定主机列表 3 remote_user: root # 远程操作以什么身份执行 4 tasks: 5 - name: Install Redis # 提示字段,表示当前处于什么进度 6 command: install redis # 当前执行的具体命令操作 1.0 PlayBook核心元素 Hosts：playbook中的每一个play的目的都是为了让特定主机以某个指定的用户身份执行任务,hosts用于指定要执行指定任务的主机，须事先定义在主机清单中.详细请看 remote_user: 可用于Host和task中。也可以通过指定其通过sudo的方式在远程主机上执行任务，其可用于play全局或某任务.此外，甚至可以在sudo时使用sudo_user指定sudo时切换的用户. varniables: 内置变量或自定义变量在playbook中调用 Templates模板 : 可替换模板文件中的变量并实现一些简单逻辑的文件 Handlers和notify: 结合使用，由特定条件触发的操作，满足条件方才执行，否则不执行 tags: 指定某条任务执行，用于选择运行playbook中的部分代码. 1ansible-playbook -C hello.yaml -C 选项检查剧本是否成功,并不实际执行 1.0.1 忽略错误信息 也可以使用ignore_errors来忽略错误信息
+1tasks: 2 - name: run this 3 shell: /usr/bin/ls || /bin/true 4 ignore_errors: True 1.0.2 常用选项 --check: 只检测可能会发生的改变,但是不会执行 --list-hosts: 列出运行任务的主机 --limit: 主机列表,只针对主机列表中的主机执行 -v: 显示过程 --list-tasks: 查看任务列表 1ansible-playbook hello.</description>
+    </item>
+    
+  </channel>
+</rss>

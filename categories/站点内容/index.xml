@@ -1,2 +1,21 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>站点内容 on</title><link>https://blog.mletter.cn/categories/%E7%AB%99%E7%82%B9%E5%86%85%E5%AE%B9/</link><description>Recent content in 站点内容 on</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Mon, 08 Jan 2024 11:47:31 +0800</lastBuildDate><atom:link href="https://blog.mletter.cn/categories/%E7%AB%99%E7%82%B9%E5%86%85%E5%AE%B9/index.xml" rel="self" type="application/rss+xml"/><item><title>2024年站点更新内容通知</title><link>https://blog.mletter.cn/bulletin/2024/0108/</link><pubDate>Mon, 08 Jan 2024 11:47:31 +0800</pubDate><guid>https://blog.mletter.cn/bulletin/2024/0108/</guid><description>更新内容 放弃Waline开始拥抱Twkioo,因为之前用Waline总是会有莫名其妙无法访问和评论的问题。 基于主题内容采用了扩展的模块化 HugoMods: 目前全部基于HugoMods 支持了Extended Shortcodes 支持了CodePen 支持各种Alert Shortcodes 支持EMO云(网易云)短代码了,终于可以和你们分享我的歌单了 提示段代码测试 Hi 你好 当你看到这段内容为绿色并且有相应样式的时候，证明你的段代码测试是成功的。 歌单分享 图标更新 本站已经开启支持BootStrap、MDI图标
-Material Design Icons 评论系统更新 Twkioo 已经不用Waline了所以导致以前的Waline评论数据丢失,目前拥抱Twkioo后某些帖子没评论属于正常内容 视频短代码调试 Bilibili测试</description></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>站点内容 on </title>
+    <link>https://blog.mletter.cn/categories/%E7%AB%99%E7%82%B9%E5%86%85%E5%AE%B9/</link>
+    <description>Recent content in 站点内容 on </description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Mon, 08 Jan 2024 11:47:31 +0800</lastBuildDate><atom:link href="https://blog.mletter.cn/categories/%E7%AB%99%E7%82%B9%E5%86%85%E5%AE%B9/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>2024年站点更新内容通知</title>
+      <link>https://blog.mletter.cn/bulletin/2024/0108/</link>
+      <pubDate>Mon, 08 Jan 2024 11:47:31 +0800</pubDate>
+      
+      <guid>https://blog.mletter.cn/bulletin/2024/0108/</guid>
+      <description>更新内容 放弃Waline开始拥抱Twkioo,因为之前用Waline总是会有莫名其妙无法访问和评论的问题。 基于主题内容采用了扩展的模块化 HugoMods: 目前全部基于HugoMods 支持了Extended Shortcodes 支持了CodePen 支持各种Alert Shortcodes 支持EMO云(网易云)短代码了,终于可以和你们分享我的歌单了 提示段代码测试 Hi 你好 当你看到这段内容为绿色并且有相应样式的时候，证明你的段代码测试是成功的。 歌单分享 图标更新 本站已经开启支持BootStrap、MDI图标
+Material Design Icons 评论系统更新 Twkioo 已经不用Waline了所以导致以前的Waline评论数据丢失,目前拥抱Twkioo后某些帖子没评论属于正常内容 视频短代码调试 Bilibili测试 </description>
+    </item>
+    
+  </channel>
+</rss>

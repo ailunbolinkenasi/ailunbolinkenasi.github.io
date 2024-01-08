@@ -1,3 +1,22 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>skywalking on</title><link>https://blog.mletter.cn/tags/skywalking/</link><description>Recent content in skywalking on</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Wed, 07 Apr 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://blog.mletter.cn/tags/skywalking/index.xml" rel="self" type="application/rss+xml"/><item><title>kubernetes-离线部署Skywallking</title><link>https://blog.mletter.cn/posts/kubernetes-skywallking/</link><pubDate>Wed, 07 Apr 2021 00:00:00 +0000</pubDate><guid>https://blog.mletter.cn/posts/kubernetes-skywallking/</guid><description>注意：请各位记住把所有离线包全拿到本地…
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>skywalking on </title>
+    <link>https://blog.mletter.cn/tags/skywalking/</link>
+    <description>Recent content in skywalking on </description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Wed, 07 Apr 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://blog.mletter.cn/tags/skywalking/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>kubernetes-离线部署Skywallking</title>
+      <link>https://blog.mletter.cn/posts/kubernetes-skywallking/</link>
+      <pubDate>Wed, 07 Apr 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.mletter.cn/posts/kubernetes-skywallking/</guid>
+      <description>注意：请各位记住把所有离线包全拿到本地…
 在线部署chartmuseum 直接使用最简单的 docker run 方式，使用local 本地存储方式，通过 -v 映射到宿主机 /opt/charts 更多支持安装方式见官网
-1mkdir /opt/charts 2docker run -d \ 3 -p 8080:8080 \ 4 -e DEBUG=1 \ 5 -e STORAGE=local \ 6 -e STORAGE_LOCAL_ROOTDIR=/charts \ 7 -v /opt/charts:/charts \ 8 chartmuseum/chartmuseum:latest 下载Skywalking包 1git clone https://github.com/apache/skywalking-kubernetes.git 2# 更换仓库 3cd skywalking-kubernetes-master/chart/skywalking/ 4vim Chats.yaml 5dependencies: 6 - name: elasticsearch 7 version: ~7.12.1 # 官网的版本号为7.5.1 最新的elastic版本为7.12.1 8 repository: http://localhost:8080 # 修改为你本地的Repo地址 9 condition: elasticsearch.enabled 添加elasticsearch仓库 1helm repo add elastic https://helm.</description></item></channel></rss>
+1mkdir /opt/charts 2docker run -d \ 3 -p 8080:8080 \ 4 -e DEBUG=1 \ 5 -e STORAGE=local \ 6 -e STORAGE_LOCAL_ROOTDIR=/charts \ 7 -v /opt/charts:/charts \ 8 chartmuseum/chartmuseum:latest 下载Skywalking包 1git clone https://github.com/apache/skywalking-kubernetes.git 2# 更换仓库 3cd skywalking-kubernetes-master/chart/skywalking/ 4vim Chats.yaml 5dependencies: 6 - name: elasticsearch 7 version: ~7.12.1 # 官网的版本号为7.5.1 最新的elastic版本为7.12.1 8 repository: http://localhost:8080 # 修改为你本地的Repo地址 9 condition: elasticsearch.enabled 添加elasticsearch仓库 1helm repo add elastic https://helm.</description>
+    </item>
+    
+  </channel>
+</rss>

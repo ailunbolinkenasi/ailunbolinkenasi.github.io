@@ -1,24 +1,5 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
-  <channel>
-    <title>etcd on </title>
-    <link>https://blog.mletter.cn/tags/etcd/</link>
-    <description>Recent content in etcd on </description>
-    <generator>Hugo -- gohugo.io</generator>
-    <language>en</language>
-    <lastBuildDate>Sun, 26 Feb 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://blog.mletter.cn/tags/etcd/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>使用Kubeadm创建一个高可用的ETCD集群</title>
-      <link>https://blog.mletter.cn/posts/install-etcd-ha/</link>
-      <pubDate>Sun, 26 Feb 2023 00:00:00 +0000</pubDate>
-      
-      <guid>https://blog.mletter.cn/posts/install-etcd-ha/</guid>
-      <description>使用Kubeadm创建一个高可用的Etcd集群 默认情况下，kubeadm 在每个控制平面节点上运行一个本地 etcd 实例。也可以使用外部的 etcd 集群，并在不同的主机上提供 etcd 实例。 这两种方法的区别在 高可用拓扑的选项 页面中阐述。
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>etcd on</title><link>https://blog.mletter.cn/tags/etcd/</link><description>Recent content in etcd on</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Sun, 26 Feb 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://blog.mletter.cn/tags/etcd/index.xml" rel="self" type="application/rss+xml"/><item><title>使用Kubeadm创建一个高可用的ETCD集群</title><link>https://blog.mletter.cn/posts/install-etcd-ha/</link><pubDate>Sun, 26 Feb 2023 00:00:00 +0000</pubDate><guid>https://blog.mletter.cn/posts/install-etcd-ha/</guid><description>使用Kubeadm创建一个高可用的Etcd集群 默认情况下，kubeadm 在每个控制平面节点上运行一个本地 etcd 实例。也可以使用外部的 etcd 集群，并在不同的主机上提供 etcd 实例。 这两种方法的区别在 高可用拓扑的选项 页面中阐述。
 这个任务将指导你创建一个由三个成员组成的高可用外部 etcd 集群，该集群在创建过程中可被 kubeadm 使用。
 准备开始 三个可以通过 2379 和 2380 端口相互通信的主机。本文档使用这些作为默认端口。不过，它们可以通过 kubeadm 的配置文件进行自定义。 每个主机必须安装 systemd 和 bash 兼容的 shell。 每台主机必须安装有容器运行时、kubelet 和 kubeadm 每个主机都应该能够访问 Kubernetes 容器镜像仓库 (registry.k8s.io)， 或者使用 kubeadm config images list/pull 列出/拉取所需的 etcd 镜像。 本指南将把 etcd 实例设置为由 kubelet 管理的静态 Pod。 一些可以用来在主机间复制文件的基础设施。例如 ssh 和 scp 就可以满足需求。 本次容器运行时采用Containerd作为Runtime
 将Kubelet配置为Etcd的服务启动管理器 你必须在要运行 etcd 的所有主机上执行此操作。
-1cat &amp;lt;&amp;lt; EOF &amp;gt; /usr/lib/systemd/system/kubelet.service.d/20-etcd-service-manager.conf 2[Service] 3ExecStart= 4ExecStart=/usr/bin/kubelet --address=127.</description>
-    </item>
-    
-  </channel>
-</rss>
+1cat &amp;lt;&amp;lt; EOF &amp;gt; /usr/lib/systemd/system/kubelet.service.d/20-etcd-service-manager.conf 2[Service] 3ExecStart= 4ExecStart=/usr/bin/kubelet --address=127.</description></item></channel></rss>

@@ -1,24 +1,5 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
-  <channel>
-    <title>api-server on </title>
-    <link>https://blog.mletter.cn/tags/api-server/</link>
-    <description>Recent content in api-server on </description>
-    <generator>Hugo -- gohugo.io</generator>
-    <language>en</language>
-    <lastBuildDate>Tue, 07 Feb 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://blog.mletter.cn/tags/api-server/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>Kubernetes中Api-Server简单解读</title>
-      <link>https://blog.mletter.cn/posts/api-server/</link>
-      <pubDate>Tue, 07 Feb 2023 00:00:00 +0000</pubDate>
-      
-      <guid>https://blog.mletter.cn/posts/api-server/</guid>
-      <description>访问控制概览 Kubernetes API的每个请求都会经过多阶段的访问控制之后才会被接受,这一阶段包括认证、授权、以及准入控制(Admission Control)等
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>api-server on</title><link>https://blog.mletter.cn/tags/api-server/</link><description>Recent content in api-server on</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Tue, 07 Feb 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://blog.mletter.cn/tags/api-server/index.xml" rel="self" type="application/rss+xml"/><item><title>Kubernetes中Api-Server简单解读</title><link>https://blog.mletter.cn/posts/api-server/</link><pubDate>Tue, 07 Feb 2023 00:00:00 +0000</pubDate><guid>https://blog.mletter.cn/posts/api-server/</guid><description>访问控制概览 Kubernetes API的每个请求都会经过多阶段的访问控制之后才会被接受,这一阶段包括认证、授权、以及准入控制(Admission Control)等
 认证插件 x509证书：使用x509证书只需要API Server启动的时候配置 --client-ca-file=SOMEFILE。在证书认证的时候,其CN域名做用户名,而组织机构用作group名。 静态Token文件：使用静态Token文件认证只需要在API Server启动的时候配置 --token-auth-file=SOMEFILE。该文件为csv格式,每行至少包括三列token、username、user id 引导Token 为了支持平滑的启动和引导新的集群,kubernetes包含了一种动态管理的持有令牌类型,称作启动引导令牌(Bootstrap Token) 这些令牌以Secret的形式保存在kube-system的名称空间中,可以动态的管理和创建。 控制器管理器包含的TokenCleaner控制器能够在启动引导令牌过期时将其删除。 在使用kubeadm部署kubernetes的时候,可以通过kubeadm token list进行查询。 ServiceAccount：是kubernetes自动生成的,并且会自动挂载到容器的/run/secrets/kubernetes.io/serviceaccount目录当中 Webhook令牌身份认证 --authentication-token-webhook-config-file：指向一个配置文件,其中描述如何访问远程的Webhook服务 --authentication-token-webhook-cache-ttl：用来设定身份认证决定的缓存时间。默认为2分钟。 静态Token用法 新建一个存放静态Token的目录 1mkdir -p /etc/kubernetes/auth 将Token内容写入到文件当中 注意：该文件格式为CSV格式，其实你也可以随便写:happy:
 1描述： Token值 用户名称 用户ID 可选组名 2kube-token,kubeadminer,1000,&amp;#34;group1,group2,group3&amp;#34; 假设这是我们请求名称空间的请求: curl -k -v -XGET -H &amp;quot;Authrization: Bearer kube-token&amp;quot; https://api.k8s.version.cn:6443/api/v1/namespaces/default
 正常请求会返回，因为我没有创建这个kube-token
-1{ 2 &amp;#34;kind&amp;#34;: &amp;#34;Status&amp;#34;, 3 &amp;#34;apiVersion&amp;#34;: &amp;#34;v1&amp;#34;, 4 &amp;#34;metadata&amp;#34;: { 5 6 }, 7 &amp;#34;status&amp;#34;: &amp;#34;Failure&amp;#34;, 8 &amp;#34;message&amp;#34;: &amp;#34;namespaces \&amp;#34;default\&amp;#34; is forbidden: User \&amp;#34;system:anonymous\&amp;#34; cannot get resource \&amp;#34;namespaces\&amp;#34; in API group \&amp;#34;\&amp;#34; in the namespace \&amp;#34;default\&amp;#34;&amp;#34;, 9 &amp;#34;reason&amp;#34;: &amp;#34;Forbidden&amp;#34;, 10 &amp;#34;details&amp;#34;: { 11 &amp;#34;name&amp;#34;: &amp;#34;default&amp;#34;, 12 &amp;#34;kind&amp;#34;: &amp;#34;namespaces&amp;#34; 13 }, 14 &amp;#34;code&amp;#34;: 403 设置API Server 注意： 操作的时候请备份你的API Server文件，这是一个好习惯.</description>
-    </item>
-    
-  </channel>
-</rss>
+1{ 2 &amp;#34;kind&amp;#34;: &amp;#34;Status&amp;#34;, 3 &amp;#34;apiVersion&amp;#34;: &amp;#34;v1&amp;#34;, 4 &amp;#34;metadata&amp;#34;: { 5 6 }, 7 &amp;#34;status&amp;#34;: &amp;#34;Failure&amp;#34;, 8 &amp;#34;message&amp;#34;: &amp;#34;namespaces \&amp;#34;default\&amp;#34; is forbidden: User \&amp;#34;system:anonymous\&amp;#34; cannot get resource \&amp;#34;namespaces\&amp;#34; in API group \&amp;#34;\&amp;#34; in the namespace \&amp;#34;default\&amp;#34;&amp;#34;, 9 &amp;#34;reason&amp;#34;: &amp;#34;Forbidden&amp;#34;, 10 &amp;#34;details&amp;#34;: { 11 &amp;#34;name&amp;#34;: &amp;#34;default&amp;#34;, 12 &amp;#34;kind&amp;#34;: &amp;#34;namespaces&amp;#34; 13 }, 14 &amp;#34;code&amp;#34;: 403 设置API Server 注意： 操作的时候请备份你的API Server文件，这是一个好习惯.</description></item></channel></rss>

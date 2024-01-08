@@ -1,1596 +1,256 @@
-<!DOCTYPE html>
-<html 
-      
-      
-      
-      data-bs-theme="light" itemscope="" itemtype="http://schema.org/WebPage" lang="en">
-  <head><meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-
-
-
-
-
-
-
-      
-  
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?display=swap&amp;family=&#43;JetBrains&#43;Mono&amp;family=JetBrains&#43;Mono%3Aital%2Cwght%400%2C600%3B1%2C600..900" rel="stylesheet">
-
-    <link rel="manifest" href="https://blog.mletter.cn/manifest.webmanifest" />
-
-<meta name="description" content="Kubernetes API的每个请求都会经过多阶段的访问控制之后才会被接受,这一阶段包括认证、授权、以及准入控制(Admission Control)等" />
-
-
-
-
-
-
-<meta property="og:title" content="Kubernetes中Api-Server简单解读" />
-<meta property="og:description" content="Kubernetes API的每个请求都会经过多阶段的访问控制之后才会被接受,这一阶段包括认证、授权、以及准入控制(Admission Control)等" />
-<meta property="og:type" content="article" />
-<meta property="og:url" content="https://blog.mletter.cn/posts/api-server/" /><meta property="og:image" content="https://bj.bcebos.com/baidu-rmb-video-cover-1/2b6495c8749e3f4e4369e28cb50eeb87.png" /><meta property="article:section" content="posts" />
-<meta property="article:published_time" content="2023-02-07T00:00:00+00:00" />
-<meta property="article:modified_time" content="2023-02-07T00:00:00+00:00" />
-<meta itemprop="name" content="Kubernetes中Api-Server简单解读">
-<meta itemprop="description" content="Kubernetes API的每个请求都会经过多阶段的访问控制之后才会被接受,这一阶段包括认证、授权、以及准入控制(Admission Control)等"><meta itemprop="datePublished" content="2023-02-07T00:00:00+00:00" />
-<meta itemprop="dateModified" content="2023-02-07T00:00:00+00:00" />
-<meta itemprop="wordCount" content="918"><meta itemprop="image" content="https://bj.bcebos.com/baidu-rmb-video-cover-1/2b6495c8749e3f4e4369e28cb50eeb87.png">
-<meta itemprop="keywords" content="kubernetes,api-server," /><meta name="twitter:card" content="summary_large_image"/>
-<meta name="twitter:image" content="https://bj.bcebos.com/baidu-rmb-video-cover-1/2b6495c8749e3f4e4369e28cb50eeb87.png"/>
-
-<meta name="twitter:title" content="Kubernetes中Api-Server简单解读"/>
-<meta name="twitter:description" content="Kubernetes API的每个请求都会经过多阶段的访问控制之后才会被接受,这一阶段包括认证、授权、以及准入控制(Admission Control)等"/>
-
-
-
-    <title>
-
-
-Kubernetes中Api-Server简单解读 - Posts - </title>
-
-  
-  
-  
-
-
-    <link href="/css/hb.4caa23f100cace35f7c4334374263b9d071605f8e0756cc12bc2e421f42609c8.css" rel="stylesheet" />
-
-
-
-
-
-
-<script
-  src="/js/init.b980cf5ff873691f491c400ab7f55079eb2d1eef456f2eec75db7cf3d8c9dcc7.js"
-  
-    integrity="sha256-uYDPX/hzaR9JHEAKt/VQeestHu9Fby7sddt889jJ3Mc="
-  ></script>
-
-
-
-
-
-
-  </head>
-  <body 
-><noscript>
-  <div class="alert alert-danger text-center rounded-0" role="alert"><svg aria-hidden="true" class="bi bi-exclamation-square-fillbi bi-exclamation-square-fill hi-svg-inline me-2" fill="currentColor" height="1em" viewBox="0 0 16 16" width="1em" xmlns="http://www.w3.org/2000/svg">
-  <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zm6 4c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 4.995A.905.905 0 0 1 8 4m.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2"/>
-</svg>Your browser does not support JavaScript.</div>
-</noscript>
-
-
-
-    
-<header class="hb-header"
-  >
-  
-
-  <nav class="hb-header-nav navbar navbar-expand-lg">
-    
-  <div class="hb-announcement-bar text-center px-1 py-2 w-100 overflow-hidden border-bottom border-secondary">
-          <a
-            class="hb-announcement text-decoration-none text-truncate active"
-            href="/bulletin/2024/0108/">2024年本站大更新啦,查看更新内容轻点我哦<svg aria-hidden="true" class="bi bi-arrow-rightbi bi-arrow-right hi-svg-inline ms-1" fill="currentColor" height="1em" viewBox="0 0 16 16" width="1em" xmlns="http://www.w3.org/2000/svg">
-  <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8"/>
-</svg></a>
-  </div>
-
-
-
-    <div
-      class="container-fluid">
-      
-
-
-  <a
-    class="navbar-brand d-flex align-items-center"
-    href="/">人间只是春</a>
-
-      <div class="d-flex order-5">
-        
-<div class="search-modal-toggle hb-header-search-form position-relative d-flex ms-lg-1">
-  <button
-    type="button"
-    class="hb-header-search-icon border-0 bg-transparent px-2"
-    aria-label="Toggle search">
-    <svg aria-hidden="true" class="bi bi-searchbi bi-search hi-svg-inline" fill="currentColor" height="1em" viewBox="0 0 16 16" width="1em" xmlns="http://www.w3.org/2000/svg">
-  <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
-</svg>
-  </button>
-  <input
-    class="form-control rounded-5 d-none d-lg-block ms-lg-1"
-    placeholder="Search" />
-    <span class="hb-header-search-keys position-absolute d-none d-lg-block">
-        <kbd>CTRL</kbd>
-        <kbd>K</kbd>
-    </span>
-</div>
-
-
-
-        <button
-          class="navbar-toggler border-0 shadow-none"
-          type="button"
-          data-bs-toggle="offcanvas"
-          data-bs-target="#hb-header-content"
-          aria-controls="hb-header-content"
-          aria-label="Toggle navigation"><svg aria-hidden="true" class="bi bi-three-dotsbi bi-three-dots hi-svg-inline" fill="currentColor" height="1.25em" viewBox="0 0 16 16" width="1.25em" xmlns="http://www.w3.org/2000/svg">
-  <path d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3m5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3m5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3"/>
-</svg>
-        </button>
-        
-
-      </div>
-      <div
-        class="offcanvas offcanvas-lg offcanvas-end"
-        tabindex="-1"
-        id="hb-header-content"
-        aria-labelledby="hb-header-content-label">
-        <div class="offcanvas-header">
-          <h5 class="offcanvas-title" id="hb-header-content-label">人间只是春</h5>
-          <button
-            type="button"
-            class="btn-close"
-            data-bs-dismiss="offcanvas"
-            aria-label="Close"></button>
-        </div>
-        <div class="offcanvas-body">
-          
-          <ul class="hb-header-menus navbar-nav flex-row flex-wrap"></ul>
-          
-          
-          <ul class="hb-header-panel navbar-nav flex-row flex-wrap">
-              <li class="nav-item py-2 py-lg-1 col-12 col-lg-auto">
-                <hr class="d-lg-none my-2 text-body-50" />
-              </li>
-            
-  <li class="nav-item col-6 col-lg-auto d-flex align-items-center">
-<a
-  class="hb-social btn btn-link nav-link py-2 px-0 px-lg-2 d-flex justify-content-center align-items-center"
-  href="beilanzhisen@163.com"
-  target="_blank"
-  rel="nofollow me"
-  title="Gmail"><svg aria-hidden="true" class="hi-svg-inline hb-social-icon" fill="currentColor" height="1em" role="img" viewBox="0 0 24 24" width="1em" xmlns="http://www.w3.org/2000/svg"><title>Gmail</title><path d="M24 5.457v13.909c0 .904-.732 1.636-1.636 1.636h-3.819V11.73L12 16.64l-6.545-4.91v9.273H1.636A1.636 1.636 0 0 1 0 19.366V5.457c0-2.023 2.309-3.178 3.927-1.964L5.455 4.64 12 9.548l6.545-4.91 1.528-1.145C21.69 2.28 24 3.434 24 5.457z"/></svg>
-    <span class="hb-social-text d-lg-none ms-1">Gmail</span>
-</a>
-
-  </li>
-
-  <li class="nav-item py-2 py-lg-1 col-12 col-lg-auto">
-    <div class="vr d-none d-lg-flex h-100 mx-lg-2 text-body"></div>
-    <hr class="d-lg-none my-2 text-body-50" />
-  </li>
-
-
-<li class="theme-toggle nav-item dropdown col-6 col-lg-auto d-flex flex-column justify-content-center">
-  <a
-    class="btn btn-link nav-link py-2 px-0 px-lg-2 d-flex justify-content-start justify-content-lg-center align-items-center"
-    href="#"
-    role="button"
-    data-bs-toggle="dropdown"
-    aria-expanded="false"
-  >
-    <svg aria-hidden="true" class="bi bi-circle-halfbi bi-circle-half hi-svg-inline my-1 theme-toggle-icon" fill="currentColor" height="1em" viewBox="0 0 16 16" width="1em" xmlns="http://www.w3.org/2000/svg">
-  <path d="M8 15A7 7 0 1 0 8 1zm0 1A8 8 0 1 1 8 0a8 8 0 0 1 0 16"/>
-</svg>
-    <span class="d-lg-none ms-1">Theme</span>
-  </a>
-
-  <ul class="theme-toggle-menu dropdown-menu dropdown-menu-end">
-      <li>
-        <button
-          class="theme-toggle-item dropdown-item d-flex align-items-center justify-content-center"
-          data-bs-theme-value="auto"
-        >
-          <span class="theme-toggle-item-icon me-1 d-flex align-items-center">
-            <svg aria-hidden="true" class="bi bi-circle-halfbi bi-circle-half hi-svg-inline my-1" fill="currentColor" height="1em" viewBox="0 0 16 16" width="1em" xmlns="http://www.w3.org/2000/svg">
-  <path d="M8 15A7 7 0 1 0 8 1zm0 1A8 8 0 1 1 8 0a8 8 0 0 1 0 16"/>
-</svg>
-          </span>
-          Auto
-        </button>
-      </li>
-      <li>
-        <button
-          class="theme-toggle-item dropdown-item d-flex align-items-center justify-content-center"
-          data-bs-theme-value="dark"
-        >
-          <span class="theme-toggle-item-icon me-1 d-flex align-items-center">
-            <svg aria-hidden="true" class="bi bi-moon-starsbi bi-moon-stars hi-svg-inline my-1" fill="currentColor" height="1em" viewBox="0 0 16 16" width="1em" xmlns="http://www.w3.org/2000/svg">
-  <path d="M6 .278a.77.77 0 0 1 .08.858 7.2 7.2 0 0 0-.878 3.46c0 4.021 3.278 7.277 7.318 7.277q.792-.001 1.533-.16a.79.79 0 0 1 .81.316.73.73 0 0 1-.031.893A8.35 8.35 0 0 1 8.344 16C3.734 16 0 12.286 0 7.71 0 4.266 2.114 1.312 5.124.06A.75.75 0 0 1 6 .278M4.858 1.311A7.27 7.27 0 0 0 1.025 7.71c0 4.02 3.279 7.276 7.319 7.276a7.32 7.32 0 0 0 5.205-2.162q-.506.063-1.029.063c-4.61 0-8.343-3.714-8.343-8.29 0-1.167.242-2.278.681-3.286"/>
-  <path d="M10.794 3.148a.217.217 0 0 1 .412 0l.387 1.162c.173.518.579.924 1.097 1.097l1.162.387a.217.217 0 0 1 0 .412l-1.162.387a1.73 1.73 0 0 0-1.097 1.097l-.387 1.162a.217.217 0 0 1-.412 0l-.387-1.162A1.73 1.73 0 0 0 9.31 6.593l-1.162-.387a.217.217 0 0 1 0-.412l1.162-.387a1.73 1.73 0 0 0 1.097-1.097zM13.863.099a.145.145 0 0 1 .274 0l.258.774c.115.346.386.617.732.732l.774.258a.145.145 0 0 1 0 .274l-.774.258a1.16 1.16 0 0 0-.732.732l-.258.774a.145.145 0 0 1-.274 0l-.258-.774a1.16 1.16 0 0 0-.732-.732l-.774-.258a.145.145 0 0 1 0-.274l.774-.258c.346-.115.617-.386.732-.732z"/>
-</svg>
-          </span>
-          Dark
-        </button>
-      </li>
-      <li>
-        <button
-          class="theme-toggle-item dropdown-item d-flex align-items-center justify-content-center"
-          data-bs-theme-value="light"
-        >
-          <span class="theme-toggle-item-icon me-1 d-flex align-items-center">
-            <svg aria-hidden="true" class="bi bi-brightness-highbi bi-brightness-high hi-svg-inline my-1" fill="currentColor" height="1em" viewBox="0 0 16 16" width="1em" xmlns="http://www.w3.org/2000/svg">
-  <path d="M8 11a3 3 0 1 1 0-6 3 3 0 0 1 0 6m0 1a4 4 0 1 0 0-8 4 4 0 0 0 0 8M8 0a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 0m0 13a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 13m8-5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2a.5.5 0 0 1 .5.5M3 8a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2A.5.5 0 0 1 3 8m10.657-5.657a.5.5 0 0 1 0 .707l-1.414 1.415a.5.5 0 1 1-.707-.708l1.414-1.414a.5.5 0 0 1 .707 0m-9.193 9.193a.5.5 0 0 1 0 .707L3.05 13.657a.5.5 0 0 1-.707-.707l1.414-1.414a.5.5 0 0 1 .707 0m9.193 2.121a.5.5 0 0 1-.707 0l-1.414-1.414a.5.5 0 0 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .707M4.464 4.465a.5.5 0 0 1-.707 0L2.343 3.05a.5.5 0 1 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .708"/>
-</svg>
-          </span>
-          Light
-        </button>
-      </li>
-  </ul>
-</li>
-
-
-
-          </ul>
-          
-        </div>
-      </div>
-    </div>
-    
-
-  </nav>
-  
-
-</header>
-
-
-
-    
-
-    <div 
-      
-      class="hb-main container hb-main container">
-  <div class="hb-blog-main-container">
-  <div class="hb-blog-main">
-    <div class="container-fluid px-0 mb-4">
-    <nav aria-label="breadcrumb">
-      <ol class="hb-breadcrumb breadcrumb">
-          <li class="breadcrumb-item">
-            <a href="/" title="">Home</a>
-          </li>
-          <li class="breadcrumb-item">
-            <a href="/posts/" title="Posts">Posts</a>
-          </li><li class="breadcrumb-item active" aria-current="page">
-          <a href="/posts/api-server/" title="Kubernetes中Api-Server简单解读">Kubernetes中Api-Server简单解读</a>
-        </li>
-      </ol>
-    </nav>
-  </div>
-
-
-    <div class="hb-blog-post position-relative">
-      <div class="hb-blog-post-intro hb-module mb-2">
-        <h1 class="hb-blog-post-title">Kubernetes中Api-Server简单解读</h1>
-        <div class="hb-blog-post-meta">
-          
-
-          <span class="hb-blog-post-date">February 7, 2023</span>
-
-          <span class="hb-blog-post-reading-time">5 min read</span>
-
-          
-    
-      <span class="hb-blog-post-taxonomy-meta">
-        <a
-          class="hb-blog-post-taxonomy hb-blog-post-taxonomy-category badge bg-secondary text-decoration-none fw-normal me-1"
-          href="/categories/kubernetes/">kubernetes</a>
-      </span>
-      <span class="hb-blog-post-taxonomy-meta">
-        <a
-          class="hb-blog-post-taxonomy hb-blog-post-taxonomy-tag badge bg-secondary text-decoration-none fw-normal me-1"
-          href="/tags/kubernetes/">kubernetes</a>
-      </span>
-      <span class="hb-blog-post-taxonomy-meta">
-        <a
-          class="hb-blog-post-taxonomy hb-blog-post-taxonomy-tag badge bg-secondary text-decoration-none fw-normal me-1"
-          href="/tags/api-server/">api-server</a>
-      </span>
-        </div>
-          <div class="hb-blog-post-desc lead mt-1">Kubernetes API的每个请求都会经过多阶段的访问控制之后才会被接受,这一阶段包括认证、授权、以及准入控制(Admission Control)等</div>
-      </div>
-        <div class="hb-blog-post-toc text-body-secondary position-sticky overflow-y-auto">
-
-<div class="hb-module pb-1">
-  <div class="h6 d-none d-md-block">On this page</div>
-  <hr class="d-none d-md-block" />
-  <div class="d-grid d-block d-md-none mb-2">
-    <button
-      class="btn btn-light d-flex align-items-center justify-content-between collapsed"
-      type="button"
-      data-bs-toggle="collapse"
-      data-bs-target=".hb-blog-post-toc-collapse"
-      aria-expanded="false"
-      aria-controls="collapse-toc">
-      <span>On this page</span>
-      <svg aria-hidden="true" class="bi bi-chevron-expandbi bi-chevron-expand hi-svg-inline ms-2" fill="currentColor" height="1.25rem" viewBox="0 0 16 16" width="1.25rem" xmlns="http://www.w3.org/2000/svg">
-  <path fill-rule="evenodd" d="M3.646 9.146a.5.5 0 0 1 .708 0L8 12.793l3.646-3.647a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 0-.708m0-2.292a.5.5 0 0 0 .708 0L8 3.207l3.646 3.647a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 0 0 0 .708"/>
-</svg>
-    </button>
-  </div>
-  <div class="px-2 px-md-0">
-    <div id="collapse-toc" class="collapse hb-blog-post-toc-collapse"><nav id="TableOfContents">
-  <ul>
-    <li><a href="#认证插件">认证插件</a>
-      <ul>
-        <li><a href="#静态token用法">静态Token用法</a></li>
-        <li><a href="#useraccount和serviceaccount的区别">UserAccount和ServiceAccount的区别</a></li>
-        <li><a href="#构建符合kubernetes规范的认证服务">构建符合Kubernetes规范的认证服务</a></li>
-        <li><a href="#webhook认证用法">WebHook认证用法</a></li>
-      </ul>
-    </li>
-    <li><a href="#授权">授权</a>
-      <ul>
-        <li><a href="#rbac和abac">RBAC和ABAC</a></li>
-        <li><a href="#role和clusterrole">Role和ClusterRole</a></li>
-        <li><a href="#binding">Binding</a></li>
-        <li><a href="#账户组的管理">账户/组的管理</a></li>
-        <li><a href="#规划系统角色">规划系统角色</a></li>
-        <li><a href="#与权限相关的其他最佳实践">与权限相关的其他最佳实践</a></li>
-      </ul>
-    </li>
-    <li><a href="#准入">准入</a>
-      <ul>
-        <li><a href="#准入控制">准入控制</a></li>
-        <li><a href="#准入控制插件">准入控制插件</a></li>
-        <li><a href="#准入控制插件的演示">准入控制插件的演示</a></li>
-      </ul>
-    </li>
-    <li><a href="#限流">限流</a>
-      <ul>
-        <li><a href="#漏斗算法">漏斗算法</a></li>
-        <li><a href="#令牌桶算法">令牌桶算法</a></li>
-        <li><a href="#api-server的限流">API Server的限流</a></li>
-        <li><a href="#api-priority-and-fairness">API Priority and Fairness</a></li>
-        <li><a href="#flow-schema">Flow Schema</a></li>
-        <li><a href="#prioritylevelconfiguration优先级队列">PriorityLevelConfiguration(优先级队列)</a></li>
-      </ul>
-    </li>
-    <li><a href="#高可用apiserver">高可用APIServer</a>
-      <ul>
-        <li><a href="#搭建多租户的kubernetes集群">搭建多租户的kubernetes集群</a></li>
-      </ul>
-    </li>
-  </ul>
-</nav></div>
-  </div>
-</div>
-
-
-        </div>
-      <div class="hb-blog-post-main">
-
-  <div class="hb-module p-0 text-center">
-    
-
-
-
-
-
-
-
-
-
-
-
-
-  
-  
-    <picture>
-  <img
-    class="hb-featured-img img-fluid p-1 bg-body-secondary border w-100"
-    src="https://bj.bcebos.com/baidu-rmb-video-cover-1/2b6495c8749e3f4e4369e28cb50eeb87.png"
-    alt="Kubernetes中Api-Server简单解读"
-    
-    
-    
-    
-    
-    
-     />
-</picture>
-
-  </div>
-
-        <div
-          class="hb-blog-post-content hb-module"
-          >
-
-          <p><strong>访问控制概览</strong>
-Kubernetes API的每个请求都会经过多阶段的访问控制之后才会被接受,这一阶段包括认证、授权、以及准入控制(Admission Control)等</p>
-<p>
-
-
-
-
-
-
-
-
-
-
-
-
-  
-  
-    <picture>
-  <img
-    class="img-fluid"
-    src="https://bj.bcebos.com/baidu-rmb-video-cover-1/2b6495c8749e3f4e4369e28cb50eeb87.png"
-    alt="img"
-    loading="lazy"
-    
-    
-    
-    
-    
-     />
-</picture>
-</p>
-<h2 id="认证插件">认证插件</h2>
-<ul>
-<li>x509证书：使用x509证书只需要API Server启动的时候配置 <code>--client-ca-file=SOMEFILE</code>。在证书认证的时候,其CN域名做用户名,而组织机构用作group名。</li>
-<li>静态Token文件：使用静态Token文件认证只需要在API Server启动的时候配置 <code>--token-auth-file=SOMEFILE</code>。该文件为<code>csv</code>格式,每行至少包括三列<code>token</code>、<code>username</code>、<code>user id</code></li>
-<li>引导Token
-<ul>
-<li>为了支持平滑的启动和引导新的集群,kubernetes包含了一种动态管理的持有令牌类型,称作启动引导令牌(Bootstrap Token)</li>
-<li>这些令牌以<code>Secret</code>的形式保存在<code>kube-system</code>的名称空间中,可以动态的管理和创建。</li>
-<li>控制器管理器包含的TokenCleaner控制器能够在启动引导令牌过期时将其删除。</li>
-<li>在使用kubeadm部署kubernetes的时候,可以通过<code>kubeadm token list</code>进行查询。</li>
-</ul>
-</li>
-<li>ServiceAccount：是kubernetes自动生成的,并且会自动挂载到容器的<code>/run/secrets/kubernetes.io/serviceaccount</code>目录当中</li>
-<li>Webhook令牌身份认证
-<ul>
-<li><code>--authentication-token-webhook-config-file</code>：指向一个配置文件,其中描述如何访问远程的Webhook服务</li>
-<li><code>--authentication-token-webhook-cache-ttl</code>：用来设定身份认证决定的缓存时间。默认为2分钟。</li>
-</ul>
-</li>
-</ul>
-<h3 id="静态token用法">静态Token用法</h3>
-<ol>
-<li>新建一个存放静态Token的目录</li>
-</ol>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="ln">1</span><span class="cl">mkdir -p /etc/kubernetes/auth
-</span></span></code></pre></div><ol start="2">
-<li>将Token内容写入到文件当中</li>
-</ol>
-<blockquote>
-<p>注意：该文件格式为CSV格式，其实你也可以随便写:happy:</p>
-</blockquote>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="ln">1</span><span class="cl">描述： Token值  用户名称  用户ID 可选组名
-</span></span><span class="line"><span class="ln">2</span><span class="cl">kube-token,kubeadminer,1000,<span class="s2">&#34;group1,group2,group3&#34;</span>
-</span></span></code></pre></div><p>假设这是我们请求名称空间的请求: <code>curl -k -v -XGET -H &quot;Authrization: Bearer kube-token&quot; https://api.k8s.version.cn:6443/api/v1/namespaces/default</code></p>
-<p>正常请求会返回，因为我没有创建这个<code>kube-token</code></p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-json" data-lang="json"><span class="line"><span class="ln"> 1</span><span class="cl"><span class="p">{</span>
-</span></span><span class="line"><span class="ln"> 2</span><span class="cl">  <span class="nt">&#34;kind&#34;</span><span class="p">:</span> <span class="s2">&#34;Status&#34;</span><span class="p">,</span>
-</span></span><span class="line"><span class="ln"> 3</span><span class="cl">  <span class="nt">&#34;apiVersion&#34;</span><span class="p">:</span> <span class="s2">&#34;v1&#34;</span><span class="p">,</span>
-</span></span><span class="line"><span class="ln"> 4</span><span class="cl">  <span class="nt">&#34;metadata&#34;</span><span class="p">:</span> <span class="p">{</span>
-</span></span><span class="line"><span class="ln"> 5</span><span class="cl">    
-</span></span><span class="line"><span class="ln"> 6</span><span class="cl">  <span class="p">},</span>
-</span></span><span class="line"><span class="ln"> 7</span><span class="cl">  <span class="nt">&#34;status&#34;</span><span class="p">:</span> <span class="s2">&#34;Failure&#34;</span><span class="p">,</span>
-</span></span><span class="line"><span class="ln"> 8</span><span class="cl">  <span class="nt">&#34;message&#34;</span><span class="p">:</span> <span class="s2">&#34;namespaces \&#34;default\&#34; is forbidden: User \&#34;system:anonymous\&#34; cannot get resource \&#34;namespaces\&#34; in API group \&#34;\&#34; in the namespace \&#34;default\&#34;&#34;</span><span class="p">,</span>
-</span></span><span class="line"><span class="ln"> 9</span><span class="cl">  <span class="nt">&#34;reason&#34;</span><span class="p">:</span> <span class="s2">&#34;Forbidden&#34;</span><span class="p">,</span>
-</span></span><span class="line"><span class="ln">10</span><span class="cl">  <span class="nt">&#34;details&#34;</span><span class="p">:</span> <span class="p">{</span>
-</span></span><span class="line"><span class="ln">11</span><span class="cl">    <span class="nt">&#34;name&#34;</span><span class="p">:</span> <span class="s2">&#34;default&#34;</span><span class="p">,</span>
-</span></span><span class="line"><span class="ln">12</span><span class="cl">    <span class="nt">&#34;kind&#34;</span><span class="p">:</span> <span class="s2">&#34;namespaces&#34;</span>
-</span></span><span class="line"><span class="ln">13</span><span class="cl">  <span class="p">},</span>
-</span></span><span class="line"><span class="ln">14</span><span class="cl">  <span class="nt">&#34;code&#34;</span><span class="p">:</span> <span class="mi">403</span>
-</span></span></code></pre></div><ol start="3">
-<li>设置<code>API Server</code></li>
-</ol>
-<blockquote>
-<p>注意： 操作的时候请备份你的API Server文件，这是一个好习惯.</p>
-</blockquote>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="ln"> 1</span><span class="cl"><span class="c">#  vim /etc/kubernetes/manifests/kube-apiserver.yaml </span><span class="w">
-</span></span></span><span class="line"><span class="ln"> 2</span><span class="cl"><span class="w"></span><span class="c"># 挂载本地的/etc/basic-auth路径</span><span class="w">
-</span></span></span><span class="line"><span class="ln"> 3</span><span class="cl"><span class="w"> </span><span class="nt">volumeMounts</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="ln"> 4</span><span class="cl"><span class="w"> </span>- <span class="nt">mountPath</span><span class="p">:</span><span class="w"> </span><span class="l">/etc/basic-auth</span><span class="w">
-</span></span></span><span class="line"><span class="ln"> 5</span><span class="cl"><span class="w">	</span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">auth-files</span><span class="w">
-</span></span></span><span class="line"><span class="ln"> 6</span><span class="cl"><span class="w">      </span><span class="nt">readOnly</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
-</span></span></span><span class="line"><span class="ln"> 7</span><span class="cl"><span class="w"> </span><span class="nt">volumes</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="ln"> 8</span><span class="cl"><span class="w"> </span>- <span class="nt">hostPath</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="ln"> 9</span><span class="cl"><span class="w">       </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l">/etc/basic-auth</span><span class="w">
-</span></span></span><span class="line"><span class="ln">10</span><span class="cl"><span class="w">       </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l">DirectoryOrCreate</span><span class="w">
-</span></span></span><span class="line"><span class="ln">11</span><span class="cl"><span class="w">   </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">auth-files</span><span class="w">
-</span></span></span><span class="line"><span class="ln">12</span><span class="cl"><span class="w"></span><span class="c"># 修改API Server启动参数</span><span class="w">
-</span></span></span><span class="line"><span class="ln">13</span><span class="cl"><span class="w"></span>- --<span class="l">token-auth-file=/etc/basic-auth/kube-token.csv</span><span class="w">
-</span></span></span></code></pre></div><blockquote>
-<p>请您等待APIServer重启完成</p>
-</blockquote>
-<p>当我们再次通过<code>kube-token</code>进行请求API Server 如果能成功识别到我们的用户即可，也就知道我们当前的用户为<code>kubeadminer</code></p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-json" data-lang="json"><span class="line"><span class="ln"> 1</span><span class="cl"><span class="p">{</span>
-</span></span><span class="line"><span class="ln"> 2</span><span class="cl">  <span class="nt">&#34;kind&#34;</span><span class="p">:</span> <span class="s2">&#34;Status&#34;</span><span class="p">,</span>
-</span></span><span class="line"><span class="ln"> 3</span><span class="cl">  <span class="nt">&#34;apiVersion&#34;</span><span class="p">:</span> <span class="s2">&#34;v1&#34;</span><span class="p">,</span>
-</span></span><span class="line"><span class="ln"> 4</span><span class="cl">  <span class="nt">&#34;metadata&#34;</span><span class="p">:</span> <span class="p">{</span>
-</span></span><span class="line"><span class="ln"> 5</span><span class="cl">    
-</span></span><span class="line"><span class="ln"> 6</span><span class="cl">  <span class="p">},</span>
-</span></span><span class="line"><span class="ln"> 7</span><span class="cl">  <span class="nt">&#34;status&#34;</span><span class="p">:</span> <span class="s2">&#34;Failure&#34;</span><span class="p">,</span>
-</span></span><span class="line"><span class="ln"> 8</span><span class="cl">  <span class="nt">&#34;message&#34;</span><span class="p">:</span> <span class="s2">&#34;namespaces \&#34;default\&#34; is forbidden: User \&#34;kubeadminer\&#34; cannot get resource \&#34;namespaces\&#34; in API group \&#34;\&#34; in the namespace \&#34;default\&#34;&#34;</span><span class="p">,</span>
-</span></span><span class="line"><span class="ln"> 9</span><span class="cl">  <span class="nt">&#34;reason&#34;</span><span class="p">:</span> <span class="s2">&#34;Forbidden&#34;</span><span class="p">,</span>
-</span></span><span class="line"><span class="ln">10</span><span class="cl">  <span class="nt">&#34;details&#34;</span><span class="p">:</span> <span class="p">{</span>
-</span></span><span class="line"><span class="ln">11</span><span class="cl">    <span class="nt">&#34;name&#34;</span><span class="p">:</span> <span class="s2">&#34;default&#34;</span><span class="p">,</span>
-</span></span><span class="line"><span class="ln">12</span><span class="cl">    <span class="nt">&#34;kind&#34;</span><span class="p">:</span> <span class="s2">&#34;namespaces&#34;</span>
-</span></span><span class="line"><span class="ln">13</span><span class="cl">  <span class="p">},</span>
-</span></span><span class="line"><span class="ln">14</span><span class="cl">  <span class="nt">&#34;code&#34;</span><span class="p">:</span> <span class="mi">403</span>
-</span></span></code></pre></div><h3 id="useraccount和serviceaccount的区别">UserAccount和ServiceAccount的区别</h3>
-<ol>
-<li>UserAccount是与外部认证二次开发对接实现的,签发的Token是外部系统,每次APIServer需要带此Token请求外部认证服务器。</li>
-</ol>
-<h3 id="构建符合kubernetes规范的认证服务">构建符合Kubernetes规范的认证服务</h3>
-<p>需要依照kubernetes规范，来构建认证服务进行认证</p>
-<ol>
-<li>URL：http://api.k8s.verbos/authenticate</li>
-<li>Method: POST(需要携带请求数据等等…)</li>
-<li>Input：</li>
-<li>Output：</li>
-</ol>
-<h3 id="webhook认证用法">WebHook认证用法</h3>
-<ol>
-<li>新建一个webhook-config.json</li>
-</ol>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-json" data-lang="json"><span class="line"><span class="ln"> 1</span><span class="cl"><span class="p">{</span>
-</span></span><span class="line"><span class="ln"> 2</span><span class="cl">  <span class="nt">&#34;kind&#34;</span><span class="p">:</span> <span class="s2">&#34;Config&#34;</span><span class="p">,</span>
-</span></span><span class="line"><span class="ln"> 3</span><span class="cl">  <span class="nt">&#34;apiVersion&#34;</span><span class="p">:</span> <span class="s2">&#34;v1&#34;</span><span class="p">,</span>
-</span></span><span class="line"><span class="ln"> 4</span><span class="cl">  <span class="nt">&#34;preferences&#34;</span><span class="p">:</span> <span class="p">{},</span>
-</span></span><span class="line"><span class="ln"> 5</span><span class="cl">  <span class="nt">&#34;clusters&#34;</span><span class="p">:</span> <span class="p">[</span>
-</span></span><span class="line"><span class="ln"> 6</span><span class="cl">    <span class="p">{</span>
-</span></span><span class="line"><span class="ln"> 7</span><span class="cl">      <span class="nt">&#34;name&#34;</span><span class="p">:</span> <span class="s2">&#34;github-authn&#34;</span><span class="p">,</span>
-</span></span><span class="line"><span class="ln"> 8</span><span class="cl">      <span class="nt">&#34;cluster&#34;</span><span class="p">:</span> <span class="p">{</span>
-</span></span><span class="line"><span class="ln"> 9</span><span class="cl">        <span class="nt">&#34;server&#34;</span><span class="p">:</span> <span class="s2">&#34;https://192.168.1.100:8443/authenticate&#34;</span>
-</span></span><span class="line"><span class="ln">10</span><span class="cl">      <span class="p">}</span>
-</span></span><span class="line"><span class="ln">11</span><span class="cl">    <span class="p">}</span>
-</span></span><span class="line"><span class="ln">12</span><span class="cl">  <span class="p">],</span>
-</span></span><span class="line"><span class="ln">13</span><span class="cl">  <span class="nt">&#34;users&#34;</span><span class="p">:</span> <span class="p">[</span>
-</span></span><span class="line"><span class="ln">14</span><span class="cl">    <span class="p">{</span>
-</span></span><span class="line"><span class="ln">15</span><span class="cl">      <span class="nt">&#34;name&#34;</span><span class="p">:</span> <span class="s2">&#34;authn-apiserver&#34;</span><span class="p">,</span>
-</span></span><span class="line"><span class="ln">16</span><span class="cl">      <span class="nt">&#34;user&#34;</span><span class="p">:</span> <span class="p">{</span>
-</span></span><span class="line"><span class="ln">17</span><span class="cl">        <span class="nt">&#34;token&#34;</span><span class="p">:</span> <span class="s2">&#34;secret&#34;</span>
-</span></span><span class="line"><span class="ln">18</span><span class="cl">      <span class="p">}</span>
-</span></span><span class="line"><span class="ln">19</span><span class="cl">    <span class="p">}</span>
-</span></span><span class="line"><span class="ln">20</span><span class="cl">  <span class="p">],</span>
-</span></span><span class="line"><span class="ln">21</span><span class="cl">  <span class="nt">&#34;contexts&#34;</span><span class="p">:</span> <span class="p">[</span>
-</span></span><span class="line"><span class="ln">22</span><span class="cl">    <span class="p">{</span>
-</span></span><span class="line"><span class="ln">23</span><span class="cl">      <span class="nt">&#34;name&#34;</span><span class="p">:</span> <span class="s2">&#34;webhook&#34;</span><span class="p">,</span>
-</span></span><span class="line"><span class="ln">24</span><span class="cl">      <span class="nt">&#34;context&#34;</span><span class="p">:</span> <span class="p">{</span>
-</span></span><span class="line"><span class="ln">25</span><span class="cl">        <span class="nt">&#34;cluster&#34;</span><span class="p">:</span> <span class="s2">&#34;github-authn&#34;</span><span class="p">,</span>
-</span></span><span class="line"><span class="ln">26</span><span class="cl">        <span class="nt">&#34;user&#34;</span><span class="p">:</span> <span class="s2">&#34;authn-apiserver&#34;</span>
-</span></span><span class="line"><span class="ln">27</span><span class="cl">      <span class="p">}</span>
-</span></span><span class="line"><span class="ln">28</span><span class="cl">    <span class="p">}</span>
-</span></span><span class="line"><span class="ln">29</span><span class="cl">  <span class="p">],</span>
-</span></span><span class="line"><span class="ln">30</span><span class="cl">  <span class="nt">&#34;current-context&#34;</span><span class="p">:</span> <span class="s2">&#34;webhook&#34;</span>
-</span></span><span class="line"><span class="ln">31</span><span class="cl"><span class="p">}</span>
-</span></span></code></pre></div><h2 id="授权">授权</h2>
-<p>授权主要是用于对于集群资源的访问控制，通过检查请求包含的相关属性值，与相对应的访问策略进行比较，API请求必须满足某些策略才能被处理。跟认证类似，kubernetes也支持多种授权机制，并支持同时开启多个插件授权（只要有一个通过即可）。如果授权成功，则用户的请求会发送到准入控制模块进行下一步处理。</p>
-<p>kubernetes授权仅处理以下请求属性</p>
-<ul>
-<li>user、group、extra</li>
-<li>API、请求方法、请求路径</li>
-<li>请求资源和子资源</li>
-<li>Namespace</li>
-<li>API Group</li>
-</ul>
-<p>kubernetes支持以下授权插件</p>
-<ul>
-<li>ABAC</li>
-<li>RBAC</li>
-<li>WebHook</li>
-<li>Node</li>
-</ul>
-<h3 id="rbac和abac">RBAC和ABAC</h3>
-<p>ABAC(Attribute Based Access Control)本来是不错的概念，但是在kubernetes中实现的比较难于管理和理解，而且需要对master所在节点进行SSH和文件系统权限，要使得对授权的变更生效还需要重启API Server</p>
-<p>而RBAC的策略可以利用kubelet或者kubernetes API进行配置。RBAC可以授权给用户，让用户有权进行授权管理，这样就可以无需接触节点，直接进行授权管理。RBAC在kubernetes中被映射为API资源和操作。</p>
-<h3 id="role和clusterrole">Role和ClusterRole</h3>
-<p>Role(角色)是一系列特定角色权限的集合，例如一个角色可以包含读取Pod的权限和列出Pod的权限。</p>
-<p>Role只能用来给某个特定的namespace中的资源作鉴权，对多namespace和集群级的资源活着是非资源类的API(如/healthz)使用ClusterRole</p>
-<blockquote>
-<p>下面是一个简单的Role配置</p>
-</blockquote>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="ln">1</span><span class="cl"><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">Role</span><span class="w">
-</span></span></span><span class="line"><span class="ln">2</span><span class="cl"><span class="w"></span><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">rbac.authorization.k8s.io/v1</span><span class="w">
-</span></span></span><span class="line"><span class="ln">3</span><span class="cl"><span class="w"></span><span class="nt">metadata</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="ln">4</span><span class="cl"><span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l">default</span><span class="w">
-</span></span></span><span class="line"><span class="ln">5</span><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">reader-pods</span><span class="w">
-</span></span></span><span class="line"><span class="ln">6</span><span class="cl"><span class="w"></span><span class="nt">rules</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="ln">7</span><span class="cl"><span class="w"></span>- <span class="nt">apiGroups</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&#34;&#34;</span><span class="p">]</span><span class="w">
-</span></span></span><span class="line"><span class="ln">8</span><span class="cl"><span class="w">  </span><span class="nt">resources</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&#34;pods&#34;</span><span class="p">]</span><span class="w">
-</span></span></span><span class="line"><span class="ln">9</span><span class="cl"><span class="w">  </span><span class="nt">verbs</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&#34;get&#34;</span><span class="p">,</span><span class="s2">&#34;watch&#34;</span><span class="p">,</span><span class="s2">&#34;list&#34;</span><span class="p">]</span><span class="w">
-</span></span></span></code></pre></div><blockquote>
-<p>下面是一个简单地ClusterRole配置</p>
-</blockquote>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="ln">1</span><span class="cl"><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">ClusterRole</span><span class="w">
-</span></span></span><span class="line"><span class="ln">2</span><span class="cl"><span class="w"></span><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">rbac.authorization.k8s.io/v1</span><span class="w">
-</span></span></span><span class="line"><span class="ln">3</span><span class="cl"><span class="w"></span><span class="nt">metadata</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="ln">4</span><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">reader-pods</span><span class="w">
-</span></span></span><span class="line"><span class="ln">5</span><span class="cl"><span class="w"></span><span class="nt">rules</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="ln">6</span><span class="cl"><span class="w"></span>- <span class="nt">apiGroups</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&#34;&#34;</span><span class="p">]</span><span class="w">
-</span></span></span><span class="line"><span class="ln">7</span><span class="cl"><span class="w">  </span><span class="nt">resources</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&#34;pods&#34;</span><span class="p">]</span><span class="w">
-</span></span></span><span class="line"><span class="ln">8</span><span class="cl"><span class="w">  </span><span class="nt">verbs</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&#34;get&#34;</span><span class="p">,</span><span class="s2">&#34;watch&#34;</span><span class="p">,</span><span class="s2">&#34;list&#34;</span><span class="p">]</span><span class="w">
-</span></span></span></code></pre></div><h3 id="binding">Binding</h3>
-<p>如果你想使全局生效可以使用<code>kind: ClusterRoleBingding</code>并且不写<code>namespace</code></p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="ln"> 1</span><span class="cl"><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">RoleBingding</span><span class="w">
-</span></span></span><span class="line"><span class="ln"> 2</span><span class="cl"><span class="w"></span><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">rbac.authorization.k8s.io/v1</span><span class="w">
-</span></span></span><span class="line"><span class="ln"> 3</span><span class="cl"><span class="w"></span><span class="nt">metadata</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="ln"> 4</span><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">reader-pods</span><span class="w">
-</span></span></span><span class="line"><span class="ln"> 5</span><span class="cl"><span class="w">  </span><span class="c"># 当前用户只有development的读取权限</span><span class="w">
-</span></span></span><span class="line"><span class="ln"> 6</span><span class="cl"><span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l">development</span><span class="w">
-</span></span></span><span class="line"><span class="ln"> 7</span><span class="cl"><span class="w"></span><span class="nt">subjects</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="ln"> 8</span><span class="cl"><span class="w"></span>- <span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">User</span><span class="w">
-</span></span></span><span class="line"><span class="ln"> 9</span><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">guest01</span><span class="w">
-</span></span></span><span class="line"><span class="ln">10</span><span class="cl"><span class="w">  </span><span class="nt">apiGroup</span><span class="p">:</span><span class="w"> </span><span class="l">rbac.authorization.k8s.io/v1</span><span class="w">
-</span></span></span><span class="line"><span class="ln">11</span><span class="cl"><span class="w"></span><span class="nt">roleRef</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="ln">12</span><span class="cl"><span class="w">  </span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">ClusterRole</span><span class="w">
-</span></span></span><span class="line"><span class="ln">13</span><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">reader-pods</span><span class="w">
-</span></span></span><span class="line"><span class="ln">14</span><span class="cl"><span class="w">  </span><span class="nt">apiGroup</span><span class="p">:</span><span class="w"> </span><span class="l">rbac.authorization.k8s.io/v1</span><span class="w">
-</span></span></span></code></pre></div><h3 id="账户组的管理">账户/组的管理</h3>
-<p>角色绑定(Role Bingding)是将角色中定义的权限赋予一个或者一组用户。
+<!doctype html><html data-bs-theme=light itemscope itemtype=http://schema.org/WebPage lang=en><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><link rel=preconnect href=https://fonts.googleapis.com><link rel=preconnect href=https://fonts.gstatic.com crossorigin><link href="https://fonts.googleapis.com/css2?display=swap&amp;family=+JetBrains+Mono&amp;family=JetBrains+Mono%3Aital%2Cwght%400%2C600%3B1%2C600..900" rel=stylesheet><link rel=manifest href=https://blog.mletter.cn/manifest.webmanifest><meta name=description content="Kubernetes API的每个请求都会经过多阶段的访问控制之后才会被接受,这一阶段包括认证、授权、以及准入控制(Admission Control)等"><meta property="og:title" content="Kubernetes中Api-Server简单解读"><meta property="og:description" content="Kubernetes API的每个请求都会经过多阶段的访问控制之后才会被接受,这一阶段包括认证、授权、以及准入控制(Admission Control)等"><meta property="og:type" content="article"><meta property="og:url" content="https://blog.mletter.cn/posts/api-server/"><meta property="og:image" content="https://bj.bcebos.com/baidu-rmb-video-cover-1/2b6495c8749e3f4e4369e28cb50eeb87.png"><meta property="article:section" content="posts"><meta property="article:published_time" content="2023-02-07T00:00:00+00:00"><meta property="article:modified_time" content="2023-02-07T00:00:00+00:00"><meta itemprop=name content="Kubernetes中Api-Server简单解读"><meta itemprop=description content="Kubernetes API的每个请求都会经过多阶段的访问控制之后才会被接受,这一阶段包括认证、授权、以及准入控制(Admission Control)等"><meta itemprop=datePublished content="2023-02-07T00:00:00+00:00"><meta itemprop=dateModified content="2023-02-07T00:00:00+00:00"><meta itemprop=wordCount content="918"><meta itemprop=image content="https://bj.bcebos.com/baidu-rmb-video-cover-1/2b6495c8749e3f4e4369e28cb50eeb87.png"><meta itemprop=keywords content="kubernetes,api-server,"><meta name=twitter:card content="summary_large_image"><meta name=twitter:image content="https://bj.bcebos.com/baidu-rmb-video-cover-1/2b6495c8749e3f4e4369e28cb50eeb87.png"><meta name=twitter:title content="Kubernetes中Api-Server简单解读"><meta name=twitter:description content="Kubernetes API的每个请求都会经过多阶段的访问控制之后才会被接受,这一阶段包括认证、授权、以及准入控制(Admission Control)等"><title>Kubernetes中Api-Server简单解读 - Posts -</title><link href="/css/hb.4caa23f100cace35f7c4334374263b9d071605f8e0756cc12bc2e421f42609c8.css" rel=stylesheet><script src=/js/init.b980cf5ff873691f491c400ab7f55079eb2d1eef456f2eec75db7cf3d8c9dcc7.js integrity="sha256-uYDPX/hzaR9JHEAKt/VQeestHu9Fby7sddt889jJ3Mc="></script></head><body><noscript><div class="alert alert-danger text-center rounded-0" role=alert><svg aria-hidden="true" class="bi bi-exclamation-square-fillbi bi-exclamation-square-fill hi-svg-inline me-2" fill="currentcolor" height="1em" viewBox="0 0 16 16" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M2 0A2 2 0 000 2v12a2 2 0 002 2h12a2 2 0 002-2V2a2 2 0 00-2-2zm6 4c.535.0.954.462.9.995l-.35 3.507a.552.552.0 01-1.1.0L7.1 4.995A.905.905.0 018 4m.002 6a1 1 0 110 2 1 1 0 010-2"/></svg>Your browser does not support JavaScript.</div></noscript><header class=hb-header><nav class="hb-header-nav navbar navbar-expand-lg"><div class="hb-announcement-bar text-center px-1 py-2 w-100 overflow-hidden border-bottom border-secondary"><a class="hb-announcement text-decoration-none text-truncate active" href=/bulletin/2024/0108/>2024年本站大更新啦,查看更新内容轻点我哦<svg aria-hidden="true" class="bi bi-arrow-rightbi bi-arrow-right hi-svg-inline ms-1" fill="currentcolor" height="1em" viewBox="0 0 16 16" width="1em" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M1 8a.5.5.0 01.5-.5h11.793l-3.147-3.146a.5.5.0 01.708-.708l4 4a.5.5.0 010 .708l-4 4a.5.5.0 01-.708-.708L13.293 8.5H1.5A.5.5.0 011 8"/></svg></a></div><div class=container-fluid><a class="navbar-brand d-flex align-items-center" href=/>人间只是春</a><div class="d-flex order-5"><div class="search-modal-toggle hb-header-search-form position-relative d-flex ms-lg-1"><button type=button class="hb-header-search-icon border-0 bg-transparent px-2" aria-label="Toggle search"><svg aria-hidden="true" class="bi bi-searchbi bi-search hi-svg-inline" fill="currentcolor" height="1em" viewBox="0 0 16 16" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M11.742 10.344a6.5 6.5.0 10-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 001.415-1.414l-3.85-3.85a1 1 0 00-.115-.1zM12 6.5a5.5 5.5.0 11-11 0 5.5 5.5.0 0111 0"/></svg></button>
+<input class="form-control rounded-5 d-none d-lg-block ms-lg-1" placeholder=Search>
+<span class="hb-header-search-keys position-absolute d-none d-lg-block"><kbd>CTRL</kbd>
+<kbd>K</kbd></span></div><button class="navbar-toggler border-0 shadow-none" type=button data-bs-toggle=offcanvas data-bs-target=#hb-header-content aria-controls=hb-header-content aria-label="Toggle navigation"><svg aria-hidden="true" class="bi bi-three-dotsbi bi-three-dots hi-svg-inline" fill="currentcolor" height="1.25em" viewBox="0 0 16 16" width="1.25em" xmlns="http://www.w3.org/2000/svg"><path d="M3 9.5a1.5 1.5.0 110-3 1.5 1.5.0 010 3m5 0a1.5 1.5.0 110-3 1.5 1.5.0 010 3m5 0a1.5 1.5.0 110-3 1.5 1.5.0 010 3"/></svg></button></div><div class="offcanvas offcanvas-lg offcanvas-end" tabindex=-1 id=hb-header-content aria-labelledby=hb-header-content-label><div class=offcanvas-header><h5 class=offcanvas-title id=hb-header-content-label>人间只是春</h5><button type=button class=btn-close data-bs-dismiss=offcanvas aria-label=Close></button></div><div class=offcanvas-body><ul class="hb-header-menus navbar-nav flex-row flex-wrap"></ul><ul class="hb-header-panel navbar-nav flex-row flex-wrap"><li class="nav-item py-2 py-lg-1 col-12 col-lg-auto"><hr class="d-lg-none my-2 text-body-50"></li><li class="nav-item col-6 col-lg-auto d-flex align-items-center"><a class="hb-social btn btn-link nav-link py-2 px-0 px-lg-2 d-flex justify-content-center align-items-center" href=beilanzhisen@163.com target=_blank rel="nofollow me" title=Gmail><svg aria-hidden="true" class="hi-svg-inline hb-social-icon" fill="currentcolor" height="1em" role="img" viewBox="0 0 24 24" width="1em" xmlns="http://www.w3.org/2000/svg"><title>Gmail</title><path d="M24 5.457v13.909c0 .904-.732 1.636-1.636 1.636h-3.819V11.73L12 16.64l-6.545-4.91v9.273H1.636A1.636 1.636.0 010 19.366V5.457c0-2.023 2.309-3.178 3.927-1.964L5.455 4.64 12 9.548l6.545-4.91 1.528-1.145C21.69 2.28 24 3.434 24 5.457z"/></svg><span class="hb-social-text d-lg-none ms-1">Gmail</span></a></li><li class="nav-item py-2 py-lg-1 col-12 col-lg-auto"><div class="vr d-none d-lg-flex h-100 mx-lg-2 text-body"></div><hr class="d-lg-none my-2 text-body-50"></li><li class="theme-toggle nav-item dropdown col-6 col-lg-auto d-flex flex-column justify-content-center"><a class="btn btn-link nav-link py-2 px-0 px-lg-2 d-flex justify-content-start justify-content-lg-center align-items-center" href=# role=button data-bs-toggle=dropdown aria-expanded=false><svg aria-hidden="true" class="bi bi-circle-halfbi bi-circle-half hi-svg-inline my-1 theme-toggle-icon" fill="currentcolor" height="1em" viewBox="0 0 16 16" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M8 15A7 7 0 108 1zm0 1A8 8 0 118 0a8 8 0 010 16"/></svg><span class="d-lg-none ms-1">Theme</span></a><ul class="theme-toggle-menu dropdown-menu dropdown-menu-end"><li><button class="theme-toggle-item dropdown-item d-flex align-items-center justify-content-center" data-bs-theme-value=auto>
+<span class="theme-toggle-item-icon me-1 d-flex align-items-center"><svg aria-hidden="true" class="bi bi-circle-halfbi bi-circle-half hi-svg-inline my-1" fill="currentcolor" height="1em" viewBox="0 0 16 16" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M8 15A7 7 0 108 1zm0 1A8 8 0 118 0a8 8 0 010 16"/></svg></span>Auto</button></li><li><button class="theme-toggle-item dropdown-item d-flex align-items-center justify-content-center" data-bs-theme-value=dark>
+<span class="theme-toggle-item-icon me-1 d-flex align-items-center"><svg aria-hidden="true" class="bi bi-moon-starsbi bi-moon-stars hi-svg-inline my-1" fill="currentcolor" height="1em" viewBox="0 0 16 16" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M6 .278a.77.77.0 01.08.858 7.2 7.2.0 00-.878 3.46c0 4.021 3.278 7.277 7.318 7.277q.792-.001 1.533-.16a.79.79.0 01.81.316.73.73.0 01-.031.893A8.35 8.35.0 018.344 16C3.734 16 0 12.286.0 7.71.0 4.266 2.114 1.312 5.124.06A.75.75.0 016 .278M4.858 1.311A7.27 7.27.0 001.025 7.71c0 4.02 3.279 7.276 7.319 7.276a7.32 7.32.0 005.205-2.162q-.506.063-1.029.063c-4.61.0-8.343-3.714-8.343-8.29.0-1.167.242-2.278.681-3.286"/><path d="M10.794 3.148a.217.217.0 01.412.0l.387 1.162c.173.518.579.924 1.097 1.097l1.162.387a.217.217.0 010 .412l-1.162.387A1.73 1.73.0 0011.593 7.69l-.387 1.162a.217.217.0 01-.412.0l-.387-1.162A1.73 1.73.0 009.31 6.593l-1.162-.387a.217.217.0 010-.412l1.162-.387a1.73 1.73.0 001.097-1.097zM13.863.099a.145.145.0 01.274.0l.258.774c.115.346.386.617.732.732l.774.258a.145.145.0 010 .274l-.774.258a1.16 1.16.0 00-.732.732l-.258.774a.145.145.0 01-.274.0l-.258-.774a1.16 1.16.0 00-.732-.732l-.774-.258a.145.145.0 010-.274l.774-.258c.346-.115.617-.386.732-.732z"/></svg></span>Dark</button></li><li><button class="theme-toggle-item dropdown-item d-flex align-items-center justify-content-center" data-bs-theme-value=light>
+<span class="theme-toggle-item-icon me-1 d-flex align-items-center"><svg aria-hidden="true" class="bi bi-brightness-highbi bi-brightness-high hi-svg-inline my-1" fill="currentcolor" height="1em" viewBox="0 0 16 16" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M8 11a3 3 0 110-6 3 3 0 010 6m0 1a4 4 0 100-8 4 4 0 000 8M8 0a.5.5.0 01.5.5v2a.5.5.0 01-1 0v-2A.5.5.0 018 0m0 13a.5.5.0 01.5.5v2a.5.5.0 01-1 0v-2A.5.5.0 018 13m8-5a.5.5.0 01-.5.5h-2a.5.5.0 010-1h2a.5.5.0 01.5.5M3 8a.5.5.0 01-.5.5h-2a.5.5.0 010-1h2A.5.5.0 013 8m10.657-5.657a.5.5.0 010 .707l-1.414 1.415a.5.5.0 11-.707-.708l1.414-1.414a.5.5.0 01.707.0m-9.193 9.193a.5.5.0 010 .707L3.05 13.657a.5.5.0 01-.707-.707l1.414-1.414a.5.5.0 01.707.0m9.193 2.121a.5.5.0 01-.707.0l-1.414-1.414a.5.5.0 01.707-.707l1.414 1.414a.5.5.0 010 .707M4.464 4.465a.5.5.0 01-.707.0L2.343 3.05a.5.5.0 11.707-.707l1.414 1.414a.5.5.0 010 .708"/></svg></span>Light</button></li></ul></li></ul></div></div></div></nav></header><div class="hb-main container hb-main container"><div class=hb-blog-main-container><div class=hb-blog-main><div class="container-fluid px-0 mb-4"><nav aria-label=breadcrumb><ol class="hb-breadcrumb breadcrumb"><li class=breadcrumb-item><a href=/ title>Home</a></li><li class=breadcrumb-item><a href=/posts/ title=Posts>Posts</a></li><li class="breadcrumb-item active" aria-current=page><a href=/posts/api-server/ title=Kubernetes中Api-Server简单解读>Kubernetes中Api-Server简单解读</a></li></ol></nav></div><div class="hb-blog-post position-relative"><div class="hb-blog-post-intro hb-module mb-2"><h1 class=hb-blog-post-title>Kubernetes中Api-Server简单解读</h1><div class=hb-blog-post-meta><span class=hb-blog-post-date>February 7, 2023</span>
+<span class=hb-blog-post-reading-time>5 min read</span>
+<span class=hb-blog-post-taxonomy-meta><a class="hb-blog-post-taxonomy hb-blog-post-taxonomy-category badge bg-secondary text-decoration-none fw-normal me-1" href=/categories/kubernetes/>kubernetes</a></span>
+<span class=hb-blog-post-taxonomy-meta><a class="hb-blog-post-taxonomy hb-blog-post-taxonomy-tag badge bg-secondary text-decoration-none fw-normal me-1" href=/tags/kubernetes/>kubernetes</a></span>
+<span class=hb-blog-post-taxonomy-meta><a class="hb-blog-post-taxonomy hb-blog-post-taxonomy-tag badge bg-secondary text-decoration-none fw-normal me-1" href=/tags/api-server/>api-server</a></span></div><div class="hb-blog-post-desc lead mt-1">Kubernetes API的每个请求都会经过多阶段的访问控制之后才会被接受,这一阶段包括认证、授权、以及准入控制(Admission Control)等</div></div><div class="hb-blog-post-toc text-body-secondary position-sticky overflow-y-auto"><div class="hb-module pb-1"><div class="h6 d-none d-md-block">On this page</div><hr class="d-none d-md-block"><div class="d-grid d-block d-md-none mb-2"><button class="btn btn-light d-flex align-items-center justify-content-between collapsed" type=button data-bs-toggle=collapse data-bs-target=.hb-blog-post-toc-collapse aria-expanded=false aria-controls=collapse-toc>
+<span>On this page</span><svg aria-hidden="true" class="bi bi-chevron-expandbi bi-chevron-expand hi-svg-inline ms-2" fill="currentcolor" height="1.25rem" viewBox="0 0 16 16" width="1.25rem" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M3.646 9.146a.5.5.0 01.708.0L8 12.793l3.646-3.647a.5.5.0 01.708.708l-4 4a.5.5.0 01-.708.0l-4-4a.5.5.0 010-.708m0-2.292a.5.5.0 00.708.0L8 3.207l3.646 3.647a.5.5.0 00.708-.708l-4-4a.5.5.0 00-.708.0l-4 4a.5.5.0 000 .708"/></svg></button></div><div class="px-2 px-md-0"><div id=collapse-toc class="collapse hb-blog-post-toc-collapse"><nav id=TableOfContents><ul><li><a href=#认证插件>认证插件</a><ul><li><a href=#静态token用法>静态Token用法</a></li><li><a href=#useraccount和serviceaccount的区别>UserAccount和ServiceAccount的区别</a></li><li><a href=#构建符合kubernetes规范的认证服务>构建符合Kubernetes规范的认证服务</a></li><li><a href=#webhook认证用法>WebHook认证用法</a></li></ul></li><li><a href=#授权>授权</a><ul><li><a href=#rbac和abac>RBAC和ABAC</a></li><li><a href=#role和clusterrole>Role和ClusterRole</a></li><li><a href=#binding>Binding</a></li><li><a href=#账户组的管理>账户/组的管理</a></li><li><a href=#规划系统角色>规划系统角色</a></li><li><a href=#与权限相关的其他最佳实践>与权限相关的其他最佳实践</a></li></ul></li><li><a href=#准入>准入</a><ul><li><a href=#准入控制>准入控制</a></li><li><a href=#准入控制插件>准入控制插件</a></li><li><a href=#准入控制插件的演示>准入控制插件的演示</a></li></ul></li><li><a href=#限流>限流</a><ul><li><a href=#漏斗算法>漏斗算法</a></li><li><a href=#令牌桶算法>令牌桶算法</a></li><li><a href=#api-server的限流>API Server的限流</a></li><li><a href=#api-priority-and-fairness>API Priority and Fairness</a></li><li><a href=#flow-schema>Flow Schema</a></li><li><a href=#prioritylevelconfiguration优先级队列>PriorityLevelConfiguration(优先级队列)</a></li></ul></li><li><a href=#高可用apiserver>高可用APIServer</a><ul><li><a href=#搭建多租户的kubernetes集群>搭建多租户的kubernetes集群</a></li></ul></li></ul></nav></div></div></div></div><div class=hb-blog-post-main><div class="hb-module p-0 text-center"><picture><img class="hb-featured-img img-fluid p-1 bg-body-secondary border w-100" src=https://bj.bcebos.com/baidu-rmb-video-cover-1/2b6495c8749e3f4e4369e28cb50eeb87.png alt=Kubernetes中Api-Server简单解读></picture></div><div class="hb-blog-post-content hb-module"><p><strong>访问控制概览</strong>
+Kubernetes API的每个请求都会经过多阶段的访问控制之后才会被接受,这一阶段包括认证、授权、以及准入控制(Admission Control)等</p><p><picture><img class=img-fluid src=https://bj.bcebos.com/baidu-rmb-video-cover-1/2b6495c8749e3f4e4369e28cb50eeb87.png alt=img loading=lazy></picture></p><h2 id=认证插件>认证插件</h2><ul><li>x509证书：使用x509证书只需要API Server启动的时候配置 <code>--client-ca-file=SOMEFILE</code>。在证书认证的时候,其CN域名做用户名,而组织机构用作group名。</li><li>静态Token文件：使用静态Token文件认证只需要在API Server启动的时候配置 <code>--token-auth-file=SOMEFILE</code>。该文件为<code>csv</code>格式,每行至少包括三列<code>token</code>、<code>username</code>、<code>user id</code></li><li>引导Token<ul><li>为了支持平滑的启动和引导新的集群,kubernetes包含了一种动态管理的持有令牌类型,称作启动引导令牌(Bootstrap Token)</li><li>这些令牌以<code>Secret</code>的形式保存在<code>kube-system</code>的名称空间中,可以动态的管理和创建。</li><li>控制器管理器包含的TokenCleaner控制器能够在启动引导令牌过期时将其删除。</li><li>在使用kubeadm部署kubernetes的时候,可以通过<code>kubeadm token list</code>进行查询。</li></ul></li><li>ServiceAccount：是kubernetes自动生成的,并且会自动挂载到容器的<code>/run/secrets/kubernetes.io/serviceaccount</code>目录当中</li><li>Webhook令牌身份认证<ul><li><code>--authentication-token-webhook-config-file</code>：指向一个配置文件,其中描述如何访问远程的Webhook服务</li><li><code>--authentication-token-webhook-cache-ttl</code>：用来设定身份认证决定的缓存时间。默认为2分钟。</li></ul></li></ul><h3 id=静态token用法>静态Token用法</h3><ol><li>新建一个存放静态Token的目录</li></ol><div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=ln>1</span><span class=cl>mkdir -p /etc/kubernetes/auth
+</span></span></code></pre></div><ol start=2><li>将Token内容写入到文件当中</li></ol><blockquote><p>注意：该文件格式为CSV格式，其实你也可以随便写:happy:</p></blockquote><div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=ln>1</span><span class=cl>描述： Token值  用户名称  用户ID 可选组名
+</span></span><span class=line><span class=ln>2</span><span class=cl>kube-token,kubeadminer,1000,<span class=s2>&#34;group1,group2,group3&#34;</span>
+</span></span></code></pre></div><p>假设这是我们请求名称空间的请求: <code>curl -k -v -XGET -H "Authrization: Bearer kube-token" https://api.k8s.version.cn:6443/api/v1/namespaces/default</code></p><p>正常请求会返回，因为我没有创建这个<code>kube-token</code></p><div class=highlight><pre tabindex=0 class=chroma><code class=language-json data-lang=json><span class=line><span class=ln> 1</span><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=ln> 2</span><span class=cl>  <span class=nt>&#34;kind&#34;</span><span class=p>:</span> <span class=s2>&#34;Status&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=ln> 3</span><span class=cl>  <span class=nt>&#34;apiVersion&#34;</span><span class=p>:</span> <span class=s2>&#34;v1&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=ln> 4</span><span class=cl>  <span class=nt>&#34;metadata&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=ln> 5</span><span class=cl>    
+</span></span><span class=line><span class=ln> 6</span><span class=cl>  <span class=p>},</span>
+</span></span><span class=line><span class=ln> 7</span><span class=cl>  <span class=nt>&#34;status&#34;</span><span class=p>:</span> <span class=s2>&#34;Failure&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=ln> 8</span><span class=cl>  <span class=nt>&#34;message&#34;</span><span class=p>:</span> <span class=s2>&#34;namespaces \&#34;default\&#34; is forbidden: User \&#34;system:anonymous\&#34; cannot get resource \&#34;namespaces\&#34; in API group \&#34;\&#34; in the namespace \&#34;default\&#34;&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=ln> 9</span><span class=cl>  <span class=nt>&#34;reason&#34;</span><span class=p>:</span> <span class=s2>&#34;Forbidden&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=ln>10</span><span class=cl>  <span class=nt>&#34;details&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=ln>11</span><span class=cl>    <span class=nt>&#34;name&#34;</span><span class=p>:</span> <span class=s2>&#34;default&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=ln>12</span><span class=cl>    <span class=nt>&#34;kind&#34;</span><span class=p>:</span> <span class=s2>&#34;namespaces&#34;</span>
+</span></span><span class=line><span class=ln>13</span><span class=cl>  <span class=p>},</span>
+</span></span><span class=line><span class=ln>14</span><span class=cl>  <span class=nt>&#34;code&#34;</span><span class=p>:</span> <span class=mi>403</span>
+</span></span></code></pre></div><ol start=3><li>设置<code>API Server</code></li></ol><blockquote><p>注意： 操作的时候请备份你的API Server文件，这是一个好习惯.</p></blockquote><div class=highlight><pre tabindex=0 class=chroma><code class=language-yaml data-lang=yaml><span class=line><span class=ln> 1</span><span class=cl><span class=c>#  vim /etc/kubernetes/manifests/kube-apiserver.yaml </span><span class=w>
+</span></span></span><span class=line><span class=ln> 2</span><span class=cl><span class=w></span><span class=c># 挂载本地的/etc/basic-auth路径</span><span class=w>
+</span></span></span><span class=line><span class=ln> 3</span><span class=cl><span class=w> </span><span class=nt>volumeMounts</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=ln> 4</span><span class=cl><span class=w> </span>- <span class=nt>mountPath</span><span class=p>:</span><span class=w> </span><span class=l>/etc/basic-auth</span><span class=w>
+</span></span></span><span class=line><span class=ln> 5</span><span class=cl><span class=w>	</span><span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>auth-files</span><span class=w>
+</span></span></span><span class=line><span class=ln> 6</span><span class=cl><span class=w>      </span><span class=nt>readOnly</span><span class=p>:</span><span class=w> </span><span class=kc>true</span><span class=w>
+</span></span></span><span class=line><span class=ln> 7</span><span class=cl><span class=w> </span><span class=nt>volumes</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=ln> 8</span><span class=cl><span class=w> </span>- <span class=nt>hostPath</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=ln> 9</span><span class=cl><span class=w>       </span><span class=nt>path</span><span class=p>:</span><span class=w> </span><span class=l>/etc/basic-auth</span><span class=w>
+</span></span></span><span class=line><span class=ln>10</span><span class=cl><span class=w>       </span><span class=nt>type</span><span class=p>:</span><span class=w> </span><span class=l>DirectoryOrCreate</span><span class=w>
+</span></span></span><span class=line><span class=ln>11</span><span class=cl><span class=w>   </span><span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>auth-files</span><span class=w>
+</span></span></span><span class=line><span class=ln>12</span><span class=cl><span class=w></span><span class=c># 修改API Server启动参数</span><span class=w>
+</span></span></span><span class=line><span class=ln>13</span><span class=cl><span class=w></span>- --<span class=l>token-auth-file=/etc/basic-auth/kube-token.csv</span><span class=w>
+</span></span></span></code></pre></div><blockquote><p>请您等待APIServer重启完成</p></blockquote><p>当我们再次通过<code>kube-token</code>进行请求API Server 如果能成功识别到我们的用户即可，也就知道我们当前的用户为<code>kubeadminer</code></p><div class=highlight><pre tabindex=0 class=chroma><code class=language-json data-lang=json><span class=line><span class=ln> 1</span><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=ln> 2</span><span class=cl>  <span class=nt>&#34;kind&#34;</span><span class=p>:</span> <span class=s2>&#34;Status&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=ln> 3</span><span class=cl>  <span class=nt>&#34;apiVersion&#34;</span><span class=p>:</span> <span class=s2>&#34;v1&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=ln> 4</span><span class=cl>  <span class=nt>&#34;metadata&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=ln> 5</span><span class=cl>    
+</span></span><span class=line><span class=ln> 6</span><span class=cl>  <span class=p>},</span>
+</span></span><span class=line><span class=ln> 7</span><span class=cl>  <span class=nt>&#34;status&#34;</span><span class=p>:</span> <span class=s2>&#34;Failure&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=ln> 8</span><span class=cl>  <span class=nt>&#34;message&#34;</span><span class=p>:</span> <span class=s2>&#34;namespaces \&#34;default\&#34; is forbidden: User \&#34;kubeadminer\&#34; cannot get resource \&#34;namespaces\&#34; in API group \&#34;\&#34; in the namespace \&#34;default\&#34;&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=ln> 9</span><span class=cl>  <span class=nt>&#34;reason&#34;</span><span class=p>:</span> <span class=s2>&#34;Forbidden&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=ln>10</span><span class=cl>  <span class=nt>&#34;details&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=ln>11</span><span class=cl>    <span class=nt>&#34;name&#34;</span><span class=p>:</span> <span class=s2>&#34;default&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=ln>12</span><span class=cl>    <span class=nt>&#34;kind&#34;</span><span class=p>:</span> <span class=s2>&#34;namespaces&#34;</span>
+</span></span><span class=line><span class=ln>13</span><span class=cl>  <span class=p>},</span>
+</span></span><span class=line><span class=ln>14</span><span class=cl>  <span class=nt>&#34;code&#34;</span><span class=p>:</span> <span class=mi>403</span>
+</span></span></code></pre></div><h3 id=useraccount和serviceaccount的区别>UserAccount和ServiceAccount的区别</h3><ol><li>UserAccount是与外部认证二次开发对接实现的,签发的Token是外部系统,每次APIServer需要带此Token请求外部认证服务器。</li></ol><h3 id=构建符合kubernetes规范的认证服务>构建符合Kubernetes规范的认证服务</h3><p>需要依照kubernetes规范，来构建认证服务进行认证</p><ol><li>URL：http://api.k8s.verbos/authenticate</li><li>Method: POST(需要携带请求数据等等…)</li><li>Input：</li><li>Output：</li></ol><h3 id=webhook认证用法>WebHook认证用法</h3><ol><li>新建一个webhook-config.json</li></ol><div class=highlight><pre tabindex=0 class=chroma><code class=language-json data-lang=json><span class=line><span class=ln> 1</span><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=ln> 2</span><span class=cl>  <span class=nt>&#34;kind&#34;</span><span class=p>:</span> <span class=s2>&#34;Config&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=ln> 3</span><span class=cl>  <span class=nt>&#34;apiVersion&#34;</span><span class=p>:</span> <span class=s2>&#34;v1&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=ln> 4</span><span class=cl>  <span class=nt>&#34;preferences&#34;</span><span class=p>:</span> <span class=p>{},</span>
+</span></span><span class=line><span class=ln> 5</span><span class=cl>  <span class=nt>&#34;clusters&#34;</span><span class=p>:</span> <span class=p>[</span>
+</span></span><span class=line><span class=ln> 6</span><span class=cl>    <span class=p>{</span>
+</span></span><span class=line><span class=ln> 7</span><span class=cl>      <span class=nt>&#34;name&#34;</span><span class=p>:</span> <span class=s2>&#34;github-authn&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=ln> 8</span><span class=cl>      <span class=nt>&#34;cluster&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=ln> 9</span><span class=cl>        <span class=nt>&#34;server&#34;</span><span class=p>:</span> <span class=s2>&#34;https://192.168.1.100:8443/authenticate&#34;</span>
+</span></span><span class=line><span class=ln>10</span><span class=cl>      <span class=p>}</span>
+</span></span><span class=line><span class=ln>11</span><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=ln>12</span><span class=cl>  <span class=p>],</span>
+</span></span><span class=line><span class=ln>13</span><span class=cl>  <span class=nt>&#34;users&#34;</span><span class=p>:</span> <span class=p>[</span>
+</span></span><span class=line><span class=ln>14</span><span class=cl>    <span class=p>{</span>
+</span></span><span class=line><span class=ln>15</span><span class=cl>      <span class=nt>&#34;name&#34;</span><span class=p>:</span> <span class=s2>&#34;authn-apiserver&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=ln>16</span><span class=cl>      <span class=nt>&#34;user&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=ln>17</span><span class=cl>        <span class=nt>&#34;token&#34;</span><span class=p>:</span> <span class=s2>&#34;secret&#34;</span>
+</span></span><span class=line><span class=ln>18</span><span class=cl>      <span class=p>}</span>
+</span></span><span class=line><span class=ln>19</span><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=ln>20</span><span class=cl>  <span class=p>],</span>
+</span></span><span class=line><span class=ln>21</span><span class=cl>  <span class=nt>&#34;contexts&#34;</span><span class=p>:</span> <span class=p>[</span>
+</span></span><span class=line><span class=ln>22</span><span class=cl>    <span class=p>{</span>
+</span></span><span class=line><span class=ln>23</span><span class=cl>      <span class=nt>&#34;name&#34;</span><span class=p>:</span> <span class=s2>&#34;webhook&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=ln>24</span><span class=cl>      <span class=nt>&#34;context&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=ln>25</span><span class=cl>        <span class=nt>&#34;cluster&#34;</span><span class=p>:</span> <span class=s2>&#34;github-authn&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=ln>26</span><span class=cl>        <span class=nt>&#34;user&#34;</span><span class=p>:</span> <span class=s2>&#34;authn-apiserver&#34;</span>
+</span></span><span class=line><span class=ln>27</span><span class=cl>      <span class=p>}</span>
+</span></span><span class=line><span class=ln>28</span><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=ln>29</span><span class=cl>  <span class=p>],</span>
+</span></span><span class=line><span class=ln>30</span><span class=cl>  <span class=nt>&#34;current-context&#34;</span><span class=p>:</span> <span class=s2>&#34;webhook&#34;</span>
+</span></span><span class=line><span class=ln>31</span><span class=cl><span class=p>}</span>
+</span></span></code></pre></div><h2 id=授权>授权</h2><p>授权主要是用于对于集群资源的访问控制，通过检查请求包含的相关属性值，与相对应的访问策略进行比较，API请求必须满足某些策略才能被处理。跟认证类似，kubernetes也支持多种授权机制，并支持同时开启多个插件授权（只要有一个通过即可）。如果授权成功，则用户的请求会发送到准入控制模块进行下一步处理。</p><p>kubernetes授权仅处理以下请求属性</p><ul><li>user、group、extra</li><li>API、请求方法、请求路径</li><li>请求资源和子资源</li><li>Namespace</li><li>API Group</li></ul><p>kubernetes支持以下授权插件</p><ul><li>ABAC</li><li>RBAC</li><li>WebHook</li><li>Node</li></ul><h3 id=rbac和abac>RBAC和ABAC</h3><p>ABAC(Attribute Based Access Control)本来是不错的概念，但是在kubernetes中实现的比较难于管理和理解，而且需要对master所在节点进行SSH和文件系统权限，要使得对授权的变更生效还需要重启API Server</p><p>而RBAC的策略可以利用kubelet或者kubernetes API进行配置。RBAC可以授权给用户，让用户有权进行授权管理，这样就可以无需接触节点，直接进行授权管理。RBAC在kubernetes中被映射为API资源和操作。</p><h3 id=role和clusterrole>Role和ClusterRole</h3><p>Role(角色)是一系列特定角色权限的集合，例如一个角色可以包含读取Pod的权限和列出Pod的权限。</p><p>Role只能用来给某个特定的namespace中的资源作鉴权，对多namespace和集群级的资源活着是非资源类的API(如/healthz)使用ClusterRole</p><blockquote><p>下面是一个简单的Role配置</p></blockquote><div class=highlight><pre tabindex=0 class=chroma><code class=language-yaml data-lang=yaml><span class=line><span class=ln>1</span><span class=cl><span class=nt>kind</span><span class=p>:</span><span class=w> </span><span class=l>Role</span><span class=w>
+</span></span></span><span class=line><span class=ln>2</span><span class=cl><span class=w></span><span class=nt>apiVersion</span><span class=p>:</span><span class=w> </span><span class=l>rbac.authorization.k8s.io/v1</span><span class=w>
+</span></span></span><span class=line><span class=ln>3</span><span class=cl><span class=w></span><span class=nt>metadata</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=ln>4</span><span class=cl><span class=w>  </span><span class=nt>namespace</span><span class=p>:</span><span class=w> </span><span class=l>default</span><span class=w>
+</span></span></span><span class=line><span class=ln>5</span><span class=cl><span class=w>  </span><span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>reader-pods</span><span class=w>
+</span></span></span><span class=line><span class=ln>6</span><span class=cl><span class=w></span><span class=nt>rules</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=ln>7</span><span class=cl><span class=w></span>- <span class=nt>apiGroups</span><span class=p>:</span><span class=w> </span><span class=p>[</span><span class=s2>&#34;&#34;</span><span class=p>]</span><span class=w>
+</span></span></span><span class=line><span class=ln>8</span><span class=cl><span class=w>  </span><span class=nt>resources</span><span class=p>:</span><span class=w> </span><span class=p>[</span><span class=s2>&#34;pods&#34;</span><span class=p>]</span><span class=w>
+</span></span></span><span class=line><span class=ln>9</span><span class=cl><span class=w>  </span><span class=nt>verbs</span><span class=p>:</span><span class=w> </span><span class=p>[</span><span class=s2>&#34;get&#34;</span><span class=p>,</span><span class=s2>&#34;watch&#34;</span><span class=p>,</span><span class=s2>&#34;list&#34;</span><span class=p>]</span><span class=w>
+</span></span></span></code></pre></div><blockquote><p>下面是一个简单地ClusterRole配置</p></blockquote><div class=highlight><pre tabindex=0 class=chroma><code class=language-yaml data-lang=yaml><span class=line><span class=ln>1</span><span class=cl><span class=nt>kind</span><span class=p>:</span><span class=w> </span><span class=l>ClusterRole</span><span class=w>
+</span></span></span><span class=line><span class=ln>2</span><span class=cl><span class=w></span><span class=nt>apiVersion</span><span class=p>:</span><span class=w> </span><span class=l>rbac.authorization.k8s.io/v1</span><span class=w>
+</span></span></span><span class=line><span class=ln>3</span><span class=cl><span class=w></span><span class=nt>metadata</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=ln>4</span><span class=cl><span class=w>  </span><span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>reader-pods</span><span class=w>
+</span></span></span><span class=line><span class=ln>5</span><span class=cl><span class=w></span><span class=nt>rules</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=ln>6</span><span class=cl><span class=w></span>- <span class=nt>apiGroups</span><span class=p>:</span><span class=w> </span><span class=p>[</span><span class=s2>&#34;&#34;</span><span class=p>]</span><span class=w>
+</span></span></span><span class=line><span class=ln>7</span><span class=cl><span class=w>  </span><span class=nt>resources</span><span class=p>:</span><span class=w> </span><span class=p>[</span><span class=s2>&#34;pods&#34;</span><span class=p>]</span><span class=w>
+</span></span></span><span class=line><span class=ln>8</span><span class=cl><span class=w>  </span><span class=nt>verbs</span><span class=p>:</span><span class=w> </span><span class=p>[</span><span class=s2>&#34;get&#34;</span><span class=p>,</span><span class=s2>&#34;watch&#34;</span><span class=p>,</span><span class=s2>&#34;list&#34;</span><span class=p>]</span><span class=w>
+</span></span></span></code></pre></div><h3 id=binding>Binding</h3><p>如果你想使全局生效可以使用<code>kind: ClusterRoleBingding</code>并且不写<code>namespace</code></p><div class=highlight><pre tabindex=0 class=chroma><code class=language-yaml data-lang=yaml><span class=line><span class=ln> 1</span><span class=cl><span class=nt>kind</span><span class=p>:</span><span class=w> </span><span class=l>RoleBingding</span><span class=w>
+</span></span></span><span class=line><span class=ln> 2</span><span class=cl><span class=w></span><span class=nt>apiVersion</span><span class=p>:</span><span class=w> </span><span class=l>rbac.authorization.k8s.io/v1</span><span class=w>
+</span></span></span><span class=line><span class=ln> 3</span><span class=cl><span class=w></span><span class=nt>metadata</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=ln> 4</span><span class=cl><span class=w>  </span><span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>reader-pods</span><span class=w>
+</span></span></span><span class=line><span class=ln> 5</span><span class=cl><span class=w>  </span><span class=c># 当前用户只有development的读取权限</span><span class=w>
+</span></span></span><span class=line><span class=ln> 6</span><span class=cl><span class=w>  </span><span class=nt>namespace</span><span class=p>:</span><span class=w> </span><span class=l>development</span><span class=w>
+</span></span></span><span class=line><span class=ln> 7</span><span class=cl><span class=w></span><span class=nt>subjects</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=ln> 8</span><span class=cl><span class=w></span>- <span class=nt>kind</span><span class=p>:</span><span class=w> </span><span class=l>User</span><span class=w>
+</span></span></span><span class=line><span class=ln> 9</span><span class=cl><span class=w>  </span><span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>guest01</span><span class=w>
+</span></span></span><span class=line><span class=ln>10</span><span class=cl><span class=w>  </span><span class=nt>apiGroup</span><span class=p>:</span><span class=w> </span><span class=l>rbac.authorization.k8s.io/v1</span><span class=w>
+</span></span></span><span class=line><span class=ln>11</span><span class=cl><span class=w></span><span class=nt>roleRef</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=ln>12</span><span class=cl><span class=w>  </span><span class=nt>kind</span><span class=p>:</span><span class=w> </span><span class=l>ClusterRole</span><span class=w>
+</span></span></span><span class=line><span class=ln>13</span><span class=cl><span class=w>  </span><span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>reader-pods</span><span class=w>
+</span></span></span><span class=line><span class=ln>14</span><span class=cl><span class=w>  </span><span class=nt>apiGroup</span><span class=p>:</span><span class=w> </span><span class=l>rbac.authorization.k8s.io/v1</span><span class=w>
+</span></span></span></code></pre></div><h3 id=账户组的管理>账户/组的管理</h3><p>角色绑定(Role Bingding)是将角色中定义的权限赋予一个或者一组用户。
 它包含主体(用户、组或服务账户)的列表和对这些主体所获得的角色的引用
-组的概念</p>
-<ul>
-<li>当外部系统认证对接的时候,用户信息可包含组信息，授权可以针对用户群组进行</li>
-<li>当对<code>Service Account</code>授权的时候,Group代表某个Namespace下的所有<code>Service Account</code>
-如果针对群组授权</li>
-</ul>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="ln"> 1</span><span class="cl"><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">ClusterRoleBingding</span><span class="w">
-</span></span></span><span class="line"><span class="ln"> 2</span><span class="cl"><span class="w"></span><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">rbac.authorization.k8s.io/v1</span><span class="w">
-</span></span></span><span class="line"><span class="ln"> 3</span><span class="cl"><span class="w"></span><span class="nt">metadata</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="ln"> 4</span><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">reader-pods-global</span><span class="w">
-</span></span></span><span class="line"><span class="ln"> 5</span><span class="cl"><span class="w"></span><span class="nt">subjects</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="ln"> 6</span><span class="cl"><span class="w"></span>- <span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">Group</span><span class="w">
-</span></span></span><span class="line"><span class="ln"> 7</span><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">guest01</span><span class="w">
-</span></span></span><span class="line"><span class="ln"> 8</span><span class="cl"><span class="w">  </span><span class="nt">apiGroup</span><span class="p">:</span><span class="w"> </span><span class="l">rbac.authorization.k8s.io/v1</span><span class="w">
-</span></span></span><span class="line"><span class="ln"> 9</span><span class="cl"><span class="w"></span><span class="nt">roleRef</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="ln">10</span><span class="cl"><span class="w">  </span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">ClusterRole</span><span class="w">
-</span></span></span><span class="line"><span class="ln">11</span><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">reader-pods</span><span class="w">
-</span></span></span><span class="line"><span class="ln">12</span><span class="cl"><span class="w">  </span><span class="nt">apiGroup</span><span class="p">:</span><span class="w"> </span><span class="l">rbac.authorization.k8s.io/v1</span><span class="w">
-</span></span></span></code></pre></div><p><code>name: system:serviceaccounts</code>表示当前是一个serviceaccount的格式进行命名的,并且授权给development这个Namespace里面所有的ServiceAccount</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="ln"> 1</span><span class="cl"><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">ClusterRoleBingding</span><span class="w">
-</span></span></span><span class="line"><span class="ln"> 2</span><span class="cl"><span class="w"></span><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">rbac.authorization.k8s.io/v1</span><span class="w">
-</span></span></span><span class="line"><span class="ln"> 3</span><span class="cl"><span class="w"></span><span class="nt">metadata</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="ln"> 4</span><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">reader-pods-global</span><span class="w">
-</span></span></span><span class="line"><span class="ln"> 5</span><span class="cl"><span class="w"></span><span class="nt">subjects</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="ln"> 6</span><span class="cl"><span class="w"></span><span class="nt">subjects</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="ln"> 7</span><span class="cl"><span class="w"></span>- <span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">Group</span><span class="w">
-</span></span></span><span class="line"><span class="ln"> 8</span><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">system:serviceaccounts:development</span><span class="w">
-</span></span></span><span class="line"><span class="ln"> 9</span><span class="cl"><span class="w">  </span><span class="nt">apiGroup</span><span class="p">:</span><span class="w"> </span><span class="l">rbac.authorization.k8s.io/v1</span><span class="w">
-</span></span></span><span class="line"><span class="ln">10</span><span class="cl"><span class="w"></span><span class="nt">roleRef</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="ln">11</span><span class="cl"><span class="w">  </span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">ClusterRole</span><span class="w">
-</span></span></span><span class="line"><span class="ln">12</span><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">reader-pods</span><span class="w">
-</span></span></span><span class="line"><span class="ln">13</span><span class="cl"><span class="w">  </span><span class="nt">apiGroup</span><span class="p">:</span><span class="w"> </span><span class="l">rbac.authorization.k8s.io/v1</span><span class="w">
-</span></span></span></code></pre></div><h3 id="规划系统角色">规划系统角色</h3>
-<p>User:</p>
-<ul>
-<li>管理员：管理所有资源的权限</li>
-<li>普通用户
-<ul>
-<li>是否有该用户创建的namespace下的所有object的操作权限？</li>
-<li>对其他用户的namespace资源是否可读、是否可写
-SystemAccount</li>
-</ul>
-</li>
-<li>System是开发者创建应用后，应用于apiserver通讯需要的身份</li>
-<li>用户可以创建自定的ServiceAccount，kubernetes也为每个namespace创建default <code>ServiceAccount</code></li>
-<li><code>Default ServiceAccount</code>通常需要给定权限以后才能对API Server进行写操作</li>
-</ul>
-<h3 id="与权限相关的其他最佳实践">与权限相关的其他最佳实践</h3>
-<p>ClusterRole是非namespace绑定的,针对整个集群生效。
+组的概念</p><ul><li>当外部系统认证对接的时候,用户信息可包含组信息，授权可以针对用户群组进行</li><li>当对<code>Service Account</code>授权的时候,Group代表某个Namespace下的所有<code>Service Account</code>
+如果针对群组授权</li></ul><div class=highlight><pre tabindex=0 class=chroma><code class=language-yaml data-lang=yaml><span class=line><span class=ln> 1</span><span class=cl><span class=nt>kind</span><span class=p>:</span><span class=w> </span><span class=l>ClusterRoleBingding</span><span class=w>
+</span></span></span><span class=line><span class=ln> 2</span><span class=cl><span class=w></span><span class=nt>apiVersion</span><span class=p>:</span><span class=w> </span><span class=l>rbac.authorization.k8s.io/v1</span><span class=w>
+</span></span></span><span class=line><span class=ln> 3</span><span class=cl><span class=w></span><span class=nt>metadata</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=ln> 4</span><span class=cl><span class=w>  </span><span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>reader-pods-global</span><span class=w>
+</span></span></span><span class=line><span class=ln> 5</span><span class=cl><span class=w></span><span class=nt>subjects</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=ln> 6</span><span class=cl><span class=w></span>- <span class=nt>kind</span><span class=p>:</span><span class=w> </span><span class=l>Group</span><span class=w>
+</span></span></span><span class=line><span class=ln> 7</span><span class=cl><span class=w>  </span><span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>guest01</span><span class=w>
+</span></span></span><span class=line><span class=ln> 8</span><span class=cl><span class=w>  </span><span class=nt>apiGroup</span><span class=p>:</span><span class=w> </span><span class=l>rbac.authorization.k8s.io/v1</span><span class=w>
+</span></span></span><span class=line><span class=ln> 9</span><span class=cl><span class=w></span><span class=nt>roleRef</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=ln>10</span><span class=cl><span class=w>  </span><span class=nt>kind</span><span class=p>:</span><span class=w> </span><span class=l>ClusterRole</span><span class=w>
+</span></span></span><span class=line><span class=ln>11</span><span class=cl><span class=w>  </span><span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>reader-pods</span><span class=w>
+</span></span></span><span class=line><span class=ln>12</span><span class=cl><span class=w>  </span><span class=nt>apiGroup</span><span class=p>:</span><span class=w> </span><span class=l>rbac.authorization.k8s.io/v1</span><span class=w>
+</span></span></span></code></pre></div><p><code>name: system:serviceaccounts</code>表示当前是一个serviceaccount的格式进行命名的,并且授权给development这个Namespace里面所有的ServiceAccount</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-yaml data-lang=yaml><span class=line><span class=ln> 1</span><span class=cl><span class=nt>kind</span><span class=p>:</span><span class=w> </span><span class=l>ClusterRoleBingding</span><span class=w>
+</span></span></span><span class=line><span class=ln> 2</span><span class=cl><span class=w></span><span class=nt>apiVersion</span><span class=p>:</span><span class=w> </span><span class=l>rbac.authorization.k8s.io/v1</span><span class=w>
+</span></span></span><span class=line><span class=ln> 3</span><span class=cl><span class=w></span><span class=nt>metadata</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=ln> 4</span><span class=cl><span class=w>  </span><span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>reader-pods-global</span><span class=w>
+</span></span></span><span class=line><span class=ln> 5</span><span class=cl><span class=w></span><span class=nt>subjects</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=ln> 6</span><span class=cl><span class=w></span><span class=nt>subjects</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=ln> 7</span><span class=cl><span class=w></span>- <span class=nt>kind</span><span class=p>:</span><span class=w> </span><span class=l>Group</span><span class=w>
+</span></span></span><span class=line><span class=ln> 8</span><span class=cl><span class=w>  </span><span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>system:serviceaccounts:development</span><span class=w>
+</span></span></span><span class=line><span class=ln> 9</span><span class=cl><span class=w>  </span><span class=nt>apiGroup</span><span class=p>:</span><span class=w> </span><span class=l>rbac.authorization.k8s.io/v1</span><span class=w>
+</span></span></span><span class=line><span class=ln>10</span><span class=cl><span class=w></span><span class=nt>roleRef</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=ln>11</span><span class=cl><span class=w>  </span><span class=nt>kind</span><span class=p>:</span><span class=w> </span><span class=l>ClusterRole</span><span class=w>
+</span></span></span><span class=line><span class=ln>12</span><span class=cl><span class=w>  </span><span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>reader-pods</span><span class=w>
+</span></span></span><span class=line><span class=ln>13</span><span class=cl><span class=w>  </span><span class=nt>apiGroup</span><span class=p>:</span><span class=w> </span><span class=l>rbac.authorization.k8s.io/v1</span><span class=w>
+</span></span></span></code></pre></div><h3 id=规划系统角色>规划系统角色</h3><p>User:</p><ul><li>管理员：管理所有资源的权限</li><li>普通用户<ul><li>是否有该用户创建的namespace下的所有object的操作权限？</li><li>对其他用户的namespace资源是否可读、是否可写
+SystemAccount</li></ul></li><li>System是开发者创建应用后，应用于apiserver通讯需要的身份</li><li>用户可以创建自定的ServiceAccount，kubernetes也为每个namespace创建default <code>ServiceAccount</code></li><li><code>Default ServiceAccount</code>通常需要给定权限以后才能对API Server进行写操作</li></ul><h3 id=与权限相关的其他最佳实践>与权限相关的其他最佳实践</h3><p>ClusterRole是非namespace绑定的,针对整个集群生效。
 通常需要创建一个管理员角色，并且绑定给开发运营团队的成员
-<code>ThirdPartyResource</code>和<code>CustomResourceDefinition</code>是全局资源，普通用户创建以后需要管理员授权才能真正操作该对象。</p>
-<blockquote>
-<p>ssh到master节点通过<code>insecure port</code>访问apiserver可以绕过鉴权,当需要做管理操作又没有权限的时候可以使用(不推荐)</p>
-</blockquote>
-<h2 id="准入">准入</h2>
-<h3 id="准入控制">准入控制</h3>
-<p>准入控制(Admission Control)在授权后对请求做进一步的验证或添加默认参数。不同于授权和认证只关心请求的用户和操作，准入控制还处理请求的内容，并且仅对创建、更新、删除或连接等有效，而对读操作无效。
+<code>ThirdPartyResource</code>和<code>CustomResourceDefinition</code>是全局资源，普通用户创建以后需要管理员授权才能真正操作该对象。</p><blockquote><p>ssh到master节点通过<code>insecure port</code>访问apiserver可以绕过鉴权,当需要做管理操作又没有权限的时候可以使用(不推荐)</p></blockquote><h2 id=准入>准入</h2><h3 id=准入控制>准入控制</h3><p>准入控制(Admission Control)在授权后对请求做进一步的验证或添加默认参数。不同于授权和认证只关心请求的用户和操作，准入控制还处理请求的内容，并且仅对创建、更新、删除或连接等有效，而对读操作无效。
 准入控制支持同时开启多个插件，它们依次调用，只有全部插件都通过请求才可以进入系统。
-配额管理</p>
-<ul>
-<li>原因：资源有限，如何限定某个用户有多少资源
-方案</li>
-<li>预定义每个<code>Namespace</code>的<code>ResourceQuota</code>,并且把<code>spec</code>保存为<code>ConfigMap</code></li>
-<li>用户可以创建多少个Pod?
-<ul>
-<li>BestEffortPod</li>
-<li>QuSPod</li>
-</ul>
-</li>
-<li>创建<code>ResourceQuota Controller</code>: 一般用于监控<code>namespace</code>创建事件，当namespace创建的时候，在该namespace创建对应的ResourceQuota对象</li>
-</ul>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="ln">1</span><span class="cl"><span class="c"># 限制default namespace只能创建3个configmap</span><span class="w">
-</span></span></span><span class="line"><span class="ln">2</span><span class="cl"><span class="w"></span><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">v1</span><span class="w">
-</span></span></span><span class="line"><span class="ln">3</span><span class="cl"><span class="w"></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">ResourceQuota</span><span class="w">
-</span></span></span><span class="line"><span class="ln">4</span><span class="cl"><span class="w"></span><span class="nt">metadata</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="ln">5</span><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">default-counts</span><span class="w">
-</span></span></span><span class="line"><span class="ln">6</span><span class="cl"><span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l">default</span><span class="w">
-</span></span></span><span class="line"><span class="ln">7</span><span class="cl"><span class="w"></span><span class="nt">spec</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="ln">8</span><span class="cl"><span class="w">  </span><span class="nt">hard</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="ln">9</span><span class="cl"><span class="w">    </span><span class="nt">configmaps</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;3&#34;</span><span class="w">
-</span></span></span></code></pre></div><h3 id="准入控制插件">准入控制插件</h3>
-<ul>
-<li>AlwaysAdmit: 接受所有请求</li>
-<li>AlwaysPullImages: 总是拉新的镜像。一般用多租户场景</li>
-<li>DenyEscalatingExec: 禁止特权容器的exec和attach操作</li>
-<li>ImagePolicyWebhook: 通过webhook决定image策略,需要同时配置<code>--admission-control-config-file</code></li>
-<li>ServiceAccount: 自动创建默认Service Account，并确保Pods引用的ServiceAccount已经存在</li>
-<li>SecurityContextDeny: 拒绝包含非法SecurityContext配置的容器</li>
-<li>ResourceQuota：限制Pod的请求不会超过配额，需要在namespace中创建<code>ResourceQuota</code>对象</li>
-<li>MutatingWebhookConfiguration: 变形插件，支持对准入对象的修改</li>
-<li>ValidatingWebhoookConfiguration: 校验插件，只能对准入对象合法性进行校验</li>
-</ul>
-<blockquote>
-<p>太多了 我就不一个一个写了…除了默认的准入控制插件以外，kubernetes预留了准入控制插件的扩展点，用户可以自定义准入控制插件</p>
-</blockquote>
-<h3 id="准入控制插件的演示">准入控制插件的演示</h3>
-<ul>
-<li>MutatingWebhookConfiguration: 说白了就是对准入控制的对象内容进行修改</li>
-<li>确保启用 MutatingAdmissionWebhook 和 ValidatingAdmissionWebhook 控制器。 <a
-  href="https://kubernetes.io/zh-cn/docs/reference/access-authn-authz/admission-controllers/#is-there-a-recommended-set-of-admission-controllers-to-use"
-  
-  target="_blank" rel="noopener noreferrer">这里</a> 是一组推荐的 admission 控制器，通常可以启用。</li>
-<li>确保启用了<code>admissionregistration.k8s.io/v1</code>的API</li>
-</ul>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="ln">1</span><span class="cl">git clone https://github.com/cncamp/admission-controller-webhook-demo.git
-</span></span></code></pre></div><blockquote>
-<p>这个暂且先不演示了…我也在研究哈哈</p>
-</blockquote>
-<h2 id="限流">限流</h2>
-<h3 id="漏斗算法">漏斗算法</h3>
-<p>漏洞算法也很容易理解，请求进来以后首先进入漏斗里面，然后漏斗以恒定的速率将请求流出进行处理，从而起到平滑流量的作用。
+配额管理</p><ul><li>原因：资源有限，如何限定某个用户有多少资源
+方案</li><li>预定义每个<code>Namespace</code>的<code>ResourceQuota</code>,并且把<code>spec</code>保存为<code>ConfigMap</code></li><li>用户可以创建多少个Pod?<ul><li>BestEffortPod</li><li>QuSPod</li></ul></li><li>创建<code>ResourceQuota Controller</code>: 一般用于监控<code>namespace</code>创建事件，当namespace创建的时候，在该namespace创建对应的ResourceQuota对象</li></ul><div class=highlight><pre tabindex=0 class=chroma><code class=language-yaml data-lang=yaml><span class=line><span class=ln>1</span><span class=cl><span class=c># 限制default namespace只能创建3个configmap</span><span class=w>
+</span></span></span><span class=line><span class=ln>2</span><span class=cl><span class=w></span><span class=nt>apiVersion</span><span class=p>:</span><span class=w> </span><span class=l>v1</span><span class=w>
+</span></span></span><span class=line><span class=ln>3</span><span class=cl><span class=w></span><span class=nt>kind</span><span class=p>:</span><span class=w> </span><span class=l>ResourceQuota</span><span class=w>
+</span></span></span><span class=line><span class=ln>4</span><span class=cl><span class=w></span><span class=nt>metadata</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=ln>5</span><span class=cl><span class=w>  </span><span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>default-counts</span><span class=w>
+</span></span></span><span class=line><span class=ln>6</span><span class=cl><span class=w>  </span><span class=nt>namespace</span><span class=p>:</span><span class=w> </span><span class=l>default</span><span class=w>
+</span></span></span><span class=line><span class=ln>7</span><span class=cl><span class=w></span><span class=nt>spec</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=ln>8</span><span class=cl><span class=w>  </span><span class=nt>hard</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=ln>9</span><span class=cl><span class=w>    </span><span class=nt>configmaps</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;3&#34;</span><span class=w>
+</span></span></span></code></pre></div><h3 id=准入控制插件>准入控制插件</h3><ul><li>AlwaysAdmit: 接受所有请求</li><li>AlwaysPullImages: 总是拉新的镜像。一般用多租户场景</li><li>DenyEscalatingExec: 禁止特权容器的exec和attach操作</li><li>ImagePolicyWebhook: 通过webhook决定image策略,需要同时配置<code>--admission-control-config-file</code></li><li>ServiceAccount: 自动创建默认Service Account，并确保Pods引用的ServiceAccount已经存在</li><li>SecurityContextDeny: 拒绝包含非法SecurityContext配置的容器</li><li>ResourceQuota：限制Pod的请求不会超过配额，需要在namespace中创建<code>ResourceQuota</code>对象</li><li>MutatingWebhookConfiguration: 变形插件，支持对准入对象的修改</li><li>ValidatingWebhoookConfiguration: 校验插件，只能对准入对象合法性进行校验</li></ul><blockquote><p>太多了 我就不一个一个写了…除了默认的准入控制插件以外，kubernetes预留了准入控制插件的扩展点，用户可以自定义准入控制插件</p></blockquote><h3 id=准入控制插件的演示>准入控制插件的演示</h3><ul><li>MutatingWebhookConfiguration: 说白了就是对准入控制的对象内容进行修改</li><li>确保启用 MutatingAdmissionWebhook 和 ValidatingAdmissionWebhook 控制器。 <a href=https://kubernetes.io/zh-cn/docs/reference/access-authn-authz/admission-controllers/#is-there-a-recommended-set-of-admission-controllers-to-use target=_blank rel="noopener noreferrer">这里</a> 是一组推荐的 admission 控制器，通常可以启用。</li><li>确保启用了<code>admissionregistration.k8s.io/v1</code>的API</li></ul><div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=ln>1</span><span class=cl>git clone https://github.com/cncamp/admission-controller-webhook-demo.git
+</span></span></code></pre></div><blockquote><p>这个暂且先不演示了…我也在研究哈哈</p></blockquote><h2 id=限流>限流</h2><h3 id=漏斗算法>漏斗算法</h3><p>漏洞算法也很容易理解，请求进来以后首先进入漏斗里面，然后漏斗以恒定的速率将请求流出进行处理，从而起到平滑流量的作用。
 当请求量过大，漏斗达到最大容量的时候会溢出，此时请求被丢弃
-在系统看来，请求永远是以平滑的速率过来，从而起到了保护系统的作用</p>
-<h3 id="令牌桶算法">令牌桶算法</h3>
-<ol>
-<li>令牌桶算法是对漏斗算法的一种改进，除了能够起到限流的作用外，还允许一定程度的流量突发
-在令牌桶算法中，存在一个令牌桶，算法中存在一种机制以恒定的速率向令牌桶中放入令牌。</li>
-<li>令牌桶也有一定的容量，如果满了的话令牌也无法放进去</li>
-<li>当有请求进入的时候，会首先到令牌桶中去那令牌，则该请求会被处理，并消耗掉拿到的令牌，如果令牌桶为空，则请求会被丢弃。</li>
-</ol>
-<h3 id="api-server的限流">API Server的限流</h3>
-<ul>
-<li><code>max-requests-inflight</code>: 在给定的时间内的最大的<code>non-mutating</code>请求数</li>
-<li><code>max-mutating-requests-inflight</code>: 在给定时间内的最大<code>mutating</code>请求数，调整apiserver的流控qos</li>
-</ul>
-<p><strong>反应出来的问题</strong></p>
-<ol>
-<li>粒度粗: 无法为不同用户，不同场景设置不同的限流</li>
-<li>单队列：共享限流的窗口/桶，一个坏用户可能将整个系统堵塞</li>
-<li>不公平：正常用户的请求会被排到队尾，无法及时处理请求而饿死</li>
-<li>无优先级: 重要的系统指令一并被限流，系统故障难以恢复</li>
-</ol>
-<table>
-<thead>
-<tr>
-<th></th>
-<th>默认值</th>
-<th>节点数1000-3000</th>
-<th>节点数&gt;3000</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>max-requests-inflight</td>
-<td>400</td>
-<td>1500</td>
-<td>3000</td>
-</tr>
-<tr>
-<td>max-mutating-requests-inflight</td>
-<td>200</td>
-<td>500</td>
-<td>1000</td>
-</tr>
-</tbody>
-</table>
-<h3 id="api-priority-and-fairness">API Priority and Fairness</h3>
-<ul>
-<li>APF以更细颗粒度的方式对请求进行分类和隔离。</li>
-<li>它还引入了空间有限的排队机制，因此在非常短暂的突发情况下，API服务器不会拒绝任何请求</li>
-<li>通过使用公平排队技术从队列中分发请求，这样一个行为不佳的控制器就不会饿死其他控制器</li>
-<li>APF的核心
-<ul>
-<li>多等级</li>
-<li>多队列</li>
-</ul>
-</li>
-<li>APF 的实现依赖两个非常重要的资源 <code>FlowSchema</code>, <code>PriorityLevelConfiguration</code></li>
-<li>APF 对请求进行更细粒度的分类，每一个请求分类对应一个 FlowSchema (FS)</li>
-<li>FS 内的请求又会根据 distinguisher 进一步划分为不同的 Flow.</li>
-<li>FS 会设置一个优先级 (Priority Level, PL)，不同优先级的并发资源是隔离的。所以不同优先级的资源不会相互排挤。特定优先级的请求可以被高优处理。</li>
-<li>一个 PL 可以对应多个 FS，PL 中维护了一个 <code>QueueSet</code>，用于缓存不能及时处理的请求，请求不会因为超出 PL 的并发限制而被丢弃。</li>
-<li>FS 中的每个 Flow 通过 shuffle sharding 算法从 QueueSet 选取特定的 queues 缓存请求。</li>
-<li>每次从 QueueSet 中取请求执行时，会先应用 fair queuing 算法从 QueueSet 中选中一个 queue，然后从这个 queue 中取出 oldest 请求执行。所以即使是同一个 PL 内的请求，也不会出现一个 Flow 内的请求一直占用资源的不公平现象。</li>
-</ul>
-<p>通过<code> kubectl get flowschema</code>查看当前的<code>flow</code></p>
-<h3 id="flow-schema">Flow Schema</h3>
-<p><code>FlowSchema</code>会匹配一些入站请求,并将他们分配给优先级
-每个入站请求都会有对应的<code>FlowSchema</code>测试是否匹配，首先从<code>matchingPrecedence</code>数值最低的匹配开始(我们认为这是逻辑上匹配最高)，然后依次进行匹配，直到首个匹配出现.</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="ln"> 1</span><span class="cl"><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">flowcontrol.apiserver.k8s.io/v1beta1</span><span class="w">
-</span></span></span><span class="line"><span class="ln"> 2</span><span class="cl"><span class="w"></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">FlowSchema</span><span class="w">
-</span></span></span><span class="line"><span class="ln"> 3</span><span class="cl"><span class="w"></span><span class="nt">metadata</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="ln"> 4</span><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">kube-scheduler</span><span class="w"> </span><span class="c"># FlowSchema名称</span><span class="w">
-</span></span></span><span class="line"><span class="ln"> 5</span><span class="cl"><span class="w"></span><span class="nt">spec</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="ln"> 6</span><span class="cl"><span class="w">  </span><span class="nt">distinguisherMethod</span><span class="p">:</span><span class="w">  
-</span></span></span><span class="line"><span class="ln"> 7</span><span class="cl"><span class="w">    </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l">ByNamespace </span><span class="w"> </span><span class="c"># Distinguisher 区分器</span><span class="w">
-</span></span></span><span class="line"><span class="ln"> 8</span><span class="cl"><span class="w">  </span><span class="nt">matchingPrecedence</span><span class="p">:</span><span class="w"> </span><span class="m">800</span><span class="w">  </span><span class="c"># 规则优先级,数字越小级别越高</span><span class="w">
-</span></span></span><span class="line"><span class="ln"> 9</span><span class="cl"><span class="w">  </span><span class="nt">priorityLevelConfiguration</span><span class="p">:</span><span class="w"> </span><span class="c"># 对应的优先级队列</span><span class="w">
-</span></span></span><span class="line"><span class="ln">10</span><span class="cl"><span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">workload-high </span><span class="w"> </span><span class="c"># 优先级队列名称</span><span class="w">
-</span></span></span><span class="line"><span class="ln">11</span><span class="cl"><span class="w">  </span><span class="nt">rules</span><span class="p">:</span><span class="w"> 
-</span></span></span><span class="line"><span class="ln">12</span><span class="cl"><span class="w">  </span>- <span class="nt">resourceRules</span><span class="p">:</span><span class="w"> 
-</span></span></span><span class="line"><span class="ln">13</span><span class="cl"><span class="w">    </span>- <span class="nt">resources</span><span class="p">:</span><span class="w"> 
-</span></span></span><span class="line"><span class="ln">14</span><span class="cl"><span class="w">      </span>- <span class="s1">&#39;*&#39;</span><span class="w">   </span><span class="c"># 对应的资源和请求类型</span><span class="w">
-</span></span></span><span class="line"><span class="ln">15</span><span class="cl"><span class="w">      </span><span class="nt">verbs</span><span class="p">:</span><span class="w"> 
-</span></span></span><span class="line"><span class="ln">16</span><span class="cl"><span class="w">      </span>- <span class="s1">&#39;*&#39;</span><span class="w">  
-</span></span></span><span class="line"><span class="ln">17</span><span class="cl"><span class="w">  </span><span class="nt">subjects</span><span class="p">:</span><span class="w"> 
-</span></span></span><span class="line"><span class="ln">18</span><span class="cl"><span class="w">  </span>- <span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">User</span><span class="w">
-</span></span></span><span class="line"><span class="ln">19</span><span class="cl"><span class="w">  </span><span class="nt">user</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="ln">20</span><span class="cl"><span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">system:kube-scheduler</span><span class="w">
-</span></span></span></code></pre></div><h3 id="prioritylevelconfiguration优先级队列">PriorityLevelConfiguration(优先级队列)</h3>
-<p>一个<code>PriorityLevelConfiguration</code>表示单个隔离类型。
-每个<code>PriorityLevelConfiguration</code>对未完成的请求数有各自的限制,对排队中的请求数也有限制。</p>
-<blockquote>
-<p>PriorityLevelConfiguration是可以被多个FlowSchema进行复用的</p>
-</blockquote>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="ln"> 1</span><span class="cl"><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">flowcontrol.apiserver.k8s.io/v1beta1</span><span class="w">
-</span></span></span><span class="line"><span class="ln"> 2</span><span class="cl"><span class="w"></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">PriorityLevelConfiguration</span><span class="w">
-</span></span></span><span class="line"><span class="ln"> 3</span><span class="cl"><span class="w"></span><span class="nt">metadata</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="ln"> 4</span><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">global-default</span><span class="w">
-</span></span></span><span class="line"><span class="ln"> 5</span><span class="cl"><span class="w"></span><span class="nt">spec</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="ln"> 6</span><span class="cl"><span class="w">  </span><span class="nt">limited</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="ln"> 7</span><span class="cl"><span class="w">    </span><span class="nt">assuredConcurrencyShares</span><span class="p">:</span><span class="w"> </span><span class="m">20</span><span class="w"> </span><span class="c"># 允许的并发请求</span><span class="w">
-</span></span></span><span class="line"><span class="ln"> 8</span><span class="cl"><span class="w">    </span><span class="nt">limitResponse</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="ln"> 9</span><span class="cl"><span class="w">      </span><span class="nt">queuing</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="ln">10</span><span class="cl"><span class="w">        </span><span class="nt">handSize</span><span class="p">:</span><span class="w"> </span><span class="m">6</span><span class="w"> </span><span class="c"># shuffle sharding配置,每个flowschmea+distinguisher的请求会被enqueue到多少个队列</span><span class="w">
-</span></span></span><span class="line"><span class="ln">11</span><span class="cl"><span class="w">        </span><span class="nt">queueLengthLimit</span><span class="p">:</span><span class="w"> </span><span class="m">50</span><span class="w"> </span><span class="c"># 每个队列中的对象数量</span><span class="w">
-</span></span></span><span class="line"><span class="ln">12</span><span class="cl"><span class="w">        </span><span class="nt">queues</span><span class="p">:</span><span class="w"> </span><span class="m">128</span><span class="w">  </span><span class="c"># 当前PriorityLevel的队列总数</span><span class="w">
-</span></span></span><span class="line"><span class="ln">13</span><span class="cl"><span class="w">      </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l">Queue</span><span class="w">
-</span></span></span><span class="line"><span class="ln">14</span><span class="cl"><span class="w">    </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l">Limited</span><span class="w">
-</span></span></span></code></pre></div><p>可以通过<code>kubectl get PriorityLevelConfiguration</code>查看当前kubernetes中的优先级队列</p>
-<ul>
-<li>system: 用于 system:nodes 组（即 kubelet）的请求； kubelet 必须能连上 API 服务器，以便工作负载能够调度到其上。</li>
-<li>leader-election:
-<ul>
-<li>用于内置控制器的领导选举的请求 （特别是来自 kube-system 名称空间中 system:kube- controller-manager 和 system:kube-scheduler 用户和服务账号，针对 endpoints、 configmaps 或 leases 的请求）。</li>
-<li>将这些请求与其他流量相隔离非常重要，因为领导者选举失败会导致控制器发生故障并重新启动，这反过来会导致新启动的控制器在同步信息时，流量开销更大。</li>
-</ul>
-</li>
-<li>workload-high: 优先级用于内置控制器的请求</li>
-<li>workload-low: 优先级适用于来自任何服务帐户的请求，通常包括来自 Pods 中运行的控制器的所有请求。</li>
-<li>global-default: 优先级可处理所有其他流量，例如：非特权用户运行的交互式 kubectl 命令。</li>
-<li>exempt: 优先级的请求完全不受流控限制：它们总是立刻被分发。 特殊的 exempt FlowSchema把 system:masters 组的所有请求都归入该优先级组。</li>
-<li>catch-all:
-<ul>
-<li>优先级与特殊的 catch-all FlowSchema 结合使用，以确保每个请求都分类。</li>
-<li>一般不应该依赖于 catch-all 的配置，而应适当地创建自己的 catch-all FlowSchema 和PriorityLevelConfigurations（或使用默认安装的 global-default 配置）。</li>
-<li>为了帮助捕获部分请求未分类的配置错误，强制要求 catch-all 优先级仅允许5个并发份额，并且不对请求进行排队，使得仅与 catch-all FlowSchema 匹配的流量被拒绝的可能性更高，并显示 HTTP 429 错误。</li>
-</ul>
-</li>
-</ul>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="ln"> 1</span><span class="cl"><span class="o">[</span>root@Online-Beijing-master1 ~<span class="o">]</span><span class="c1"># kubectl get PriorityLevelConfiguration</span>
-</span></span><span class="line"><span class="ln"> 2</span><span class="cl">NAME              TYPE      ASSUREDCONCURRENCYSHARES   QUEUES   HANDSIZE   QUEUELENGTHLIMIT   AGE
-</span></span><span class="line"><span class="ln"> 3</span><span class="cl">catch-all         Limited   <span class="m">5</span>                          &lt;none&gt;   &lt;none&gt;     &lt;none&gt;             13h
-</span></span><span class="line"><span class="ln"> 4</span><span class="cl">exempt            Exempt    &lt;none&gt;                     &lt;none&gt;   &lt;none&gt;     &lt;none&gt;             13h
-</span></span><span class="line"><span class="ln"> 5</span><span class="cl">global-default    Limited   <span class="m">20</span>                         <span class="m">128</span>      <span class="m">6</span>          <span class="m">50</span>                 13h
-</span></span><span class="line"><span class="ln"> 6</span><span class="cl">leader-election   Limited   <span class="m">10</span>                         <span class="m">16</span>       <span class="m">4</span>          <span class="m">50</span>                 13h
-</span></span><span class="line"><span class="ln"> 7</span><span class="cl">node-high         Limited   <span class="m">40</span>                         <span class="m">64</span>       <span class="m">6</span>          <span class="m">50</span>                 13h
-</span></span><span class="line"><span class="ln"> 8</span><span class="cl">system            Limited   <span class="m">30</span>                         <span class="m">64</span>       <span class="m">6</span>          <span class="m">50</span>                 13h
-</span></span><span class="line"><span class="ln"> 9</span><span class="cl">workload-high     Limited   <span class="m">40</span>                         <span class="m">128</span>      <span class="m">6</span>          <span class="m">50</span>                 13h
-</span></span><span class="line"><span class="ln">10</span><span class="cl">workload-low      Limited   <span class="m">100</span>                        <span class="m">128</span>      <span class="m">6</span>          <span class="m">50</span>                 13h
-</span></span></code></pre></div><p>详细说一下分流策略</p>
-<ol>
-<li>根据<code>service-accounts</code>的flow进行限制,<code>distinguisherMethod</code>根据不同的用户进行限流。</li>
-<li>这一类的flow应该通过<code>priorityLevelConfiguration</code>中定义的<code>workload-low</code>进行限流</li>
-<li>通过<code>workload-low</code>中定义的<code>assuredConcurrencyShares</code>设置当前请求的最大并发数量</li>
-</ol>
-<h2 id="高可用apiserver">高可用APIServer</h2>
-<h3 id="搭建多租户的kubernetes集群">搭建多租户的kubernetes集群</h3>
-<p>授信</p>
-<ul>
-<li>认证: 禁止匿名访问，只允许可信用户做操作。</li>
-<li>授权：基于授信的操作，防止多用户之间互相影响，比如普通用户删除Kubernetes核心服务，或者A用户删除或修改B用户 的应用。</li>
-</ul>
-<p>隔离</p>
-<ul>
-<li>可见行隔离：用户只关心自己的应用，无需看到其他用户的服务和部署。</li>
-<li>资源隔离：有些关键项目对资源需求较高，需要有专业设备，不与其他人共享。</li>
-<li>应用访问隔离：用户创建的服务，按照既定规则允许其他用户访问。</li>
-</ul>
-<p>资源管理</p>
-<ul>
-<li>Quota管理: 谁能用多少资源</li>
-</ul>
-
-
-        </div>
-<ul class="hb-blog-post-nav nav justify-content-between mb-3">
-  
-    <li class="nav-item my-1">
-      <a class="nav-link p-0 d-flex align-items-center" href="/posts/kubernetes-dashboard/"><svg aria-hidden="true" class="bi bi-arrow-left-circlebi bi-arrow-left-circle hi-svg-inline me-2" fill="currentColor" height="1.5em" viewBox="0 0 16 16" width="1.5em" xmlns="http://www.w3.org/2000/svg">
-  <path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8m15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0m-4.5-.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5z"/>
-</svg>kubernetes-dashboard</a>
-    </li>
-  
-  
-    <li class="nav-item my-1">
-      <a class="nav-link p-0 d-flex align-items-center" href="/posts/horizontalpodautoscaler/">HorizontalPodAutoscaler<svg aria-hidden="true" class="bi bi-arrow-right-circlebi bi-arrow-right-circle hi-svg-inline ms-2" fill="currentColor" height="1.5em" viewBox="0 0 16 16" width="1.5em" xmlns="http://www.w3.org/2000/svg">
-  <path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8m15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0M4.5 7.5a.5.5 0 0 0 0 1h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5z"/>
-</svg></a>
-    </li>
-  
-</ul>
-
-
-
-
-
-
-  <div id="content-comments" class="hb-blog-post-comments hb-module mb-3">
-<div id="twikoo-comments"></div>
-
-
-  </div>
-
-
-
-      </div>
-    </div>
-    
-
-  </div>
-  <div class="hb-blog-sidebar pe-lg-1">
-  
-  <div
-    class="hb-blog-sidebar-profile hb-module d-flex flex-column justify-content-center align-items-center">
-      
-      
-
-
-
-
-
-
-
-
-
-
-
-
-  
-  
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-  
-    <picture>
-    <source srcset="/images/avatar_hu3b524e9b8f8772a6019da4ead2865f01_9176_ab72abc4ab1538a4c57546e4ff08f6d1.webp" type="image/webp" />
-  <img
-    class="hb-blog-sidebar-profile-img rounded-circle img-fluid mb-3"
-    src="https://blog.mletter.cn/images/avatar_hu3b524e9b8f8772a6019da4ead2865f01_9176_100x0_resize_box_3.d4ab93c1a773c431e0dd90cd83a48519.png"
-    alt=""
-    loading="lazy"
-    height="100"
-    width="100"
-    
-    
-    
-     />
-</picture>
-
-    <p class="hb-blog-sidebar-profile-title text-center h5 mb-2">
-      人间只是春
-    </p>
-    <p class="hb-blog-sidebar-profile-desc text-center mb-2">
-      喜马拉雅的山顶永远不会有万家灯火
-    </p>
-    <p class="hb-blog-sidebar-profile-meta mb-0">
-        <span class="mx-1"><svg aria-hidden="true" class="bi bi-geo-altbi bi-geo-alt hi-svg-inline me-1" fill="currentColor" height="1em" viewBox="0 0 16 16" width="1em" xmlns="http://www.w3.org/2000/svg">
-  <path d="M12.166 8.94c-.524 1.062-1.234 2.12-1.96 3.07A32 32 0 0 1 8 14.58a32 32 0 0 1-2.206-2.57c-.726-.95-1.436-2.008-1.96-3.07C3.304 7.867 3 6.862 3 6a5 5 0 0 1 10 0c0 .862-.305 1.867-.834 2.94M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10"/>
-  <path d="M8 8a2 2 0 1 1 0-4 2 2 0 0 1 0 4m0 1a3 3 0 1 0 0-6 3 3 0 0 0 0 6"/>
-</svg>China·HangZhou</span>
-    </p>
-      <div class="hb-footer-socials d-flex mb-0 mt-1 justify-content-center">
-          
-          
-<a
-  class="hb-social p-2"
-  href="https://space.bilibili.com/%25!s%28int64=477276392%29"
-  target="_blank"
-  rel="nofollow me"
-  title="Bilibili"><svg aria-hidden="true" class="hi-svg-inline hb-social-icon" fill="currentColor" height="1.75em" role="img" style="color: #fb7299;" viewBox="0 0 24 24" width="1.75em" xmlns="http://www.w3.org/2000/svg"><title>Bilibili</title><path d="M17.813 4.653h.854c1.51.054 2.769.578 3.773 1.574 1.004.995 1.524 2.249 1.56 3.76v7.36c-.036 1.51-.556 2.769-1.56 3.773s-2.262 1.524-3.773 1.56H5.333c-1.51-.036-2.769-.556-3.773-1.56S.036 18.858 0 17.347v-7.36c.036-1.511.556-2.765 1.56-3.76 1.004-.996 2.262-1.52 3.773-1.574h.774l-1.174-1.12a1.234 1.234 0 0 1-.373-.906c0-.356.124-.658.373-.907l.027-.027c.267-.249.573-.373.92-.373.347 0 .653.124.92.373L9.653 4.44c.071.071.134.142.187.213h4.267a.836.836 0 0 1 .16-.213l2.853-2.747c.267-.249.573-.373.92-.373.347 0 .662.151.929.4.267.249.391.551.391.907 0 .355-.124.657-.373.906zM5.333 7.24c-.746.018-1.373.276-1.88.773-.506.498-.769 1.13-.786 1.894v7.52c.017.764.28 1.395.786 1.893.507.498 1.134.756 1.88.773h13.334c.746-.017 1.373-.275 1.88-.773.506-.498.769-1.129.786-1.893v-7.52c-.017-.765-.28-1.396-.786-1.894-.507-.497-1.134-.755-1.88-.773zM8 11.107c.373 0 .684.124.933.373.25.249.383.569.4.96v1.173c-.017.391-.15.711-.4.96-.249.25-.56.374-.933.374s-.684-.125-.933-.374c-.25-.249-.383-.569-.4-.96V12.44c0-.373.129-.689.386-.947.258-.257.574-.386.947-.386zm8 0c.373 0 .684.124.933.373.25.249.383.569.4.96v1.173c-.017.391-.15.711-.4.96-.249.25-.56.374-.933.374s-.684-.125-.933-.374c-.25-.249-.383-.569-.4-.96V12.44c.017-.391.15-.711.4-.96.249-.249.56-.373.933-.373Z"/></svg>
-</a>
-
-          
-          
-<a
-  class="hb-social p-2"
-  href="mailto:beilanzhisen@163.com"
-  target="_blank"
-  rel="nofollow me"
-  title="Email"><svg aria-hidden="true" class="bi bi-envelope-fillbi bi-envelope-fill hi-svg-inline hb-social-icon" fill="currentColor" height="1.75em" style="color: %!s(bool=true);" viewBox="0 0 16 16" width="1.75em" xmlns="http://www.w3.org/2000/svg">
-  <path d="M.05 3.555A2 2 0 0 1 2 2h12a2 2 0 0 1 1.95 1.555L8 8.414zM0 4.697v7.104l5.803-3.558zM6.761 8.83l-6.57 4.027A2 2 0 0 0 2 14h12a2 2 0 0 0 1.808-1.144l-6.57-4.027L8 9.586zm3.436-.586L16 11.801V4.697z"/>
-</svg>
-</a>
-
-      </div>
-  </div>
-
-  <div class="hb-blog-sidebar-posts hb-module">
-    <ul class="nav nav-underline nav-fill" role="tablist">
-        <li class="nav-item" role="presentation">
-          <button
-            class="nav-link active"
-            id="recent-posts-tab"
-            data-bs-toggle="tab"
-            data-bs-target="#recent-posts"
-            type="button"
-            role="tab"
-            aria-controls="recent-posts"
-            aria-selected="true">
-            Recent
-          </button>
-        </li>
-    </ul>
-
-    <div class="tab-content mt-2">
-        <div
-          class="tab-pane slide active"
-          id="recent-posts"
-          role="tabpanel"
-          aria-labelledby="recent-posts-tab"
-          tabindex="0">
-          
-  <div class="slide">
-  <div class="slide-inner row row-cols-1">
-      <div class="slide-item px-0">
-        
-<div
-  class="hb-blog-post-card card border-0 overflow-hidden h-100 bg-transparent mb-0">
-    
-<a
-  class="card-img-top overflow-hidden border border-secondary-subtle text-body text-decoration-none mt-2"
-  href="/bulletin/2024/0108/">
-    
-
-
-
-
-
-
-
-
-
-
-
-
-  
-  
-    <picture>
-  <img
-    class="hb-blog-post-card-img"
-    src="https://fc.sinaimg.cn/large/005Czbxjgy1hlmcj1fb04j31hc0u0u0x.jpg"
-    alt="2024年站点更新内容通知"
-    loading="lazy"
-    
-    
-    
-    
-    
-     />
-</picture>
-
-</a>
-
-  <div class="card-body px-0 py-2 d-flex flex-column">
-    <div class="hb-blog-post-title card-title h5 py-1">
-      <a
-        class="hb-blog-post-title-link d-block"
-        title="2024年站点更新内容通知"
-        href="/bulletin/2024/0108/">2024年站点更新内容通知</a>
-    </div>
-  </div>
-</div>
-
-      </div>
-      <div class="slide-item px-0">
-        
-<div
-  class="hb-blog-post-card card border-0 overflow-hidden h-100 bg-transparent mb-0">
-    
-<a
-  class="card-img-top overflow-hidden border border-secondary-subtle text-body text-decoration-none mt-2"
-  href="/posts/kubernetes-efk/">
-    
-
-
-
-
-
-
-
-
-
-
-
-
-  
-  
-    <picture>
-  <img
-    class="hb-blog-post-card-img"
-    src="https://fc.sinaimg.cn/large/005Czbxjgy1hkmevv8ozyj31ds0iqn0i.jpg"
-    alt="kubernetes基于EFK的日志落地实现"
-    loading="lazy"
-    
-    
-    
-    
-    
-     />
-</picture>
-
-</a>
-
-  <div class="card-body px-0 py-2 d-flex flex-column">
-    <div class="hb-blog-post-title card-title h5 py-1">
-      <a
-        class="hb-blog-post-title-link d-block"
-        title="kubernetes基于EFK的日志落地实现"
-        href="/posts/kubernetes-efk/">kubernetes基于EFK的日志落地实现</a>
-    </div>
-  </div>
-</div>
-
-      </div>
-      <div class="slide-item px-0">
-        
-<div
-  class="hb-blog-post-card card border-0 overflow-hidden h-100 bg-transparent mb-0">
-    
-<a
-  class="card-img-top overflow-hidden border border-secondary-subtle text-body text-decoration-none mt-2"
-  href="/posts/%E5%B7%9D%E8%A5%BF%E4%B9%8B%E6%97%85/">
-    
-
-
-
-
-
-
-
-
-
-
-
-
-  
-  
-    <picture>
-  <img
-    class="hb-blog-post-card-img"
-    src="https://img11.360buyimg.com/ddimg/jfs/t1/236840/40/3995/133210/6563505dFfe136e64/32c8465a255f4bc7.jpg"
-    alt="旅行日记-四川·阿坝甘孜藏族自治州"
-    loading="lazy"
-    
-    
-    
-    
-    
-     />
-</picture>
-
-</a>
-
-  <div class="card-body px-0 py-2 d-flex flex-column">
-    <div class="hb-blog-post-title card-title h5 py-1">
-      <a
-        class="hb-blog-post-title-link d-block"
-        title="旅行日记-四川·阿坝甘孜藏族自治州"
-        href="/posts/%E5%B7%9D%E8%A5%BF%E4%B9%8B%E6%97%85/">旅行日记-四川·阿坝甘孜藏族自治州</a>
-    </div>
-  </div>
-</div>
-
-      </div>
-      <div class="slide-item px-0">
-        
-<div
-  class="hb-blog-post-card card border-0 overflow-hidden h-100 bg-transparent mb-0">
-    
-<a
-  class="card-img-top overflow-hidden border border-secondary-subtle text-body text-decoration-none mt-2"
-  href="/posts/kubernetes%E7%9A%84%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1/">
-    
-
-
-
-
-
-
-
-
-
-
-
-
-  
-  
-    <picture>
-  <img
-    class="hb-blog-post-card-img"
-    src="https://img13.360buyimg.com/ddimg/jfs/t1/164078/6/34165/22231/654ba81fFe1bf21d7/9d02bd791b795b3b.jpg"
-    alt="Kubernetes的架构设计和对象属性基本理解"
-    loading="lazy"
-    
-    
-    
-    
-    
-     />
-</picture>
-
-</a>
-
-  <div class="card-body px-0 py-2 d-flex flex-column">
-    <div class="hb-blog-post-title card-title h5 py-1">
-      <a
-        class="hb-blog-post-title-link d-block"
-        title="Kubernetes的架构设计和对象属性基本理解"
-        href="/posts/kubernetes%E7%9A%84%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1/">Kubernetes的架构设计和对象属性基本理解</a>
-    </div>
-  </div>
-</div>
-
-      </div>
-      <div class="slide-item px-0">
-        
-<div
-  class="hb-blog-post-card card border-0 overflow-hidden h-100 bg-transparent mb-0">
-    
-<a
-  class="card-img-top overflow-hidden border border-secondary-subtle text-body text-decoration-none mt-2"
-  href="/posts/wecho/">
-    
-
-
-
-
-
-
-
-
-
-
-
-
-  
-  
-    <picture>
-  <img
-    class="hb-blog-post-card-img"
-    src="https://ydschool-online.nosdn.127.net/tiku/f291c1c8d5dccacd2b95ef4fdc68d07cefd0e92562794e5bcdd21a9729b3455d.jpg"
-    alt="维扣-专属你的拍照摄影社区"
-    loading="lazy"
-    
-    
-    
-    
-    
-     />
-</picture>
-
-</a>
-
-  <div class="card-body px-0 py-2 d-flex flex-column">
-    <div class="hb-blog-post-title card-title h5 py-1">
-      <a
-        class="hb-blog-post-title-link d-block"
-        title="维扣-专属你的拍照摄影社区"
-        href="/posts/wecho/"><span class="text-danger">
-  <svg aria-hidden="true" class="bi bi-pinbi bi-pin hi-svg-inline me-1" fill="currentColor" height=".85em" viewBox="0 0 16 16" width=".85em" xmlns="http://www.w3.org/2000/svg">
-  <path d="M4.146.146A.5.5 0 0 1 4.5 0h7a.5.5 0 0 1 .5.5c0 .68-.342 1.174-.646 1.479-.126.125-.25.224-.354.298v4.431l.078.048c.203.127.476.314.751.555C12.36 7.775 13 8.527 13 9.5a.5.5 0 0 1-.5.5h-4v4.5c0 .276-.224 1.5-.5 1.5s-.5-1.224-.5-1.5V10h-4a.5.5 0 0 1-.5-.5c0-.973.64-1.725 1.17-2.189A6 6 0 0 1 5 6.708V2.277a3 3 0 0 1-.354-.298C4.342 1.674 4 1.179 4 .5a.5.5 0 0 1 .146-.354m1.58 1.408-.002-.001zm-.002-.001.002.001A.5.5 0 0 1 6 2v5a.5.5 0 0 1-.276.447h-.002l-.012.007-.054.03a5 5 0 0 0-.827.58c-.318.278-.585.596-.725.936h7.792c-.14-.34-.407-.658-.725-.936a5 5 0 0 0-.881-.61l-.012-.006h-.002A.5.5 0 0 1 10 7V2a.5.5 0 0 1 .295-.458 1.8 1.8 0 0 0 .351-.271c.08-.08.155-.17.214-.271H5.14q.091.15.214.271a1.8 1.8 0 0 0 .37.282"/>
-</svg>
-</span>
-维扣-专属你的拍照摄影社区</a>
-    </div>
-  </div>
-</div>
-
-      </div>
-  </div>
-  
-<button class="slide-control-left">
-  <svg aria-hidden="true" class="bi bi-arrow-left-circlebi bi-arrow-left-circle hi-svg-inline slide-control-left-icon" fill="currentColor" height="2em" viewBox="0 0 16 16" width="2em" xmlns="http://www.w3.org/2000/svg">
-  <path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8m15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0m-4.5-.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5z"/>
-</svg>
-  <span class="visually-hidden">Left</span>
-</button>
-<button class="slide-control-right">
-  <svg aria-hidden="true" class="bi bi-arrow-right-circlebi bi-arrow-right-circle hi-svg-inline slide-control-right-icon" fill="currentColor" height="2em" viewBox="0 0 16 16" width="2em" xmlns="http://www.w3.org/2000/svg">
-  <path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8m15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0M4.5 7.5a.5.5 0 0 0 0 1h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5z"/>
-</svg>
-  <span class="visually-hidden">Right</span>
-</button>
-
-</div>
-
-
-        </div>
-    </div>
-  </div>
-
-  <div class="hb-blog-sidebar-taxonomies hb-module">
-    
-<ul class="nav nav-underline nav-justified mb-2" role="tablist">
-    <li class="nav-item" role="presentation">
-      <button
-        class="nav-link active"
-        id="taxonomy-categories-tab"
-        data-bs-toggle="tab"
-        data-bs-target="#taxonomy-categories-tab-pane"
-        type="button"
-        role="tab"
-        aria-controls="taxonomy-categories-tab-pane"
-        aria-selected="true">Categories</button>
-    </li>
-    <li class="nav-item" role="presentation">
-      <button
-        class="nav-link"
-        id="taxonomy-tags-tab"
-        data-bs-toggle="tab"
-        data-bs-target="#taxonomy-tags-tab-pane"
-        type="button"
-        role="tab"
-        aria-controls="taxonomy-tags-tab-pane"
-        aria-selected="false">Tags</button>
-    </li>
-</ul>
-<div class="tab-content">
-    <div
-      class="tab-pane fade show active"
-      id="taxonomy-categories-tab-pane"
-      role="tabpanel"
-      aria-labelledby="taxonomy-categories-tab"
-      tabindex="0">
-        <a
-          class="taxonomy-term taxonomy-term-categories btn btn-sm btn-outline-secondary p-1 me-1 mb-1"
-          href="/categories/kubernetes/">
-          <span class="taxonomy-term-title">kubernetes</span>
-            <small class="taxonomy-term-count border rounded px-1">20</small>
-        </a>
-        <a
-          class="taxonomy-term taxonomy-term-categories btn btn-sm btn-outline-secondary p-1 me-1 mb-1"
-          href="/categories/ansible/">
-          <span class="taxonomy-term-title">ansible</span>
-            <small class="taxonomy-term-count border rounded px-1">3</small>
-        </a>
-        <a
-          class="taxonomy-term taxonomy-term-categories btn btn-sm btn-outline-secondary p-1 me-1 mb-1"
-          href="/categories/docker/">
-          <span class="taxonomy-term-title">docker</span>
-            <small class="taxonomy-term-count border rounded px-1">2</small>
-        </a>
-        <a
-          class="taxonomy-term taxonomy-term-categories btn btn-sm btn-outline-secondary p-1 me-1 mb-1"
-          href="/categories/%E6%97%85%E8%A1%8C%E6%97%A5%E8%AE%B0/">
-          <span class="taxonomy-term-title">旅行日记</span>
-            <small class="taxonomy-term-count border rounded px-1">2</small>
-        </a>
-        <a
-          class="taxonomy-term taxonomy-term-categories btn btn-sm btn-outline-secondary p-1 me-1 mb-1"
-          href="/categories/mysql/">
-          <span class="taxonomy-term-title">mysql</span>
-            <small class="taxonomy-term-count border rounded px-1">1</small>
-        </a>
-        <a
-          class="taxonomy-term taxonomy-term-categories btn btn-sm btn-outline-secondary p-1 me-1 mb-1"
-          href="/categories/nginx/">
-          <span class="taxonomy-term-title">nginx</span>
-            <small class="taxonomy-term-count border rounded px-1">1</small>
-        </a>
-        <a
-          class="taxonomy-term taxonomy-term-categories btn btn-sm btn-outline-secondary p-1 me-1 mb-1"
-          href="/categories/redis/">
-          <span class="taxonomy-term-title">redis</span>
-            <small class="taxonomy-term-count border rounded px-1">1</small>
-        </a>
-        <a
-          class="taxonomy-term taxonomy-term-categories btn btn-sm btn-outline-secondary p-1 me-1 mb-1"
-          href="/categories/%E4%B8%AA%E4%BA%BA%E9%A1%B9%E7%9B%AE/">
-          <span class="taxonomy-term-title">个人项目</span>
-            <small class="taxonomy-term-count border rounded px-1">1</small>
-        </a>
-        <a
-          class="taxonomy-term taxonomy-term-categories btn btn-sm btn-outline-secondary p-1 me-1 mb-1"
-          href="/categories/%E5%B7%A5%E5%85%B7%E5%88%86%E4%BA%AB/">
-          <span class="taxonomy-term-title">工具分享</span>
-            <small class="taxonomy-term-count border rounded px-1">1</small>
-        </a>
-        <a
-          class="taxonomy-term taxonomy-term-categories btn btn-sm btn-outline-secondary p-1 me-1 mb-1"
-          href="/categories/%E6%97%A5%E5%B8%B8%E6%91%84%E5%BD%B1/">
-          <span class="taxonomy-term-title">日常摄影</span>
-            <small class="taxonomy-term-count border rounded px-1">1</small>
-        </a>
-    </div>
-    <div
-      class="tab-pane fade"
-      id="taxonomy-tags-tab-pane"
-      role="tabpanel"
-      aria-labelledby="taxonomy-tags-tab"
-      tabindex="0">
-        <a
-          class="taxonomy-term taxonomy-term-tags btn btn-sm btn-outline-secondary p-1 me-1 mb-1"
-          href="/tags/kubernetes/">
-          <span class="taxonomy-term-title">kubernetes</span>
-            <small class="taxonomy-term-count border rounded px-1">20</small>
-        </a>
-        <a
-          class="taxonomy-term taxonomy-term-tags btn btn-sm btn-outline-secondary p-1 me-1 mb-1"
-          href="/tags/ansible/">
-          <span class="taxonomy-term-title">ansible</span>
-            <small class="taxonomy-term-count border rounded px-1">3</small>
-        </a>
-        <a
-          class="taxonomy-term taxonomy-term-tags btn btn-sm btn-outline-secondary p-1 me-1 mb-1"
-          href="/tags/%E6%97%A5%E8%AE%B0/">
-          <span class="taxonomy-term-title">日记</span>
-            <small class="taxonomy-term-count border rounded px-1">3</small>
-        </a>
-        <a
-          class="taxonomy-term taxonomy-term-tags btn btn-sm btn-outline-secondary p-1 me-1 mb-1"
-          href="/tags/docker/">
-          <span class="taxonomy-term-title">docker</span>
-            <small class="taxonomy-term-count border rounded px-1">2</small>
-        </a>
-        <a
-          class="taxonomy-term taxonomy-term-tags btn btn-sm btn-outline-secondary p-1 me-1 mb-1"
-          href="/tags/api/">
-          <span class="taxonomy-term-title">API</span>
-            <small class="taxonomy-term-count border rounded px-1">1</small>
-        </a>
-        <a
-          class="taxonomy-term taxonomy-term-tags btn btn-sm btn-outline-secondary p-1 me-1 mb-1"
-          href="/tags/api-server/">
-          <span class="taxonomy-term-title">api-server</span>
-            <small class="taxonomy-term-count border rounded px-1">1</small>
-        </a>
-        <a
-          class="taxonomy-term taxonomy-term-tags btn btn-sm btn-outline-secondary p-1 me-1 mb-1"
-          href="/tags/configmap/">
-          <span class="taxonomy-term-title">configmap</span>
-            <small class="taxonomy-term-count border rounded px-1">1</small>
-        </a>
-        <a
-          class="taxonomy-term taxonomy-term-tags btn btn-sm btn-outline-secondary p-1 me-1 mb-1"
-          href="/tags/coredns/">
-          <span class="taxonomy-term-title">coredns</span>
-            <small class="taxonomy-term-count border rounded px-1">1</small>
-        </a>
-        <a
-          class="taxonomy-term taxonomy-term-tags btn btn-sm btn-outline-secondary p-1 me-1 mb-1"
-          href="/tags/dashboard/">
-          <span class="taxonomy-term-title">dashboard</span>
-            <small class="taxonomy-term-count border rounded px-1">1</small>
-        </a>
-        <a
-          class="taxonomy-term taxonomy-term-tags btn btn-sm btn-outline-secondary p-1 me-1 mb-1"
-          href="/tags/etcd/">
-          <span class="taxonomy-term-title">etcd</span>
-            <small class="taxonomy-term-count border rounded px-1">1</small>
-        </a>
-    </div>
-</div>
-
-  </div>
-
-
-</div>
-
-</div>
-
-    </div>
-    
-
-    <footer class="hb-footer pt-4 pt-md-5 pb-2 pb-md-3 bg-body-tertiary">
-  <div class="container-fluid container-lg px-4 px-md-3">
-
-    <div class="row"><div class="hb-footer-site-info col mb-2 text-center">
-
-  <div class="h5">人生不过一场山川而已</div>
-  <ul class="list-unstyled small mb-2">
-  </ul>
-
-</div>
-
-
-    </div>
-
-  </div>
-</footer>
-
-
-
-
-
-
-
-
-
-
-<script
-  src="/js/hb.45b92db4c9e744e95404d884107b20bb2451a48955649f6af550b240c3b548c5.js"
-  integrity="sha256-RbkttMnnROlUBNiEEHsguyRRpIlVZJ9q9VCyQMO1SMU="
-  defer></script>
-
-
-  
-<script src="https://cdn.staticfile.org/twikoo/1.6.16/twikoo.all.min.js"></script>
-<script>
-  twikoo.init({
-    envId: '',
-    el: '#twikoo-comments',
-    region: '',
-    path: location.pathname,
-    lang: 'en'
-  });
-</script>
-
-
-
-
-
-
-
-  
-
-
-
-
-
-<script>
-  if ('serviceWorker' in navigator) {
-  window.addEventListener('DOMContentLoaded', function() {
-    navigator.serviceWorker.register('\/sw.js');
-  });
-}
-</script>
-
-<script src="/js/search.ca3f08bec50140ac47f971d6d5d40cd7532cc253f971950506c848ed218fef3f.js" defer></script>
-
-
-
-
-  </body>
-</html>
+在系统看来，请求永远是以平滑的速率过来，从而起到了保护系统的作用</p><h3 id=令牌桶算法>令牌桶算法</h3><ol><li>令牌桶算法是对漏斗算法的一种改进，除了能够起到限流的作用外，还允许一定程度的流量突发
+在令牌桶算法中，存在一个令牌桶，算法中存在一种机制以恒定的速率向令牌桶中放入令牌。</li><li>令牌桶也有一定的容量，如果满了的话令牌也无法放进去</li><li>当有请求进入的时候，会首先到令牌桶中去那令牌，则该请求会被处理，并消耗掉拿到的令牌，如果令牌桶为空，则请求会被丢弃。</li></ol><h3 id=api-server的限流>API Server的限流</h3><ul><li><code>max-requests-inflight</code>: 在给定的时间内的最大的<code>non-mutating</code>请求数</li><li><code>max-mutating-requests-inflight</code>: 在给定时间内的最大<code>mutating</code>请求数，调整apiserver的流控qos</li></ul><p><strong>反应出来的问题</strong></p><ol><li>粒度粗: 无法为不同用户，不同场景设置不同的限流</li><li>单队列：共享限流的窗口/桶，一个坏用户可能将整个系统堵塞</li><li>不公平：正常用户的请求会被排到队尾，无法及时处理请求而饿死</li><li>无优先级: 重要的系统指令一并被限流，系统故障难以恢复</li></ol><table><thead><tr><th></th><th>默认值</th><th>节点数1000-3000</th><th>节点数>3000</th></tr></thead><tbody><tr><td>max-requests-inflight</td><td>400</td><td>1500</td><td>3000</td></tr><tr><td>max-mutating-requests-inflight</td><td>200</td><td>500</td><td>1000</td></tr></tbody></table><h3 id=api-priority-and-fairness>API Priority and Fairness</h3><ul><li>APF以更细颗粒度的方式对请求进行分类和隔离。</li><li>它还引入了空间有限的排队机制，因此在非常短暂的突发情况下，API服务器不会拒绝任何请求</li><li>通过使用公平排队技术从队列中分发请求，这样一个行为不佳的控制器就不会饿死其他控制器</li><li>APF的核心<ul><li>多等级</li><li>多队列</li></ul></li><li>APF 的实现依赖两个非常重要的资源 <code>FlowSchema</code>, <code>PriorityLevelConfiguration</code></li><li>APF 对请求进行更细粒度的分类，每一个请求分类对应一个 FlowSchema (FS)</li><li>FS 内的请求又会根据 distinguisher 进一步划分为不同的 Flow.</li><li>FS 会设置一个优先级 (Priority Level, PL)，不同优先级的并发资源是隔离的。所以不同优先级的资源不会相互排挤。特定优先级的请求可以被高优处理。</li><li>一个 PL 可以对应多个 FS，PL 中维护了一个 <code>QueueSet</code>，用于缓存不能及时处理的请求，请求不会因为超出 PL 的并发限制而被丢弃。</li><li>FS 中的每个 Flow 通过 shuffle sharding 算法从 QueueSet 选取特定的 queues 缓存请求。</li><li>每次从 QueueSet 中取请求执行时，会先应用 fair queuing 算法从 QueueSet 中选中一个 queue，然后从这个 queue 中取出 oldest 请求执行。所以即使是同一个 PL 内的请求，也不会出现一个 Flow 内的请求一直占用资源的不公平现象。</li></ul><p>通过<code> kubectl get flowschema</code>查看当前的<code>flow</code></p><h3 id=flow-schema>Flow Schema</h3><p><code>FlowSchema</code>会匹配一些入站请求,并将他们分配给优先级
+每个入站请求都会有对应的<code>FlowSchema</code>测试是否匹配，首先从<code>matchingPrecedence</code>数值最低的匹配开始(我们认为这是逻辑上匹配最高)，然后依次进行匹配，直到首个匹配出现.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-yaml data-lang=yaml><span class=line><span class=ln> 1</span><span class=cl><span class=nt>apiVersion</span><span class=p>:</span><span class=w> </span><span class=l>flowcontrol.apiserver.k8s.io/v1beta1</span><span class=w>
+</span></span></span><span class=line><span class=ln> 2</span><span class=cl><span class=w></span><span class=nt>kind</span><span class=p>:</span><span class=w> </span><span class=l>FlowSchema</span><span class=w>
+</span></span></span><span class=line><span class=ln> 3</span><span class=cl><span class=w></span><span class=nt>metadata</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=ln> 4</span><span class=cl><span class=w>  </span><span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>kube-scheduler</span><span class=w> </span><span class=c># FlowSchema名称</span><span class=w>
+</span></span></span><span class=line><span class=ln> 5</span><span class=cl><span class=w></span><span class=nt>spec</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=ln> 6</span><span class=cl><span class=w>  </span><span class=nt>distinguisherMethod</span><span class=p>:</span><span class=w>  
+</span></span></span><span class=line><span class=ln> 7</span><span class=cl><span class=w>    </span><span class=nt>type</span><span class=p>:</span><span class=w> </span><span class=l>ByNamespace </span><span class=w> </span><span class=c># Distinguisher 区分器</span><span class=w>
+</span></span></span><span class=line><span class=ln> 8</span><span class=cl><span class=w>  </span><span class=nt>matchingPrecedence</span><span class=p>:</span><span class=w> </span><span class=m>800</span><span class=w>  </span><span class=c># 规则优先级,数字越小级别越高</span><span class=w>
+</span></span></span><span class=line><span class=ln> 9</span><span class=cl><span class=w>  </span><span class=nt>priorityLevelConfiguration</span><span class=p>:</span><span class=w> </span><span class=c># 对应的优先级队列</span><span class=w>
+</span></span></span><span class=line><span class=ln>10</span><span class=cl><span class=w>    </span><span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>workload-high </span><span class=w> </span><span class=c># 优先级队列名称</span><span class=w>
+</span></span></span><span class=line><span class=ln>11</span><span class=cl><span class=w>  </span><span class=nt>rules</span><span class=p>:</span><span class=w> 
+</span></span></span><span class=line><span class=ln>12</span><span class=cl><span class=w>  </span>- <span class=nt>resourceRules</span><span class=p>:</span><span class=w> 
+</span></span></span><span class=line><span class=ln>13</span><span class=cl><span class=w>    </span>- <span class=nt>resources</span><span class=p>:</span><span class=w> 
+</span></span></span><span class=line><span class=ln>14</span><span class=cl><span class=w>      </span>- <span class=s1>&#39;*&#39;</span><span class=w>   </span><span class=c># 对应的资源和请求类型</span><span class=w>
+</span></span></span><span class=line><span class=ln>15</span><span class=cl><span class=w>      </span><span class=nt>verbs</span><span class=p>:</span><span class=w> 
+</span></span></span><span class=line><span class=ln>16</span><span class=cl><span class=w>      </span>- <span class=s1>&#39;*&#39;</span><span class=w>  
+</span></span></span><span class=line><span class=ln>17</span><span class=cl><span class=w>  </span><span class=nt>subjects</span><span class=p>:</span><span class=w> 
+</span></span></span><span class=line><span class=ln>18</span><span class=cl><span class=w>  </span>- <span class=nt>kind</span><span class=p>:</span><span class=w> </span><span class=l>User</span><span class=w>
+</span></span></span><span class=line><span class=ln>19</span><span class=cl><span class=w>  </span><span class=nt>user</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=ln>20</span><span class=cl><span class=w>    </span><span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>system:kube-scheduler</span><span class=w>
+</span></span></span></code></pre></div><h3 id=prioritylevelconfiguration优先级队列>PriorityLevelConfiguration(优先级队列)</h3><p>一个<code>PriorityLevelConfiguration</code>表示单个隔离类型。
+每个<code>PriorityLevelConfiguration</code>对未完成的请求数有各自的限制,对排队中的请求数也有限制。</p><blockquote><p>PriorityLevelConfiguration是可以被多个FlowSchema进行复用的</p></blockquote><div class=highlight><pre tabindex=0 class=chroma><code class=language-yaml data-lang=yaml><span class=line><span class=ln> 1</span><span class=cl><span class=nt>apiVersion</span><span class=p>:</span><span class=w> </span><span class=l>flowcontrol.apiserver.k8s.io/v1beta1</span><span class=w>
+</span></span></span><span class=line><span class=ln> 2</span><span class=cl><span class=w></span><span class=nt>kind</span><span class=p>:</span><span class=w> </span><span class=l>PriorityLevelConfiguration</span><span class=w>
+</span></span></span><span class=line><span class=ln> 3</span><span class=cl><span class=w></span><span class=nt>metadata</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=ln> 4</span><span class=cl><span class=w>  </span><span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>global-default</span><span class=w>
+</span></span></span><span class=line><span class=ln> 5</span><span class=cl><span class=w></span><span class=nt>spec</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=ln> 6</span><span class=cl><span class=w>  </span><span class=nt>limited</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=ln> 7</span><span class=cl><span class=w>    </span><span class=nt>assuredConcurrencyShares</span><span class=p>:</span><span class=w> </span><span class=m>20</span><span class=w> </span><span class=c># 允许的并发请求</span><span class=w>
+</span></span></span><span class=line><span class=ln> 8</span><span class=cl><span class=w>    </span><span class=nt>limitResponse</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=ln> 9</span><span class=cl><span class=w>      </span><span class=nt>queuing</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=ln>10</span><span class=cl><span class=w>        </span><span class=nt>handSize</span><span class=p>:</span><span class=w> </span><span class=m>6</span><span class=w> </span><span class=c># shuffle sharding配置,每个flowschmea+distinguisher的请求会被enqueue到多少个队列</span><span class=w>
+</span></span></span><span class=line><span class=ln>11</span><span class=cl><span class=w>        </span><span class=nt>queueLengthLimit</span><span class=p>:</span><span class=w> </span><span class=m>50</span><span class=w> </span><span class=c># 每个队列中的对象数量</span><span class=w>
+</span></span></span><span class=line><span class=ln>12</span><span class=cl><span class=w>        </span><span class=nt>queues</span><span class=p>:</span><span class=w> </span><span class=m>128</span><span class=w>  </span><span class=c># 当前PriorityLevel的队列总数</span><span class=w>
+</span></span></span><span class=line><span class=ln>13</span><span class=cl><span class=w>      </span><span class=nt>type</span><span class=p>:</span><span class=w> </span><span class=l>Queue</span><span class=w>
+</span></span></span><span class=line><span class=ln>14</span><span class=cl><span class=w>    </span><span class=nt>type</span><span class=p>:</span><span class=w> </span><span class=l>Limited</span><span class=w>
+</span></span></span></code></pre></div><p>可以通过<code>kubectl get PriorityLevelConfiguration</code>查看当前kubernetes中的优先级队列</p><ul><li>system: 用于 system:nodes 组（即 kubelet）的请求； kubelet 必须能连上 API 服务器，以便工作负载能够调度到其上。</li><li>leader-election:<ul><li>用于内置控制器的领导选举的请求 （特别是来自 kube-system 名称空间中 system:kube- controller-manager 和 system:kube-scheduler 用户和服务账号，针对 endpoints、 configmaps 或 leases 的请求）。</li><li>将这些请求与其他流量相隔离非常重要，因为领导者选举失败会导致控制器发生故障并重新启动，这反过来会导致新启动的控制器在同步信息时，流量开销更大。</li></ul></li><li>workload-high: 优先级用于内置控制器的请求</li><li>workload-low: 优先级适用于来自任何服务帐户的请求，通常包括来自 Pods 中运行的控制器的所有请求。</li><li>global-default: 优先级可处理所有其他流量，例如：非特权用户运行的交互式 kubectl 命令。</li><li>exempt: 优先级的请求完全不受流控限制：它们总是立刻被分发。 特殊的 exempt FlowSchema把 system:masters 组的所有请求都归入该优先级组。</li><li>catch-all:<ul><li>优先级与特殊的 catch-all FlowSchema 结合使用，以确保每个请求都分类。</li><li>一般不应该依赖于 catch-all 的配置，而应适当地创建自己的 catch-all FlowSchema 和PriorityLevelConfigurations（或使用默认安装的 global-default 配置）。</li><li>为了帮助捕获部分请求未分类的配置错误，强制要求 catch-all 优先级仅允许5个并发份额，并且不对请求进行排队，使得仅与 catch-all FlowSchema 匹配的流量被拒绝的可能性更高，并显示 HTTP 429 错误。</li></ul></li></ul><div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=ln> 1</span><span class=cl><span class=o>[</span>root@Online-Beijing-master1 ~<span class=o>]</span><span class=c1># kubectl get PriorityLevelConfiguration</span>
+</span></span><span class=line><span class=ln> 2</span><span class=cl>NAME              TYPE      ASSUREDCONCURRENCYSHARES   QUEUES   HANDSIZE   QUEUELENGTHLIMIT   AGE
+</span></span><span class=line><span class=ln> 3</span><span class=cl>catch-all         Limited   <span class=m>5</span>                          &lt;none&gt;   &lt;none&gt;     &lt;none&gt;             13h
+</span></span><span class=line><span class=ln> 4</span><span class=cl>exempt            Exempt    &lt;none&gt;                     &lt;none&gt;   &lt;none&gt;     &lt;none&gt;             13h
+</span></span><span class=line><span class=ln> 5</span><span class=cl>global-default    Limited   <span class=m>20</span>                         <span class=m>128</span>      <span class=m>6</span>          <span class=m>50</span>                 13h
+</span></span><span class=line><span class=ln> 6</span><span class=cl>leader-election   Limited   <span class=m>10</span>                         <span class=m>16</span>       <span class=m>4</span>          <span class=m>50</span>                 13h
+</span></span><span class=line><span class=ln> 7</span><span class=cl>node-high         Limited   <span class=m>40</span>                         <span class=m>64</span>       <span class=m>6</span>          <span class=m>50</span>                 13h
+</span></span><span class=line><span class=ln> 8</span><span class=cl>system            Limited   <span class=m>30</span>                         <span class=m>64</span>       <span class=m>6</span>          <span class=m>50</span>                 13h
+</span></span><span class=line><span class=ln> 9</span><span class=cl>workload-high     Limited   <span class=m>40</span>                         <span class=m>128</span>      <span class=m>6</span>          <span class=m>50</span>                 13h
+</span></span><span class=line><span class=ln>10</span><span class=cl>workload-low      Limited   <span class=m>100</span>                        <span class=m>128</span>      <span class=m>6</span>          <span class=m>50</span>                 13h
+</span></span></code></pre></div><p>详细说一下分流策略</p><ol><li>根据<code>service-accounts</code>的flow进行限制,<code>distinguisherMethod</code>根据不同的用户进行限流。</li><li>这一类的flow应该通过<code>priorityLevelConfiguration</code>中定义的<code>workload-low</code>进行限流</li><li>通过<code>workload-low</code>中定义的<code>assuredConcurrencyShares</code>设置当前请求的最大并发数量</li></ol><h2 id=高可用apiserver>高可用APIServer</h2><h3 id=搭建多租户的kubernetes集群>搭建多租户的kubernetes集群</h3><p>授信</p><ul><li>认证: 禁止匿名访问，只允许可信用户做操作。</li><li>授权：基于授信的操作，防止多用户之间互相影响，比如普通用户删除Kubernetes核心服务，或者A用户删除或修改B用户 的应用。</li></ul><p>隔离</p><ul><li>可见行隔离：用户只关心自己的应用，无需看到其他用户的服务和部署。</li><li>资源隔离：有些关键项目对资源需求较高，需要有专业设备，不与其他人共享。</li><li>应用访问隔离：用户创建的服务，按照既定规则允许其他用户访问。</li></ul><p>资源管理</p><ul><li>Quota管理: 谁能用多少资源</li></ul></div><ul class="hb-blog-post-nav nav justify-content-between mb-3"><li class="nav-item my-1"><a class="nav-link p-0 d-flex align-items-center" href=/posts/kubernetes-dashboard/><svg aria-hidden="true" class="bi bi-arrow-left-circlebi bi-arrow-left-circle hi-svg-inline me-2" fill="currentcolor" height="1.5em" viewBox="0 0 16 16" width="1.5em" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M1 8a7 7 0 1014 0A7 7 0 001 8m15 0A8 8 0 110 8a8 8 0 0116 0m-4.5-.5a.5.5.0 010 1H5.707l2.147 2.146a.5.5.0 01-.708.708l-3-3a.5.5.0 010-.708l3-3a.5.5.0 11.708.708L5.707 7.5z"/></svg>kubernetes-dashboard</a></li><li class="nav-item my-1"><a class="nav-link p-0 d-flex align-items-center" href=/posts/horizontalpodautoscaler/>HorizontalPodAutoscaler<svg aria-hidden="true" class="bi bi-arrow-right-circlebi bi-arrow-right-circle hi-svg-inline ms-2" fill="currentcolor" height="1.5em" viewBox="0 0 16 16" width="1.5em" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M1 8a7 7 0 1014 0A7 7 0 001 8m15 0A8 8 0 110 8a8 8 0 0116 0M4.5 7.5a.5.5.0 000 1h5.793l-2.147 2.146a.5.5.0 00.708.708l3-3a.5.5.0 000-.708l-3-3a.5.5.0 10-.708.708L10.293 7.5z"/></svg></a></li></ul><div id=content-comments class="hb-blog-post-comments hb-module mb-3"><div id=twikoo-comments></div></div></div></div></div><div class="hb-blog-sidebar pe-lg-1"><div class="hb-blog-sidebar-profile hb-module d-flex flex-column justify-content-center align-items-center"><picture><source srcset=/images/avatar_hu3b524e9b8f8772a6019da4ead2865f01_9176_ab72abc4ab1538a4c57546e4ff08f6d1.webp type=image/webp><img class="hb-blog-sidebar-profile-img rounded-circle img-fluid mb-3" src=https://blog.mletter.cn/images/avatar_hu3b524e9b8f8772a6019da4ead2865f01_9176_100x0_resize_box_3.d4ab93c1a773c431e0dd90cd83a48519.png alt loading=lazy height=100 width=100></picture><p class="hb-blog-sidebar-profile-title text-center h5 mb-2">人间只是春</p><p class="hb-blog-sidebar-profile-desc text-center mb-2">喜马拉雅的山顶永远不会有万家灯火</p><p class="hb-blog-sidebar-profile-meta mb-0"><span class=mx-1><svg aria-hidden="true" class="bi bi-geo-altbi bi-geo-alt hi-svg-inline me-1" fill="currentcolor" height="1em" viewBox="0 0 16 16" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M12.166 8.94c-.524 1.062-1.234 2.12-1.96 3.07A32 32 0 018 14.58a32 32 0 01-2.206-2.57c-.726-.95-1.436-2.008-1.96-3.07C3.304 7.867 3 6.862 3 6a5 5 0 0110 0c0 .862-.305 1.867-.834 2.94M8 16s6-5.686 6-10A6 6 0 002 6c0 4.314 6 10 6 10"/><path d="M8 8a2 2 0 110-4 2 2 0 010 4m0 1a3 3 0 100-6 3 3 0 000 6"/></svg>China·HangZhou</span></p><div class="hb-footer-socials d-flex mb-0 mt-1 justify-content-center"><a class="hb-social p-2" href="https://space.bilibili.com/%25!s%28int64=477276392%29" target=_blank rel="nofollow me" title=Bilibili><svg aria-hidden="true" class="hi-svg-inline hb-social-icon" fill="currentcolor" height="1.75em" role="img" style="color:#fb7299" viewBox="0 0 24 24" width="1.75em" xmlns="http://www.w3.org/2000/svg"><title>Bilibili</title><path d="M17.813 4.653h.854c1.51.054 2.769.578 3.773 1.574 1.004.995 1.524 2.249 1.56 3.76v7.36c-.036 1.51-.556 2.769-1.56 3.773s-2.262 1.524-3.773 1.56H5.333c-1.51-.036-2.769-.556-3.773-1.56S.036 18.858.0 17.347v-7.36c.036-1.511.556-2.765 1.56-3.76 1.004-.996 2.262-1.52 3.773-1.574h.774l-1.174-1.12a1.234 1.234.0 01-.373-.906c0-.356.124-.658.373-.907l.027-.027c.267-.249.573-.373.92-.373s.653.124.92.373L9.653 4.44c.071.071.134.142.187.213h4.267a.836.836.0 01.16-.213l2.853-2.747c.267-.249.573-.373.92-.373s.662.151.929.4.391.551.391.907c0 .355-.124.657-.373.906zM5.333 7.24c-.746.018-1.373.276-1.88.773-.506.498-.769 1.13-.786 1.894v7.52c.017.764.28 1.395.786 1.893.507.498 1.134.756 1.88.773h13.334c.746-.017 1.373-.275 1.88-.773.506-.498.769-1.129.786-1.893v-7.52c-.017-.765-.28-1.396-.786-1.894-.507-.497-1.134-.755-1.88-.773zM8 11.107c.373.0.684.124.933.373.25.249.383.569.4.96v1.173c-.017.391-.15.711-.4.96-.249.25-.56.374-.933.374s-.684-.125-.933-.374c-.25-.249-.383-.569-.4-.96V12.44c0-.373.129-.689.386-.947.258-.257.574-.386.947-.386zm8 0c.373.0.684.124.933.373.25.249.383.569.4.96v1.173c-.017.391-.15.711-.4.96-.249.25-.56.374-.933.374s-.684-.125-.933-.374c-.25-.249-.383-.569-.4-.96V12.44c.017-.391.15-.711.4-.96.249-.249.56-.373.933-.373z"/></svg></a><a class="hb-social p-2" href=mailto:beilanzhisen@163.com target=_blank rel="nofollow me" title=Email><svg aria-hidden="true" class="bi bi-envelope-fillbi bi-envelope-fill hi-svg-inline hb-social-icon" fill="currentcolor" height="1.75em" style="color:%!s(bool=true)" viewBox="0 0 16 16" width="1.75em" xmlns="http://www.w3.org/2000/svg"><path d="M.05 3.555A2 2 0 012 2h12a2 2 0 011.95 1.555L8 8.414zM0 4.697v7.104l5.803-3.558zM6.761 8.83.191 12.857A2 2 0 002 14h12a2 2 0 001.808-1.144l-6.57-4.027L8 9.586zm3.436-.586L16 11.801V4.697z"/></svg></a></div></div><div class="hb-blog-sidebar-posts hb-module"><ul class="nav nav-underline nav-fill" role=tablist><li class=nav-item role=presentation><button class="nav-link active" id=recent-posts-tab data-bs-toggle=tab data-bs-target=#recent-posts type=button role=tab aria-controls=recent-posts aria-selected=true>
+Recent</button></li></ul><div class="tab-content mt-2"><div class="tab-pane slide active" id=recent-posts role=tabpanel aria-labelledby=recent-posts-tab tabindex=0><div class=slide><div class="slide-inner row row-cols-1"><div class="slide-item px-0"><div class="hb-blog-post-card card border-0 overflow-hidden h-100 bg-transparent mb-0"><a class="card-img-top overflow-hidden border border-secondary-subtle text-body text-decoration-none mt-2" href=/bulletin/2024/0108/><picture><img class=hb-blog-post-card-img src=https://fc.sinaimg.cn/large/005Czbxjgy1hlmcj1fb04j31hc0u0u0x.jpg alt=2024年站点更新内容通知 loading=lazy></picture></a><div class="card-body px-0 py-2 d-flex flex-column"><div class="hb-blog-post-title card-title h5 py-1"><a class="hb-blog-post-title-link d-block" title=2024年站点更新内容通知 href=/bulletin/2024/0108/>2024年站点更新内容通知</a></div></div></div></div><div class="slide-item px-0"><div class="hb-blog-post-card card border-0 overflow-hidden h-100 bg-transparent mb-0"><a class="card-img-top overflow-hidden border border-secondary-subtle text-body text-decoration-none mt-2" href=/posts/kubernetes-efk/><picture><img class=hb-blog-post-card-img src=https://fc.sinaimg.cn/large/005Czbxjgy1hkmevv8ozyj31ds0iqn0i.jpg alt=kubernetes基于EFK的日志落地实现 loading=lazy></picture></a><div class="card-body px-0 py-2 d-flex flex-column"><div class="hb-blog-post-title card-title h5 py-1"><a class="hb-blog-post-title-link d-block" title=kubernetes基于EFK的日志落地实现 href=/posts/kubernetes-efk/>kubernetes基于EFK的日志落地实现</a></div></div></div></div><div class="slide-item px-0"><div class="hb-blog-post-card card border-0 overflow-hidden h-100 bg-transparent mb-0"><a class="card-img-top overflow-hidden border border-secondary-subtle text-body text-decoration-none mt-2" href=/posts/%E5%B7%9D%E8%A5%BF%E4%B9%8B%E6%97%85/><picture><img class=hb-blog-post-card-img src=https://img11.360buyimg.com/ddimg/jfs/t1/236840/40/3995/133210/6563505dFfe136e64/32c8465a255f4bc7.jpg alt=旅行日记-四川·阿坝甘孜藏族自治州 loading=lazy></picture></a><div class="card-body px-0 py-2 d-flex flex-column"><div class="hb-blog-post-title card-title h5 py-1"><a class="hb-blog-post-title-link d-block" title=旅行日记-四川·阿坝甘孜藏族自治州 href=/posts/%E5%B7%9D%E8%A5%BF%E4%B9%8B%E6%97%85/>旅行日记-四川·阿坝甘孜藏族自治州</a></div></div></div></div><div class="slide-item px-0"><div class="hb-blog-post-card card border-0 overflow-hidden h-100 bg-transparent mb-0"><a class="card-img-top overflow-hidden border border-secondary-subtle text-body text-decoration-none mt-2" href=/posts/kubernetes%E7%9A%84%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1/><picture><img class=hb-blog-post-card-img src=https://img13.360buyimg.com/ddimg/jfs/t1/164078/6/34165/22231/654ba81fFe1bf21d7/9d02bd791b795b3b.jpg alt=Kubernetes的架构设计和对象属性基本理解 loading=lazy></picture></a><div class="card-body px-0 py-2 d-flex flex-column"><div class="hb-blog-post-title card-title h5 py-1"><a class="hb-blog-post-title-link d-block" title=Kubernetes的架构设计和对象属性基本理解 href=/posts/kubernetes%E7%9A%84%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1/>Kubernetes的架构设计和对象属性基本理解</a></div></div></div></div><div class="slide-item px-0"><div class="hb-blog-post-card card border-0 overflow-hidden h-100 bg-transparent mb-0"><a class="card-img-top overflow-hidden border border-secondary-subtle text-body text-decoration-none mt-2" href=/posts/wecho/><picture><img class=hb-blog-post-card-img src=https://ydschool-online.nosdn.127.net/tiku/f291c1c8d5dccacd2b95ef4fdc68d07cefd0e92562794e5bcdd21a9729b3455d.jpg alt=维扣-专属你的拍照摄影社区 loading=lazy></picture></a><div class="card-body px-0 py-2 d-flex flex-column"><div class="hb-blog-post-title card-title h5 py-1"><a class="hb-blog-post-title-link d-block" title=维扣-专属你的拍照摄影社区 href=/posts/wecho/><span class=text-danger><svg aria-hidden="true" class="bi bi-pinbi bi-pin hi-svg-inline me-1" fill="currentcolor" height=".85em" viewBox="0 0 16 16" width=".85em" xmlns="http://www.w3.org/2000/svg"><path d="M4.146.146A.5.5.0 014.5.0h7a.5.5.0 01.5.5c0 .68-.342 1.174-.646 1.479-.126.125-.25.224-.354.298v4.431l.078.048c.203.127.476.314.751.555C12.36 7.775 13 8.527 13 9.5a.5.5.0 01-.5.5h-4v4.5c0 .276-.224 1.5-.5 1.5s-.5-1.224-.5-1.5V10h-4A.5.5.0 013 9.5c0-.973.64-1.725 1.17-2.189A6 6 0 015 6.708V2.277a3 3 0 01-.354-.298C4.342 1.674 4 1.179 4 .5a.5.5.0 01.146-.354m1.58 1.408-.002-.001zm-.002-.001.002.001A.5.5.0 016 2v5a.5.5.0 01-.276.447h-.002l-.012.007-.054.03a5 5 0 00-.827.58c-.318.278-.585.596-.725.936h7.792c-.14-.34-.407-.658-.725-.936a5 5 0 00-.881-.61l-.012-.006h-.002A.5.5.0 0110 7V2a.5.5.0 01.295-.458 1.8 1.8.0 00.351-.271c.08-.08.155-.17.214-.271H5.14q.091.15.214.271a1.8 1.8.0 00.37.282"/></svg></span>维扣-专属你的拍照摄影社区</a></div></div></div></div></div><button class=slide-control-left><svg aria-hidden="true" class="bi bi-arrow-left-circlebi bi-arrow-left-circle hi-svg-inline slide-control-left-icon" fill="currentcolor" height="2em" viewBox="0 0 16 16" width="2em" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M1 8a7 7 0 1014 0A7 7 0 001 8m15 0A8 8 0 110 8a8 8 0 0116 0m-4.5-.5a.5.5.0 010 1H5.707l2.147 2.146a.5.5.0 01-.708.708l-3-3a.5.5.0 010-.708l3-3a.5.5.0 11.708.708L5.707 7.5z"/></svg>
+<span class=visually-hidden>Left</span></button>
+<button class=slide-control-right><svg aria-hidden="true" class="bi bi-arrow-right-circlebi bi-arrow-right-circle hi-svg-inline slide-control-right-icon" fill="currentcolor" height="2em" viewBox="0 0 16 16" width="2em" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M1 8a7 7 0 1014 0A7 7 0 001 8m15 0A8 8 0 110 8a8 8 0 0116 0M4.5 7.5a.5.5.0 000 1h5.793l-2.147 2.146a.5.5.0 00.708.708l3-3a.5.5.0 000-.708l-3-3a.5.5.0 10-.708.708L10.293 7.5z"/></svg>
+<span class=visually-hidden>Right</span></button></div></div></div></div><div class="hb-blog-sidebar-taxonomies hb-module"><ul class="nav nav-underline nav-justified mb-2" role=tablist><li class=nav-item role=presentation><button class="nav-link active" id=taxonomy-categories-tab data-bs-toggle=tab data-bs-target=#taxonomy-categories-tab-pane type=button role=tab aria-controls=taxonomy-categories-tab-pane aria-selected=true>Categories</button></li><li class=nav-item role=presentation><button class=nav-link id=taxonomy-tags-tab data-bs-toggle=tab data-bs-target=#taxonomy-tags-tab-pane type=button role=tab aria-controls=taxonomy-tags-tab-pane aria-selected=false>Tags</button></li></ul><div class=tab-content><div class="tab-pane fade show active" id=taxonomy-categories-tab-pane role=tabpanel aria-labelledby=taxonomy-categories-tab tabindex=0><a class="taxonomy-term taxonomy-term-categories btn btn-sm btn-outline-secondary p-1 me-1 mb-1" href=/categories/kubernetes/><span class=taxonomy-term-title>kubernetes</span>
+<small class="taxonomy-term-count border rounded px-1">20</small></a>
+<a class="taxonomy-term taxonomy-term-categories btn btn-sm btn-outline-secondary p-1 me-1 mb-1" href=/categories/ansible/><span class=taxonomy-term-title>ansible</span>
+<small class="taxonomy-term-count border rounded px-1">3</small></a>
+<a class="taxonomy-term taxonomy-term-categories btn btn-sm btn-outline-secondary p-1 me-1 mb-1" href=/categories/docker/><span class=taxonomy-term-title>docker</span>
+<small class="taxonomy-term-count border rounded px-1">2</small></a>
+<a class="taxonomy-term taxonomy-term-categories btn btn-sm btn-outline-secondary p-1 me-1 mb-1" href=/categories/%E6%97%85%E8%A1%8C%E6%97%A5%E8%AE%B0/><span class=taxonomy-term-title>旅行日记</span>
+<small class="taxonomy-term-count border rounded px-1">2</small></a>
+<a class="taxonomy-term taxonomy-term-categories btn btn-sm btn-outline-secondary p-1 me-1 mb-1" href=/categories/mysql/><span class=taxonomy-term-title>mysql</span>
+<small class="taxonomy-term-count border rounded px-1">1</small></a>
+<a class="taxonomy-term taxonomy-term-categories btn btn-sm btn-outline-secondary p-1 me-1 mb-1" href=/categories/nginx/><span class=taxonomy-term-title>nginx</span>
+<small class="taxonomy-term-count border rounded px-1">1</small></a>
+<a class="taxonomy-term taxonomy-term-categories btn btn-sm btn-outline-secondary p-1 me-1 mb-1" href=/categories/redis/><span class=taxonomy-term-title>redis</span>
+<small class="taxonomy-term-count border rounded px-1">1</small></a>
+<a class="taxonomy-term taxonomy-term-categories btn btn-sm btn-outline-secondary p-1 me-1 mb-1" href=/categories/%E4%B8%AA%E4%BA%BA%E9%A1%B9%E7%9B%AE/><span class=taxonomy-term-title>个人项目</span>
+<small class="taxonomy-term-count border rounded px-1">1</small></a>
+<a class="taxonomy-term taxonomy-term-categories btn btn-sm btn-outline-secondary p-1 me-1 mb-1" href=/categories/%E5%B7%A5%E5%85%B7%E5%88%86%E4%BA%AB/><span class=taxonomy-term-title>工具分享</span>
+<small class="taxonomy-term-count border rounded px-1">1</small></a>
+<a class="taxonomy-term taxonomy-term-categories btn btn-sm btn-outline-secondary p-1 me-1 mb-1" href=/categories/%E6%97%A5%E5%B8%B8%E6%91%84%E5%BD%B1/><span class=taxonomy-term-title>日常摄影</span>
+<small class="taxonomy-term-count border rounded px-1">1</small></a></div><div class="tab-pane fade" id=taxonomy-tags-tab-pane role=tabpanel aria-labelledby=taxonomy-tags-tab tabindex=0><a class="taxonomy-term taxonomy-term-tags btn btn-sm btn-outline-secondary p-1 me-1 mb-1" href=/tags/kubernetes/><span class=taxonomy-term-title>kubernetes</span>
+<small class="taxonomy-term-count border rounded px-1">20</small></a>
+<a class="taxonomy-term taxonomy-term-tags btn btn-sm btn-outline-secondary p-1 me-1 mb-1" href=/tags/ansible/><span class=taxonomy-term-title>ansible</span>
+<small class="taxonomy-term-count border rounded px-1">3</small></a>
+<a class="taxonomy-term taxonomy-term-tags btn btn-sm btn-outline-secondary p-1 me-1 mb-1" href=/tags/%E6%97%A5%E8%AE%B0/><span class=taxonomy-term-title>日记</span>
+<small class="taxonomy-term-count border rounded px-1">3</small></a>
+<a class="taxonomy-term taxonomy-term-tags btn btn-sm btn-outline-secondary p-1 me-1 mb-1" href=/tags/docker/><span class=taxonomy-term-title>docker</span>
+<small class="taxonomy-term-count border rounded px-1">2</small></a>
+<a class="taxonomy-term taxonomy-term-tags btn btn-sm btn-outline-secondary p-1 me-1 mb-1" href=/tags/api/><span class=taxonomy-term-title>API</span>
+<small class="taxonomy-term-count border rounded px-1">1</small></a>
+<a class="taxonomy-term taxonomy-term-tags btn btn-sm btn-outline-secondary p-1 me-1 mb-1" href=/tags/api-server/><span class=taxonomy-term-title>api-server</span>
+<small class="taxonomy-term-count border rounded px-1">1</small></a>
+<a class="taxonomy-term taxonomy-term-tags btn btn-sm btn-outline-secondary p-1 me-1 mb-1" href=/tags/configmap/><span class=taxonomy-term-title>configmap</span>
+<small class="taxonomy-term-count border rounded px-1">1</small></a>
+<a class="taxonomy-term taxonomy-term-tags btn btn-sm btn-outline-secondary p-1 me-1 mb-1" href=/tags/coredns/><span class=taxonomy-term-title>coredns</span>
+<small class="taxonomy-term-count border rounded px-1">1</small></a>
+<a class="taxonomy-term taxonomy-term-tags btn btn-sm btn-outline-secondary p-1 me-1 mb-1" href=/tags/dashboard/><span class=taxonomy-term-title>dashboard</span>
+<small class="taxonomy-term-count border rounded px-1">1</small></a>
+<a class="taxonomy-term taxonomy-term-tags btn btn-sm btn-outline-secondary p-1 me-1 mb-1" href=/tags/etcd/><span class=taxonomy-term-title>etcd</span>
+<small class="taxonomy-term-count border rounded px-1">1</small></a></div></div></div></div></div></div><footer class="hb-footer pt-4 pt-md-5 pb-2 pb-md-3 bg-body-tertiary"><div class="container-fluid container-lg px-4 px-md-3"><div class=row><div class="hb-footer-site-info col mb-2 text-center"><div class=h5>人生不过一场山川而已</div><ul class="list-unstyled small mb-2"></ul></div></div></div></footer><script src=/js/hb.45b92db4c9e744e95404d884107b20bb2451a48955649f6af550b240c3b548c5.js integrity="sha256-RbkttMnnROlUBNiEEHsguyRRpIlVZJ9q9VCyQMO1SMU=" defer></script>
+<script src=https://cdn.staticfile.org/twikoo/1.6.16/twikoo.all.min.js></script>
+<script>twikoo.init({envId:"",el:"#twikoo-comments",region:"",path:location.pathname,lang:"en"})</script><script>"serviceWorker"in navigator&&window.addEventListener("DOMContentLoaded",function(){navigator.serviceWorker.register("/sw.js")})</script><script src=/js/search.ca3f08bec50140ac47f971d6d5d40cd7532cc253f971950506c848ed218fef3f.js defer></script></body></html>

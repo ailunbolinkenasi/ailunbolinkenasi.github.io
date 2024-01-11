@@ -21,7 +21,7 @@
 
     <link rel="manifest" href="https://blog.mletter.cn/manifest.webmanifest" />
 
-<meta name="description" content="我想让大家有一个私密的树洞和一个可以分享自己图片的地方" />
+<meta name="description" content="一个基于Gin框架小项目" />
 
 
 
@@ -29,20 +29,20 @@
 
 
 <meta property="og:title" content="维扣-专属你的拍照摄影社区" />
-<meta property="og:description" content="我想让大家有一个私密的树洞和一个可以分享自己图片的地方" />
+<meta property="og:description" content="一个基于Gin框架小项目" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://blog.mletter.cn/posts/wecho/" /><meta property="og:image" content="https://ydschool-online.nosdn.127.net/tiku/f291c1c8d5dccacd2b95ef4fdc68d07cefd0e92562794e5bcdd21a9729b3455d.jpg" /><meta property="article:section" content="posts" />
 <meta property="article:published_time" content="2023-08-26T00:00:00+00:00" />
 <meta property="article:modified_time" content="2023-08-26T00:00:00+00:00" />
 <meta itemprop="name" content="维扣-专属你的拍照摄影社区">
-<meta itemprop="description" content="我想让大家有一个私密的树洞和一个可以分享自己图片的地方"><meta itemprop="datePublished" content="2023-08-26T00:00:00+00:00" />
+<meta itemprop="description" content="一个基于Gin框架小项目"><meta itemprop="datePublished" content="2023-08-26T00:00:00+00:00" />
 <meta itemprop="dateModified" content="2023-08-26T00:00:00+00:00" />
-<meta itemprop="wordCount" content="416"><meta itemprop="image" content="https://ydschool-online.nosdn.127.net/tiku/f291c1c8d5dccacd2b95ef4fdc68d07cefd0e92562794e5bcdd21a9729b3455d.jpg">
+<meta itemprop="wordCount" content="153"><meta itemprop="image" content="https://ydschool-online.nosdn.127.net/tiku/f291c1c8d5dccacd2b95ef4fdc68d07cefd0e92562794e5bcdd21a9729b3455d.jpg">
 <meta itemprop="keywords" content="Go,Gin,个人项目," /><meta name="twitter:card" content="summary_large_image"/>
 <meta name="twitter:image" content="https://ydschool-online.nosdn.127.net/tiku/f291c1c8d5dccacd2b95ef4fdc68d07cefd0e92562794e5bcdd21a9729b3455d.jpg"/>
 
 <meta name="twitter:title" content="维扣-专属你的拍照摄影社区"/>
-<meta name="twitter:description" content="我想让大家有一个私密的树洞和一个可以分享自己图片的地方"/>
+<meta name="twitter:description" content="一个基于Gin框架小项目"/>
 
 
 
@@ -337,7 +337,7 @@
 
           <span class="hb-blog-post-date">August 26, 2023</span>
 
-          <span class="hb-blog-post-reading-time">2 min read</span>
+          <span class="hb-blog-post-reading-time">1 min read</span>
 
           
     
@@ -362,7 +362,7 @@
           href="/tags/%E4%B8%AA%E4%BA%BA%E9%A1%B9%E7%9B%AE/">个人项目</a>
       </span>
         </div>
-          <div class="hb-blog-post-desc lead mt-1">我想让大家有一个私密的树洞和一个可以分享自己图片的地方</div>
+          <div class="hb-blog-post-desc lead mt-1">一个基于Gin框架小项目</div>
       </div>
         <div class="hb-blog-post-toc text-body-secondary position-sticky overflow-y-auto">
 
@@ -387,19 +387,27 @@
     <div id="collapse-toc" class="collapse hb-blog-post-toc-collapse"><nav id="TableOfContents">
   <ul>
     <li><a href="#介绍">介绍</a></li>
-    <li><a href="#功能展示">功能展示</a></li>
-    <li><a href="#遵循restful接口的规范">遵循Restful接口的规范</a></li>
+    <li><a href="#简单功能">简单功能</a></li>
+    <li><a href="#restful-api">RESTFul API</a></li>
     <li><a href="#基本的后端技术栈">基本的后端技术栈</a></li>
     <li><a href="#项目目录">项目目录</a></li>
     <li><a href="#项目缓存规范">项目缓存规范</a>
       <ul>
-        <li><a href="#用户信息模块缓存">用户信息模块缓存</a></li>
+        <li><a href="#缓存信息">缓存信息</a></li>
       </ul>
     </li>
-    <li><a href="#数据库设计">数据库设计</a>
+    <li><a href="#常用代码片段">常用代码片段</a></li>
+    <li><a href="#minio启动命令">Minio启动命令</a></li>
+    <li><a href="#后端服务编译">后端服务编译</a></li>
+    <li><a href="#接口统计">接口统计</a>
       <ul>
-        <li><a href="#用户表结构">用户表结构</a></li>
-        <li><a href="#树洞表结构">树洞表结构</a></li>
+        <li><a href="#用户服务普通用户">用户服务(普通用户)</a></li>
+        <li><a href="#画板服务">画板服务</a></li>
+      </ul>
+    </li>
+    <li><a href="#审核服务">审核服务</a>
+      <ul>
+        <li><a href="#通信服务">通信服务</a></li>
       </ul>
     </li>
   </ul>
@@ -447,94 +455,35 @@
           class="hb-blog-post-content hb-module"
           >
 
-          <h1 id="wecho">WEcho</h1>
-<p>
-
-
-
-
-
-
-
-
-
-
-
-
-  
-  
-    <picture>
-  <img
-    class="img-fluid"
-    src="https://ydschool-online.nosdn.127.net/tiku/f291c1c8d5dccacd2b95ef4fdc68d07cefd0e92562794e5bcdd21a9729b3455d.jpg"
-    alt="img"
-    loading="lazy"
-    
-    
-    
-    
-    
-     />
-</picture>
-</p>
-<h2 id="介绍">介绍</h2>
+          <h2 id="介绍">介绍</h2>
 <ul>
-<li>一个发布树洞和摄影的小软件</li>
-<li>我给这个程序起了两个名字<code>Whisper(耳语)</code>、<code>Echo(回声)</code>,目前我在想如何把他们两个组合起来,所以我目前打算给它去一个奇葩的名字叫做&quot;维扣&quot;</li>
-<li>我想让大家有一个私密的树洞和一个可以分享自己图片的地方</li>
+<li>一个简单的摄影分享社区</li>
 </ul>
-<h2 id="功能展示">功能展示</h2>
+<h2 id="简单功能">简单功能</h2>
 <ul>
-<li>原型地址：https://modao.cc/app/wEWpHIxirx936ySg8ixQz7</li>
+<li>是男人，就来分享你拍的照片！！！</li>
 </ul>
-<ol>
-<li>树洞功能：
-<ol>
-<li>只允许用户发布树洞,并且对树洞进行点赞和热度排行以及分享,暂不做其他用途</li>
-<li>其他功能暂时还在想…</li>
-</ol>
-</li>
-<li>摄影社区功能
-<ol>
-<li>支持图文混编,以标题+内容+图片的方式展示自己的摄影作品</li>
-<li>点击图文可以查看详细+下载该图片功能</li>
-<li>可对图片进行收藏、点赞、分享、搜索</li>
-<li>发现页可以查看近期热门壁纸、壁纸分类等内容</li>
-<li>个人详细页面：显示自己个人信息资料片</li>
-</ol>
-</li>
-</ol>
-<h2 id="遵循restful接口的规范">遵循Restful接口的规范</h2>
+<h2 id="restful-api">RESTFul API</h2>
 <blockquote>
-<p>此接口并不代表最终接口</p>
+<p>一会儿再说。</p>
 </blockquote>
-<p>一个数据对象大致分为以下五个接口</p>
-<ul>
-<li>GET /treeholes : 获取树洞列表</li>
-<li>POST /treeholes : 发布一条树洞</li>
-<li>GET /treeholes/:tree_id : 获取单个树洞内容详细</li>
-<li>PUT /treeholes/:tree_id: 修改单个树洞内容详细</li>
-<li>DELETE /treeholes/:tree_id: 删除单个树洞详细</li>
-</ul>
 <h2 id="基本的后端技术栈">基本的后端技术栈</h2>
 <ul>
-<li>Go</li>
-<li>MeiliSearch: 一款好用的搜索引擎</li>
-<li>Gorm: 简单好用搞笑的ORM框架</li>
-<li>Gin: 速度极快的Web框架</li>
+<li>Gorm: 数据库工具</li>
+<li>Gin: 速度极快的Go语言Web框架</li>
 <li>Minio: 分布式存储</li>
 </ul>
 <h2 id="项目目录">项目目录</h2>
-<ul>
-<li>还没写呢</li>
-</ul>
+<blockquote>
+<p>一会儿再说</p>
+</blockquote>
 <h2 id="项目缓存规范">项目缓存规范</h2>
 <ul>
 <li>RedisKey的规范</li>
 </ul>
-<pre tabindex="0"><code>project:module:business:uk
-项目名    模块名   业务名  唯一标识
-</code></pre><h3 id="用户信息模块缓存">用户信息模块缓存</h3>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="ln">1</span><span class="cl">project:module:business:uk
+</span></span><span class="line"><span class="ln">2</span><span class="cl">项目名    模块名   业务名  唯一标识
+</span></span></code></pre></div><h3 id="缓存信息">缓存信息</h3>
 <ul>
 <li>这部分还没设计完成,等待完善吧。</li>
 </ul>
@@ -549,163 +498,88 @@
 </thead>
 <tbody>
 <tr>
-<td>Wecho:user:login_user:{user_id}</td>
+<td>wecho:user:access_token:{username}</td>
 <td>string</td>
 <td>2天</td>
 <td>存储用户生成的JWT</td>
 </tr>
 <tr>
-<td>Wecho:users:cache</td>
-<td>HSET</td>
-<td>2天</td>
-<td>用HSET缓存用户信息</td>
+<td>wecho:userinfo:cache:{username}</td>
+<td>SET</td>
+<td>3天</td>
+<td>用户信息详情缓存</td>
+</tr>
+<tr>
+<td>wecho:user:login_fail:{username}</td>
+<td>Incr</td>
+<td>30Min</td>
+<td>错误登录次数</td>
 </tr>
 </tbody>
 </table>
-<h2 id="数据库设计">数据库设计</h2>
-<h3 id="用户表结构">用户表结构</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="ln"> 1</span><span class="cl"><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="o">`</span><span class="n">users</span><span class="o">`</span><span class="w"> </span><span class="p">(</span><span class="w">
-</span></span></span><span class="line"><span class="ln"> 2</span><span class="cl"><span class="w">  </span><span class="o">`</span><span class="n">id</span><span class="o">`</span><span class="w"> </span><span class="nb">int</span><span class="p">(</span><span class="mi">11</span><span class="p">)</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="w"> </span><span class="n">AUTO_INCREMENT</span><span class="w"> </span><span class="k">COMMENT</span><span class="w"> </span><span class="s1">&#39;唯一标识一个用户的编号，通常使用自增长整数来表示&#39;</span><span class="p">,</span><span class="w">
-</span></span></span><span class="line"><span class="ln"> 3</span><span class="cl"><span class="w">  </span><span class="o">`</span><span class="n">username</span><span class="o">`</span><span class="w"> </span><span class="nb">varchar</span><span class="p">(</span><span class="mi">50</span><span class="p">)</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="w"> </span><span class="k">COMMENT</span><span class="w"> </span><span class="s1">&#39;注册登录用户名&#39;</span><span class="p">,</span><span class="w">
-</span></span></span><span class="line"><span class="ln"> 4</span><span class="cl"><span class="w">  </span><span class="o">`</span><span class="n">nickname</span><span class="o">`</span><span class="w"> </span><span class="nb">varchar</span><span class="p">(</span><span class="mi">50</span><span class="p">)</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="s1">&#39;该用户未设置nickname&#39;</span><span class="w"> </span><span class="k">COMMENT</span><span class="w"> </span><span class="s1">&#39;用户在树洞中使用的昵称，可以包含中英文字符和数字&#39;</span><span class="p">,</span><span class="w">
-</span></span></span><span class="line"><span class="ln"> 5</span><span class="cl"><span class="w">  </span><span class="o">`</span><span class="n">password</span><span class="o">`</span><span class="w"> </span><span class="nb">varchar</span><span class="p">(</span><span class="mi">255</span><span class="p">)</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="w"> </span><span class="k">COMMENT</span><span class="w"> </span><span class="s1">&#39;用户登录树洞时需要使用的密码&#39;</span><span class="p">,</span><span class="w">
-</span></span></span><span class="line"><span class="ln"> 6</span><span class="cl"><span class="w">  </span><span class="o">`</span><span class="n">phone</span><span class="o">`</span><span class="w"> </span><span class="nb">varchar</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="w"> </span><span class="k">COMMENT</span><span class="w"> </span><span class="s1">&#39;用户在注册时提供的手机号码&#39;</span><span class="p">,</span><span class="w">
-</span></span></span><span class="line"><span class="ln"> 7</span><span class="cl"><span class="w">  </span><span class="o">`</span><span class="n">gender</span><span class="o">`</span><span class="w"> </span><span class="n">enum</span><span class="p">(</span><span class="s1">&#39;F&#39;</span><span class="p">,</span><span class="s1">&#39;M&#39;</span><span class="p">,</span><span class="s1">&#39;Nil&#39;</span><span class="p">)</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="s1">&#39;Nil&#39;</span><span class="w"> </span><span class="k">COMMENT</span><span class="w"> </span><span class="s1">&#39;用户的性别，可以使用枚举类型（0男、1女、2保密）&#39;</span><span class="p">,</span><span class="w">
-</span></span></span><span class="line"><span class="ln"> 8</span><span class="cl"><span class="w">  </span><span class="o">`</span><span class="n">avatar</span><span class="o">`</span><span class="w"> </span><span class="nb">varchar</span><span class="p">(</span><span class="mi">255</span><span class="p">)</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="k">NULL</span><span class="w"> </span><span class="k">COMMENT</span><span class="w"> </span><span class="s1">&#39;用户上传或选择的头像图片的文件路径或URL地址&#39;</span><span class="p">,</span><span class="w">
-</span></span></span><span class="line"><span class="ln"> 9</span><span class="cl"><span class="w">  </span><span class="o">`</span><span class="n">status</span><span class="o">`</span><span class="w"> </span><span class="nb">int</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="n">unsigned</span><span class="w"> </span><span class="n">zerofill</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="s1">&#39;0&#39;</span><span class="w"> </span><span class="k">COMMENT</span><span class="w"> </span><span class="s1">&#39;用户的状态: 0: 禁用  1: 启用&#39;</span><span class="p">,</span><span class="w">
-</span></span></span><span class="line"><span class="ln">10</span><span class="cl"><span class="w">  </span><span class="o">`</span><span class="n">tree_count</span><span class="o">`</span><span class="w"> </span><span class="nb">int</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span><span class="w"> </span><span class="n">unsigned</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="s1">&#39;0&#39;</span><span class="w"> </span><span class="k">COMMENT</span><span class="w"> </span><span class="s1">&#39;用户发布的树洞数量&#39;</span><span class="p">,</span><span class="w">
-</span></span></span><span class="line"><span class="ln">11</span><span class="cl"><span class="w">  </span><span class="o">`</span><span class="n">like_count</span><span class="o">`</span><span class="w"> </span><span class="nb">int</span><span class="p">(</span><span class="mi">11</span><span class="p">)</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="s1">&#39;0&#39;</span><span class="w"> </span><span class="k">COMMENT</span><span class="w"> </span><span class="s1">&#39;用户所有树洞的点赞总数&#39;</span><span class="p">,</span><span class="w">
-</span></span></span><span class="line"><span class="ln">12</span><span class="cl"><span class="w">  </span><span class="o">`</span><span class="n">is_banned</span><span class="o">`</span><span class="w"> </span><span class="nb">int</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="s1">&#39;0&#39;</span><span class="w"> </span><span class="k">COMMENT</span><span class="w"> </span><span class="s1">&#39;用户是否被管理员禁言 0: 无禁言 1: 已禁言&#39;</span><span class="p">,</span><span class="w">
-</span></span></span><span class="line"><span class="ln">13</span><span class="cl"><span class="w">  </span><span class="o">`</span><span class="n">is_blocked</span><span class="o">`</span><span class="w"> </span><span class="nb">int</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="s1">&#39;0&#39;</span><span class="w"> </span><span class="k">COMMENT</span><span class="w"> </span><span class="s1">&#39;用户是否被管理员封号 0: 无封号 1: 已封号&#39;</span><span class="p">,</span><span class="w">
-</span></span></span><span class="line"><span class="ln">14</span><span class="cl"><span class="w">  </span><span class="o">`</span><span class="n">created_at</span><span class="o">`</span><span class="w"> </span><span class="nb">bigint</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="w"> </span><span class="k">COMMENT</span><span class="w"> </span><span class="s1">&#39;创建时间&#39;</span><span class="p">,</span><span class="w">
-</span></span></span><span class="line"><span class="ln">15</span><span class="cl"><span class="w">  </span><span class="o">`</span><span class="n">updated_at</span><span class="o">`</span><span class="w"> </span><span class="nb">bigint</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="w"> </span><span class="k">COMMENT</span><span class="w"> </span><span class="s1">&#39;更新时间&#39;</span><span class="p">,</span><span class="w">
-</span></span></span><span class="line"><span class="ln">16</span><span class="cl"><span class="w">  </span><span class="o">`</span><span class="n">register_at</span><span class="o">`</span><span class="w"> </span><span class="nb">bigint</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="w"> </span><span class="k">COMMENT</span><span class="w"> </span><span class="s1">&#39;用户在树洞中注册的时间，使用日期时间类型来表示&#39;</span><span class="p">,</span><span class="w">
-</span></span></span><span class="line"><span class="ln">17</span><span class="cl"><span class="w">  </span><span class="o">`</span><span class="n">last_login_time</span><span class="o">`</span><span class="w"> </span><span class="nb">bigint</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="k">NULL</span><span class="w"> </span><span class="k">COMMENT</span><span class="w"> </span><span class="s1">&#39;用户最近一次登录树洞的时间，使用日期时间类型来表示&#39;</span><span class="p">,</span><span class="w">
-</span></span></span><span class="line"><span class="ln">18</span><span class="cl"><span class="w">  </span><span class="o">`</span><span class="n">is_admin</span><span class="o">`</span><span class="w"> </span><span class="nb">int</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="s1">&#39;0&#39;</span><span class="w"> </span><span class="k">COMMENT</span><span class="w"> </span><span class="s1">&#39;是否为管理员用户 0: 不是 1: 是&#39;</span><span class="p">,</span><span class="w">
-</span></span></span><span class="line"><span class="ln">19</span><span class="cl"><span class="w">  </span><span class="o">`</span><span class="n">is_del</span><span class="o">`</span><span class="w"> </span><span class="nb">int</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="s1">&#39;0&#39;</span><span class="w"> </span><span class="k">COMMENT</span><span class="w"> </span><span class="s1">&#39;用户是否注销 true=正常 false=注销&#39;</span><span class="p">,</span><span class="w">
-</span></span></span><span class="line"><span class="ln">20</span><span class="cl"><span class="w">  </span><span class="o">`</span><span class="n">description</span><span class="o">`</span><span class="w"> </span><span class="nb">varchar</span><span class="p">(</span><span class="mi">255</span><span class="p">)</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="s1">&#39;该用户未设置签名&#39;</span><span class="w"> </span><span class="k">COMMENT</span><span class="w"> </span><span class="s1">&#39;用户签名或描述信息&#39;</span><span class="p">,</span><span class="w">
-</span></span></span><span class="line"><span class="ln">21</span><span class="cl"><span class="w">  </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="w"> </span><span class="p">(</span><span class="o">`</span><span class="n">id</span><span class="o">`</span><span class="p">)</span><span class="w"> </span><span class="k">USING</span><span class="w"> </span><span class="n">BTREE</span><span class="p">,</span><span class="w">
-</span></span></span><span class="line"><span class="ln">22</span><span class="cl"><span class="w">  </span><span class="k">UNIQUE</span><span class="w"> </span><span class="k">KEY</span><span class="w"> </span><span class="o">`</span><span class="n">username</span><span class="o">`</span><span class="w"> </span><span class="p">(</span><span class="o">`</span><span class="n">username</span><span class="o">`</span><span class="p">)</span><span class="w"> </span><span class="k">USING</span><span class="w"> </span><span class="n">BTREE</span><span class="p">,</span><span class="w">
-</span></span></span><span class="line"><span class="ln">23</span><span class="cl"><span class="w">  </span><span class="k">UNIQUE</span><span class="w"> </span><span class="k">KEY</span><span class="w"> </span><span class="o">`</span><span class="n">phone</span><span class="o">`</span><span class="w"> </span><span class="p">(</span><span class="o">`</span><span class="n">phone</span><span class="o">`</span><span class="p">)</span><span class="w"> </span><span class="k">USING</span><span class="w"> </span><span class="n">BTREE</span><span class="w">
-</span></span></span><span class="line"><span class="ln">24</span><span class="cl"><span class="w"></span><span class="p">)</span><span class="w"> </span><span class="n">ENGINE</span><span class="o">=</span><span class="n">InnoDB</span><span class="w"> </span><span class="n">AUTO_INCREMENT</span><span class="o">=</span><span class="mi">2</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="n">CHARSET</span><span class="o">=</span><span class="n">utf8mb4</span><span class="w"> </span><span class="n">ROW_FORMAT</span><span class="o">=</span><span class="k">DYNAMIC</span><span class="p">;</span><span class="w">
-</span></span></span></code></pre></div><table>
-<thead>
-<tr>
-<th>字段名</th>
-<th>类型</th>
-<th>是否为空</th>
-<th>主键/索引</th>
-<th>注释</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>id</td>
-<td>INT</td>
-<td>NOT NULL</td>
-<td>AUTO_INCREMENT</td>
-<td>唯一标识一个用户的编号，通常使用自增长整数来表示</td>
-</tr>
-</tbody>
-</table>
-<h3 id="树洞表结构">树洞表结构</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="ln"> 1</span><span class="cl"><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">treehole</span><span class="w"> </span><span class="p">(</span><span class="w">
-</span></span></span><span class="line"><span class="ln"> 2</span><span class="cl"><span class="w">    </span><span class="n">id</span><span class="w"> </span><span class="nb">INT</span><span class="w"> </span><span class="n">UNSIGNED</span><span class="w"> </span><span class="n">AUTO_INCREMENT</span><span class="w"> </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="p">,</span><span class="w">
-</span></span></span><span class="line"><span class="ln"> 3</span><span class="cl"><span class="w">    </span><span class="n">title</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">255</span><span class="p">)</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span><span class="w">
-</span></span></span><span class="line"><span class="ln"> 4</span><span class="cl"><span class="w">    </span><span class="n">content</span><span class="w"> </span><span class="nb">TEXT</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span><span class="w">
-</span></span></span><span class="line"><span class="ln"> 5</span><span class="cl"><span class="w">    </span><span class="n">user_id</span><span class="w"> </span><span class="nb">INT</span><span class="w"> </span><span class="n">UNSIGNED</span><span class="p">,</span><span class="w">
-</span></span></span><span class="line"><span class="ln"> 6</span><span class="cl"><span class="w">    </span><span class="n">category_id</span><span class="w"> </span><span class="nb">INT</span><span class="w"> </span><span class="n">UNSIGNED</span><span class="p">,</span><span class="w">
-</span></span></span><span class="line"><span class="ln"> 7</span><span class="cl"><span class="w">    </span><span class="n">status</span><span class="w"> </span><span class="n">TINYINT</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
-</span></span></span><span class="line"><span class="ln"> 8</span><span class="cl"><span class="w">    </span><span class="n">views</span><span class="w"> </span><span class="nb">INT</span><span class="w"> </span><span class="n">UNSIGNED</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
-</span></span></span><span class="line"><span class="ln"> 9</span><span class="cl"><span class="w">    </span><span class="n">likes</span><span class="w"> </span><span class="nb">INT</span><span class="w"> </span><span class="n">UNSIGNED</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
-</span></span></span><span class="line"><span class="ln">10</span><span class="cl"><span class="w">    </span><span class="n">created_at</span><span class="w"> </span><span class="n">DATETIME</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span><span class="w">
-</span></span></span><span class="line"><span class="ln">11</span><span class="cl"><span class="w">    </span><span class="n">updated_at</span><span class="w"> </span><span class="n">DATETIME</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span><span class="w">
-</span></span></span><span class="line"><span class="ln">12</span><span class="cl"><span class="w">  	</span><span class="n">receive_gifts</span><span class="w"> </span><span class="nb">INT</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="mi">0</span><span class="w">
-</span></span></span><span class="line"><span class="ln">13</span><span class="cl"><span class="w"></span><span class="p">)</span><span class="w"> </span><span class="n">ENGINE</span><span class="o">=</span><span class="n">InnoDB</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="n">CHARSET</span><span class="o">=</span><span class="n">utf8mb4</span><span class="w"> </span><span class="k">COLLATE</span><span class="o">=</span><span class="n">utf8mb4_unicode_ci</span><span class="p">;</span><span class="w">
-</span></span></span></code></pre></div><table>
-<thead>
-<tr>
-<th>字段名</th>
-<th>数据类型</th>
-<th>约束</th>
-<th>描述</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>id</td>
-<td>int</td>
-<td>PRIMARY KEY, AUTO_INCREMENT</td>
-<td>树洞的自增id</td>
-</tr>
-<tr>
-<td>treehole_id</td>
-<td>string</td>
-<td>NOT NULL</td>
-<td>树洞的唯一标识符</td>
-</tr>
-<tr>
-<td>title</td>
-<td>varchar(255)</td>
-<td>NOT NULL</td>
-<td>树洞的主题或标题</td>
-</tr>
-<tr>
-<td>content</td>
-<td>text</td>
-<td>NOT NULL</td>
-<td>树洞的内容</td>
-</tr>
-<tr>
-<td>created_at</td>
-<td>datetime</td>
-<td>NOT NULL</td>
-<td>树洞创建的时间</td>
-</tr>
-<tr>
-<td>updated_at</td>
-<td>datetime</td>
-<td>NOT NULL</td>
-<td>树洞最后更新的时间</td>
-</tr>
-<tr>
-<td>user_id</td>
-<td>int</td>
-<td>NOT NULL</td>
-<td>发布树洞的用户ID</td>
-</tr>
-<tr>
-<td>category_id</td>
-<td>int</td>
-<td>NOT NULL</td>
-<td>树洞的分类ID</td>
-</tr>
-<tr>
-<td>status</td>
-<td>tinyint(1)</td>
-<td>DEFAULT 1</td>
-<td>树洞的状态：1为正常，0为已删除</td>
-</tr>
-<tr>
-<td>views</td>
-<td>int</td>
-<td>DEFAULT 0</td>
-<td>树洞的浏览量</td>
-</tr>
-<tr>
-<td>likes</td>
-<td>int</td>
-<td>DEFAULT 0</td>
-<td>树洞的点赞数</td>
-</tr>
-<tr>
-<td>receive_gifts</td>
-<td>int</td>
-<td>DEFAULT 0</td>
-<td>树洞帖子的收礼数量</td>
-</tr>
-</tbody>
-</table>
+<h2 id="常用代码片段">常用代码片段</h2>
+<ol>
+<li>实现结构体</li>
+</ol>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="ln">1</span><span class="cl"><span class="c1">// UserDataService 用户管理服务
+</span></span></span><span class="line"><span class="ln">2</span><span class="cl"><span class="c1"></span><span class="kd">var</span> <span class="nx">UserDataService</span> <span class="p">=</span> <span class="nf">newUserDataService</span><span class="p">()</span>
+</span></span><span class="line"><span class="ln">3</span><span class="cl">
+</span></span><span class="line"><span class="ln">4</span><span class="cl"><span class="kd">func</span> <span class="nf">newUserDataService</span><span class="p">()</span> <span class="o">*</span><span class="nx">userDataService</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">5</span><span class="cl">	<span class="k">return</span> <span class="o">&amp;</span><span class="nx">userDataService</span><span class="p">{}</span>
+</span></span><span class="line"><span class="ln">6</span><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="ln">7</span><span class="cl">
+</span></span><span class="line"><span class="ln">8</span><span class="cl"><span class="kd">type</span> <span class="nx">userDataService</span> <span class="kd">struct</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">9</span><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><h2 id="minio启动命令">Minio启动命令</h2>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="ln"> 1</span><span class="cl">docker run -d <span class="se">\
+</span></span></span><span class="line"><span class="ln"> 2</span><span class="cl"><span class="se"></span>  -p 9000:9000 <span class="se">\
+</span></span></span><span class="line"><span class="ln"> 3</span><span class="cl"><span class="se"></span>  -p 9001:9001 <span class="se">\
+</span></span></span><span class="line"><span class="ln"> 4</span><span class="cl"><span class="se"></span>  --name minio1 <span class="se">\
+</span></span></span><span class="line"><span class="ln"> 5</span><span class="cl"><span class="se"></span>  -v ./data:/data <span class="se">\
+</span></span></span><span class="line"><span class="ln"> 6</span><span class="cl"><span class="se"></span>  -v ./certs:/tmp/certs <span class="se">\
+</span></span></span><span class="line"><span class="ln"> 7</span><span class="cl"><span class="se"></span>  -e <span class="s2">&#34;MINIO_ROOT_USER=xxx&#34;</span> <span class="se">\
+</span></span></span><span class="line"><span class="ln"> 8</span><span class="cl"><span class="se"></span>  -e <span class="s2">&#34;MINIO_ROOT_PASSWORD=xxx&#34;</span> <span class="se">\
+</span></span></span><span class="line"><span class="ln"> 9</span><span class="cl"><span class="se"></span>  -e <span class="s2">&#34;MINIO_SERVER_URL=xxx&#34;</span> <span class="se">\
+</span></span></span><span class="line"><span class="ln">10</span><span class="cl"><span class="se"></span>  quay.io/minio/minio server /data  --console-address <span class="s2">&#34;:9001&#34;</span> --certs-dir /tmp/certs
+</span></span></code></pre></div><h2 id="后端服务编译">后端服务编译</h2>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="ln">1</span><span class="cl"><span class="c1"># Windows编译Linux</span>
+</span></span><span class="line"><span class="ln">2</span><span class="cl"><span class="c1"># 请在CMD中执行命令</span>
+</span></span><span class="line"><span class="ln">3</span><span class="cl"><span class="nb">set</span> <span class="nv">GOARCH</span><span class="o">=</span>amd64
+</span></span><span class="line"><span class="ln">4</span><span class="cl"><span class="nb">set</span> <span class="nv">GOOS</span><span class="o">=</span>linux
+</span></span><span class="line"><span class="ln">5</span><span class="cl">go build main.go
+</span></span><span class="line"><span class="ln">6</span><span class="cl">
+</span></span><span class="line"><span class="ln">7</span><span class="cl"><span class="c1"># Mac编译Linux</span>
+</span></span><span class="line"><span class="ln">8</span><span class="cl"><span class="nv">CGO_ENABLED</span><span class="o">=</span><span class="m">0</span> <span class="nv">GOOS</span><span class="o">=</span>linux <span class="nv">GOARCH</span><span class="o">=</span>amd64 go build main.go
+</span></span></code></pre></div><h2 id="接口统计">接口统计</h2>
+<h3 id="用户服务普通用户">用户服务(普通用户)</h3>
+<ul>
+<li><input checked="" disabled="" type="checkbox"> 获取用户详情信息</li>
+<li><input checked="" disabled="" type="checkbox"> 修改个人资料信息</li>
+<li><input checked="" disabled="" type="checkbox"> 修改个人密码</li>
+<li><input checked="" disabled="" type="checkbox"> 修改头像信息</li>
+<li><input disabled="" type="checkbox"> 绑定手机信息</li>
+<li><input disabled="" type="checkbox"> 绑定身份信息</li>
+<li><input disabled="" type="checkbox"> 关注用户</li>
+</ul>
+<h3 id="画板服务">画板服务</h3>
+<ul>
+<li><input checked="" disabled="" type="checkbox"> 获取画板详情信息</li>
+<li><input checked="" disabled="" type="checkbox"> 创建画板</li>
+<li><input disabled="" type="checkbox"> 更新画板</li>
+<li><input checked="" disabled="" type="checkbox"> 删除画板</li>
+<li><input disabled="" type="checkbox"> 获取画板列表信息</li>
+<li><input disabled="" type="checkbox"> 收藏画板</li>
+<li><input disabled="" type="checkbox"> 根据画板标签分类画板信息</li>
+</ul>
+<h2 id="审核服务">审核服务</h2>
+<ul>
+<li><input disabled="" type="checkbox"> 审核画板</li>
+<li><input disabled="" type="checkbox"> 审核画板图片</li>
+</ul>
+<h3 id="通信服务">通信服务</h3>
+<ul>
+<li><input disabled="" type="checkbox"> 发送私信</li>
+</ul>
 
 
         </div>

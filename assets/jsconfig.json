@@ -1,0 +1,35 @@
+{
+ "compilerOptions": {
+  "baseUrl": ".",
+  "paths": {
+   "*": [
+    "../../../Library/Caches/hugo_cache/modules/filecache/modules/pkg/mod/github.com/!google!chrome/workbox@v7.0.0+incompatible/packages/workbox-cacheable-response/src/*",
+    "../../../Library/Caches/hugo_cache/modules/filecache/modules/pkg/mod/github.com/!google!chrome/workbox@v7.0.0+incompatible/packages/workbox-core/src/*",
+    "../../../Library/Caches/hugo_cache/modules/filecache/modules/pkg/mod/github.com/!google!chrome/workbox@v7.0.0+incompatible/packages/workbox-expiration/src/*",
+    "../../../Library/Caches/hugo_cache/modules/filecache/modules/pkg/mod/github.com/!google!chrome/workbox@v7.0.0+incompatible/packages/workbox-routing/src/*",
+    "../../../Library/Caches/hugo_cache/modules/filecache/modules/pkg/mod/github.com/!google!chrome/workbox@v7.0.0+incompatible/packages/workbox-strategies/src/*",
+    "../../../Library/Caches/hugo_cache/modules/filecache/modules/pkg/mod/github.com/gohugoio/hugo-mod-jslibs-dist/popperjs/v2@v2.21100.20000/package/dist/cjs/popper.js/*",
+    "../../../Library/Caches/hugo_cache/modules/filecache/modules/pkg/mod/github.com/hbstack/announcement-bar@v0.4.1/assets/*",
+    "../../../Library/Caches/hugo_cache/modules/filecache/modules/pkg/mod/github.com/hbstack/back-to-top@v0.1.2/assets/*",
+    "../../../Library/Caches/hugo_cache/modules/filecache/modules/pkg/mod/github.com/hbstack/base@v0.4.1/assets/*",
+    "../../../Library/Caches/hugo_cache/modules/filecache/modules/pkg/mod/github.com/hbstack/bigger-picture@v0.9.2/assets/*",
+    "../../../Library/Caches/hugo_cache/modules/filecache/modules/pkg/mod/github.com/hbstack/bootstrap@v0.2.0/assets/*",
+    "../../../Library/Caches/hugo_cache/modules/filecache/modules/pkg/mod/github.com/hbstack/carousel@v0.2.4/assets/*",
+    "../../../Library/Caches/hugo_cache/modules/filecache/modules/pkg/mod/github.com/hbstack/docs@v0.6.4/assets/*",
+    "../../../Library/Caches/hugo_cache/modules/filecache/modules/pkg/mod/github.com/hbstack/header/modules/theme-toggle@v0.1.20/assets/*",
+    "../../../Library/Caches/hugo_cache/modules/filecache/modules/pkg/mod/github.com/hbstack/header@v0.12.3/assets/*",
+    "../../../Library/Caches/hugo_cache/modules/filecache/modules/pkg/mod/github.com/hbstack/heading-sign@v0.2.0/assets/*",
+    "../../../Library/Caches/hugo_cache/modules/filecache/modules/pkg/mod/github.com/hbstack/progress-bar@v0.1.0/assets/*",
+    "../../../Library/Caches/hugo_cache/modules/filecache/modules/pkg/mod/github.com/hbstack/slide@v0.3.1/assets/*",
+    "../../../Library/Caches/hugo_cache/modules/filecache/modules/pkg/mod/github.com/henrygd/bigger-picture@v1.1.14/dist/*",
+    "../../../Library/Caches/hugo_cache/modules/filecache/modules/pkg/mod/github.com/hugomods/code-block-panel@v0.5.0/assets/*",
+    "../../../Library/Caches/hugo_cache/modules/filecache/modules/pkg/mod/github.com/hugomods/i18n-js@v0.2.1/assets/*",
+    "../../../Library/Caches/hugo_cache/modules/filecache/modules/pkg/mod/github.com/hugomods/search@v0.8.3/assets/*",
+    "../../../Library/Caches/hugo_cache/modules/filecache/modules/pkg/mod/github.com/hugomods/snackbar@v0.1.2/assets/*",
+    "../../../Library/Caches/hugo_cache/modules/filecache/modules/pkg/mod/github.com/jakearchibald/idb@v7.1.1+incompatible/src/*",
+    "../../../Library/Caches/hugo_cache/modules/filecache/modules/pkg/mod/github.com/krisk/!fuse@v7.0.0+incompatible/dist/*",
+    "../../../Library/Caches/hugo_cache/modules/filecache/modules/pkg/mod/github.com/twbs/bootstrap@v5.3.2+incompatible/js/*"
+   ]
+  }
+ }
+}

@@ -1,0 +1,43 @@
+[pwa]
+  [pwa.caches]
+    [pwa.caches.font]
+      strategy = 'network-first'
+    [pwa.caches.image]
+      strategy = 'network-first'
+    [pwa.caches.script]
+      strategy = 'network-first'
+    [pwa.caches.style]
+      strategy = 'network-first'
+
+
+[hb]
+  [hb.blog]
+    full_width = false
+    list_cols_lg = 3
+    list_cols_md = 2
+    paginate = 10
+    post_date_format = ':date_long'
+    post_thumbnail = true
+    post_thumbnail_default = ''
+    post_thumbnail_placeholder = '该文章还没定义图片'
+    [hb.blog.archives]
+      paginate = 30
+    [hb.blog.home]
+      featured_posts = 5
+      main_sections = ['posts']
+      taxonomies = false
+    [hb.blog.toc]
+      position = 'end'
+    [hb.blog.sidebar]
+      position = 'start'
+      sticky = true
+      width = 0.35
+    # 标题字符
+    [hb.heading_sign]
+      symbol = '#'
+    [hb.blog.twikoo]
+      env_id = 'https://twikoo.mletter.cn/'
+      js_url = 'https://cdn.bootcdn.net/ajax/libs/twikoo/1.6.16/twikoo.all.min.js'
+
+  [hb.terms]
+    paginate = 12

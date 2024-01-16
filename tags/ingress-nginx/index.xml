@@ -9,10 +9,10 @@
     <lastBuildDate>Wed, 08 Mar 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://blog.mletter.cn/tags/ingress-nginx/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Ingress的简单使用</title>
-      <link>https://blog.mletter.cn/posts/ingress/</link>
+      <link>https://blog.mletter.cn/kubernetes/ingress/</link>
       <pubDate>Wed, 08 Mar 2023 00:00:00 +0000</pubDate>
       
-      <guid>https://blog.mletter.cn/posts/ingress/</guid>
+      <guid>https://blog.mletter.cn/kubernetes/ingress/</guid>
       <description>什么是Ingress Ingress 是对集群中服务的外部访问进行管理的 API 对象，典型的访问方式是 HTTP。
 Ingress 可以提供负载均衡、SSL 终结和基于名称的虚拟托管。
 Ingress 公开从集群外部到集群内服务的 HTTP 和 HTTPS 路由。 流量路由由 Ingress 资源上定义的规则控制。

@@ -9,10 +9,10 @@
     <lastBuildDate>Tue, 14 Feb 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://blog.mletter.cn/tags/configmap/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>ConfigMap和Secret的使用</title>
-      <link>https://blog.mletter.cn/posts/configmapandservice/</link>
+      <link>https://blog.mletter.cn/kubernetes/configmaporservice/</link>
       <pubDate>Tue, 14 Feb 2023 00:00:00 +0000</pubDate>
       
-      <guid>https://blog.mletter.cn/posts/configmapandservice/</guid>
+      <guid>https://blog.mletter.cn/kubernetes/configmaporservice/</guid>
       <description>ConfigMap ConfigMap 是一种 API 对象，用来将非机密性的数据保存到键值对中。使用时， Pods 可以将其用作环境变量、命令行参数或者存储卷中的配置文件。
 ConfigMap 将你的环境配置信息和 容器镜像 解耦，便于应用配置的修改。 ConfigMap 在设计上不是用来保存大量数据的。在 ConfigMap 中保存的数据不可超过1MiB(这其实是ETCD的要求哈哈哈)。如果你需要保存超出此尺寸限制的数据，你可能希望考虑挂载存储卷 或者使用独立的数据库或者文件服务。
 这是一个 ConfigMap 的示例，它的一些键只有一个值，其他键的值看起来像是 配置的片段格式。

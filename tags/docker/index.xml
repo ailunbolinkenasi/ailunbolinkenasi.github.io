@@ -9,10 +9,10 @@
     <lastBuildDate>Thu, 14 Jul 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://blog.mletter.cn/tags/docker/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Docker常见的几个问题处理</title>
-      <link>https://blog.mletter.cn/posts/docker-qusition/</link>
+      <link>https://blog.mletter.cn/docker/DockerFrequentlyAskedQuestions/</link>
       <pubDate>Thu, 14 Jul 2022 00:00:00 +0000</pubDate>
       
-      <guid>https://blog.mletter.cn/posts/docker-qusition/</guid>
+      <guid>https://blog.mletter.cn/docker/DockerFrequentlyAskedQuestions/</guid>
       <description>Docker迁移存储目录 问题起因 由于公司最开始的服务器在/var/lib/docker没有挂载存储,容量只有40G,导致服务器磁盘用满。现将原有的Docker目录数据进行迁移。
 请各位Kubernetes用户不要操作,因为容器编排不支持!
 1# 启动容器发现如下报错 2ERROR：cannot create temporary directory! 方法一: 软连接方式 1# 1.停止docker服务 2systemctl stop docker 3 4# 2.开始迁移目录 5mv /var/lib/docker /data/ 6 7# 使用cp命令也可以 8cp -arv /var/lib/docker /data/docker 9 10# 3.添加软链接 11ln -s /data/docker /var/lib/docker 12 13# 4.启动docker服务 14systemctl start docker 方法二: 修改docker配置文件 注意: 这是一个旧版本docker修改存储目录的方式.
@@ -23,10 +23,10 @@
     
     <item>
       <title>什么是dockershim</title>
-      <link>https://blog.mletter.cn/posts/docker-shim/</link>
+      <link>https://blog.mletter.cn/docker/DockerShimRead/</link>
       <pubDate>Sun, 13 Feb 2022 00:00:00 +0000</pubDate>
       
-      <guid>https://blog.mletter.cn/posts/docker-shim/</guid>
+      <guid>https://blog.mletter.cn/docker/DockerShimRead/</guid>
       <description>先前了解 参考链接 Githubissue kubelet中的Docker支持现在已弃用，并将在未来的版本中删除。kubelet使用了一个名为dockershim的模块，该模块实现了对Docker的CRI支持，并在Kubernetes社区中发现了维护问题。我们鼓励您评估迁移到一个容器运行时的情况，该容器运行时是CRI（v1alpha1或v1兼容）的完整实现。
 也就是说,在后续的Kubernetes1.20x版本以后会删除dockershim组件,但是由于目前Docker的使用用户众多,中间必然会有替换的一个过渡期,所以大家可以更多的关注一下其他的Container Runtime。 例如我们的Podman、Containerd、cri-o等其他容器运行时来运行kubernetes。
 下面我们就具体来看看Kubernetes所提到的弃用dockershim到底是什么东西.

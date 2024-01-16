@@ -8,12 +8,12 @@
     <language>en</language>
     <lastBuildDate>Sat, 26 Aug 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://blog.mletter.cn/categories/%E4%B8%AA%E4%BA%BA%E9%A1%B9%E7%9B%AE/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>维扣-专属你的拍照摄影社区</title>
-      <link>https://blog.mletter.cn/posts/wecho/</link>
+      <title>维扣图元-专属你的拍照摄影社区</title>
+      <link>https://blog.mletter.cn/go/gin-wecho/</link>
       <pubDate>Sat, 26 Aug 2023 00:00:00 +0000</pubDate>
       
-      <guid>https://blog.mletter.cn/posts/wecho/</guid>
-      <description>介绍 一个简单的摄影分享社区 简单功能 是男人，就来分享你拍的照片！！！ RESTFul API 一会儿再说。
+      <guid>https://blog.mletter.cn/go/gin-wecho/</guid>
+      <description>介绍 维扣图元-专属你的拍照摄影社区 一个基于Gin框架小项目 项目地址 项目文档 简单功能 是男人，就来分享你拍的照片！！！ RESTFul API 一会儿再说。
 基本的后端技术栈 Gorm: 数据库工具 Gin: 速度极快的Go语言Web框架 Minio: 分布式存储 项目目录 一会儿再说
 项目缓存规范 RedisKey的规范 1project:module:business:uk 2项目名 模块名 业务名 唯一标识 缓存信息 这部分还没设计完成,等待完善吧。 Key 类型 过期时间 说明 wecho:user:access_token:{username} string 2天 存储用户生成的JWT wecho:userinfo:cache:{username} SET 3天 用户信息详情缓存 wecho:user:login_fail:{username} Incr 30Min 错误登录次数 常用代码片段 实现结构体 1// UserDataService 用户管理服务 2var UserDataService = newUserDataService() 3 4func newUserDataService() *userDataService { 5	return &amp;amp;userDataService{} 6} 7 8type userDataService struct { 9} Minio启动命令 1docker run -d \ 2 -p 9000:9000 \ 3 -p 9001:9001 \ 4 --name minio1 \ 5 -v .</description>
     </item>

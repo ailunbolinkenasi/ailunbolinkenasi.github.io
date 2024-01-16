@@ -9,10 +9,10 @@
     <lastBuildDate>Tue, 14 Feb 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://blog.mletter.cn/tags/hpa/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>HorizontalPodAutoscaler</title>
-      <link>https://blog.mletter.cn/posts/horizontalpodautoscaler/</link>
+      <link>https://blog.mletter.cn/kubernetes/HorizontalPodAutoscaler/</link>
       <pubDate>Tue, 14 Feb 2023 00:00:00 +0000</pubDate>
       
-      <guid>https://blog.mletter.cn/posts/horizontalpodautoscaler/</guid>
+      <guid>https://blog.mletter.cn/kubernetes/HorizontalPodAutoscaler/</guid>
       <description>HorizontalPodAutoscaler HPA官方文档 在Kubernetes 中HorizontalPodAutoscaler自动更新工作负载资源 （例如 Deployment 或者 StatefulSet）， 目的是自动扩缩工作负载以满足需求。
 水平扩缩意味着对增加的负载的响应是部署更多的 Pod。 这与垂直(Vertical)扩缩不同，对于 Kubernetes， 垂直扩缩意味着将更多资源（例如：内存或 CPU）分配给已经为工作负载运行的 Pod。
 如果负载减少，并且Pod的数量高于配置的最小值，HorizontalPodAutoscaler 会指示工作负载资源（Deployment、StatefulSet 或其他类似资源）缩减。

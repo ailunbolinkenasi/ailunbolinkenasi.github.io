@@ -9,10 +9,10 @@
     <lastBuildDate>Fri, 07 Apr 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://blog.mletter.cn/tags/traefik/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Traekfik基础使用指南</title>
-      <link>https://blog.mletter.cn/posts/traefik/</link>
+      <link>https://blog.mletter.cn/kubernetes/traefik/</link>
       <pubDate>Fri, 07 Apr 2023 00:00:00 +0000</pubDate>
       
-      <guid>https://blog.mletter.cn/posts/traefik/</guid>
+      <guid>https://blog.mletter.cn/kubernetes/traefik/</guid>
       <description>Traekfik是什么 Traefik 是一种开源 边缘路由器，它使您发布服务成为一种有趣而轻松的体验。它代表您的系统接收请求并找出哪些组件负责处理它们。
 Traefik 的与众不同之处在于，除了它的许多功能之外，它还可以自动为您的服务发现正确的配置。当 Traefik 检查您的基础架构时，奇迹就会发生，它会在其中找到相关信息并发现哪个服务服务于哪个请求。
 Traefik 原生兼容所有主要的集群技术，例如 Kubernetes、Docker、Docker Swarm、AWS、Mesos、Marathon，等等；并且可以同时处理很多。（它甚至适用于在裸机上运行的遗留软件。）

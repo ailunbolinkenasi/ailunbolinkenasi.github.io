@@ -9,10 +9,10 @@
     <lastBuildDate>Wed, 20 Jul 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://blog.mletter.cn/categories/mysql/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>MySQL小小优化思路简单版本</title>
-      <link>https://blog.mletter.cn/posts/mysql-%E4%BC%98%E5%8C%96/</link>
+      <link>https://blog.mletter.cn/mysql/MysqlOptimization/</link>
       <pubDate>Wed, 20 Jul 2022 00:00:00 +0000</pubDate>
       
-      <guid>https://blog.mletter.cn/posts/mysql-%E4%BC%98%E5%8C%96/</guid>
+      <guid>https://blog.mletter.cn/mysql/MysqlOptimization/</guid>
       <description>MySQL性能优化-优化思路 大概的优化思路分为以下几个内容
 硬件层面优化 系统层面优化 MySQL版本选择优化 MySQL三层结构及参数优化 MySQL开发规范 MySQL的索引优化 MySQL的事务以及锁优化 MySQL架构优化 MySQL安全优化 PS: 优化是有风险的,如果你要优化就要变更。
 硬件层面优化 这个地方就略过了就是一些加大硬件配置的需求.

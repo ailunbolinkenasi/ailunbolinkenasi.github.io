@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>traefik on </title>
+    <link>https://blog.mletter.cn/tags/traefik/</link>
+    <description>Recent content in traefik on </description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Fri, 07 Apr 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://blog.mletter.cn/tags/traefik/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Traekfik基础使用指南</title>
+      <link>https://blog.mletter.cn/kubernetes/traefik/</link>
+      <pubDate>Fri, 07 Apr 2023 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.mletter.cn/kubernetes/traefik/</guid>
+      <description>Traekfik是什么 Traefik 是一种开源 边缘路由器，它使您发布服务成为一种有趣而轻松的体验。它代表您的系统接收请求并找出哪些组件负责处理它们。
+Traefik 的与众不同之处在于，除了它的许多功能之外，它还可以自动为您的服务发现正确的配置。当 Traefik 检查您的基础架构时，奇迹就会发生，它会在其中找到相关信息并发现哪个服务服务于哪个请求。
+Traefik 原生兼容所有主要的集群技术，例如 Kubernetes、Docker、Docker Swarm、AWS、Mesos、Marathon，等等；并且可以同时处理很多。（它甚至适用于在裸机上运行的遗留软件。）
+使用 Traefik，无需维护和同步单独的配置文件：一切都自动实时发生（无需重启，无连接中断）。使用 Traefik，您可以花时间为系统开发和部署新功能，而不是配置和维护其工作状态。
+边缘路由器 Traefik 是一个Edge Router，这意味着它是您平台的大门，它拦截并路由每个传入请求：它知道确定哪些服务处理哪些请求的所有逻辑和每条规则（基于path，host，标头，等等…）。
+自动服务发现 传统上边缘路由器（或反向代理）需要一个配置文件，其中包含到您的服务的每条可能路径，Traefik 从服务本身获取它们。部署您的服务，您附加信息告诉 Traefik 服务可以处理的请求的特征。
+首先，当启动 Traefik 时，需要定义 entrypoints（入口点），然后，根据连接到这些 entrypoints 的路由来分析传入的请求，来查看他们是否与一组规则相匹配，如果匹配，则路由可能会将请求通过一系列中间件转换过后再转发到你的服务上去。在了解 Traefik 之前有几个核心概念我们必须要了解：
+Providers 用来自动发现平台上的服务，可以是编排工具、容器引擎或者 key-value 存储等，比如 Docker、Kubernetes、File Entrypoints 监听传入的流量（端口等…），是网络入口点，它们定义了接收请求的端口（HTTP 或者 TCP）。 Routers 分析请求（host, path, headers, SSL, …），负责将传入请求连接到可以处理这些请求的服务上去。 Services 将请求转发给你的应用（load balancing, …），负责配置如何获取最终将处理传入请求的实际服务。 Middlewares 中间件，用来修改请求或者根据请求来做出一些判断（authentication, rate limiting, headers, …），中间件被附件到路由上，是一种在请求发送到你的服务之前（或者在服务的响应发送到客户端之前）调整请求的一种方法。 部署Traefik Traefik的配置可以使用两种方式：静态配置和动态配置
+静态配置：在 Traefik 中定义静态配置选项有三种不同的、互斥的即你只能同时使用一种）方式。 在配置文件中 在命令行参数中 作为环境变量 动态配置：Traefik从提供者处获取其动态配置：无论是编排器、服务注册表还是普通的旧配置文件。 1# 使用Helm的方式进行部署Traefik2.9.x 2[root@Online-Beijing-master1 ~]# helm repo add traefik https://traefik.</description>
+    </item>
+    
+  </channel>
+</rss>

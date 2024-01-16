@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>代码仓库 on </title>
+    <link>https://blog.mletter.cn/tags/%E4%BB%A3%E7%A0%81%E4%BB%93%E5%BA%93/</link>
+    <description>Recent content in 代码仓库 on </description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Tue, 16 Jan 2024 00:00:00 +0000</lastBuildDate><atom:link href="https://blog.mletter.cn/tags/%E4%BB%A3%E7%A0%81%E4%BB%93%E5%BA%93/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>管理好内部的代码仓库-GitLab篇</title>
+      <link>https://blog.mletter.cn/gitlab/GitLabRepositoryManagement/</link>
+      <pubDate>Tue, 16 Jan 2024 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.mletter.cn/gitlab/GitLabRepositoryManagement/</guid>
+      <description>今天聊聊如何来管理我们的代码仓库 在软件开发过程中，代码仓库是一个非常重要的组成部分。它不仅是存储代码的地方，也是团队协作和版本控制的基础。因此，管理好自己的代码仓库至关重要。
+本文将介绍如何使用Git来管理自己的代码仓库。
+部署GitLab 相较于传动的部署方式比较繁琐，我这里直接采用docker的部署方式来部署gitlab以方便后续管理。
+说一下使用Docker来部署的一些痛点：
+数据备份：在Docker中运行Gitlab，需要定期备份数据以防止数据丢失。但是备份数据的过程可能会很麻烦，并且需要设置合适的策略来避免数据丢失。所以这是我觉得不管是GitLab还是其他的应用，保证数据的完整可靠性是至关重要的。 版本更新：Docker部署Gitlab需要时刻关注版本更新，需要进行升级或者迁移，主要是数据迁移的数据保障工作需要额外注意。 好了我们带着上面的两点问题，我们先来使用docker部署GitLab然后再慢慢探索。
+DockerCompose 我们使用docker-compose来部署gitlab仓库程序，注意镜像版本。如果你是尊贵的ee用户请修改镜像。如果你是普通的ce用户直接复制就行。 1version: &amp;#39;3.6&amp;#39; 2services: 3 web: 4 image: &amp;#39;gitlab/gitlab-ce:latest&amp;#39; 5 restart: always 6 # 指定gitlab主机名称 7 hostname: &amp;#39;gitlab.example.com&amp;#39; 8 environment: 9 GITLAB_OMNIBUS_CONFIG: | 10 # gitlab访问地址 11 external_url &amp;#39;http://10.1.6.100&amp;#39; 12 ports: 13 - &amp;#39;80:80&amp;#39; 14 - &amp;#39;443:443&amp;#39; 15 - &amp;#39;2212:22&amp;#39; # 防止与本地的22端口进行冲突 16 volumes: 17 - &amp;#39;/data/gitlab-app/config:/etc/gitlab&amp;#39; 18 - &amp;#39;/data/gitlab-app/logs:/var/log/gitlab&amp;#39; 19 - &amp;#39;/data/gitlab-app/data:/var/opt/gitlab&amp;#39; 20 shm_size: &amp;#39;256m&amp;#39; 启动gitlab程序 1[root@localhost gitlab-app]# docker-compose up -d 2[+] Running 1/1 3 ✔ Container gitlab-app-web-1 Started 部署完成后的一些相关设置可以参考官方文档 实际上到此为止，我们的一个代码仓库就已经创建完成了，剩下的工作就是在UI界面点点点。我就不多赘述了主要讲讲如何备份的问题。</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -5,7 +5,7 @@
     <link>https://blog.mletter.cn/</link>
     <description>Recent content on </description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>en</language>
+    <language>zh-cn</language>
     <lastBuildDate>Tue, 16 Jan 2024 00:00:00 +0000</lastBuildDate><atom:link href="https://blog.mletter.cn/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>管理好内部的代码仓库-GitLab篇</title>
@@ -100,20 +100,6 @@ kubernetes核心概念 ResourceObject: 是我认为相对而言kubernetes集群�
     </item>
     
     <item>
-      <title>推荐几款好用的API文档管理工具</title>
-      <link>https://blog.mletter.cn/posts/api/</link>
-      <pubDate>Thu, 10 Aug 2023 00:00:00 +0000</pubDate>
-      
-      <guid>https://blog.mletter.cn/posts/api/</guid>
-      <description>互联网服务发展至今，作为开发者阵营的我们，已经用实践证明了前后端分离开发模式正在逐渐成为越来越多互联网公司构建服务和应用的方式。
-前后端分离优势多多，其中一个很重要的优势是：对于后台服务（系统）来讲，只需提供一套统一的API接口，可被多个客户端所复用，分工和协作被细化，大大提高了效率。
-与此同时带来的一些副作用便是：
-接口文档管理混乱。之前很多公司管理API接口，有用Wiki的，有Word文档的，有Html的，经常遇到问题是接口因变了，比如增加参数，参数名变了，参数被删除了等都没有及时更新文档的情况 接口测试没有保障。毕竟前端开发依赖后端接口，如果前后端开发不同步，接口及时测试成了问题，因此需要随时提供一套可用的API接口数据测试服务。 资源分散，难以共享。每个开发者维护自己的一套测试接口集合，无法共用他人接口集合，开发过程中充斥着大量重复造数据、填接口的工作，效率不高 其他问题。除此之外还有可能碰到诸如 文档导出、接口分类规划、操作便利性等一系列问题。 基于此情况，因此本文接下来就来推荐几个常用的 API管理系统，帮助前后端分离开发模式下提升效率和可靠性，我想总有一个适合阁下吧☁️
-Swagger Swagger 是一种用于描述、构建和可视化 RESTful API 的开源工具集。它提供了一系列功能，包括 API 文档自动生成、API 调试和可视化等。下面是使用 Swagger 的一般步骤：
-定义 API 规范：使用 Swagger 规范（通常是 OpenAPI 规范）编写 API 的定义和描述。这些规范使用 YAML 或 JSON 格式表示，并描述了 API 的路径、参数、操作、响应等信息。 编写 Swagger 文档：根据 API 的定义和描述编写 Swagger 文档。您可以使用 Swagger 编辑器或其他文档工具来创建和编辑 Swagger 文档。 自动生成文档：使用 Swagger 工具和插件，将 Swagger 文档与代码（如后端服务代码）集成在一起，并生成 API 文档。这些工具可以根据 Swagger 文档自动生成可交互式的 API 文档和UI界面。 调试和测试：使用 Swagger 提供的内置功能，可以在 Swagger UI 中直接进行 API 调试和测试。通过 Swagger UI，您可以轻松地发送请求，查看响应并检查请求和响应的详细信息。 项目地址： 点我进入</description>
-    </item>
-    
-    <item>
       <title>纪录片-人生第一次-告别</title>
       <link>https://blog.mletter.cn/documentary/valedictory/</link>
       <pubDate>Thu, 10 Aug 2023 00:00:00 +0000</pubDate>
@@ -181,6 +167,20 @@ Swagger Swagger 是一种用于描述、构建和可视化 RESTful API 的开源
 因为他深知，只有自己不倒，才能减轻孩子的负担，妻子才能生活的更好一些。
 这些年，有九个字概括了他全部的生活：
 “睹物思人，魂不守舍，肝肠寸断。”</description>
+    </item>
+    
+    <item>
+      <title>推荐几款好用的API文档管理工具</title>
+      <link>https://blog.mletter.cn/posts/api/</link>
+      <pubDate>Thu, 10 Aug 2023 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.mletter.cn/posts/api/</guid>
+      <description>互联网服务发展至今，作为开发者阵营的我们，已经用实践证明了前后端分离开发模式正在逐渐成为越来越多互联网公司构建服务和应用的方式。
+前后端分离优势多多，其中一个很重要的优势是：对于后台服务（系统）来讲，只需提供一套统一的API接口，可被多个客户端所复用，分工和协作被细化，大大提高了效率。
+与此同时带来的一些副作用便是：
+接口文档管理混乱。之前很多公司管理API接口，有用Wiki的，有Word文档的，有Html的，经常遇到问题是接口因变了，比如增加参数，参数名变了，参数被删除了等都没有及时更新文档的情况 接口测试没有保障。毕竟前端开发依赖后端接口，如果前后端开发不同步，接口及时测试成了问题，因此需要随时提供一套可用的API接口数据测试服务。 资源分散，难以共享。每个开发者维护自己的一套测试接口集合，无法共用他人接口集合，开发过程中充斥着大量重复造数据、填接口的工作，效率不高 其他问题。除此之外还有可能碰到诸如 文档导出、接口分类规划、操作便利性等一系列问题。 基于此情况，因此本文接下来就来推荐几个常用的 API管理系统，帮助前后端分离开发模式下提升效率和可靠性，我想总有一个适合阁下吧☁️
+Swagger Swagger 是一种用于描述、构建和可视化 RESTful API 的开源工具集。它提供了一系列功能，包括 API 文档自动生成、API 调试和可视化等。下面是使用 Swagger 的一般步骤：
+定义 API 规范：使用 Swagger 规范（通常是 OpenAPI 规范）编写 API 的定义和描述。这些规范使用 YAML 或 JSON 格式表示，并描述了 API 的路径、参数、操作、响应等信息。 编写 Swagger 文档：根据 API 的定义和描述编写 Swagger 文档。您可以使用 Swagger 编辑器或其他文档工具来创建和编辑 Swagger 文档。 自动生成文档：使用 Swagger 工具和插件，将 Swagger 文档与代码（如后端服务代码）集成在一起，并生成 API 文档。这些工具可以根据 Swagger 文档自动生成可交互式的 API 文档和UI界面。 调试和测试：使用 Swagger 提供的内置功能，可以在 Swagger UI 中直接进行 API 调试和测试。通过 Swagger UI，您可以轻松地发送请求，查看响应并检查请求和响应的详细信息。 项目地址： 点我进入</description>
     </item>
     
     <item>
@@ -564,7 +564,7 @@ predicate: 过滤阶段，过滤不符合条件的节点。 priority: 优先级�
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://blog.mletter.cn/friends/</guid>
-      <description>友情链接排名不分先后 米开朗几基扬 老麦的书房 DQY&amp;amp;WYの小窝 提剑追梦 上官云琛 任平生 鹿小鼠笔记本 十二的编程笔记Aurora</description>
+      <description>友情链接排名不分先后 米开朗几基扬 老麦的书房 DQY&amp;amp;WYの小窝 提剑追梦 上官云琛 任平生 鹿小鼠笔记本 十二的编程笔记Aurora 阿杰/Jack</description>
     </item>
     
   </channel>

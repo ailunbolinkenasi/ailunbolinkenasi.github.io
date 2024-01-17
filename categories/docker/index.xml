@@ -5,7 +5,7 @@
     <link>https://blog.mletter.cn/categories/docker/</link>
     <description>Recent content in docker on </description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>en</language>
+    <language>zh-cn</language>
     <lastBuildDate>Thu, 14 Jul 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://blog.mletter.cn/categories/docker/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Docker常见的几个问题处理</title>

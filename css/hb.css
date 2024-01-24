@@ -9380,6 +9380,11 @@ textarea.form-control-lg {
 .hb-top-offset {
   top: var(--hb-top-offset); }
 
+.hb-iframe-load-btn,
+.hb-iframe-load-info,
+.hb-iframe-panel-bottom {
+  z-index: 1; }
+
 .hb-blog-sidebar-posts .hb-blog-post-title {
   margin-bottom: 0 !important;
   padding-bottom: 0 !important; }
@@ -10538,7 +10543,7 @@ html {
   transition: .5s; }
 
 .hb-header-menus {
-  margin: auto; }
+  margin-left: auto; }
   .hb-header-menus .nav-link-icon {
     align-items: center;
     display: flex;

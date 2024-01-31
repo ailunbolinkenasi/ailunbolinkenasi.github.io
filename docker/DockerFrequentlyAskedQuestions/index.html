@@ -17,7 +17,7 @@
   
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?display=swap&amp;family=Noto&#43;Sans&#43;Simplified&#43;Chinese&amp;family=Noto&#43;Sans&#43;Simplified&#43;Chinese%3Aital%2Cwght%401%2C600" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?display=swap&amp;family=Fira&#43;Sans&amp;family=Fira&#43;Sans%3Aital%2Cwght%401%2C600" rel="stylesheet">
 
     <link rel="manifest" href="https://blog.mletter.cn/manifest.webmanifest" />
 
@@ -442,59 +442,59 @@ Docker常见的几个问题处理 - 文章 - </title>
 <blockquote>
 <p>请各位Kubernetes用户不要操作,因为容器编排不支持!</p>
 </blockquote>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="ln">1</span><span class="cl"><span class="c1"># 启动容器发现如下报错</span>
-</span></span><span class="line"><span class="ln">2</span><span class="cl">ERROR：cannot  create temporary directory!
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="color:#8f5902;font-style:italic"># 启动容器发现如下报错</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>ERROR：cannot  create temporary directory!
 </span></span></code></pre></div><h3 id="方法一-软连接方式">方法一: 软连接方式</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="ln"> 1</span><span class="cl"><span class="c1"># 1.停止docker服务</span>
-</span></span><span class="line"><span class="ln"> 2</span><span class="cl">systemctl stop docker
-</span></span><span class="line"><span class="ln"> 3</span><span class="cl">
-</span></span><span class="line"><span class="ln"> 4</span><span class="cl"><span class="c1"># 2.开始迁移目录</span>
-</span></span><span class="line"><span class="ln"> 5</span><span class="cl">mv /var/lib/docker /data/
-</span></span><span class="line"><span class="ln"> 6</span><span class="cl">
-</span></span><span class="line"><span class="ln"> 7</span><span class="cl"><span class="c1"># 使用cp命令也可以</span>
-</span></span><span class="line"><span class="ln"> 8</span><span class="cl">cp -arv /var/lib/docker  /data/docker
-</span></span><span class="line"><span class="ln"> 9</span><span class="cl">
-</span></span><span class="line"><span class="ln">10</span><span class="cl"><span class="c1"># 3.添加软链接</span>
-</span></span><span class="line"><span class="ln">11</span><span class="cl">ln -s /data/docker /var/lib/docker
-</span></span><span class="line"><span class="ln">12</span><span class="cl">
-</span></span><span class="line"><span class="ln">13</span><span class="cl"><span class="c1"># 4.启动docker服务</span>
-</span></span><span class="line"><span class="ln">14</span><span class="cl">systemctl start docker
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span><span style="color:#8f5902;font-style:italic"># 1.停止docker服务</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>systemctl stop docker
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span><span style="color:#8f5902;font-style:italic"># 2.开始迁移目录</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span><span>mv /var/lib/docker /data/
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span><span><span style="color:#8f5902;font-style:italic"># 使用cp命令也可以</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span><span>cp -arv /var/lib/docker  /data/docker
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span><span style="color:#8f5902;font-style:italic"># 3.添加软链接</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span><span>ln -s /data/docker /var/lib/docker
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span><span><span style="color:#8f5902;font-style:italic"># 4.启动docker服务</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14</span><span>systemctl start docker
 </span></span></code></pre></div><h3 id="方法二-修改docker配置文件">方法二: 修改docker配置文件</h3>
 <blockquote>
 <p>注意: 这是一个旧版本<code>docker</code>修改存储目录的方式.</p>
 </blockquote>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-json" data-lang="json"><span class="line"><span class="ln">1</span><span class="cl"><span class="err">vim</span> <span class="err">/etc/docker/daemon.json</span>
-</span></span><span class="line"><span class="ln">2</span><span class="cl"><span class="p">{</span>
-</span></span><span class="line"><span class="ln">3</span><span class="cl">    <span class="nt">&#34;graph&#34;</span><span class="p">:</span> <span class="p">[</span> <span class="s2">&#34;/data/docker/&#34;</span> <span class="p">]</span>  <span class="err">#</span> <span class="err">更改docker镜像的存储目录</span>
-</span></span><span class="line"><span class="ln">4</span><span class="cl"><span class="p">}</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="color:#a40000">vim</span> <span style="color:#a40000">/etc/docker/daemon.json</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span><span style="color:#000;font-weight:bold">{</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>    <span style="color:#204a87;font-weight:bold">&#34;graph&#34;</span><span style="color:#000;font-weight:bold">:</span> <span style="color:#000;font-weight:bold">[</span> <span style="color:#4e9a06">&#34;/data/docker/&#34;</span> <span style="color:#000;font-weight:bold">]</span>  <span style="color:#a40000">#</span> <span style="color:#a40000">更改docker镜像的存储目录</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span><span style="color:#000;font-weight:bold">}</span>
 </span></span></code></pre></div><p>新版本修改存储目录方式</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="ln">1</span><span class="cl"><span class="c1"># 请找到你的docker.service存放位置</span>
-</span></span><span class="line"><span class="ln">2</span><span class="cl">vim /usr/lib/systemd/system/docker.service
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="color:#8f5902;font-style:italic"># 请找到你的docker.service存放位置</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>vim /usr/lib/systemd/system/docker.service
 </span></span></code></pre></div><p>通过加入<code>--data-root=/data/docker</code>进行修改默认的数据存储位置</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="ln"> 1</span><span class="cl"><span class="o">[</span>Unit<span class="o">]</span>
-</span></span><span class="line"><span class="ln"> 2</span><span class="cl"><span class="nv">Description</span><span class="o">=</span>Docker Application Container Engine
-</span></span><span class="line"><span class="ln"> 3</span><span class="cl"><span class="nv">Documentation</span><span class="o">=</span>https://docs.docker.com
-</span></span><span class="line"><span class="ln"> 4</span><span class="cl"><span class="nv">After</span><span class="o">=</span>network-online.target firewalld.service
-</span></span><span class="line"><span class="ln"> 5</span><span class="cl"><span class="nv">Wants</span><span class="o">=</span>network-online.target
-</span></span><span class="line"><span class="ln"> 6</span><span class="cl">
-</span></span><span class="line"><span class="ln"> 7</span><span class="cl"><span class="o">[</span>Service<span class="o">]</span>
-</span></span><span class="line"><span class="ln"> 8</span><span class="cl"><span class="nv">Type</span><span class="o">=</span>notify
-</span></span><span class="line"><span class="ln"> 9</span><span class="cl"><span class="nv">ExecStart</span><span class="o">=</span>/usr/bin/dockerd --data-root<span class="o">=</span>/data/docker
-</span></span><span class="line"><span class="ln">10</span><span class="cl"><span class="nv">ExecReload</span><span class="o">=</span>/bin/kill -s HUP <span class="nv">$MAINPID</span>
-</span></span><span class="line"><span class="ln">11</span><span class="cl"><span class="nv">LimitNOFILE</span><span class="o">=</span>infinity
-</span></span><span class="line"><span class="ln">12</span><span class="cl"><span class="nv">LimitNPROC</span><span class="o">=</span>infinity
-</span></span><span class="line"><span class="ln">13</span><span class="cl"><span class="nv">TimeoutStartSec</span><span class="o">=</span><span class="m">0</span>
-</span></span><span class="line"><span class="ln">14</span><span class="cl"><span class="nv">Delegate</span><span class="o">=</span>yes
-</span></span><span class="line"><span class="ln">15</span><span class="cl"><span class="nv">KillMode</span><span class="o">=</span>process
-</span></span><span class="line"><span class="ln">16</span><span class="cl"><span class="nv">Restart</span><span class="o">=</span>on-failure
-</span></span><span class="line"><span class="ln">17</span><span class="cl"><span class="nv">StartLimitBurst</span><span class="o">=</span><span class="m">3</span>
-</span></span><span class="line"><span class="ln">18</span><span class="cl"><span class="nv">StartLimitInterval</span><span class="o">=</span>60s
-</span></span><span class="line"><span class="ln">19</span><span class="cl">
-</span></span><span class="line"><span class="ln">20</span><span class="cl"><span class="o">[</span>Install<span class="o">]</span>
-</span></span><span class="line"><span class="ln">21</span><span class="cl"><span class="nv">WantedBy</span><span class="o">=</span>multi-user.target
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span><span style="color:#ce5c00;font-weight:bold">[</span>Unit<span style="color:#ce5c00;font-weight:bold">]</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span><span style="color:#000">Description</span><span style="color:#ce5c00;font-weight:bold">=</span>Docker Application Container Engine
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span><span style="color:#000">Documentation</span><span style="color:#ce5c00;font-weight:bold">=</span>https://docs.docker.com
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span><span style="color:#000">After</span><span style="color:#ce5c00;font-weight:bold">=</span>network-online.target firewalld.service
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span><span><span style="color:#000">Wants</span><span style="color:#ce5c00;font-weight:bold">=</span>network-online.target
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span><span><span style="color:#ce5c00;font-weight:bold">[</span>Service<span style="color:#ce5c00;font-weight:bold">]</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span><span><span style="color:#000">Type</span><span style="color:#ce5c00;font-weight:bold">=</span>notify
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span><span><span style="color:#000">ExecStart</span><span style="color:#ce5c00;font-weight:bold">=</span>/usr/bin/dockerd --data-root<span style="color:#ce5c00;font-weight:bold">=</span>/data/docker
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span><span style="color:#000">ExecReload</span><span style="color:#ce5c00;font-weight:bold">=</span>/bin/kill -s HUP <span style="color:#000">$MAINPID</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span><span><span style="color:#000">LimitNOFILE</span><span style="color:#ce5c00;font-weight:bold">=</span>infinity
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span><span><span style="color:#000">LimitNPROC</span><span style="color:#ce5c00;font-weight:bold">=</span>infinity
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span><span><span style="color:#000">TimeoutStartSec</span><span style="color:#ce5c00;font-weight:bold">=</span><span style="color:#0000cf;font-weight:bold">0</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14</span><span><span style="color:#000">Delegate</span><span style="color:#ce5c00;font-weight:bold">=</span>yes
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15</span><span><span style="color:#000">KillMode</span><span style="color:#ce5c00;font-weight:bold">=</span>process
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16</span><span><span style="color:#000">Restart</span><span style="color:#ce5c00;font-weight:bold">=</span>on-failure
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17</span><span><span style="color:#000">StartLimitBurst</span><span style="color:#ce5c00;font-weight:bold">=</span><span style="color:#0000cf;font-weight:bold">3</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18</span><span><span style="color:#000">StartLimitInterval</span><span style="color:#ce5c00;font-weight:bold">=</span>60s
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20</span><span><span style="color:#ce5c00;font-weight:bold">[</span>Install<span style="color:#ce5c00;font-weight:bold">]</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21</span><span><span style="color:#000">WantedBy</span><span style="color:#ce5c00;font-weight:bold">=</span>multi-user.target
 </span></span></code></pre></div><p>修改完成之后重启<code>docker</code></p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="ln">1</span><span class="cl">systemctl daemon-reload <span class="c1"># 重载service配置</span>
-</span></span><span class="line"><span class="ln">2</span><span class="cl">systemctl restart docker
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>systemctl daemon-reload <span style="color:#8f5902;font-style:italic"># 重载service配置</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>systemctl restart docker
 </span></span></code></pre></div><h2 id="docker存储空间不足">Docker存储空间不足</h2>
 <h3 id="问题一-no-space-left-on-device">问题一: No space left on device</h3>
 <p>问题描述：<code>docker run </code>的时候系统提示<code>No space left on device</code>!</p>
@@ -508,49 +508,49 @@ Docker常见的几个问题处理 - 文章 - </title>
 </li>
 </ol>
 <p>因为 <code>ext3</code> 文件系统使用 <code>inode table</code> 存储 <code>inode</code> 信息，而 <code>xfs</code> 文件系统使用 <code>B+ tree</code> 来进行存储。考虑到性能问题，默认情况下这个 <code>B+ tree</code> 只会使用前 <code>1TB</code> 空间，当这 <code>1TB</code> 空间被写满后，就会导致无法写入 <code>inode</code> 信息，报磁盘空间不足的错误。我们可以在 <code>mount</code> 时，指定 <code>inode64</code> 即可将这个 <code>B+ tree</code> 使用的空间扩展到整个文件系统。</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="ln">1</span><span class="cl"><span class="c1"># 查看inde信息</span>
-</span></span><span class="line"><span class="ln">2</span><span class="cl">df -i
-</span></span><span class="line"><span class="ln">3</span><span class="cl"><span class="c1"># 删除过多的小文件即可</span>
-</span></span><span class="line"><span class="ln">4</span><span class="cl">Filesystem     Inodes IUsed  IFree IUse% Mounted on
-</span></span><span class="line"><span class="ln">5</span><span class="cl">/dev/sda3      <span class="m">593344</span> <span class="m">56998</span> <span class="m">536346</span>   10% /
-</span></span><span class="line"><span class="ln">6</span><span class="cl">tmpfs          <span class="m">238282</span>     <span class="m">1</span> <span class="m">238281</span>    1% /dev/shm
-</span></span><span class="line"><span class="ln">7</span><span class="cl">/dev/sda1       <span class="m">51200</span>    <span class="m">39</span>  <span class="m">51161</span>    1% /boot
-</span></span><span class="line"><span class="ln">8</span><span class="cl">/tmp/1m           <span class="m">128</span>   <span class="m">128</span>      <span class="m">0</span>  100% /app/logs
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="color:#8f5902;font-style:italic"># 查看inde信息</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>df -i
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span><span style="color:#8f5902;font-style:italic"># 删除过多的小文件即可</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span>Filesystem     Inodes IUsed  IFree IUse% Mounted on
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span><span>/dev/sda3      <span style="color:#0000cf;font-weight:bold">593344</span> <span style="color:#0000cf;font-weight:bold">56998</span> <span style="color:#0000cf;font-weight:bold">536346</span>   10% /
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6</span><span>tmpfs          <span style="color:#0000cf;font-weight:bold">238282</span>     <span style="color:#0000cf;font-weight:bold">1</span> <span style="color:#0000cf;font-weight:bold">238281</span>    1% /dev/shm
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7</span><span>/dev/sda1       <span style="color:#0000cf;font-weight:bold">51200</span>    <span style="color:#0000cf;font-weight:bold">39</span>  <span style="color:#0000cf;font-weight:bold">51161</span>    1% /boot
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">8</span><span>/tmp/1m           <span style="color:#0000cf;font-weight:bold">128</span>   <span style="color:#0000cf;font-weight:bold">128</span>      <span style="color:#0000cf;font-weight:bold">0</span>  100% /app/logs
 </span></span></code></pre></div><blockquote>
 <p>如果不知道小文件如何查找</p>
 </blockquote>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="ln">1</span><span class="cl"><span class="c1"># 查找系统中 目录大小大于1M（目录一般大小为4K，所以目录要是大了那么文件必然很多）</span>
-</span></span><span class="line"><span class="ln">2</span><span class="cl">find / -size +4k -type d <span class="p">|</span>xargs ls -ldhi
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="color:#8f5902;font-style:italic"># 查找系统中 目录大小大于1M（目录一般大小为4K，所以目录要是大了那么文件必然很多）</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>find / -size +4k -type d <span style="color:#000;font-weight:bold">|</span>xargs ls -ldhi
 </span></span></code></pre></div><blockquote>
 <p>如果是硬盘空间满了的话</p>
 </blockquote>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="ln">1</span><span class="cl"><span class="c1"># 查看磁盘使用容量</span>
-</span></span><span class="line"><span class="ln">2</span><span class="cl">df -h   
-</span></span><span class="line"><span class="ln">3</span><span class="cl"><span class="c1"># 查看到具体哪个目录满了,然后配合 du -sh命令解决即可</span>
-</span></span><span class="line"><span class="ln">4</span><span class="cl">Filesystem      Size  Used Avail Use% Mounted on
-</span></span><span class="line"><span class="ln">5</span><span class="cl">/dev/sda3       8.8G  8.8G     <span class="m">0</span> 100% /
-</span></span><span class="line"><span class="ln">6</span><span class="cl">tmpfs           931M     <span class="m">0</span>  931M   0% /dev/shm
-</span></span><span class="line"><span class="ln">7</span><span class="cl">/dev/sda1       190M   40M  141M  22% /boot
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="color:#8f5902;font-style:italic"># 查看磁盘使用容量</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>df -h   
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span><span style="color:#8f5902;font-style:italic"># 查看到具体哪个目录满了,然后配合 du -sh命令解决即可</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span>Filesystem      Size  Used Avail Use% Mounted on
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span><span>/dev/sda3       8.8G  8.8G     <span style="color:#0000cf;font-weight:bold">0</span> 100% /
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6</span><span>tmpfs           931M     <span style="color:#0000cf;font-weight:bold">0</span>  931M   0% /dev/shm
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7</span><span>/dev/sda1       190M   40M  141M  22% /boot
 </span></span></code></pre></div><h2 id="优雅地重启docker">优雅地重启Docker</h2>
 <blockquote>
 <p>不停止重启,重启docker是一件多么美妙的事情!</p>
 </blockquote>
 <p>当 <code>Docker</code> 守护程序终止时，它会关闭正在运行的容器。从 <code>Docker-ce 1.12</code> 开始，可以在配置文件中添加 <code>live-restore</code> 参数，以便在守护程序变得不可用时容器保持运行。需要注意的是 <code>Windows</code> 平台暂时还是不支持该参数的配置。</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-json" data-lang="json"><span class="line"><span class="ln">1</span><span class="cl"><span class="err">vim</span> <span class="err">/etc/docker/daemon.json</span>
-</span></span><span class="line"><span class="ln">2</span><span class="cl"><span class="p">{</span>
-</span></span><span class="line"><span class="ln">3</span><span class="cl">  <span class="nt">&#34;live-restore&#34;</span><span class="p">:</span> <span class="kc">true</span>
-</span></span><span class="line"><span class="ln">4</span><span class="cl"><span class="p">}</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="color:#a40000">vim</span> <span style="color:#a40000">/etc/docker/daemon.json</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span><span style="color:#000;font-weight:bold">{</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>  <span style="color:#204a87;font-weight:bold">&#34;live-restore&#34;</span><span style="color:#000;font-weight:bold">:</span> <span style="color:#204a87;font-weight:bold">true</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span><span style="color:#000;font-weight:bold">}</span>
 </span></span></code></pre></div><p>在守护进程关闭的时候保持容器运行</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="ln"> 1</span><span class="cl"><span class="c1"># 重载docker服务</span>
-</span></span><span class="line"><span class="ln"> 2</span><span class="cl">systemctl reload docker.service
-</span></span><span class="line"><span class="ln"> 3</span><span class="cl"><span class="o">[</span>root@VM-0-9-centos ~<span class="o">]</span><span class="c1"># docker ps -a</span>
-</span></span><span class="line"><span class="ln"> 4</span><span class="cl">CONTAINER ID   IMAGE     COMMAND                  CREATED         STATUS          PORTS     NAMES
-</span></span><span class="line"><span class="ln"> 5</span><span class="cl">e58a220f03c3   nginx     <span class="s2">&#34;/docker-entrypoint.…&#34;</span>   <span class="m">5</span> minutes ago   Up <span class="m">15</span> seconds   80/tcp    web
-</span></span><span class="line"><span class="ln"> 6</span><span class="cl"><span class="c1"># 这个时候重启docker服务,web服务并没有停止工作</span>
-</span></span><span class="line"><span class="ln"> 7</span><span class="cl"><span class="o">[</span>root@VM-0-9-centos ~<span class="o">]</span><span class="c1"># systemctl restart docker</span>
-</span></span><span class="line"><span class="ln"> 8</span><span class="cl"><span class="o">[</span>root@VM-0-9-centos ~<span class="o">]</span><span class="c1"># docker ps -a</span>
-</span></span><span class="line"><span class="ln"> 9</span><span class="cl">CONTAINER ID   IMAGE     COMMAND                  CREATED         STATUS              PORTS     NAMES
-</span></span><span class="line"><span class="ln">10</span><span class="cl">e58a220f03c3   nginx     <span class="s2">&#34;/docker-entrypoint.…&#34;</span>   <span class="m">7</span> minutes ago   Up About a minute   80/tcp    web
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span><span style="color:#8f5902;font-style:italic"># 重载docker服务</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>systemctl reload docker.service
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span><span style="color:#ce5c00;font-weight:bold">[</span>root@VM-0-9-centos ~<span style="color:#ce5c00;font-weight:bold">]</span><span style="color:#8f5902;font-style:italic"># docker ps -a</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span>CONTAINER ID   IMAGE     COMMAND                  CREATED         STATUS          PORTS     NAMES
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span><span>e58a220f03c3   nginx     <span style="color:#4e9a06">&#34;/docker-entrypoint.…&#34;</span>   <span style="color:#0000cf;font-weight:bold">5</span> minutes ago   Up <span style="color:#0000cf;font-weight:bold">15</span> seconds   80/tcp    web
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span><span><span style="color:#8f5902;font-style:italic"># 这个时候重启docker服务,web服务并没有停止工作</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span><span><span style="color:#ce5c00;font-weight:bold">[</span>root@VM-0-9-centos ~<span style="color:#ce5c00;font-weight:bold">]</span><span style="color:#8f5902;font-style:italic"># systemctl restart docker</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span><span><span style="color:#ce5c00;font-weight:bold">[</span>root@VM-0-9-centos ~<span style="color:#ce5c00;font-weight:bold">]</span><span style="color:#8f5902;font-style:italic"># docker ps -a</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span><span>CONTAINER ID   IMAGE     COMMAND                  CREATED         STATUS              PORTS     NAMES
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span>e58a220f03c3   nginx     <span style="color:#4e9a06">&#34;/docker-entrypoint.…&#34;</span>   <span style="color:#0000cf;font-weight:bold">7</span> minutes ago   Up About a minute   80/tcp    web
 </span></span></code></pre></div><h3 id="live-restore的限制">live-restore的限制</h3>
 <blockquote>
 <p>当前的Live Restore特性可以在进行Daemon维护，或者在Daemon发生问题导致不可用的情况，减少容器的停机时间，不过其也有一定的限制。</p>
@@ -570,13 +570,13 @@ Live Restore只是独立Docker引擎的特性，而Swarm的服务是由Swarm管�
 <ul>
 <li>例如显示中文：<code>--------���</code></li>
 </ul>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="ln">1</span><span class="cl"><span class="c1"># 查看容器内部编码</span>
-</span></span><span class="line"><span class="ln">2</span><span class="cl">root@e58a220f03c3:/# locale -a
-</span></span><span class="line"><span class="ln">3</span><span class="cl">C
-</span></span><span class="line"><span class="ln">4</span><span class="cl">C.UTF-8
-</span></span><span class="line"><span class="ln">5</span><span class="cl">POSIX
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="color:#8f5902;font-style:italic"># 查看容器内部编码</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>root@e58a220f03c3:/# locale -a
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>C
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span>C.UTF-8
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span><span>POSIX
 </span></span></code></pre></div><p>然而 <code>POSIX</code> 字符集是不支持中文的，而 <code>C.UTF-8</code> 是支持中文的只要把系统中的环境 <code>LANG</code> 改为 <code>&quot;C.UTF-8&quot;</code> 格式即可解决问题。同理，在 <code>K8S</code> 进入 <code>pod</code> 不能输入中文也可用此方法解决。</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="ln">1</span><span class="cl"><span class="nb">export</span> <span class="nv">LANG</span><span class="o">=</span>zh_CN.UTF-8
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="color:#204a87">export</span> <span style="color:#000">LANG</span><span style="color:#ce5c00;font-weight:bold">=</span>zh_CN.UTF-8
 </span></span></code></pre></div>
 
         </div>

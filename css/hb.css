@@ -69,7 +69,7 @@
   --hb-dark-border-subtle: #adb5bd;
   --hb-white-rgb: 255, 255, 255;
   --hb-black-rgb: 0, 0, 0;
-  --hb-font-sans-serif: Noto Sans Simplified Chinese, Noto Sans Simplified Chinese, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", "Noto Sans", "Liberation Sans", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  --hb-font-sans-serif: Fira Sans, Fira Sans, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", "Noto Sans", "Liberation Sans", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   --hb-font-monospace: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
   --hb-gradient: linear-gradient(180deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0));
   --hb-body-font-family: var(--hb-font-sans-serif);

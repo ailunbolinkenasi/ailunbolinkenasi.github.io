@@ -6,7 +6,34 @@
     <description>Recent content in Tags on </description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-hans</language>
-    <lastBuildDate>Tue, 16 Jan 2024 00:00:00 +0000</lastBuildDate><atom:link href="https://blog.mletter.cn/tags/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 13 Feb 2024 00:00:00 +0000</lastBuildDate><atom:link href="https://blog.mletter.cn/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>2024</title>
+      <link>https://blog.mletter.cn/tags/2024/</link>
+      <pubDate>Tue, 13 Feb 2024 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.mletter.cn/tags/2024/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>春节</title>
+      <link>https://blog.mletter.cn/tags/%E6%98%A5%E8%8A%82/</link>
+      <pubDate>Tue, 13 Feb 2024 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.mletter.cn/tags/%E6%98%A5%E8%8A%82/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>日记</title>
+      <link>https://blog.mletter.cn/tags/%E6%97%A5%E8%AE%B0/</link>
+      <pubDate>Tue, 13 Feb 2024 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.mletter.cn/tags/%E6%97%A5%E8%AE%B0/</guid>
+      <description></description>
+    </item>
+    
     <item>
       <title>gitlab</title>
       <link>https://blog.mletter.cn/tags/gitlab/</link>
@@ -31,15 +58,6 @@
       <pubDate>Fri, 08 Dec 2023 00:00:00 +0000</pubDate>
       
       <guid>https://blog.mletter.cn/tags/kubernetes/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>日记</title>
-      <link>https://blog.mletter.cn/tags/%E6%97%A5%E8%AE%B0/</link>
-      <pubDate>Thu, 23 Nov 2023 00:00:00 +0000</pubDate>
-      
-      <guid>https://blog.mletter.cn/tags/%E6%97%A5%E8%AE%B0/</guid>
       <description></description>
     </item>
     

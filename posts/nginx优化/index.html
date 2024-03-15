@@ -271,6 +271,25 @@
         
 
         <div class="menu-bottom-section">
+                <li id="i18n-switch">  
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-language" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M4 5h7" />
+  <path d="M9 3v2c0 4.418 -2.239 8 -5 8" />
+  <path d="M5 9c-.003 2.144 2.952 3.908 6.7 4" />
+  <path d="M12 20l4 -9l4 9" />
+  <path d="M19.1 18h-6.2" />
+</svg>
+
+
+
+                    <select name="language" onchange="window.location.href = this.selectedOptions[0].value">
+                        
+                            <option value="https://blog.mletter.cn/" selected></option>
+                        
+                    </select>
+                </li>
+            
             
             
                 <li id="dark-mode-toggle">
@@ -345,7 +364,7 @@
     <header class="article-category">
         
             <a href="/categories/nginx/" >
-                nginx
+                Nginx
             </a>
         
     </header>
@@ -417,8 +436,8 @@
 <ul>
 <li><code>auto</code>: 根据系统的CPU自动的设置工作进程数量</li>
 </ul>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-conf" data-lang="conf"><span class="line"><span class="cl"><span class="nv">worker_processes</span>  <span class="nv">1</span><span class="p">;</span> <span class="c"># 可选值 auto
-</span></span></span></code></pre></div><h2 id="配置work_connections">配置work_connections</h2>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">worker_processes  1; # 可选值 auto
+</span></span></code></pre></div><h2 id="配置work_connections">配置work_connections</h2>
 <p>该参数表示每个工作进程最大处理的连接数,<code>CentOS</code>默认连接数为1024,连接数是可以修改的。
 如果需要修改<code>ulimit</code>参数,请修改配置文件<code>/etc/security/limits.conf</code></p>
 <ul>
@@ -428,25 +447,25 @@
 <blockquote>
 <p>本次修改仅仅以Rocky Linux和CentOS为例,不同的系统修改方法可能有所差异.</p>
 </blockquote>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-conf" data-lang="conf"><span class="line"><span class="cl"><span class="err">*</span> <span class="nv">soft</span> <span class="nv">nofile</span> <span class="nv">65535</span>
-</span></span><span class="line"><span class="cl"><span class="err">*</span> <span class="nv">hard</span> <span class="nv">nofile</span> <span class="nv">65535</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">* soft nofile 65535
+</span></span><span class="line"><span class="cl">* hard nofile 65535
 </span></span></code></pre></div><p>配置nginx当中的<code>work_connections</code></p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-conf" data-lang="conf"><span class="line"><span class="cl"><span class="nv">events</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">    <span class="nv">worker_connections</span>  <span class="nv">65535</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">    <span class="nv">use</span> <span class="nv">epoll</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl"><span class="p">}</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">events {
+</span></span><span class="line"><span class="cl">    worker_connections  65535;
+</span></span><span class="line"><span class="cl">    use epoll;
+</span></span><span class="line"><span class="cl">}
 </span></span></code></pre></div><blockquote>
 <p>简单的提一嘴ulimit的作用: 当进程打开的文件数目超过此限制时，该进程就会退出。</p>
 </blockquote>
 <h2 id="启用gzip压缩">启用gzip压缩</h2>
 <p>nginx使用 gzip 进行文件压缩和解压缩,您可以节省带宽并在连接缓慢时提高网站的加载时间。</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-conf" data-lang="conf"><span class="line"><span class="cl"><span class="nv">server</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">    <span class="nv">gzip</span> <span class="kc">on</span><span class="p">;</span>  <span class="c"># 开启gzip
-</span></span></span><span class="line"><span class="cl"><span class="c"></span>    <span class="nv">gzip_vary</span> <span class="kc">on</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">    <span class="nv">gzip_min_length</span> <span class="nv">10240</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">    <span class="nv">gzip_proxied</span> <span class="nv">expired</span> <span class="nv">no-cache</span> <span class="nv">no-store</span> <span class="nv">private</span> <span class="nv">auth</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">    <span class="nv">gzip_types</span> <span class="nv">text</span><span class="err">/</span><span class="nv">plain</span> <span class="nv">text</span><span class="err">/</span><span class="nv">css</span> <span class="nv">text</span><span class="err">/</span><span class="nv">xml</span> <span class="nv">text</span><span class="err">/</span><span class="nv">javascript</span> <span class="nv">application</span><span class="err">/</span><span class="nv">x-javascript</span> <span class="nv">application</span><span class="err">/</span><span class="nv">xml</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">    <span class="nv">gzip_disable</span> <span class="s">&#34;MSIE [1-6]</span><span class="se">\.</span><span class="s">&#34;</span><span class="p">;</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="cl"><span class="n">server</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">gzip</span> <span class="n">on</span><span class="p">;</span>  <span class="c1"># 开启gzip</span>
+</span></span><span class="line"><span class="cl">    <span class="n">gzip_vary</span> <span class="n">on</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">gzip_min_length</span> <span class="mi">10240</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">gzip_proxied</span> <span class="n">expired</span> <span class="n">no</span><span class="o">-</span><span class="n">cache</span> <span class="n">no</span><span class="o">-</span><span class="n">store</span> <span class="n">private</span> <span class="n">auth</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">gzip_types</span> <span class="n">text</span><span class="o">/</span><span class="n">plain</span> <span class="n">text</span><span class="o">/</span><span class="n">css</span> <span class="n">text</span><span class="o">/</span><span class="n">xml</span> <span class="n">text</span><span class="o">/</span><span class="n">javascript</span> <span class="n">application</span><span class="o">/</span><span class="n">x</span><span class="o">-</span><span class="n">javascript</span> <span class="n">application</span><span class="o">/</span><span class="n">xml</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">gzip_disable</span> <span class="s2">&#34;MSIE [1-6]\.&#34;</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></div><h2 id="限制nginx连接的超时">限制nginx连接的超时</h2>
 <p>主要是为了减少打开和关闭连接时的处理器和网络开销</p>
@@ -456,36 +475,36 @@
 <li><code>keepalive_timeout</code>: 指定了与<code>client</code>的<code>keep-alive</code>连接超时时间,超过这个时间后,服务器会关关闭连接。</li>
 <li><code>send_timeout</code>: 指定客户端的响应超时时间。这个设置不会用于整个转发器，而是在两次客户端读取操作之间。如果在这段时间内，客户端没有读取任何数据，nginx就会关闭连接。</li>
 </ul>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-conf" data-lang="conf"><span class="line"><span class="cl"><span class="nv">http</span>
-</span></span><span class="line"><span class="cl"><span class="p">{</span>
-</span></span><span class="line"><span class="cl">    <span class="nv">client_body_timeout</span> <span class="nv">12</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">    <span class="nv">client_header_timeout</span> <span class="nv">12</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">    <span class="nv">keepalive_timeout</span> <span class="nv">15</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">    <span class="nv">send_timeout</span> <span class="nv">10</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl"><span class="p">}</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">http
+</span></span><span class="line"><span class="cl">{
+</span></span><span class="line"><span class="cl">    client_body_timeout 12;
+</span></span><span class="line"><span class="cl">    client_header_timeout 12;
+</span></span><span class="line"><span class="cl">    keepalive_timeout 15;
+</span></span><span class="line"><span class="cl">    send_timeout 10;
+</span></span><span class="line"><span class="cl">}
 </span></span></code></pre></div><h2 id="调整缓冲区大小">调整缓冲区大小</h2>
 <p>调整nginx缓冲区以优化服务器性能。如果缓冲区大小太小，那么nginx将写入一个临时文件，导致大量 I/O 操作不断运行。</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-conf" data-lang="conf"><span class="line"><span class="cl"><span class="nv">http</span>
-</span></span><span class="line"><span class="cl"><span class="p">{</span>
-</span></span><span class="line"><span class="cl">    <span class="nv">client_body_buffer_size</span> <span class="nv">10K</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">    <span class="nv">client_header_buffer_size</span> <span class="nv">1k</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">    <span class="nv">client_max_body_size</span> <span class="nv">8m</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">    <span class="nv">large_client_header_buffers</span> <span class="nv">4</span> <span class="nv">4k</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl"><span class="p">}</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">http
+</span></span><span class="line"><span class="cl">{
+</span></span><span class="line"><span class="cl">    client_body_buffer_size 10K;
+</span></span><span class="line"><span class="cl">    client_header_buffer_size 1k;
+</span></span><span class="line"><span class="cl">    client_max_body_size 8m;
+</span></span><span class="line"><span class="cl">    large_client_header_buffers 4 4k;
+</span></span><span class="line"><span class="cl">}
 </span></span></code></pre></div><h2 id="启用日志访问缓冲区">启用日志访问缓冲区</h2>
 <p>日志很重要，因为它们有助于解决问题。完全禁用日志不是一个好的做法。在这种情况下，您可以启用访问日志缓冲。这将允许nginx缓冲一系列日志并将它们一次写入日志文件，而不是对每个请求应用不同的日志操作。在nginx配置文件中添加以下行以允许访问日志缓冲</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-conf" data-lang="conf"><span class="line"><span class="cl"><span class="nv">http</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">    <span class="nv">log_format</span>  <span class="nv">main</span>  <span class="err">&#39;$</span><span class="nv">remote_addr</span> <span class="nv">-</span> <span class="err">$</span><span class="nv">remote_user</span> <span class="err">[$</span><span class="nv">time_local</span><span class="err">]</span> <span class="s">&#34;$request&#34;</span> <span class="err">&#39;</span>
-</span></span><span class="line"><span class="cl">                      <span class="err">&#39;$</span><span class="nv">status</span> <span class="err">$</span><span class="nv">body_bytes_sent</span> <span class="s">&#34;$http_referer&#34;</span> <span class="err">&#39;</span>
-</span></span><span class="line"><span class="cl">                      <span class="err">&#39;</span><span class="s">&#34;$http_user_agent&#34;</span> <span class="s">&#34;$http_x_forwarded_for&#34;</span><span class="err">&#39;</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">    <span class="c"># 开启日志缓冲设置
-</span></span></span><span class="line"><span class="cl"><span class="c"></span>    <span class="nv">access_log</span>  <span class="nv">logs</span><span class="err">/</span><span class="nv">access.log</span> <span class="nv">main</span> <span class="nv">buffer</span><span class="o">=</span><span class="nv">32k</span> <span class="nv">flush</span><span class="o">=</span><span class="nv">1m</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl"><span class="p">}</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">http {
+</span></span><span class="line"><span class="cl">    log_format  main  &#39;$remote_addr - $remote_user [$time_local] &#34;$request&#34; &#39;
+</span></span><span class="line"><span class="cl">                      &#39;$status $body_bytes_sent &#34;$http_referer&#34; &#39;
+</span></span><span class="line"><span class="cl">                      &#39;&#34;$http_user_agent&#34; &#34;$http_x_forwarded_for&#34;&#39;;
+</span></span><span class="line"><span class="cl">    # 开启日志缓冲设置
+</span></span><span class="line"><span class="cl">    access_log  logs/access.log main buffer=32k flush=1m;
+</span></span><span class="line"><span class="cl">}
 </span></span></code></pre></div><h2 id="调整静态文件缓存">调整静态文件缓存</h2>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-conf" data-lang="conf"><span class="line"><span class="cl"><span class="c"># 静态文件缓存内容
-</span></span></span><span class="line"><span class="cl"><span class="c"></span><span class="nv">location</span> <span class="err">~*</span> <span class="err">\</span><span class="nf">.</span><span class="p">(</span><span class="nv">jpg</span><span class="err">|</span><span class="nv">jpeg</span><span class="err">|</span><span class="nv">png</span><span class="err">|</span><span class="nv">gif</span><span class="err">|</span><span class="nv">ico</span><span class="err">|</span><span class="nv">css</span><span class="err">|</span><span class="nv">js</span><span class="p">)</span><span class="err">$</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">  <span class="nv">expires</span> <span class="nv">90d</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl"><span class="p">}</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl"># 静态文件缓存内容
+</span></span><span class="line"><span class="cl">location ~* \.(jpg|jpeg|png|gif|ico|css|js)$ {
+</span></span><span class="line"><span class="cl">  expires 90d;
+</span></span><span class="line"><span class="cl">}
 </span></span></code></pre></div>
 </section>
 
@@ -494,7 +513,7 @@
     
     <section class="article-tags">
         
-            <a href="/tags/nginx/">nginx</a>
+            <a href="/tags/nginx/">Nginx</a>
         
     </section>
 

@@ -296,6 +296,25 @@ kubectl create ns kube-logging 环境准备 ElasticSearch 安装有最低安装�
         
 
         <div class="menu-bottom-section">
+                <li id="i18n-switch">  
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-language" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M4 5h7" />
+  <path d="M9 3v2c0 4.418 -2.239 8 -5 8" />
+  <path d="M5 9c-.003 2.144 2.952 3.908 6.7 4" />
+  <path d="M12 20l4 -9l4 9" />
+  <path d="M19.1 18h-6.2" />
+</svg>
+
+
+
+                    <select name="language" onchange="window.location.href = this.selectedOptions[0].value">
+                        
+                            <option value="https://blog.mletter.cn/" selected></option>
+                        
+                    </select>
+                </li>
+            
             
             
                 <li id="dark-mode-toggle">
@@ -389,7 +408,7 @@ kubectl create ns kube-logging 环境准备 ElasticSearch 安装有最低安装�
     <header class="article-category">
         
             <a href="/categories/kubernetes/" >
-                kubernetes
+                Kubernetes
             </a>
         
     </header>
@@ -887,26 +906,26 @@ kubectl create ns kube-logging 环境准备 ElasticSearch 安装有最低安装�
 <li>pos_file：检查点，如果 Fluentd 程序重新启动了，它将使用此文件中的位置来恢复日志数据收集。</li>
 <li>tag：用来将日志源与目标或者过滤器匹配的自定义字符串，Fluentd 匹配源/目标标签来路由日志数据。</li>
 </ul>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">&lt;source&gt;
-</span></span><span class="line"><span class="cl">  @id fluentd-containers.log
-</span></span><span class="line"><span class="cl">  @type tail                             # Fluentd 内置的输入方式，其原理是不停地从源文件中获取新的日志,类似于tail命令
-</span></span><span class="line"><span class="cl">  path /var/log/containers/*.log         # 挂载的宿主机容器日志地址
-</span></span><span class="line"><span class="cl">  pos_file /var/log/es-containers.log.pos
-</span></span><span class="line"><span class="cl">  tag raw.kubernetes.*                   # 设置日志标签
-</span></span><span class="line"><span class="cl">  read_from_head true
-</span></span><span class="line"><span class="cl">  &lt;parse&gt;                                # 多行格式化成JSON
-</span></span><span class="line"><span class="cl">    @type multi_format                   # 使用 multi-format-parser 解析器插件
-</span></span><span class="line"><span class="cl">    &lt;pattern&gt;
-</span></span><span class="line"><span class="cl">      format json                        # JSON 解析器
-</span></span><span class="line"><span class="cl">      time_key time                      # 指定事件时间的时间字段
-</span></span><span class="line"><span class="cl">      time_format %Y-%m-%dT%H:%M:%S.%NZ  # 时间格式
-</span></span><span class="line"><span class="cl">    &lt;/pattern&gt;
-</span></span><span class="line"><span class="cl">    &lt;pattern&gt;
-</span></span><span class="line"><span class="cl">      format /^(?&lt;time&gt;.+) (?&lt;stream&gt;stdout|stderr) [^ ]* (?&lt;log&gt;.*)$/
-</span></span><span class="line"><span class="cl">      time_format %Y-%m-%dT%H:%M:%S.%N%:z
-</span></span><span class="line"><span class="cl">    &lt;/pattern&gt;
-</span></span><span class="line"><span class="cl">  &lt;/parse&gt;
-</span></span><span class="line"><span class="cl">&lt;/source&gt;
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="cl"><span class="o">&lt;</span><span class="n">source</span><span class="o">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="err">@</span><span class="n">id</span> <span class="n">fluentd</span><span class="o">-</span><span class="n">containers</span><span class="o">.</span><span class="n">log</span>
+</span></span><span class="line"><span class="cl">  <span class="err">@</span><span class="n">type</span> <span class="n">tail</span>                             <span class="c1"># Fluentd 内置的输入方式，其原理是不停地从源文件中获取新的日志,类似于tail命令</span>
+</span></span><span class="line"><span class="cl">  <span class="n">path</span> <span class="o">/</span><span class="k">var</span><span class="o">/</span><span class="nb">log</span><span class="o">/</span><span class="n">containers</span><span class="o">/*.</span><span class="n">log</span>         <span class="c1"># 挂载的宿主机容器日志地址</span>
+</span></span><span class="line"><span class="cl">  <span class="n">pos_file</span> <span class="o">/</span><span class="k">var</span><span class="o">/</span><span class="nb">log</span><span class="o">/</span><span class="n">es</span><span class="o">-</span><span class="n">containers</span><span class="o">.</span><span class="n">log</span><span class="o">.</span><span class="n">pos</span>
+</span></span><span class="line"><span class="cl">  <span class="n">tag</span> <span class="n">raw</span><span class="o">.</span><span class="n">kubernetes</span><span class="o">.*</span>                   <span class="c1"># 设置日志标签</span>
+</span></span><span class="line"><span class="cl">  <span class="n">read_from_head</span> <span class="bp">true</span>
+</span></span><span class="line"><span class="cl">  <span class="o">&lt;</span><span class="n">parse</span><span class="o">&gt;</span>                                <span class="c1"># 多行格式化成JSON</span>
+</span></span><span class="line"><span class="cl">    <span class="err">@</span><span class="n">type</span> <span class="n">multi_format</span>                   <span class="c1"># 使用 multi-format-parser 解析器插件</span>
+</span></span><span class="line"><span class="cl">    <span class="o">&lt;</span><span class="n">pattern</span><span class="o">&gt;</span>
+</span></span><span class="line"><span class="cl">      <span class="n">format</span> <span class="n">json</span>                        <span class="c1"># JSON 解析器</span>
+</span></span><span class="line"><span class="cl">      <span class="n">time_key</span> <span class="n">time</span>                      <span class="c1"># 指定事件时间的时间字段</span>
+</span></span><span class="line"><span class="cl">      <span class="n">time_format</span> <span class="o">%</span><span class="n">Y</span><span class="o">-%</span><span class="n">m</span><span class="o">-%</span><span class="n">dT</span><span class="o">%</span><span class="n">H</span><span class="p">:</span><span class="o">%</span><span class="n">M</span><span class="p">:</span><span class="o">%</span><span class="n">S</span><span class="o">.%</span><span class="n">NZ</span>  <span class="c1"># 时间格式</span>
+</span></span><span class="line"><span class="cl">    <span class="o">&lt;/</span><span class="n">pattern</span><span class="o">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="o">&lt;</span><span class="n">pattern</span><span class="o">&gt;</span>
+</span></span><span class="line"><span class="cl">      <span class="n">format</span> <span class="o">/^</span><span class="p">(</span><span class="err">?</span><span class="o">&lt;</span><span class="n">time</span><span class="o">&gt;.+</span><span class="p">)</span> <span class="p">(</span><span class="err">?</span><span class="o">&lt;</span><span class="n">stream</span><span class="o">&gt;</span><span class="n">stdout</span><span class="o">|</span><span class="n">stderr</span><span class="p">)</span> <span class="p">[</span><span class="o">^</span> <span class="p">]</span><span class="o">*</span> <span class="p">(</span><span class="err">?</span><span class="o">&lt;</span><span class="nb">log</span><span class="o">&gt;.*</span><span class="p">)</span><span class="o">$/</span>
+</span></span><span class="line"><span class="cl">      <span class="n">time_format</span> <span class="o">%</span><span class="n">Y</span><span class="o">-%</span><span class="n">m</span><span class="o">-%</span><span class="n">dT</span><span class="o">%</span><span class="n">H</span><span class="p">:</span><span class="o">%</span><span class="n">M</span><span class="p">:</span><span class="o">%</span><span class="n">S</span><span class="o">.%</span><span class="n">N</span><span class="o">%</span><span class="p">:</span><span class="n">z</span>
+</span></span><span class="line"><span class="cl">    <span class="o">&lt;/</span><span class="n">pattern</span><span class="o">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="o">&lt;/</span><span class="n">parse</span><span class="o">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="o">&lt;/</span><span class="n">source</span><span class="o">&gt;</span>
 </span></span></code></pre></div><h3 id="过滤">过滤</h3>
 <p>由于 Kubernetes 集群中应用太多，也还有很多历史数据，所以我们可以只将某些应用的日志进行收集，比如我们只采集具有<code> discovery-log=true</code> 这个 Label 标签的 Pod 日志，这个时候就需要使用 filter。</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl"># 删除无用的属性
@@ -924,29 +943,29 @@ kubectl create ns kube-logging 环境准备 ElasticSearch 安装有最低安装�
 </span></span><span class="line"><span class="cl">  &lt;/regexp&gt;
 </span></span><span class="line"><span class="cl">&lt;/filter&gt;
 </span></span></code></pre></div><h3 id="路由设置">路由设置</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">&lt;match **&gt;
-</span></span><span class="line"><span class="cl">  @id elasticsearch
-</span></span><span class="line"><span class="cl">  @type elasticsearch
-</span></span><span class="line"><span class="cl">  @log_level info
-</span></span><span class="line"><span class="cl">  include_tag_key true
-</span></span><span class="line"><span class="cl">  type_name fluentd
-</span></span><span class="line"><span class="cl">  host &#34;#{ENV[&#39;OUTPUT_HOST&#39;]}&#34;
-</span></span><span class="line"><span class="cl">  port &#34;#{ENV[&#39;OUTPUT_PORT&#39;]}&#34;
-</span></span><span class="line"><span class="cl">  logstash_format true
-</span></span><span class="line"><span class="cl">  &lt;buffer&gt;
-</span></span><span class="line"><span class="cl">    @type file
-</span></span><span class="line"><span class="cl">    path /var/log/fluentd-buffers/kubernetes.system.buffer
-</span></span><span class="line"><span class="cl">    flush_mode interval
-</span></span><span class="line"><span class="cl">    retry_type exponential_backoff
-</span></span><span class="line"><span class="cl">    flush_thread_count 2
-</span></span><span class="line"><span class="cl">    flush_interval 5s
-</span></span><span class="line"><span class="cl">    retry_forever
-</span></span><span class="line"><span class="cl">    retry_max_interval 30
-</span></span><span class="line"><span class="cl">    chunk_limit_size &#34;#{ENV[&#39;OUTPUT_BUFFER_CHUNK_LIMIT&#39;]}&#34;
-</span></span><span class="line"><span class="cl">    queue_limit_length &#34;#{ENV[&#39;OUTPUT_BUFFER_QUEUE_LIMIT&#39;]}&#34;
-</span></span><span class="line"><span class="cl">    overflow_action block
-</span></span><span class="line"><span class="cl">  &lt;/buffer&gt;
-</span></span><span class="line"><span class="cl">&lt;/match&gt;
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="cl"><span class="o">&lt;</span><span class="n">match</span> <span class="o">**&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="err">@</span><span class="n">id</span> <span class="n">elasticsearch</span>
+</span></span><span class="line"><span class="cl">  <span class="err">@</span><span class="n">type</span> <span class="n">elasticsearch</span>
+</span></span><span class="line"><span class="cl">  <span class="err">@</span><span class="n">log_level</span> <span class="n">info</span>
+</span></span><span class="line"><span class="cl">  <span class="n">include_tag_key</span> <span class="bp">true</span>
+</span></span><span class="line"><span class="cl">  <span class="n">type_name</span> <span class="n">fluentd</span>
+</span></span><span class="line"><span class="cl">  <span class="n">host</span> <span class="s2">&#34;#{ENV[&#39;OUTPUT_HOST&#39;]}&#34;</span>
+</span></span><span class="line"><span class="cl">  <span class="n">port</span> <span class="s2">&#34;#{ENV[&#39;OUTPUT_PORT&#39;]}&#34;</span>
+</span></span><span class="line"><span class="cl">  <span class="n">logstash_format</span> <span class="bp">true</span>
+</span></span><span class="line"><span class="cl">  <span class="o">&lt;</span><span class="n">buffer</span><span class="o">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="err">@</span><span class="n">type</span> <span class="n">file</span>
+</span></span><span class="line"><span class="cl">    <span class="n">path</span> <span class="o">/</span><span class="k">var</span><span class="o">/</span><span class="nb">log</span><span class="o">/</span><span class="n">fluentd</span><span class="o">-</span><span class="n">buffers</span><span class="o">/</span><span class="n">kubernetes</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">buffer</span>
+</span></span><span class="line"><span class="cl">    <span class="n">flush_mode</span> <span class="n">interval</span>
+</span></span><span class="line"><span class="cl">    <span class="n">retry_type</span> <span class="n">exponential_backoff</span>
+</span></span><span class="line"><span class="cl">    <span class="n">flush_thread_count</span> <span class="mi">2</span>
+</span></span><span class="line"><span class="cl">    <span class="n">flush_interval</span> <span class="mi">5</span><span class="n">s</span>
+</span></span><span class="line"><span class="cl">    <span class="n">retry_forever</span>
+</span></span><span class="line"><span class="cl">    <span class="n">retry_max_interval</span> <span class="mi">30</span>
+</span></span><span class="line"><span class="cl">    <span class="n">chunk_limit_size</span> <span class="s2">&#34;#{ENV[&#39;OUTPUT_BUFFER_CHUNK_LIMIT&#39;]}&#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">queue_limit_length</span> <span class="s2">&#34;#{ENV[&#39;OUTPUT_BUFFER_QUEUE_LIMIT&#39;]}&#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">overflow_action</span> <span class="n">block</span>
+</span></span><span class="line"><span class="cl">  <span class="o">&lt;/</span><span class="n">buffer</span><span class="o">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="o">&lt;/</span><span class="n">match</span><span class="o">&gt;</span>
 </span></span></code></pre></div><ul>
 <li>match：标识一个目标标签，后面是一个匹配日志源的正则表达式，我们这里想要捕获所有的日志并将它们发送给 Elasticsearch，所以需要配置成**。</li>
 <li>id：目标的一个唯一标识符。</li>
@@ -1287,7 +1306,7 @@ kubectl create ns kube-logging 环境准备 ElasticSearch 安装有最低安装�
     
     <section class="article-tags">
         
-            <a href="/tags/kubernetes/">kubernetes</a>
+            <a href="/tags/kubernetes/">Kubernetes</a>
         
     </section>
 

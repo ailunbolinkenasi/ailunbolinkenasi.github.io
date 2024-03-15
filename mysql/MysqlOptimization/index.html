@@ -271,6 +271,25 @@
         
 
         <div class="menu-bottom-section">
+                <li id="i18n-switch">  
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-language" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M4 5h7" />
+  <path d="M9 3v2c0 4.418 -2.239 8 -5 8" />
+  <path d="M5 9c-.003 2.144 2.952 3.908 6.7 4" />
+  <path d="M12 20l4 -9l4 9" />
+  <path d="M19.1 18h-6.2" />
+</svg>
+
+
+
+                    <select name="language" onchange="window.location.href = this.selectedOptions[0].value">
+                        
+                            <option value="https://blog.mletter.cn/" selected></option>
+                        
+                    </select>
+                </li>
+            
             
             
                 <li id="dark-mode-toggle">
@@ -377,7 +396,7 @@
     <header class="article-category">
         
             <a href="/categories/mysql/" >
-                mysql
+                Mysql
             </a>
         
     </header>
@@ -533,53 +552,53 @@
 <blockquote>
 <p>一切根据自己或者项目需要自由设置吧!</p>
 </blockquote>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-conf" data-lang="conf"><span class="line"><span class="cl"><span class="nv">max_connections</span> <span class="o">=</span> <span class="nv">1000</span>
-</span></span><span class="line"><span class="cl"><span class="nv">max_connect_errors</span> <span class="o">=</span> <span class="nv">999999</span>
-</span></span><span class="line"><span class="cl"><span class="nv">wait_timeout</span> <span class="o">=</span> <span class="nv">600</span>
-</span></span><span class="line"><span class="cl"><span class="nv">interactive_wait_timeout</span> <span class="o">=</span> <span class="nv">3600</span>
-</span></span><span class="line"><span class="cl"><span class="nv">net_read_timeout</span> <span class="o">=</span> <span class="nv">120</span>
-</span></span><span class="line"><span class="cl"><span class="nv">new_write_timeout</span> <span class="o">=</span> <span class="nv">120</span>
-</span></span><span class="line"><span class="cl"><span class="nv">max_allowed_packet</span> <span class="o">=</span> <span class="nv">500M</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">max_connections = 1000
+</span></span><span class="line"><span class="cl">max_connect_errors = 999999
+</span></span><span class="line"><span class="cl">wait_timeout = 600
+</span></span><span class="line"><span class="cl">interactive_wait_timeout = 3600
+</span></span><span class="line"><span class="cl">net_read_timeout = 120
+</span></span><span class="line"><span class="cl">new_write_timeout = 120
+</span></span><span class="line"><span class="cl">max_allowed_packet = 500M
 </span></span></code></pre></div><h3 id="server层优化">Server层优化</h3>
 <blockquote>
 <p>一切根据自己或者项目需要自由设置吧!</p>
 </blockquote>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-conf" data-lang="conf"><span class="line"><span class="cl"><span class="nv">sort_buffer_size</span> <span class="o">=</span> <span class="nv">8M</span>
-</span></span><span class="line"><span class="cl"><span class="nv">sql_safe_updates</span> <span class="o">=</span> <span class="nv">1</span>
-</span></span><span class="line"><span class="cl"><span class="nv">slow_query_log</span> <span class="o">=</span> <span class="nv">1</span>
-</span></span><span class="line"><span class="cl"><span class="nv">long_query_time</span> <span class="o">=</span> <span class="nv">1</span>
-</span></span><span class="line"><span class="cl"><span class="nv">slow_query_log_file</span> <span class="o">=</span> <span class="err">/</span><span class="nv">data</span><span class="err">/</span><span class="nv">mysql</span><span class="err">/</span><span class="nv">mysql-slow.log</span>
-</span></span><span class="line"><span class="cl"><span class="nv">log_queries_not_using_indexes</span> <span class="o">=</span> <span class="nv">10</span>
-</span></span><span class="line"><span class="cl"><span class="nv">read_buffer_size</span> <span class="o">=</span> <span class="nv">2M</span>
-</span></span><span class="line"><span class="cl"><span class="nv">read_rnd_buffer_size</span> <span class="o">=</span> <span class="nv">8M</span>
-</span></span><span class="line"><span class="cl"><span class="nv">sort_buffer_size</span> <span class="o">=</span> <span class="nv">8M</span>
-</span></span><span class="line"><span class="cl"><span class="nv">join_buffer_size</span> <span class="o">=</span> <span class="nv">8M</span>
-</span></span><span class="line"><span class="cl"><span class="nv">key_buffer_size</span> <span class="o">=</span> <span class="nv">16M</span>
-</span></span><span class="line"><span class="cl"><span class="nv">max_binlog_size</span> <span class="o">=</span> <span class="nv">500M</span>
-</span></span><span class="line"><span class="cl"><span class="nv">max_execution_time</span> <span class="o">=</span> <span class="nv">28800</span>
-</span></span><span class="line"><span class="cl"><span class="nv">log_timestamps</span> <span class="o">=</span> <span class="nv">SYSTEM</span>
-</span></span><span class="line"><span class="cl"><span class="nv">init_connect</span> <span class="o">=</span> <span class="s">&#34;set names utf8mb4&#34;</span>
-</span></span><span class="line"><span class="cl"><span class="nv">binlog_format</span> <span class="o">=</span> <span class="nv">ROW</span>
-</span></span><span class="line"><span class="cl"><span class="nv">event_scheduler</span> <span class="o">=</span> <span class="nv">OFF</span>
-</span></span><span class="line"><span class="cl"><span class="nv">lock_wait_timeout</span> <span class="o">=</span>
-</span></span><span class="line"><span class="cl"><span class="nv">sync_binlog</span> <span class="o">=</span> <span class="nv">1</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">sort_buffer_size = 8M
+</span></span><span class="line"><span class="cl">sql_safe_updates = 1
+</span></span><span class="line"><span class="cl">slow_query_log = 1
+</span></span><span class="line"><span class="cl">long_query_time = 1
+</span></span><span class="line"><span class="cl">slow_query_log_file = /data/mysql/mysql-slow.log
+</span></span><span class="line"><span class="cl">log_queries_not_using_indexes = 10
+</span></span><span class="line"><span class="cl">read_buffer_size = 2M
+</span></span><span class="line"><span class="cl">read_rnd_buffer_size = 8M
+</span></span><span class="line"><span class="cl">sort_buffer_size = 8M
+</span></span><span class="line"><span class="cl">join_buffer_size = 8M
+</span></span><span class="line"><span class="cl">key_buffer_size = 16M
+</span></span><span class="line"><span class="cl">max_binlog_size = 500M
+</span></span><span class="line"><span class="cl">max_execution_time = 28800
+</span></span><span class="line"><span class="cl">log_timestamps = SYSTEM
+</span></span><span class="line"><span class="cl">init_connect = &#34;set names utf8mb4&#34;
+</span></span><span class="line"><span class="cl">binlog_format = ROW
+</span></span><span class="line"><span class="cl">event_scheduler = OFF
+</span></span><span class="line"><span class="cl">lock_wait_timeout =
+</span></span><span class="line"><span class="cl">sync_binlog = 1
 </span></span></code></pre></div><h3 id="engine层优化">Engine层优化</h3>
 <blockquote>
 <p>一切根据自己或者项目需要自由设置吧!</p>
 </blockquote>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-conf" data-lang="conf"><span class="line"><span class="cl"><span class="nv">transaction-isolation</span> <span class="o">=</span> <span class="s">&#34;READ-COMMITIED&#34;</span>
-</span></span><span class="line"><span class="cl"><span class="nv">innodb_data_home_dir</span> <span class="o">=</span> <span class="err">/</span><span class="nv">xxx</span>
-</span></span><span class="line"><span class="cl"><span class="nv">innodb_log_group_home_dir</span> <span class="o">=</span> <span class="err">/</span><span class="nv">xxx</span>
-</span></span><span class="line"><span class="cl"><span class="nv">innodb_log_file_size</span> <span class="o">=</span> <span class="nv">2048M</span>
-</span></span><span class="line"><span class="cl"><span class="nv">innodb_log_files_in_group</span> <span class="o">=</span> <span class="nv">3</span>
-</span></span><span class="line"><span class="cl"><span class="nv">innodb_flush_log_at_trx_commit</span> <span class="o">=</span> <span class="nv">2</span>
-</span></span><span class="line"><span class="cl"><span class="nv">innodb_flush_method</span> <span class="o">=</span> <span class="nv">O_DIRECT</span>
-</span></span><span class="line"><span class="cl"><span class="nv">innodb_io_capacity</span> <span class="o">=</span> <span class="nv">1000</span>
-</span></span><span class="line"><span class="cl"><span class="nv">innodb_io_capacity_max</span> <span class="o">=</span> <span class="nv">4000</span>
-</span></span><span class="line"><span class="cl"><span class="nv">innodb_buffer_pool_size</span> <span class="o">=</span> <span class="nv">64G</span>
-</span></span><span class="line"><span class="cl"><span class="nv">innodb_buffer_pool_instances</span> <span class="o">=</span> <span class="nv">4</span>
-</span></span><span class="line"><span class="cl"><span class="nv">innodb_log_buffer_size</span> <span class="o">=</span> <span class="nv">64M</span>
-</span></span><span class="line"><span class="cl"><span class="nv">innodb_max_dirty_pages_pct</span> <span class="o">=</span> <span class="nv">85</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">transaction-isolation = &#34;READ-COMMITIED&#34;
+</span></span><span class="line"><span class="cl">innodb_data_home_dir = /xxx
+</span></span><span class="line"><span class="cl">innodb_log_group_home_dir = /xxx
+</span></span><span class="line"><span class="cl">innodb_log_file_size = 2048M
+</span></span><span class="line"><span class="cl">innodb_log_files_in_group = 3
+</span></span><span class="line"><span class="cl">innodb_flush_log_at_trx_commit = 2
+</span></span><span class="line"><span class="cl">innodb_flush_method = O_DIRECT
+</span></span><span class="line"><span class="cl">innodb_io_capacity = 1000
+</span></span><span class="line"><span class="cl">innodb_io_capacity_max = 4000
+</span></span><span class="line"><span class="cl">innodb_buffer_pool_size = 64G
+</span></span><span class="line"><span class="cl">innodb_buffer_pool_instances = 4
+</span></span><span class="line"><span class="cl">innodb_log_buffer_size = 64M
+</span></span><span class="line"><span class="cl">innodb_max_dirty_pages_pct = 85
 </span></span></code></pre></div><h2 id="全局锁读global-read-lock-grl">全局锁读Global Read Lock (GRL）</h2>
 <p>加锁方法：FTWRL,flush tables with read lock.</p>
 <p>解锁方法：unlock tables；</p>
@@ -697,7 +716,7 @@
     
     <section class="article-tags">
         
-            <a href="/tags/mysql/">mysql</a>
+            <a href="/tags/mysql/">Mysql</a>
         
     </section>
 

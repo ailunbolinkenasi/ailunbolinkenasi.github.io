@@ -272,6 +272,25 @@
         
 
         <div class="menu-bottom-section">
+                <li id="i18n-switch">  
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-language" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M4 5h7" />
+  <path d="M9 3v2c0 4.418 -2.239 8 -5 8" />
+  <path d="M5 9c-.003 2.144 2.952 3.908 6.7 4" />
+  <path d="M12 20l4 -9l4 9" />
+  <path d="M19.1 18h-6.2" />
+</svg>
+
+
+
+                    <select name="language" onchange="window.location.href = this.selectedOptions[0].value">
+                        
+                            <option value="https://blog.mletter.cn/" selected></option>
+                        
+                    </select>
+                </li>
+            
             
             
                 <li id="dark-mode-toggle">
@@ -364,7 +383,7 @@
     <header class="article-category">
         
             <a href="/categories/kubernetes/" >
-                kubernetes
+                Kubernetes
             </a>
         
     </header>
@@ -578,9 +597,9 @@
 <li>发送了相关请求(盲猜应该是验证api-server是否正常)</li>
 <li>向<code>https://resk8s.api.beijing.io:8443/api/v1/namespaces/default/pods?dryRun=All&amp;fieldManager=kubectl-run</code>发送了POST请求用于创建Pod</li>
 </ol>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">I1108 21:58:14.866131 1221713 loader.go:374] Config loaded from file:  /root/.kube/config
-</span></span><span class="line"><span class="cl">I1108 21:58:14.884329 1221713 round_trippers.go:553] GET https://resk8s.api.beijing.io:8443/openapi/v2?timeout=32s 200 OK in 15 milliseconds
-</span></span><span class="line"><span class="cl">I1108 21:58:14.946553 1221713 round_trippers.go:553] POST https://resk8s.api.beijing.io:8443/api/v1/namespaces/default/pods?dryRun=All&amp;fieldManager=kubectl-run 201 Created in 15 milliseconds
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="cl"><span class="n">I1108</span> <span class="mi">21</span><span class="p">:</span><span class="mi">58</span><span class="p">:</span><span class="mf">14.866131</span> <span class="mi">1221713</span> <span class="n">loader</span><span class="o">.</span><span class="n">go</span><span class="p">:</span><span class="mi">374</span><span class="p">]</span> <span class="n">Config</span> <span class="n">loaded</span> <span class="n">from</span> <span class="n">file</span><span class="p">:</span>  <span class="o">/</span><span class="n">root</span><span class="o">/.</span><span class="n">kube</span><span class="o">/</span><span class="n">config</span>
+</span></span><span class="line"><span class="cl"><span class="n">I1108</span> <span class="mi">21</span><span class="p">:</span><span class="mi">58</span><span class="p">:</span><span class="mf">14.884329</span> <span class="mi">1221713</span> <span class="n">round_trippers</span><span class="o">.</span><span class="n">go</span><span class="p">:</span><span class="mi">553</span><span class="p">]</span> <span class="n">GET</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">resk8s</span><span class="o">.</span><span class="n">api</span><span class="o">.</span><span class="n">beijing</span><span class="o">.</span><span class="n">io</span><span class="p">:</span><span class="mi">8443</span><span class="o">/</span><span class="n">openapi</span><span class="o">/</span><span class="n">v2</span><span class="err">?</span><span class="n">timeout</span><span class="o">=</span><span class="mi">32</span><span class="n">s</span> <span class="mi">200</span> <span class="n">OK</span> <span class="ow">in</span> <span class="mi">15</span> <span class="n">milliseconds</span>
+</span></span><span class="line"><span class="cl"><span class="n">I1108</span> <span class="mi">21</span><span class="p">:</span><span class="mi">58</span><span class="p">:</span><span class="mf">14.946553</span> <span class="mi">1221713</span> <span class="n">round_trippers</span><span class="o">.</span><span class="n">go</span><span class="p">:</span><span class="mi">553</span><span class="p">]</span> <span class="n">POST</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">resk8s</span><span class="o">.</span><span class="n">api</span><span class="o">.</span><span class="n">beijing</span><span class="o">.</span><span class="n">io</span><span class="p">:</span><span class="mi">8443</span><span class="o">/</span><span class="n">api</span><span class="o">/</span><span class="n">v1</span><span class="o">/</span><span class="n">namespaces</span><span class="o">/</span><span class="n">default</span><span class="o">/</span><span class="n">pods</span><span class="err">?</span><span class="n">dryRun</span><span class="o">=</span><span class="n">All</span><span class="o">&amp;</span><span class="n">fieldManager</span><span class="o">=</span><span class="n">kubectl</span><span class="o">-</span><span class="n">run</span> <span class="mi">201</span> <span class="n">Created</span> <span class="ow">in</span> <span class="mi">15</span> <span class="n">milliseconds</span>
 </span></span></code></pre></div><p>事实上我们由此可见发送到<code>Api-Server</code>的请求内容多了很多东西</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-json" data-lang="json"><span class="line"><span class="cl"><span class="p">{</span>
 </span></span><span class="line"><span class="cl">    <span class="nt">&#34;kind&#34;</span><span class="p">:</span> <span class="s2">&#34;Pod&#34;</span><span class="p">,</span>
@@ -758,9 +777,9 @@
 </span></span><span class="line"><span class="cl">kube-dns             10.10.151.159:53,10.10.4.95:53,10.10.151.159:53 + <span class="m">3</span> more...   279d
 </span></span><span class="line"><span class="cl">kube-dns-upstream    10.10.151.159:53,10.10.4.95:53,10.10.151.159:53 + <span class="m">1</span> more...   81d
 </span></span></code></pre></div><p>其次可以看到我们容器内所对应的<code>resolv.conf</code>所写内容的配置文件</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-conf" data-lang="conf"><span class="line"><span class="cl"><span class="nv">search</span> <span class="nv">jiashicang.svc.cluster.local</span> <span class="nv">svc.cluster.local</span> <span class="nv">cluster.local</span>
-</span></span><span class="line"><span class="cl"><span class="nv">nameserver</span> <span class="mf">169.254.20.10</span> 
-</span></span><span class="line"><span class="cl"><span class="nv">options</span> <span class="nv">ndots</span><span class="err">:</span><span class="nv">5</span> <span class="nv">single-request-reopen</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">search jiashicang.svc.cluster.local svc.cluster.local cluster.local
+</span></span><span class="line"><span class="cl">nameserver 169.254.20.10 
+</span></span><span class="line"><span class="cl">options ndots:5 single-request-reopen
 </span></span></code></pre></div><p>由于我使用了<code>NodeLocalDns</code>所以我这个地方的nameserver不太一样,关于<code>NodeLocalDns</code>我们后续再说。
 总结以下几点:</p>
 <blockquote>
@@ -827,7 +846,7 @@
     
     <section class="article-tags">
         
-            <a href="/tags/kubernetes/">kubernetes</a>
+            <a href="/tags/kubernetes/">Kubernetes</a>
         
     </section>
 

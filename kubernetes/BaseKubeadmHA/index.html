@@ -272,6 +272,25 @@
         
 
         <div class="menu-bottom-section">
+                <li id="i18n-switch">  
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-language" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M4 5h7" />
+  <path d="M9 3v2c0 4.418 -2.239 8 -5 8" />
+  <path d="M5 9c-.003 2.144 2.952 3.908 6.7 4" />
+  <path d="M12 20l4 -9l4 9" />
+  <path d="M19.1 18h-6.2" />
+</svg>
+
+
+
+                    <select name="language" onchange="window.location.href = this.selectedOptions[0].value">
+                        
+                            <option value="https://blog.mletter.cn/" selected></option>
+                        
+                    </select>
+                </li>
+            
             
             
                 <li id="dark-mode-toggle">
@@ -364,7 +383,7 @@
     <header class="article-category">
         
             <a href="/categories/kubernetes/" >
-                kubernetes
+                Kubernetes
             </a>
         
     </header>
@@ -544,41 +563,41 @@
 </span></span><span class="line"><span class="cl">dnf install keepalived haproxy psmisc -y
 </span></span></code></pre></div><p>在两台用于负载均衡的机器上运行以下命令以配置 Proxy（两台机器的 Proxy 配置相同）：</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">vi /etc/haproxy/haproxy.cfg
-</span></span></code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-conf" data-lang="conf"><span class="line"><span class="cl"><span class="nv">global</span>
-</span></span><span class="line"><span class="cl">    <span class="nv">log</span> <span class="err">/</span><span class="nv">dev</span><span class="err">/</span><span class="nv">log</span>  <span class="nv">local0</span> <span class="nv">warning</span>
-</span></span><span class="line"><span class="cl">    <span class="nv">chroot</span>      <span class="err">/</span><span class="nv">var</span><span class="err">/</span><span class="nv">lib</span><span class="err">/</span><span class="nv">haproxy</span>
-</span></span><span class="line"><span class="cl">    <span class="nv">pidfile</span>     <span class="err">/</span><span class="nv">var</span><span class="err">/</span><span class="nv">run</span><span class="err">/</span><span class="nv">haproxy.pid</span>
-</span></span><span class="line"><span class="cl">    <span class="nv">maxconn</span>     <span class="nv">4000</span>
-</span></span><span class="line"><span class="cl">    <span class="nv">user</span>        <span class="nv">haproxy</span>
-</span></span><span class="line"><span class="cl">    <span class="kt">group</span>       <span class="nv">haproxy</span>
-</span></span><span class="line"><span class="cl">    <span class="nv">daemon</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="cl"><span class="n">global</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">log</span> <span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="nb">log</span>  <span class="n">local0</span> <span class="n">warning</span>
+</span></span><span class="line"><span class="cl">    <span class="n">chroot</span>      <span class="o">/</span><span class="k">var</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">haproxy</span>
+</span></span><span class="line"><span class="cl">    <span class="n">pidfile</span>     <span class="o">/</span><span class="k">var</span><span class="o">/</span><span class="n">run</span><span class="o">/</span><span class="n">haproxy</span><span class="o">.</span><span class="n">pid</span>
+</span></span><span class="line"><span class="cl">    <span class="n">maxconn</span>     <span class="mi">4000</span>
+</span></span><span class="line"><span class="cl">    <span class="n">user</span>        <span class="n">haproxy</span>
+</span></span><span class="line"><span class="cl">    <span class="n">group</span>       <span class="n">haproxy</span>
+</span></span><span class="line"><span class="cl">    <span class="n">daemon</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">   <span class="nv">stats</span> <span class="nv">socket</span> <span class="err">/</span><span class="nv">var</span><span class="err">/</span><span class="nv">lib</span><span class="err">/</span><span class="nv">haproxy</span><span class="err">/</span><span class="nv">stats</span>
+</span></span><span class="line"><span class="cl">   <span class="n">stats</span> <span class="n">socket</span> <span class="o">/</span><span class="k">var</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">haproxy</span><span class="o">/</span><span class="n">stats</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="nv">defaults</span>
-</span></span><span class="line"><span class="cl">  <span class="nv">log</span> <span class="nv">global</span>
-</span></span><span class="line"><span class="cl">  <span class="k">option</span>  <span class="nv">httplog</span>
-</span></span><span class="line"><span class="cl">  <span class="k">option</span>  <span class="nv">dontlognull</span>
-</span></span><span class="line"><span class="cl">        <span class="nv">timeout</span> <span class="nv">connect</span> <span class="nv">5000</span>
-</span></span><span class="line"><span class="cl">        <span class="nv">timeout</span> <span class="nv">client</span> <span class="nv">50000</span>
-</span></span><span class="line"><span class="cl">        <span class="nv">timeout</span> <span class="nv">server</span> <span class="nv">50000</span>
+</span></span><span class="line"><span class="cl"><span class="n">defaults</span>
+</span></span><span class="line"><span class="cl">  <span class="nb">log</span> <span class="n">global</span>
+</span></span><span class="line"><span class="cl">  <span class="n">option</span>  <span class="n">httplog</span>
+</span></span><span class="line"><span class="cl">  <span class="n">option</span>  <span class="n">dontlognull</span>
+</span></span><span class="line"><span class="cl">        <span class="n">timeout</span> <span class="n">connect</span> <span class="mi">5000</span>
+</span></span><span class="line"><span class="cl">        <span class="n">timeout</span> <span class="n">client</span> <span class="mi">50000</span>
+</span></span><span class="line"><span class="cl">        <span class="n">timeout</span> <span class="n">server</span> <span class="mi">50000</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="nv">frontend</span> <span class="nv">kube-apiserver</span>
-</span></span><span class="line"><span class="cl">  <span class="nv">bind</span> <span class="err">*:</span><span class="nv">8443</span>
-</span></span><span class="line"><span class="cl">  <span class="nv">mode</span> <span class="nv">tcp</span>
-</span></span><span class="line"><span class="cl">  <span class="k">option</span> <span class="nv">tcplog</span>
-</span></span><span class="line"><span class="cl">  <span class="nv">default_backend</span> <span class="nv">kube-apiserver</span>
+</span></span><span class="line"><span class="cl"><span class="n">frontend</span> <span class="n">kube</span><span class="o">-</span><span class="n">apiserver</span>
+</span></span><span class="line"><span class="cl">  <span class="n">bind</span> <span class="o">*</span><span class="p">:</span><span class="mi">8443</span>
+</span></span><span class="line"><span class="cl">  <span class="n">mode</span> <span class="n">tcp</span>
+</span></span><span class="line"><span class="cl">  <span class="n">option</span> <span class="n">tcplog</span>
+</span></span><span class="line"><span class="cl">  <span class="n">default_backend</span> <span class="n">kube</span><span class="o">-</span><span class="n">apiserver</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="nv">backend</span> <span class="nv">kube-apiserver</span>
-</span></span><span class="line"><span class="cl">    <span class="nv">mode</span> <span class="nv">tcp</span>
-</span></span><span class="line"><span class="cl">    <span class="k">option</span> <span class="nv">tcplog</span>
-</span></span><span class="line"><span class="cl">    <span class="k">option</span> <span class="nv">tcp-check</span>
-</span></span><span class="line"><span class="cl">    <span class="nv">balance</span> <span class="nv">roundrobin</span>
-</span></span><span class="line"><span class="cl">    <span class="nv">default-server</span> <span class="nv">inter</span> <span class="nv">10s</span> <span class="nv">downinter</span> <span class="nv">5s</span> <span class="nv">rise</span> <span class="nv">2</span> <span class="nv">fall</span> <span class="nv">2</span> <span class="nv">slowstart</span> <span class="nv">60s</span> <span class="nv">maxconn</span> <span class="nv">250</span> <span class="nv">maxqueue</span> <span class="nv">256</span> <span class="nv">weight</span> <span class="nv">100</span>
-</span></span><span class="line"><span class="cl">    <span class="nv">server</span> <span class="nv">kube-apiserver-1</span> <span class="mf">10.1.6.48</span><span class="err">:</span><span class="nv">6443</span> <span class="nv">check</span> <span class="c"># Replace the IP address with your own.
-</span></span></span><span class="line"><span class="cl"><span class="c"></span>    <span class="nv">server</span> <span class="nv">kube-apiserver-2</span> <span class="mf">10.1.6.24</span><span class="err">:</span><span class="nv">6443</span> <span class="nv">check</span> <span class="c"># Replace the IP address with your own.
-</span></span></span><span class="line"><span class="cl"><span class="c"></span>    <span class="nv">server</span> <span class="nv">kube-apiserver-3</span> <span class="mf">10.1.6.45</span><span class="err">:</span><span class="nv">6443</span> <span class="nv">check</span> <span class="c"># Replace the IP address with your own.
-</span></span></span></code></pre></div><p>启动Haproxy</p>
+</span></span><span class="line"><span class="cl"><span class="n">backend</span> <span class="n">kube</span><span class="o">-</span><span class="n">apiserver</span>
+</span></span><span class="line"><span class="cl">    <span class="n">mode</span> <span class="n">tcp</span>
+</span></span><span class="line"><span class="cl">    <span class="n">option</span> <span class="n">tcplog</span>
+</span></span><span class="line"><span class="cl">    <span class="n">option</span> <span class="n">tcp</span><span class="o">-</span><span class="n">check</span>
+</span></span><span class="line"><span class="cl">    <span class="n">balance</span> <span class="n">roundrobin</span>
+</span></span><span class="line"><span class="cl">    <span class="n">default</span><span class="o">-</span><span class="n">server</span> <span class="n">inter</span> <span class="mi">10</span><span class="n">s</span> <span class="n">downinter</span> <span class="mi">5</span><span class="n">s</span> <span class="n">rise</span> <span class="mi">2</span> <span class="n">fall</span> <span class="mi">2</span> <span class="n">slowstart</span> <span class="mi">60</span><span class="n">s</span> <span class="n">maxconn</span> <span class="mi">250</span> <span class="n">maxqueue</span> <span class="mi">256</span> <span class="n">weight</span> <span class="mi">100</span>
+</span></span><span class="line"><span class="cl">    <span class="n">server</span> <span class="n">kube</span><span class="o">-</span><span class="n">apiserver</span><span class="o">-</span><span class="mi">1</span> <span class="mf">10.1</span><span class="o">.</span><span class="mf">6.48</span><span class="p">:</span><span class="mi">6443</span> <span class="n">check</span> <span class="c1"># Replace the IP address with your own.</span>
+</span></span><span class="line"><span class="cl">    <span class="n">server</span> <span class="n">kube</span><span class="o">-</span><span class="n">apiserver</span><span class="o">-</span><span class="mi">2</span> <span class="mf">10.1</span><span class="o">.</span><span class="mf">6.24</span><span class="p">:</span><span class="mi">6443</span> <span class="n">check</span> <span class="c1"># Replace the IP address with your own.</span>
+</span></span><span class="line"><span class="cl">    <span class="n">server</span> <span class="n">kube</span><span class="o">-</span><span class="n">apiserver</span><span class="o">-</span><span class="mi">3</span> <span class="mf">10.1</span><span class="o">.</span><span class="mf">6.45</span><span class="p">:</span><span class="mi">6443</span> <span class="n">check</span> <span class="c1"># Replace the IP address with your own.</span>
+</span></span></code></pre></div><p>启动Haproxy</p>
 <blockquote>
 <p>请确保你的LB2也已经进行如上配置</p>
 </blockquote>
@@ -587,84 +606,84 @@
 </span></span></code></pre></div><p>配置Keepalived
 <code>KP1</code>配置如下</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">vim /etc/keepalived/keepalived.conf
-</span></span></code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-conf" data-lang="conf"><span class="line"><span class="cl"><span class="nv">global_defs</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">  <span class="nv">notification_email</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">  <span class="p">}</span>
-</span></span><span class="line"><span class="cl">  <span class="nv">router_id</span> <span class="nv">LVS_DEVEL</span>
-</span></span><span class="line"><span class="cl">  <span class="nv">vrrp_skip_check_adv_addr</span>
-</span></span><span class="line"><span class="cl">  <span class="nv">vrrp_garp_interval</span> <span class="nv">0</span>
-</span></span><span class="line"><span class="cl">  <span class="nv">vrrp_gna_interval</span> <span class="nv">0</span>
-</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">global_defs {
+</span></span><span class="line"><span class="cl">  notification_email {
+</span></span><span class="line"><span class="cl">  }
+</span></span><span class="line"><span class="cl">  router_id LVS_DEVEL
+</span></span><span class="line"><span class="cl">  vrrp_skip_check_adv_addr
+</span></span><span class="line"><span class="cl">  vrrp_garp_interval 0
+</span></span><span class="line"><span class="cl">  vrrp_gna_interval 0
+</span></span><span class="line"><span class="cl">}
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="nv">vrrp_script</span> <span class="nv">chk_haproxy</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">  <span class="nv">script</span> <span class="s">&#34;killall -0 haproxy&#34;</span>
-</span></span><span class="line"><span class="cl">  <span class="nv">interval</span> <span class="nv">2</span>
-</span></span><span class="line"><span class="cl">  <span class="nv">weight</span> <span class="nv">2</span>
-</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">vrrp_script chk_haproxy {
+</span></span><span class="line"><span class="cl">  script &#34;killall -0 haproxy&#34;
+</span></span><span class="line"><span class="cl">  interval 2
+</span></span><span class="line"><span class="cl">  weight 2
+</span></span><span class="line"><span class="cl">}
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="nv">vrrp_instance</span> <span class="nv">haproxy-vip</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">  <span class="nv">state</span> <span class="nv">BACKUP</span>
-</span></span><span class="line"><span class="cl">  <span class="nv">priority</span> <span class="nv">100</span>
-</span></span><span class="line"><span class="cl">  <span class="nv">interface</span> <span class="nv">ens192</span>                      <span class="c"># 网卡名称
-</span></span></span><span class="line"><span class="cl"><span class="c"></span>  <span class="nv">virtual_router_id</span> <span class="nv">60</span>
-</span></span><span class="line"><span class="cl">  <span class="nv">advert_int</span> <span class="nv">1</span>
-</span></span><span class="line"><span class="cl">  <span class="nv">authentication</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">    <span class="nv">auth_type</span> <span class="nv">PASS</span>
-</span></span><span class="line"><span class="cl">    <span class="nv">auth_pass</span> <span class="nv">1111</span>
-</span></span><span class="line"><span class="cl">  <span class="p">}</span>
-</span></span><span class="line"><span class="cl">  <span class="nv">unicast_src_ip</span> <span class="mf">10.1.6.213</span>      <span class="c"># The IP address of this machine
-</span></span></span><span class="line"><span class="cl"><span class="c"></span>  <span class="nv">unicast_peer</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">    <span class="mf">10.1.6.214</span>                  <span class="c"># The IP address of peer machines
-</span></span></span><span class="line"><span class="cl"><span class="c"></span>  <span class="p">}</span>
+</span></span><span class="line"><span class="cl">vrrp_instance haproxy-vip {
+</span></span><span class="line"><span class="cl">  state BACKUP
+</span></span><span class="line"><span class="cl">  priority 100
+</span></span><span class="line"><span class="cl">  interface ens192                      # 网卡名称
+</span></span><span class="line"><span class="cl">  virtual_router_id 60
+</span></span><span class="line"><span class="cl">  advert_int 1
+</span></span><span class="line"><span class="cl">  authentication {
+</span></span><span class="line"><span class="cl">    auth_type PASS
+</span></span><span class="line"><span class="cl">    auth_pass 1111
+</span></span><span class="line"><span class="cl">  }
+</span></span><span class="line"><span class="cl">  unicast_src_ip 10.1.6.213      # The IP address of this machine
+</span></span><span class="line"><span class="cl">  unicast_peer {
+</span></span><span class="line"><span class="cl">    10.1.6.214                  # The IP address of peer machines
+</span></span><span class="line"><span class="cl">  }
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">  <span class="nv">virtual_ipaddress</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">    <span class="mf">10.1.6.215/24</span>                  <span class="c"># 虚拟IP地址
-</span></span></span><span class="line"><span class="cl"><span class="c"></span>  <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  virtual_ipaddress {
+</span></span><span class="line"><span class="cl">    10.1.6.215/24                  # 虚拟IP地址
+</span></span><span class="line"><span class="cl">  }
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">  <span class="nv">track_script</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">    <span class="nv">chk_haproxy</span>
-</span></span><span class="line"><span class="cl">  <span class="p">}</span>
-</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">  track_script {
+</span></span><span class="line"><span class="cl">    chk_haproxy
+</span></span><span class="line"><span class="cl">  }
+</span></span><span class="line"><span class="cl">}
 </span></span></code></pre></div><p><code>KP2</code>配置如下</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">vim /etc/keepalived/keepalived.conf
-</span></span></code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-conf" data-lang="conf"><span class="line"><span class="cl"><span class="nv">global_defs</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">  <span class="nv">notification_email</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">  <span class="p">}</span>
-</span></span><span class="line"><span class="cl">  <span class="nv">router_id</span> <span class="nv">LVS_DEVEL</span>
-</span></span><span class="line"><span class="cl">  <span class="nv">vrrp_skip_check_adv_addr</span>
-</span></span><span class="line"><span class="cl">  <span class="nv">vrrp_garp_interval</span> <span class="nv">0</span>
-</span></span><span class="line"><span class="cl">  <span class="nv">vrrp_gna_interval</span> <span class="nv">0</span>
-</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">global_defs {
+</span></span><span class="line"><span class="cl">  notification_email {
+</span></span><span class="line"><span class="cl">  }
+</span></span><span class="line"><span class="cl">  router_id LVS_DEVEL
+</span></span><span class="line"><span class="cl">  vrrp_skip_check_adv_addr
+</span></span><span class="line"><span class="cl">  vrrp_garp_interval 0
+</span></span><span class="line"><span class="cl">  vrrp_gna_interval 0
+</span></span><span class="line"><span class="cl">}
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="nv">vrrp_script</span> <span class="nv">chk_haproxy</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">  <span class="nv">script</span> <span class="s">&#34;killall -0 haproxy&#34;</span>
-</span></span><span class="line"><span class="cl">  <span class="nv">interval</span> <span class="nv">2</span>
-</span></span><span class="line"><span class="cl">  <span class="nv">weight</span> <span class="nv">2</span>
-</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">vrrp_script chk_haproxy {
+</span></span><span class="line"><span class="cl">  script &#34;killall -0 haproxy&#34;
+</span></span><span class="line"><span class="cl">  interval 2
+</span></span><span class="line"><span class="cl">  weight 2
+</span></span><span class="line"><span class="cl">}
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="nv">vrrp_instance</span> <span class="nv">haproxy-vip</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">  <span class="nv">state</span> <span class="nv">BACKUP</span>
-</span></span><span class="line"><span class="cl">  <span class="nv">priority</span> <span class="nv">90</span>
-</span></span><span class="line"><span class="cl">  <span class="nv">interface</span> <span class="nv">ens192</span>                      <span class="c"># Network card
-</span></span></span><span class="line"><span class="cl"><span class="c"></span>  <span class="nv">virtual_router_id</span> <span class="nv">60</span>
-</span></span><span class="line"><span class="cl">  <span class="nv">advert_int</span> <span class="nv">1</span>
-</span></span><span class="line"><span class="cl">  <span class="nv">authentication</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">    <span class="nv">auth_type</span> <span class="nv">PASS</span>
-</span></span><span class="line"><span class="cl">    <span class="nv">auth_pass</span> <span class="nv">1111</span>
-</span></span><span class="line"><span class="cl">  <span class="p">}</span>
-</span></span><span class="line"><span class="cl">  <span class="nv">unicast_src_ip</span> <span class="mf">10.1.6.214</span>      <span class="c"># The IP address of this machine
-</span></span></span><span class="line"><span class="cl"><span class="c"></span>  <span class="nv">unicast_peer</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">    <span class="mf">10.1.6.214</span>                         <span class="c"># The IP address of peer machines
-</span></span></span><span class="line"><span class="cl"><span class="c"></span>  <span class="p">}</span>
+</span></span><span class="line"><span class="cl">vrrp_instance haproxy-vip {
+</span></span><span class="line"><span class="cl">  state BACKUP
+</span></span><span class="line"><span class="cl">  priority 90
+</span></span><span class="line"><span class="cl">  interface ens192                      # Network card
+</span></span><span class="line"><span class="cl">  virtual_router_id 60
+</span></span><span class="line"><span class="cl">  advert_int 1
+</span></span><span class="line"><span class="cl">  authentication {
+</span></span><span class="line"><span class="cl">    auth_type PASS
+</span></span><span class="line"><span class="cl">    auth_pass 1111
+</span></span><span class="line"><span class="cl">  }
+</span></span><span class="line"><span class="cl">  unicast_src_ip 10.1.6.214      # The IP address of this machine
+</span></span><span class="line"><span class="cl">  unicast_peer {
+</span></span><span class="line"><span class="cl">    10.1.6.214                         # The IP address of peer machines
+</span></span><span class="line"><span class="cl">  }
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">  <span class="nv">virtual_ipaddress</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">    <span class="mf">10.1.6.215/24</span>                  <span class="c"># The VIP address
-</span></span></span><span class="line"><span class="cl"><span class="c"></span>  <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  virtual_ipaddress {
+</span></span><span class="line"><span class="cl">    10.1.6.215/24                  # The VIP address
+</span></span><span class="line"><span class="cl">  }
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">  <span class="nv">track_script</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">    <span class="nv">chk_haproxy</span>
-</span></span><span class="line"><span class="cl">  <span class="p">}</span>
-</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">  track_script {
+</span></span><span class="line"><span class="cl">    chk_haproxy
+</span></span><span class="line"><span class="cl">  }
+</span></span><span class="line"><span class="cl">}
 </span></span></code></pre></div><p>请确保你的<code>KP1</code>和<code>KP2</code>都完成了如上配置</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">systemctl start keepalived
 </span></span><span class="line"><span class="cl">systemctl <span class="nb">enable</span> keepalived
@@ -672,16 +691,16 @@
 <ul>
 <li>
 <p>所有的Master主机都需要进行配置,防止后续解析不到<code>api.k8s.verbos.com</code></p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-conf" data-lang="conf"><span class="line"><span class="cl"><span class="mf">10.1.6.48</span> <span class="nv">containerd-master1</span>
-</span></span><span class="line"><span class="cl"><span class="mf">10.1.6.24</span> <span class="nv">containerd-master2</span>
-</span></span><span class="line"><span class="cl"><span class="mf">10.1.6.45</span> <span class="nv">containerd-master3</span>
-</span></span><span class="line"><span class="cl"><span class="mf">10.1.6.46</span> <span class="nv">containerd-work1</span>
-</span></span><span class="line"><span class="cl"><span class="mf">10.1.6.43</span> <span class="nv">containerd-work2</span>
-</span></span><span class="line"><span class="cl"><span class="mf">10.1.6.47</span> <span class="nv">containerd-work3</span>
-</span></span><span class="line"><span class="cl"><span class="mf">10.1.6.51</span> <span class="nv">etcd1</span>
-</span></span><span class="line"><span class="cl"><span class="mf">10.1.6.52</span> <span class="nv">etcd2</span>
-</span></span><span class="line"><span class="cl"><span class="mf">10.1.6.53</span> <span class="nv">etcd3</span>
-</span></span><span class="line"><span class="cl"><span class="mf">10.1.6.215</span>  <span class="nv">api.k8s.verbos.com</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">10.1.6.48 containerd-master1
+</span></span><span class="line"><span class="cl">10.1.6.24 containerd-master2
+</span></span><span class="line"><span class="cl">10.1.6.45 containerd-master3
+</span></span><span class="line"><span class="cl">10.1.6.46 containerd-work1
+</span></span><span class="line"><span class="cl">10.1.6.43 containerd-work2
+</span></span><span class="line"><span class="cl">10.1.6.47 containerd-work3
+</span></span><span class="line"><span class="cl">10.1.6.51 etcd1
+</span></span><span class="line"><span class="cl">10.1.6.52 etcd2
+</span></span><span class="line"><span class="cl">10.1.6.53 etcd3
+</span></span><span class="line"><span class="cl">10.1.6.215  api.k8s.verbos.com
 </span></span></code></pre></div><h3 id="设置etcd集群证书">设置Etcd集群证书</h3>
 <p>如果你使用的是工作在Work节点的Etcd或者其他单独的Etcd集群,请将Etcd的<code>ca</code>证书进行拷贝到Master节点当中.</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="nb">export</span> <span class="nv">CONTROL_PLANE</span><span class="o">=</span><span class="s2">&#34;root@10.1.6.48&#34;</span>
@@ -786,7 +805,7 @@
 <p>如果你需要修改kubelet的数据存储目录,请按照如下方式进行操作</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">vim /etc/sysconfig/kubelet
 </span></span></code></pre></div><p>设置你的kubelet的数据存储目录(建议单独的为kubelet挂载一块数据盘)</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-conf" data-lang="conf"><span class="line"><span class="cl"><span class="nv">KUBELET_EXTRA_ARGS</span><span class="o">=</span><span class="s">&#34;--root-dir=/data/k8s/kubelet&#34;</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">KUBELET_EXTRA_ARGS=&#34;--root-dir=/data/k8s/kubelet&#34;
 </span></span></code></pre></div><p>重启kubelet</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">systemctl daemon-reloa
 </span></span><span class="line"><span class="cl">systemctl restart kubelet
@@ -819,7 +838,7 @@ TODO: 删除前请注意备份您的数据。</p>
     
     <section class="article-tags">
         
-            <a href="/tags/kubernetes/">kubernetes</a>
+            <a href="/tags/kubernetes/">Kubernetes</a>
         
     </section>
 

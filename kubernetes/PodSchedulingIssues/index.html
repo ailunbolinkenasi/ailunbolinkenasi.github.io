@@ -272,6 +272,25 @@
         
 
         <div class="menu-bottom-section">
+                <li id="i18n-switch">  
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-language" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M4 5h7" />
+  <path d="M9 3v2c0 4.418 -2.239 8 -5 8" />
+  <path d="M5 9c-.003 2.144 2.952 3.908 6.7 4" />
+  <path d="M12 20l4 -9l4 9" />
+  <path d="M19.1 18h-6.2" />
+</svg>
+
+
+
+                    <select name="language" onchange="window.location.href = this.selectedOptions[0].value">
+                        
+                            <option value="https://blog.mletter.cn/" selected></option>
+                        
+                    </select>
+                </li>
+            
             
             
                 <li id="dark-mode-toggle">
@@ -356,7 +375,7 @@
     <header class="article-category">
         
             <a href="/categories/kubernetes/" >
-                kubernetes
+                Kubernetes
             </a>
         
     </header>
@@ -426,8 +445,8 @@
 <h2 id="生产环境解决问题办法">生产环境解决问题办法</h2>
 <p>找到问题跟原所在,默认的<code>maxPods: 110</code>,K8S默认一个节点上的pod调度数是110，当前有限制pod数的需求。
 <code>vim /var/lib/kubelet/config.yaml</code></p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-conf" data-lang="conf"><span class="line"><span class="cl"><span class="nv">maxPods</span><span class="err">:</span> <span class="nv">110</span> <span class="c"># 修改为maxPods: 330
-</span></span></span></code></pre></div><h2 id="影响pod调度的情况">影响Pod调度的情况</h2>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">maxPods: 110 # 修改为maxPods: 330
+</span></span></code></pre></div><h2 id="影响pod调度的情况">影响Pod调度的情况</h2>
 <h3 id="requests资源限制">requests资源限制</h3>
 <ul>
 <li><code>requests</code>：是一种硬限制,Kubernetes在进行Pod请求调度的时候,节点的可用资源必须满足<code>500m</code>的CPU才能进行调度,且使用最大限制为<code>1</code>个CPU,如果该Pod超过请求的最大限制,则Kubernetes将会把该Pod进行Kill重启。</li>
@@ -508,7 +527,7 @@
     
     <section class="article-tags">
         
-            <a href="/tags/kubernetes/">kubernetes</a>
+            <a href="/tags/kubernetes/">Kubernetes</a>
         
     </section>
 

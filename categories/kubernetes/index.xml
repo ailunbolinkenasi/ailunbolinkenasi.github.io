@@ -6,7 +6,7 @@
         <description>Recent content in Kubernetes on 春日心动日记</description>
         <generator>Hugo -- gohugo.io</generator>
         <language>en-us</language>
-        <copyright>Example Person</copyright>
+        <copyright>Live and learn. 🌱</copyright>
         <lastBuildDate>Fri, 08 Dec 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://blog.mletter.cn/categories/kubernetes/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>kubernetes基于EFK的日志落地实现</title>
         <link>https://blog.mletter.cn/kubernetes/efk/</link>

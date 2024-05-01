@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
     <channel>
         <title>Api-Server on 春日心动日记</title>
-        <link>https://blog.mletter.cn/tags/api-server/</link>
+        <link>http://localhost:1313/tags/api-server/</link>
         <description>Recent content in Api-Server on 春日心动日记</description>
         <generator>Hugo -- gohugo.io</generator>
         <language>en-us</language>
         <copyright>Live and learn. 🌱</copyright>
-        <lastBuildDate>Tue, 07 Feb 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://blog.mletter.cn/tags/api-server/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Tue, 07 Feb 2023 00:00:00 +0000</lastBuildDate><atom:link href="http://localhost:1313/tags/api-server/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>Kubernetes中Api-Server简单解读</title>
-        <link>https://blog.mletter.cn/kubernetes/ApiServerRead/</link>
+        <link>http://localhost:1313/kubernetes/ApiServerRead/</link>
         <pubDate>Tue, 07 Feb 2023 00:00:00 +0000</pubDate>
         
-        <guid>https://blog.mletter.cn/kubernetes/ApiServerRead/</guid>
+        <guid>http://localhost:1313/kubernetes/ApiServerRead/</guid>
         <description>&lt;img src="https://bj.bcebos.com/baidu-rmb-video-cover-1/2b6495c8749e3f4e4369e28cb50eeb87.png" alt="Featured image of post Kubernetes中Api-Server简单解读" /&gt;&lt;p&gt;&lt;strong&gt;访问控制概览&lt;/strong&gt;
 Kubernetes API的每个请求都会经过多阶段的访问控制之后才会被接受,这一阶段包括认证、授权、以及准入控制(Admission Control)等&lt;/p&gt;
 &lt;p&gt;

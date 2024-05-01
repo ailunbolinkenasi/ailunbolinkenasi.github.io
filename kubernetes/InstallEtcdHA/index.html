@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html lang="en-us" dir="ltr">
-    <head><meta charset='utf-8'>
+    <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset='utf-8'>
 <meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='默认情况下，kubeadm 在每个控制平面节点上运行一个本地 etcd 实例。也可以使用外部的 etcd 集群，并在不同的主机上提供 etcd 实例。 这两种方法的区别在 高可用拓扑的选项 页面中阐述。这个任务将指导你创建一个由三个成员组成的高可用外部 etcd 集群，该集群在创建过程中可被 kubeadm 使用。'>
 <title>使用Kubeadm创建一个高可用的ETCD集群</title>
 
-<link rel='canonical' href='https://blog.mletter.cn/kubernetes/InstallEtcdHA/'>
+<link rel='canonical' href='http://localhost:1313/kubernetes/InstallEtcdHA/'>
 
 <link rel="stylesheet" href="/scss/style.min.5b5b6573642727589522074c7e8eccf1bed86449936db407920f51943938e582.css"><meta property='og:title' content='使用Kubeadm创建一个高可用的ETCD集群'>
 <meta property='og:description' content='默认情况下，kubeadm 在每个控制平面节点上运行一个本地 etcd 实例。也可以使用外部的 etcd 集群，并在不同的主机上提供 etcd 实例。 这两种方法的区别在 高可用拓扑的选项 页面中阐述。这个任务将指导你创建一个由三个成员组成的高可用外部 etcd 集群，该集群在创建过程中可被 kubeadm 使用。'>
-<meta property='og:url' content='https://blog.mletter.cn/kubernetes/InstallEtcdHA/'>
+<meta property='og:url' content='http://localhost:1313/kubernetes/InstallEtcdHA/'>
 <meta property='og:site_name' content='春日心动日记'>
 <meta property='og:type' content='article'><meta property='article:section' content='Posts' /><meta property='article:tag' content='kubernetes' /><meta property='article:tag' content='etcd' /><meta property='article:published_time' content='2023-02-26T00:00:00&#43;00:00'/><meta property='article:modified_time' content='2023-02-26T00:00:00&#43;00:00'/><meta property='og:image' content='https://img.linux.net.cn/data/attachment/album/201501/29/141718izklanww82qm888k.png' />
 <meta name="twitter:title" content="使用Kubeadm创建一个高可用的ETCD集群">
@@ -277,10 +277,10 @@
         
         <div class="widget--toc">
             <nav id="TableOfContents">
-  <ol>
+  <ul>
     <li><a href="#使用kubeadm创建一个高可用的etcd集群">使用Kubeadm创建一个高可用的Etcd集群</a></li>
     <li><a href="#准备开始">准备开始</a>
-      <ol>
+      <ul>
         <li><a href="#将kubelet配置为etcd的服务启动管理器">将Kubelet配置为Etcd的服务启动管理器</a></li>
         <li><a href="#为kubeadm创建配置文件">为Kubeadm创建配置文件</a></li>
         <li><a href="#生成证书颁发机构">生成证书颁发机构</a></li>
@@ -289,9 +289,9 @@
         <li><a href="#请检查证书文件是否都存在">请检查证书文件是否都存在</a></li>
         <li><a href="#创建etcd的pod清单">创建Etcd的Pod清单</a></li>
         <li><a href="#检查etcd的pod是否运行">检查Etcd的Pod是否运行</a></li>
-      </ol>
+      </ul>
     </li>
-  </ol>
+  </ul>
 </nav>
         </div>
     </section>

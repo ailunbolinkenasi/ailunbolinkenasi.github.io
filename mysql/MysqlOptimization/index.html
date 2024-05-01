@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html lang="en-us" dir="ltr">
-    <head><meta charset='utf-8'>
+    <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset='utf-8'>
 <meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='大概的优化思路分为以下几个内容'>
 <title>MySQL小小优化思路简单版本</title>
 
-<link rel='canonical' href='https://blog.mletter.cn/mysql/MysqlOptimization/'>
+<link rel='canonical' href='http://localhost:1313/mysql/MysqlOptimization/'>
 
 <link rel="stylesheet" href="/scss/style.min.5b5b6573642727589522074c7e8eccf1bed86449936db407920f51943938e582.css"><meta property='og:title' content='MySQL小小优化思路简单版本'>
 <meta property='og:description' content='大概的优化思路分为以下几个内容'>
-<meta property='og:url' content='https://blog.mletter.cn/mysql/MysqlOptimization/'>
+<meta property='og:url' content='http://localhost:1313/mysql/MysqlOptimization/'>
 <meta property='og:site_name' content='春日心动日记'>
 <meta property='og:type' content='article'><meta property='article:section' content='Posts' /><meta property='article:tag' content='mysql' /><meta property='article:published_time' content='2022-07-20T00:00:00&#43;00:00'/><meta property='article:modified_time' content='2022-07-20T00:00:00&#43;00:00'/>
 <meta name="twitter:title" content="MySQL小小优化思路简单版本">
@@ -276,47 +276,47 @@
         
         <div class="widget--toc">
             <nav id="TableOfContents">
-  <ol>
+  <ul>
     <li><a href="#mysql性能优化-优化思路">MySQL性能优化-优化思路</a></li>
     <li><a href="#硬件层面优化">硬件层面优化</a></li>
     <li><a href="#系统层面优化">系统层面优化</a>
-      <ol>
+      <ul>
         <li><a href="#如果可能存在的是io问题">如果可能存在的是IO问题</a></li>
-      </ol>
+      </ul>
     </li>
     <li><a href="#mysql版本选择优化">MySQL版本选择优化</a></li>
     <li><a href="#mysql三层结构及参数优化">MySQL三层结构及参数优化</a>
-      <ol>
+      <ul>
         <li><a href="#连接层优化">连接层优化</a></li>
         <li><a href="#server层优化">Server层优化</a></li>
         <li><a href="#engine层优化">Engine层优化</a></li>
-      </ol>
+      </ul>
     </li>
     <li><a href="#全局锁读global-read-lock-grl">全局锁读Global Read Lock (GRL）</a>
-      <ol>
+      <ul>
         <li><a href="#全局读锁的排查方法">全局读锁的排查方法</a></li>
         <li><a href="#57版本全局读锁排查">5.7版本全局读锁排查</a></li>
         <li><a href="#经典故障案例">经典故障案例</a></li>
-      </ol>
+      </ul>
     </li>
     <li><a href="#table-lock表级锁">Table Lock(表级锁)</a>
-      <ol>
+      <ul>
         <li><a href="#检测方式">检测方式</a></li>
-      </ol>
+      </ul>
     </li>
     <li><a href="#metadatalock元数据锁">MetaDataLock(元数据锁)</a>
-      <ol>
+      <ul>
         <li><a href="#检测方式-1">检测方式</a></li>
-      </ol>
+      </ul>
     </li>
     <li><a href="#autoinclock自增锁">AutoincLock(自增锁)</a></li>
     <li><a href="#innodb-row-lock行级锁">Innodb Row Lock(行级锁)</a>
-      <ol>
+      <ul>
         <li><a href="#优化方向">优化方向</a></li>
-      </ol>
+      </ul>
     </li>
     <li><a href="#dead-lock死锁">Dead Lock死锁</a></li>
-  </ol>
+  </ul>
 </nav>
         </div>
     </section>

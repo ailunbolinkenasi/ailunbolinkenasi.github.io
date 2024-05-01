@@ -2,273 +2,289 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
     <channel>
         <title>Tags on 春日心动日记</title>
-        <link>https://blog.mletter.cn/tags/</link>
+        <link>http://localhost:1313/tags/</link>
         <description>Recent content in Tags on 春日心动日记</description>
         <generator>Hugo -- gohugo.io</generator>
         <language>en-us</language>
         <copyright>Live and learn. 🌱</copyright>
-        <lastBuildDate>Mon, 15 Apr 2024 00:00:00 +0000</lastBuildDate><atom:link href="https://blog.mletter.cn/tags/index.xml" rel="self" type="application/rss+xml" /><item>
-        <title>Kubernetes</title>
-        <link>https://blog.mletter.cn/tags/kubernetes/</link>
-        <pubDate>Mon, 15 Apr 2024 00:00:00 +0000</pubDate>
+        <lastBuildDate>Wed, 01 May 2024 00:00:00 +0000</lastBuildDate><atom:link href="http://localhost:1313/tags/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>东莞</title>
+        <link>http://localhost:1313/tags/%E4%B8%9C%E8%8E%9E/</link>
+        <pubDate>Wed, 01 May 2024 00:00:00 +0000</pubDate>
         
-        <guid>https://blog.mletter.cn/tags/kubernetes/</guid>
+        <guid>http://localhost:1313/tags/%E4%B8%9C%E8%8E%9E/</guid>
         <description></description>
         </item>
         <item>
-        <title>Sealos</title>
-        <link>https://blog.mletter.cn/tags/sealos/</link>
-        <pubDate>Mon, 15 Apr 2024 00:00:00 +0000</pubDate>
+        <title>广东</title>
+        <link>http://localhost:1313/tags/%E5%B9%BF%E4%B8%9C/</link>
+        <pubDate>Wed, 01 May 2024 00:00:00 +0000</pubDate>
         
-        <guid>https://blog.mletter.cn/tags/sealos/</guid>
-        <description></description>
-        </item>
-        <item>
-        <title>随笔</title>
-        <link>https://blog.mletter.cn/tags/%E9%9A%8F%E7%AC%94/</link>
-        <pubDate>Sun, 17 Mar 2024 00:00:00 +0000</pubDate>
-        
-        <guid>https://blog.mletter.cn/tags/%E9%9A%8F%E7%AC%94/</guid>
-        <description></description>
-        </item>
-        <item>
-        <title>2024</title>
-        <link>https://blog.mletter.cn/tags/2024/</link>
-        <pubDate>Tue, 13 Feb 2024 00:00:00 +0000</pubDate>
-        
-        <guid>https://blog.mletter.cn/tags/2024/</guid>
-        <description></description>
-        </item>
-        <item>
-        <title>春节</title>
-        <link>https://blog.mletter.cn/tags/%E6%98%A5%E8%8A%82/</link>
-        <pubDate>Tue, 13 Feb 2024 00:00:00 +0000</pubDate>
-        
-        <guid>https://blog.mletter.cn/tags/%E6%98%A5%E8%8A%82/</guid>
+        <guid>http://localhost:1313/tags/%E5%B9%BF%E4%B8%9C/</guid>
         <description></description>
         </item>
         <item>
         <title>日记</title>
-        <link>https://blog.mletter.cn/tags/%E6%97%A5%E8%AE%B0/</link>
+        <link>http://localhost:1313/tags/%E6%97%A5%E8%AE%B0/</link>
+        <pubDate>Wed, 01 May 2024 00:00:00 +0000</pubDate>
+        
+        <guid>http://localhost:1313/tags/%E6%97%A5%E8%AE%B0/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Kubernetes</title>
+        <link>http://localhost:1313/tags/kubernetes/</link>
+        <pubDate>Mon, 15 Apr 2024 00:00:00 +0000</pubDate>
+        
+        <guid>http://localhost:1313/tags/kubernetes/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Sealos</title>
+        <link>http://localhost:1313/tags/sealos/</link>
+        <pubDate>Mon, 15 Apr 2024 00:00:00 +0000</pubDate>
+        
+        <guid>http://localhost:1313/tags/sealos/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>随笔</title>
+        <link>http://localhost:1313/tags/%E9%9A%8F%E7%AC%94/</link>
+        <pubDate>Sun, 17 Mar 2024 00:00:00 +0000</pubDate>
+        
+        <guid>http://localhost:1313/tags/%E9%9A%8F%E7%AC%94/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>2024</title>
+        <link>http://localhost:1313/tags/2024/</link>
         <pubDate>Tue, 13 Feb 2024 00:00:00 +0000</pubDate>
         
-        <guid>https://blog.mletter.cn/tags/%E6%97%A5%E8%AE%B0/</guid>
+        <guid>http://localhost:1313/tags/2024/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>春节</title>
+        <link>http://localhost:1313/tags/%E6%98%A5%E8%8A%82/</link>
+        <pubDate>Tue, 13 Feb 2024 00:00:00 +0000</pubDate>
+        
+        <guid>http://localhost:1313/tags/%E6%98%A5%E8%8A%82/</guid>
         <description></description>
         </item>
         <item>
         <title>Gitlab</title>
-        <link>https://blog.mletter.cn/tags/gitlab/</link>
+        <link>http://localhost:1313/tags/gitlab/</link>
         <pubDate>Tue, 16 Jan 2024 00:00:00 +0000</pubDate>
         
-        <guid>https://blog.mletter.cn/tags/gitlab/</guid>
+        <guid>http://localhost:1313/tags/gitlab/</guid>
         <description></description>
         </item>
         <item>
         <title>代码仓库</title>
-        <link>https://blog.mletter.cn/tags/%E4%BB%A3%E7%A0%81%E4%BB%93%E5%BA%93/</link>
+        <link>http://localhost:1313/tags/%E4%BB%A3%E7%A0%81%E4%BB%93%E5%BA%93/</link>
         <pubDate>Tue, 16 Jan 2024 00:00:00 +0000</pubDate>
         
-        <guid>https://blog.mletter.cn/tags/%E4%BB%A3%E7%A0%81%E4%BB%93%E5%BA%93/</guid>
+        <guid>http://localhost:1313/tags/%E4%BB%A3%E7%A0%81%E4%BB%93%E5%BA%93/</guid>
         <description></description>
         </item>
         <item>
         <title>四川</title>
-        <link>https://blog.mletter.cn/tags/%E5%9B%9B%E5%B7%9D/</link>
+        <link>http://localhost:1313/tags/%E5%9B%9B%E5%B7%9D/</link>
         <pubDate>Thu, 23 Nov 2023 00:00:00 +0000</pubDate>
         
-        <guid>https://blog.mletter.cn/tags/%E5%9B%9B%E5%B7%9D/</guid>
+        <guid>http://localhost:1313/tags/%E5%9B%9B%E5%B7%9D/</guid>
         <description></description>
         </item>
         <item>
         <title>Gin</title>
-        <link>https://blog.mletter.cn/tags/gin/</link>
+        <link>http://localhost:1313/tags/gin/</link>
         <pubDate>Sat, 26 Aug 2023 00:00:00 +0000</pubDate>
         
-        <guid>https://blog.mletter.cn/tags/gin/</guid>
+        <guid>http://localhost:1313/tags/gin/</guid>
         <description></description>
         </item>
         <item>
         <title>Go</title>
-        <link>https://blog.mletter.cn/tags/go/</link>
+        <link>http://localhost:1313/tags/go/</link>
         <pubDate>Sat, 26 Aug 2023 00:00:00 +0000</pubDate>
         
-        <guid>https://blog.mletter.cn/tags/go/</guid>
+        <guid>http://localhost:1313/tags/go/</guid>
         <description></description>
         </item>
         <item>
         <title>个人项目</title>
-        <link>https://blog.mletter.cn/tags/%E4%B8%AA%E4%BA%BA%E9%A1%B9%E7%9B%AE/</link>
+        <link>http://localhost:1313/tags/%E4%B8%AA%E4%BA%BA%E9%A1%B9%E7%9B%AE/</link>
         <pubDate>Sat, 26 Aug 2023 00:00:00 +0000</pubDate>
         
-        <guid>https://blog.mletter.cn/tags/%E4%B8%AA%E4%BA%BA%E9%A1%B9%E7%9B%AE/</guid>
+        <guid>http://localhost:1313/tags/%E4%B8%AA%E4%BA%BA%E9%A1%B9%E7%9B%AE/</guid>
         <description></description>
         </item>
         <item>
         <title>API</title>
-        <link>https://blog.mletter.cn/tags/api/</link>
+        <link>http://localhost:1313/tags/api/</link>
         <pubDate>Thu, 10 Aug 2023 00:00:00 +0000</pubDate>
         
-        <guid>https://blog.mletter.cn/tags/api/</guid>
+        <guid>http://localhost:1313/tags/api/</guid>
         <description></description>
         </item>
         <item>
         <title>人生第一次</title>
-        <link>https://blog.mletter.cn/tags/%E4%BA%BA%E7%94%9F%E7%AC%AC%E4%B8%80%E6%AC%A1/</link>
+        <link>http://localhost:1313/tags/%E4%BA%BA%E7%94%9F%E7%AC%AC%E4%B8%80%E6%AC%A1/</link>
         <pubDate>Thu, 10 Aug 2023 00:00:00 +0000</pubDate>
         
-        <guid>https://blog.mletter.cn/tags/%E4%BA%BA%E7%94%9F%E7%AC%AC%E4%B8%80%E6%AC%A1/</guid>
+        <guid>http://localhost:1313/tags/%E4%BA%BA%E7%94%9F%E7%AC%AC%E4%B8%80%E6%AC%A1/</guid>
         <description></description>
         </item>
         <item>
         <title>Traefik</title>
-        <link>https://blog.mletter.cn/tags/traefik/</link>
+        <link>http://localhost:1313/tags/traefik/</link>
         <pubDate>Fri, 07 Apr 2023 00:00:00 +0000</pubDate>
         
-        <guid>https://blog.mletter.cn/tags/traefik/</guid>
+        <guid>http://localhost:1313/tags/traefik/</guid>
         <description></description>
         </item>
         <item>
         <title>北京</title>
-        <link>https://blog.mletter.cn/tags/%E5%8C%97%E4%BA%AC/</link>
+        <link>http://localhost:1313/tags/%E5%8C%97%E4%BA%AC/</link>
         <pubDate>Fri, 10 Mar 2023 00:00:00 +0000</pubDate>
         
-        <guid>https://blog.mletter.cn/tags/%E5%8C%97%E4%BA%AC/</guid>
+        <guid>http://localhost:1313/tags/%E5%8C%97%E4%BA%AC/</guid>
         <description></description>
         </item>
         <item>
         <title>摄影</title>
-        <link>https://blog.mletter.cn/tags/%E6%91%84%E5%BD%B1/</link>
+        <link>http://localhost:1313/tags/%E6%91%84%E5%BD%B1/</link>
         <pubDate>Fri, 10 Mar 2023 00:00:00 +0000</pubDate>
         
-        <guid>https://blog.mletter.cn/tags/%E6%91%84%E5%BD%B1/</guid>
+        <guid>http://localhost:1313/tags/%E6%91%84%E5%BD%B1/</guid>
         <description></description>
         </item>
         <item>
         <title>Ingress-Nginx</title>
-        <link>https://blog.mletter.cn/tags/ingress-nginx/</link>
+        <link>http://localhost:1313/tags/ingress-nginx/</link>
         <pubDate>Wed, 08 Mar 2023 00:00:00 +0000</pubDate>
         
-        <guid>https://blog.mletter.cn/tags/ingress-nginx/</guid>
+        <guid>http://localhost:1313/tags/ingress-nginx/</guid>
         <description></description>
         </item>
         <item>
         <title>Coredns</title>
-        <link>https://blog.mletter.cn/tags/coredns/</link>
+        <link>http://localhost:1313/tags/coredns/</link>
         <pubDate>Sun, 26 Feb 2023 00:00:00 +0000</pubDate>
         
-        <guid>https://blog.mletter.cn/tags/coredns/</guid>
+        <guid>http://localhost:1313/tags/coredns/</guid>
         <description></description>
         </item>
         <item>
         <title>Etcd</title>
-        <link>https://blog.mletter.cn/tags/etcd/</link>
+        <link>http://localhost:1313/tags/etcd/</link>
         <pubDate>Sun, 26 Feb 2023 00:00:00 +0000</pubDate>
         
-        <guid>https://blog.mletter.cn/tags/etcd/</guid>
+        <guid>http://localhost:1313/tags/etcd/</guid>
         <description></description>
         </item>
         <item>
         <title>Configmap</title>
-        <link>https://blog.mletter.cn/tags/configmap/</link>
+        <link>http://localhost:1313/tags/configmap/</link>
         <pubDate>Tue, 14 Feb 2023 00:00:00 +0000</pubDate>
         
-        <guid>https://blog.mletter.cn/tags/configmap/</guid>
+        <guid>http://localhost:1313/tags/configmap/</guid>
         <description></description>
         </item>
         <item>
         <title>HPA</title>
-        <link>https://blog.mletter.cn/tags/hpa/</link>
+        <link>http://localhost:1313/tags/hpa/</link>
         <pubDate>Tue, 14 Feb 2023 00:00:00 +0000</pubDate>
         
-        <guid>https://blog.mletter.cn/tags/hpa/</guid>
+        <guid>http://localhost:1313/tags/hpa/</guid>
         <description></description>
         </item>
         <item>
         <title>Secret</title>
-        <link>https://blog.mletter.cn/tags/secret/</link>
+        <link>http://localhost:1313/tags/secret/</link>
         <pubDate>Tue, 14 Feb 2023 00:00:00 +0000</pubDate>
         
-        <guid>https://blog.mletter.cn/tags/secret/</guid>
+        <guid>http://localhost:1313/tags/secret/</guid>
         <description></description>
         </item>
         <item>
         <title>Api-Server</title>
-        <link>https://blog.mletter.cn/tags/api-server/</link>
+        <link>http://localhost:1313/tags/api-server/</link>
         <pubDate>Tue, 07 Feb 2023 00:00:00 +0000</pubDate>
         
-        <guid>https://blog.mletter.cn/tags/api-server/</guid>
+        <guid>http://localhost:1313/tags/api-server/</guid>
         <description></description>
         </item>
         <item>
         <title>Dashboard</title>
-        <link>https://blog.mletter.cn/tags/dashboard/</link>
+        <link>http://localhost:1313/tags/dashboard/</link>
         <pubDate>Fri, 03 Feb 2023 00:00:00 +0000</pubDate>
         
-        <guid>https://blog.mletter.cn/tags/dashboard/</guid>
+        <guid>http://localhost:1313/tags/dashboard/</guid>
         <description></description>
         </item>
         <item>
         <title>天津</title>
-        <link>https://blog.mletter.cn/tags/%E5%A4%A9%E6%B4%A5/</link>
+        <link>http://localhost:1313/tags/%E5%A4%A9%E6%B4%A5/</link>
         <pubDate>Sun, 01 Jan 2023 00:00:00 +0000</pubDate>
         
-        <guid>https://blog.mletter.cn/tags/%E5%A4%A9%E6%B4%A5/</guid>
+        <guid>http://localhost:1313/tags/%E5%A4%A9%E6%B4%A5/</guid>
         <description></description>
         </item>
         <item>
         <title>Ansible</title>
-        <link>https://blog.mletter.cn/tags/ansible/</link>
+        <link>http://localhost:1313/tags/ansible/</link>
         <pubDate>Mon, 29 Aug 2022 00:00:00 +0000</pubDate>
         
-        <guid>https://blog.mletter.cn/tags/ansible/</guid>
+        <guid>http://localhost:1313/tags/ansible/</guid>
         <description></description>
         </item>
         <item>
         <title>Mysql</title>
-        <link>https://blog.mletter.cn/tags/mysql/</link>
+        <link>http://localhost:1313/tags/mysql/</link>
         <pubDate>Wed, 20 Jul 2022 00:00:00 +0000</pubDate>
         
-        <guid>https://blog.mletter.cn/tags/mysql/</guid>
+        <guid>http://localhost:1313/tags/mysql/</guid>
         <description></description>
         </item>
         <item>
         <title>Docker</title>
-        <link>https://blog.mletter.cn/tags/docker/</link>
+        <link>http://localhost:1313/tags/docker/</link>
         <pubDate>Thu, 14 Jul 2022 00:00:00 +0000</pubDate>
         
-        <guid>https://blog.mletter.cn/tags/docker/</guid>
+        <guid>http://localhost:1313/tags/docker/</guid>
         <description></description>
         </item>
         <item>
         <title>Nginx</title>
-        <link>https://blog.mletter.cn/tags/nginx/</link>
+        <link>http://localhost:1313/tags/nginx/</link>
         <pubDate>Sun, 20 Mar 2022 00:00:00 +0000</pubDate>
         
-        <guid>https://blog.mletter.cn/tags/nginx/</guid>
+        <guid>http://localhost:1313/tags/nginx/</guid>
         <description></description>
         </item>
         <item>
         <title>Skywalking</title>
-        <link>https://blog.mletter.cn/tags/skywalking/</link>
+        <link>http://localhost:1313/tags/skywalking/</link>
         <pubDate>Wed, 07 Apr 2021 00:00:00 +0000</pubDate>
         
-        <guid>https://blog.mletter.cn/tags/skywalking/</guid>
+        <guid>http://localhost:1313/tags/skywalking/</guid>
         <description></description>
         </item>
         <item>
         <title>Redis</title>
-        <link>https://blog.mletter.cn/tags/redis/</link>
+        <link>http://localhost:1313/tags/redis/</link>
         <pubDate>Fri, 19 Feb 2021 00:00:00 +0000</pubDate>
         
-        <guid>https://blog.mletter.cn/tags/redis/</guid>
+        <guid>http://localhost:1313/tags/redis/</guid>
         <description></description>
         </item>
         <item>
         <title>调度原理</title>
-        <link>https://blog.mletter.cn/tags/%E8%B0%83%E5%BA%A6%E5%8E%9F%E7%90%86/</link>
+        <link>http://localhost:1313/tags/%E8%B0%83%E5%BA%A6%E5%8E%9F%E7%90%86/</link>
         <pubDate>Sat, 14 Mar 2020 00:00:00 +0000</pubDate>
         
-        <guid>https://blog.mletter.cn/tags/%E8%B0%83%E5%BA%A6%E5%8E%9F%E7%90%86/</guid>
+        <guid>http://localhost:1313/tags/%E8%B0%83%E5%BA%A6%E5%8E%9F%E7%90%86/</guid>
         <description></description>
         </item>
         

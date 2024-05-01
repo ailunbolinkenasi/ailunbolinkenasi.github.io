@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html lang="en-us" dir="ltr">
-    <head><meta charset='utf-8'>
+    <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset='utf-8'>
 <meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='Kubernetes API的每个请求都会经过多阶段的访问控制之后才会被接受,这一阶段包括认证、授权、以及准入控制(Admission Control)等'>
 <title>Kubernetes中Api-Server简单解读</title>
 
-<link rel='canonical' href='https://blog.mletter.cn/kubernetes/ApiServerRead/'>
+<link rel='canonical' href='http://localhost:1313/kubernetes/ApiServerRead/'>
 
 <link rel="stylesheet" href="/scss/style.min.5b5b6573642727589522074c7e8eccf1bed86449936db407920f51943938e582.css"><meta property='og:title' content='Kubernetes中Api-Server简单解读'>
 <meta property='og:description' content='Kubernetes API的每个请求都会经过多阶段的访问控制之后才会被接受,这一阶段包括认证、授权、以及准入控制(Admission Control)等'>
-<meta property='og:url' content='https://blog.mletter.cn/kubernetes/ApiServerRead/'>
+<meta property='og:url' content='http://localhost:1313/kubernetes/ApiServerRead/'>
 <meta property='og:site_name' content='春日心动日记'>
 <meta property='og:type' content='article'><meta property='article:section' content='Posts' /><meta property='article:tag' content='kubernetes' /><meta property='article:tag' content='api-server' /><meta property='article:published_time' content='2023-02-07T00:00:00&#43;00:00'/><meta property='article:modified_time' content='2023-02-07T00:00:00&#43;00:00'/><meta property='og:image' content='https://bj.bcebos.com/baidu-rmb-video-cover-1/2b6495c8749e3f4e4369e28cb50eeb87.png' />
 <meta name="twitter:title" content="Kubernetes中Api-Server简单解读">
@@ -277,48 +277,48 @@
         
         <div class="widget--toc">
             <nav id="TableOfContents">
-  <ol>
+  <ul>
     <li><a href="#认证插件">认证插件</a>
-      <ol>
+      <ul>
         <li><a href="#静态token用法">静态Token用法</a></li>
         <li><a href="#useraccount和serviceaccount的区别">UserAccount和ServiceAccount的区别</a></li>
         <li><a href="#构建符合kubernetes规范的认证服务">构建符合Kubernetes规范的认证服务</a></li>
         <li><a href="#webhook认证用法">WebHook认证用法</a></li>
-      </ol>
+      </ul>
     </li>
     <li><a href="#授权">授权</a>
-      <ol>
+      <ul>
         <li><a href="#rbac和abac">RBAC和ABAC</a></li>
         <li><a href="#role和clusterrole">Role和ClusterRole</a></li>
         <li><a href="#binding">Binding</a></li>
         <li><a href="#账户组的管理">账户/组的管理</a></li>
         <li><a href="#规划系统角色">规划系统角色</a></li>
         <li><a href="#与权限相关的其他最佳实践">与权限相关的其他最佳实践</a></li>
-      </ol>
+      </ul>
     </li>
     <li><a href="#准入">准入</a>
-      <ol>
+      <ul>
         <li><a href="#准入控制">准入控制</a></li>
         <li><a href="#准入控制插件">准入控制插件</a></li>
         <li><a href="#准入控制插件的演示">准入控制插件的演示</a></li>
-      </ol>
+      </ul>
     </li>
     <li><a href="#限流">限流</a>
-      <ol>
+      <ul>
         <li><a href="#漏斗算法">漏斗算法</a></li>
         <li><a href="#令牌桶算法">令牌桶算法</a></li>
         <li><a href="#api-server的限流">API Server的限流</a></li>
         <li><a href="#api-priority-and-fairness">API Priority and Fairness</a></li>
         <li><a href="#flow-schema">Flow Schema</a></li>
         <li><a href="#prioritylevelconfiguration优先级队列">PriorityLevelConfiguration(优先级队列)</a></li>
-      </ol>
+      </ul>
     </li>
     <li><a href="#高可用apiserver">高可用APIServer</a>
-      <ol>
+      <ul>
         <li><a href="#搭建多租户的kubernetes集群">搭建多租户的kubernetes集群</a></li>
-      </ol>
+      </ul>
     </li>
-  </ol>
+  </ul>
 </nav>
         </div>
     </section>

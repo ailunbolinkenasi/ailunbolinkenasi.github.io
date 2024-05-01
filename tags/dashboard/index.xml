@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
     <channel>
         <title>Dashboard on 春日心动日记</title>
-        <link>https://blog.mletter.cn/tags/dashboard/</link>
+        <link>http://localhost:1313/tags/dashboard/</link>
         <description>Recent content in Dashboard on 春日心动日记</description>
         <generator>Hugo -- gohugo.io</generator>
         <language>en-us</language>
         <copyright>Live and learn. 🌱</copyright>
-        <lastBuildDate>Fri, 03 Feb 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://blog.mletter.cn/tags/dashboard/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Fri, 03 Feb 2023 00:00:00 +0000</lastBuildDate><atom:link href="http://localhost:1313/tags/dashboard/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>kubernetes-dashboard</title>
-        <link>https://blog.mletter.cn/kubernetes/KubeDashboard/</link>
+        <link>http://localhost:1313/kubernetes/KubeDashboard/</link>
         <pubDate>Fri, 03 Feb 2023 00:00:00 +0000</pubDate>
         
-        <guid>https://blog.mletter.cn/kubernetes/KubeDashboard/</guid>
+        <guid>http://localhost:1313/kubernetes/KubeDashboard/</guid>
         <description>&lt;img src="https://img14.360buyimg.com/ddimg/jfs/t1/164569/9/40677/14419/65bc6e4cFa1d8c0c3/5ccf7e6caadc9b83.jpg" alt="Featured image of post kubernetes-dashboard" /&gt;&lt;h2 id=&#34;官方webui部署&#34;&gt;官方WebUI部署&lt;/h2&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://github.com/kubernetes/dashboard&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;

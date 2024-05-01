@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html lang="en-us" dir="ltr">
-    <head><meta charset='utf-8'>
+    <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset='utf-8'>
 <meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='kubelet中的Docker支持现在已弃用，并将在未来的版本中删除。kubelet使用了一个名为`dockershim`的模块，该模块实现了对Docker的CRI支持，并在Kubernetes社区中发现了维护问题。我们鼓励您评估迁移到一个容器运行时的情况，该容器运行时是CRI（v1alpha1或v1兼容）的完整实现。'>
 <title>什么是dockershim</title>
 
-<link rel='canonical' href='https://blog.mletter.cn/docker/DockerShimRead/'>
+<link rel='canonical' href='http://localhost:1313/docker/DockerShimRead/'>
 
 <link rel="stylesheet" href="/scss/style.min.5b5b6573642727589522074c7e8eccf1bed86449936db407920f51943938e582.css"><meta property='og:title' content='什么是dockershim'>
 <meta property='og:description' content='kubelet中的Docker支持现在已弃用，并将在未来的版本中删除。kubelet使用了一个名为`dockershim`的模块，该模块实现了对Docker的CRI支持，并在Kubernetes社区中发现了维护问题。我们鼓励您评估迁移到一个容器运行时的情况，该容器运行时是CRI（v1alpha1或v1兼容）的完整实现。'>
-<meta property='og:url' content='https://blog.mletter.cn/docker/DockerShimRead/'>
+<meta property='og:url' content='http://localhost:1313/docker/DockerShimRead/'>
 <meta property='og:site_name' content='春日心动日记'>
 <meta property='og:type' content='article'><meta property='article:section' content='Posts' /><meta property='article:tag' content='docker' /><meta property='article:published_time' content='2022-02-13T00:00:00&#43;00:00'/><meta property='article:modified_time' content='2022-02-13T00:00:00&#43;00:00'/>
 <meta name="twitter:title" content="什么是dockershim">
@@ -276,13 +276,13 @@
         
         <div class="widget--toc">
             <nav id="TableOfContents">
-  <ol>
+  <ul>
     <li><a href="#先前了解">先前了解</a></li>
     <li><a href="#cri容器运行时接口">CRI容器运行时接口</a></li>
     <li><a href="#oci开放容器标准">OCI开放容器标准</a></li>
     <li><a href="#dockershim">Dockershim</a></li>
     <li><a href="#参考链接">参考链接</a></li>
-  </ol>
+  </ul>
 </nav>
         </div>
     </section>

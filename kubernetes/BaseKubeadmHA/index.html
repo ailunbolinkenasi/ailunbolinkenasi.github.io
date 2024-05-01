@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html lang="en-us" dir="ltr">
-    <head><meta charset='utf-8'>
+    <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset='utf-8'>
 <meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='如何使用kubeadm方案来安装高可用的kubernetes集群'>
 <title>利用Kubeadm进行多Master高可用部署</title>
 
-<link rel='canonical' href='https://blog.mletter.cn/kubernetes/BaseKubeadmHA/'>
+<link rel='canonical' href='http://localhost:1313/kubernetes/BaseKubeadmHA/'>
 
 <link rel="stylesheet" href="/scss/style.min.5b5b6573642727589522074c7e8eccf1bed86449936db407920f51943938e582.css"><meta property='og:title' content='利用Kubeadm进行多Master高可用部署'>
 <meta property='og:description' content='如何使用kubeadm方案来安装高可用的kubernetes集群'>
-<meta property='og:url' content='https://blog.mletter.cn/kubernetes/BaseKubeadmHA/'>
+<meta property='og:url' content='http://localhost:1313/kubernetes/BaseKubeadmHA/'>
 <meta property='og:site_name' content='春日心动日记'>
 <meta property='og:type' content='article'><meta property='article:section' content='Posts' /><meta property='article:tag' content='kubernetes' /><meta property='article:published_time' content='2022-12-29T00:00:00&#43;00:00'/><meta property='article:modified_time' content='2022-12-29T00:00:00&#43;00:00'/><meta property='og:image' content='https://img14.360buyimg.com/ddimg/jfs/t1/164569/9/40677/14419/65bc6e4cFa1d8c0c3/5ccf7e6caadc9b83.jpg' />
 <meta name="twitter:title" content="利用Kubeadm进行多Master高可用部署">
@@ -277,25 +277,25 @@
         
         <div class="widget--toc">
             <nav id="TableOfContents">
-  <ol>
+  <ul>
     <li><a href="#参与主机列表">参与主机列表</a></li>
     <li><a href="#为kube-apiserver创建负载均衡器">为Kube-apiserver创建负载均衡器</a></li>
     <li><a href="#配置master主机节点的hosts文件">配置Master主机节点的Hosts文件</a>
-      <ol>
+      <ul>
         <li><a href="#设置etcd集群证书">设置Etcd集群证书</a></li>
-      </ol>
+      </ul>
     </li>
     <li><a href="#设置第一个控制平面节点">设置第一个控制平面节点</a></li>
     <li><a href="#运行网络cni插件calico">运行网络CNI插件(Calico)</a>
-      <ol>
+      <ul>
         <li><a href="#修改calicoyaml配置">修改Calico.yaml配置</a></li>
-      </ol>
+      </ul>
     </li>
     <li><a href="#将其他控制平面节点加入集群">将其他控制平面节点加入集群</a></li>
     <li><a href="#将工作节点加入集群">将工作节点加入集群</a></li>
     <li><a href="#可选项修改kubelet的数据存储目录">(可选项)修改Kubelet的数据存储目录</a></li>
     <li><a href="#如何剔除一个master">如何剔除一个Master</a></li>
-  </ol>
+  </ul>
 </nav>
         </div>
     </section>

@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html lang="en-us" dir="ltr">
-    <head><meta charset='utf-8'>
+    <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset='utf-8'>
 <meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='kubeadm版部署kubernetes方案'>
 <title>kubernetes1.22.0单节点集群部署</title>
 
-<link rel='canonical' href='https://blog.mletter.cn/kubernetes/InstallKubernetes1.22.10'>
+<link rel='canonical' href='http://localhost:1313/kubernetes/InstallKubernetes1.22.10'>
 
 <link rel="stylesheet" href="/scss/style.min.5b5b6573642727589522074c7e8eccf1bed86449936db407920f51943938e582.css"><meta property='og:title' content='kubernetes1.22.0单节点集群部署'>
 <meta property='og:description' content='kubeadm版部署kubernetes方案'>
-<meta property='og:url' content='https://blog.mletter.cn/kubernetes/InstallKubernetes1.22.10'>
+<meta property='og:url' content='http://localhost:1313/kubernetes/InstallKubernetes1.22.10'>
 <meta property='og:site_name' content='春日心动日记'>
 <meta property='og:type' content='article'><meta property='article:section' content='Posts' /><meta property='article:tag' content='kubernetes' /><meta property='article:published_time' content='2022-12-29T00:00:00&#43;00:00'/><meta property='article:modified_time' content='2022-12-29T00:00:00&#43;00:00'/><meta property='og:image' content='https://img14.360buyimg.com/ddimg/jfs/t1/164569/9/40677/14419/65bc6e4cFa1d8c0c3/5ccf7e6caadc9b83.jpg' />
 <meta name="twitter:title" content="kubernetes1.22.0单节点集群部署">
@@ -277,18 +277,18 @@
         
         <div class="widget--toc">
             <nav id="TableOfContents">
-  <ol>
+  <ul>
     <li><a href="#kubernetes12210部署">kubernetes1.22.10部署</a></li>
     <li><a href="#准备工作">准备工作</a>
-      <ol>
+      <ul>
         <li><a href="#我的服务器配置列表">我的服务器配置列表</a></li>
         <li><a href="#需要开放的端口">需要开放的端口</a></li>
         <li><a href="#准备主机地址">准备主机地址</a></li>
         <li><a href="#关闭swap分区以及防火墙">关闭swap分区以及防火墙</a></li>
-      </ol>
+      </ul>
     </li>
     <li><a href="#containerd的基础安装和操作">Containerd的基础安装和操作</a>
-      <ol>
+      <ul>
         <li><a href="#通过阿里云镜像源安装">通过阿里云镜像源安装</a></li>
         <li><a href="#生成containerd的配置文件">生成containerd的配置文件</a></li>
         <li><a href="#修改sandbox_img">修改sandbox_img</a></li>
@@ -297,10 +297,10 @@
         <li><a href="#额外-设置containerd的私有仓库">(额外) 设置Containerd的私有仓库</a></li>
         <li><a href="#启动containerd">启动containerd</a></li>
         <li><a href="#配置ipv4转发">配置IPV4转发</a></li>
-      </ol>
+      </ul>
     </li>
     <li><a href="#kubernetes安装">kubernetes安装</a>
-      <ol>
+      <ul>
         <li><a href="#通过阿里云镜像源安装-1">通过阿里云镜像源安装</a></li>
         <li><a href="#安装命令提示">安装命令提示</a></li>
         <li><a href="#启动kubelet">启动kubelet</a></li>
@@ -310,15 +310,15 @@
         <li><a href="#加入集群">加入集群</a></li>
         <li><a href="#验证集群">验证集群</a></li>
         <li><a href="#提一个小问题">提一个小问题</a></li>
-      </ol>
+      </ul>
     </li>
     <li><a href="#问题解决">问题解决</a>
-      <ol>
+      <ul>
         <li><a href="#使用crictl-image出现warn0000-image-connect-using-default-endpoints">使用crictl image出现<code>WARN[0000] image connect using default endpoints</code></a></li>
         <li><a href="#master主集群加入token过期如何处理">Master主集群加入token过期如何处理</a></li>
-      </ol>
+      </ul>
     </li>
-  </ol>
+  </ul>
 </nav>
         </div>
     </section>

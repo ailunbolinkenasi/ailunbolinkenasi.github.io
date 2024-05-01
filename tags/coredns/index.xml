@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
     <channel>
         <title>Coredns on 春日心动日记</title>
-        <link>http://localhost:1313/tags/coredns/</link>
+        <link>https://blog.mletter.cn/tags/coredns/</link>
         <description>Recent content in Coredns on 春日心动日记</description>
         <generator>Hugo -- gohugo.io</generator>
         <language>en-us</language>
         <copyright>Live and learn. 🌱</copyright>
-        <lastBuildDate>Sun, 26 Feb 2023 00:00:00 +0000</lastBuildDate><atom:link href="http://localhost:1313/tags/coredns/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Sun, 26 Feb 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://blog.mletter.cn/tags/coredns/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>CacheDNS和DNS缓存</title>
-        <link>http://localhost:1313/kubernetes/nodelocaldns/</link>
+        <link>https://blog.mletter.cn/kubernetes/nodelocaldns/</link>
         <pubDate>Sun, 26 Feb 2023 00:00:00 +0000</pubDate>
         
-        <guid>http://localhost:1313/kubernetes/nodelocaldns/</guid>
+        <guid>https://blog.mletter.cn/kubernetes/nodelocaldns/</guid>
         <description>&lt;img src="https://d33wubrfki0l68.cloudfront.net/bf8e5eaac697bac89c5b36a0edb8855c860bfb45/6944f/images/docs/nodelocaldns.svg" alt="Featured image of post CacheDNS和DNS缓存" /&gt;&lt;p&gt;如果在集群规模较大并发较高的情况下我们仍然需要对 DNS 进行优化，典型的就是大家比较熟悉的 CoreDNS 会出现超时5s的情况。&lt;/p&gt;
 &lt;h2 id=&#34;超时原因&#34;&gt;超时原因&lt;/h2&gt;
 &lt;p&gt;在 iptables 模式下（默认情况下），每个服务的 kube-proxy 在主机网络名称空间的 nat 表中创建一些 iptables 规则。 比如在集群中具有两个 DNS 服务器实例的 kube-dns 服务，其相关规则大致如下所示：&lt;/p&gt;

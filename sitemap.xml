@@ -2,287 +2,287 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>http://localhost:1313/tags/</loc>
+    <loc>https://blog.mletter.cn/tags/</loc>
     <lastmod>2024-05-01T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/</loc>
+    <loc>https://blog.mletter.cn/</loc>
     <lastmod>2024-05-01T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/tags/%E4%B8%9C%E8%8E%9E/</loc>
+    <loc>https://blog.mletter.cn/tags/%E4%B8%9C%E8%8E%9E/</loc>
     <lastmod>2024-05-01T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/tags/%E5%B9%BF%E4%B8%9C/</loc>
+    <loc>https://blog.mletter.cn/tags/%E5%B9%BF%E4%B8%9C/</loc>
     <lastmod>2024-05-01T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/categories/%E6%97%85%E8%A1%8C%E6%97%A5%E8%AE%B0/</loc>
+    <loc>https://blog.mletter.cn/categories/%E6%97%85%E8%A1%8C%E6%97%A5%E8%AE%B0/</loc>
     <lastmod>2024-05-01T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/tourists/dongguan/</loc>
+    <loc>https://blog.mletter.cn/tourists/dongguan/</loc>
     <lastmod>2024-05-01T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/tags/%E6%97%A5%E8%AE%B0/</loc>
+    <loc>https://blog.mletter.cn/tags/%E6%97%A5%E8%AE%B0/</loc>
     <lastmod>2024-05-01T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/posts/</loc>
+    <loc>https://blog.mletter.cn/posts/</loc>
     <lastmod>2024-05-01T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/tags/kubernetes/</loc>
+    <loc>https://blog.mletter.cn/tags/kubernetes/</loc>
     <lastmod>2024-04-15T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/categories/kubernetes/</loc>
+    <loc>https://blog.mletter.cn/categories/kubernetes/</loc>
     <lastmod>2024-04-15T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/tags/sealos/</loc>
+    <loc>https://blog.mletter.cn/tags/sealos/</loc>
     <lastmod>2024-04-15T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/kubernetes/sealos%E2%80%94install/</loc>
+    <loc>https://blog.mletter.cn/kubernetes/sealos%E2%80%94install/</loc>
     <lastmod>2024-04-15T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/categories/%E6%97%A5%E8%AE%B0/</loc>
+    <loc>https://blog.mletter.cn/categories/%E6%97%A5%E8%AE%B0/</loc>
     <lastmod>2024-03-17T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/tourists/119/</loc>
+    <loc>https://blog.mletter.cn/tourists/119/</loc>
     <lastmod>2024-03-17T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/tags/%E9%9A%8F%E7%AC%94/</loc>
+    <loc>https://blog.mletter.cn/tags/%E9%9A%8F%E7%AC%94/</loc>
     <lastmod>2024-03-17T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/tags/2024/</loc>
+    <loc>https://blog.mletter.cn/tags/2024/</loc>
     <lastmod>2024-02-13T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/tags/%E6%98%A5%E8%8A%82/</loc>
+    <loc>https://blog.mletter.cn/tags/%E6%98%A5%E8%8A%82/</loc>
     <lastmod>2024-02-13T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/posts/2024/</loc>
+    <loc>https://blog.mletter.cn/posts/2024/</loc>
     <lastmod>2024-02-13T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/tags/gitlab/</loc>
+    <loc>https://blog.mletter.cn/tags/gitlab/</loc>
     <lastmod>2024-01-16T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/categories/linux/</loc>
+    <loc>https://blog.mletter.cn/categories/linux/</loc>
     <lastmod>2024-01-16T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/tags/%E4%BB%A3%E7%A0%81%E4%BB%93%E5%BA%93/</loc>
+    <loc>https://blog.mletter.cn/tags/%E4%BB%A3%E7%A0%81%E4%BB%93%E5%BA%93/</loc>
     <lastmod>2024-01-16T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/gitlab/GitLabRepositoryManagement/</loc>
+    <loc>https://blog.mletter.cn/gitlab/GitLabRepositoryManagement/</loc>
     <lastmod>2024-01-16T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/kubernetes/efk/</loc>
+    <loc>https://blog.mletter.cn/kubernetes/efk/</loc>
     <lastmod>2023-12-08T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/tourists/sichuan/</loc>
+    <loc>https://blog.mletter.cn/tourists/sichuan/</loc>
     <lastmod>2023-11-23T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/tags/%E5%9B%9B%E5%B7%9D/</loc>
+    <loc>https://blog.mletter.cn/tags/%E5%9B%9B%E5%B7%9D/</loc>
     <lastmod>2023-11-23T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/kubernetes/architectural_design/</loc>
+    <loc>https://blog.mletter.cn/kubernetes/architectural_design/</loc>
     <lastmod>2023-11-07T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/tags/gin/</loc>
+    <loc>https://blog.mletter.cn/tags/gin/</loc>
     <lastmod>2023-08-26T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/tags/go/</loc>
+    <loc>https://blog.mletter.cn/tags/go/</loc>
     <lastmod>2023-08-26T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/tags/%E4%B8%AA%E4%BA%BA%E9%A1%B9%E7%9B%AE/</loc>
+    <loc>https://blog.mletter.cn/tags/%E4%B8%AA%E4%BA%BA%E9%A1%B9%E7%9B%AE/</loc>
     <lastmod>2023-08-26T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/categories/%E4%B8%AA%E4%BA%BA%E9%A1%B9%E7%9B%AE/</loc>
+    <loc>https://blog.mletter.cn/categories/%E4%B8%AA%E4%BA%BA%E9%A1%B9%E7%9B%AE/</loc>
     <lastmod>2023-08-26T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/go/gin-wecho/</loc>
+    <loc>https://blog.mletter.cn/go/gin-wecho/</loc>
     <lastmod>2023-08-26T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/tags/api/</loc>
+    <loc>https://blog.mletter.cn/tags/api/</loc>
     <lastmod>2023-08-10T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/categories/%E5%B7%A5%E5%85%B7%E5%88%86%E4%BA%AB/</loc>
+    <loc>https://blog.mletter.cn/categories/%E5%B7%A5%E5%85%B7%E5%88%86%E4%BA%AB/</loc>
     <lastmod>2023-08-10T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/categories/%E7%BA%AA%E5%BD%95%E7%89%87/</loc>
+    <loc>https://blog.mletter.cn/categories/%E7%BA%AA%E5%BD%95%E7%89%87/</loc>
     <lastmod>2023-08-10T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/documentary/valedictory/</loc>
+    <loc>https://blog.mletter.cn/documentary/valedictory/</loc>
     <lastmod>2023-08-10T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/tags/%E4%BA%BA%E7%94%9F%E7%AC%AC%E4%B8%80%E6%AC%A1/</loc>
+    <loc>https://blog.mletter.cn/tags/%E4%BA%BA%E7%94%9F%E7%AC%AC%E4%B8%80%E6%AC%A1/</loc>
     <lastmod>2023-08-10T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/posts/api/</loc>
+    <loc>https://blog.mletter.cn/posts/api/</loc>
     <lastmod>2023-08-10T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/kubernetes/openebs/</loc>
+    <loc>https://blog.mletter.cn/kubernetes/openebs/</loc>
     <lastmod>2023-05-14T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/tags/traefik/</loc>
+    <loc>https://blog.mletter.cn/tags/traefik/</loc>
     <lastmod>2023-04-07T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/kubernetes/traefik/</loc>
+    <loc>https://blog.mletter.cn/kubernetes/traefik/</loc>
     <lastmod>2023-04-07T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/kubernetes/localstorage/</loc>
+    <loc>https://blog.mletter.cn/kubernetes/localstorage/</loc>
     <lastmod>2023-03-22T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/tags/%E5%8C%97%E4%BA%AC/</loc>
+    <loc>https://blog.mletter.cn/tags/%E5%8C%97%E4%BA%AC/</loc>
     <lastmod>2023-03-10T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/categories/%E6%97%A5%E5%B8%B8%E6%91%84%E5%BD%B1/</loc>
+    <loc>https://blog.mletter.cn/categories/%E6%97%A5%E5%B8%B8%E6%91%84%E5%BD%B1/</loc>
     <lastmod>2023-03-10T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/tags/%E6%91%84%E5%BD%B1/</loc>
+    <loc>https://blog.mletter.cn/tags/%E6%91%84%E5%BD%B1/</loc>
     <lastmod>2023-03-10T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/shoot/yiheyuan/</loc>
+    <loc>https://blog.mletter.cn/shoot/yiheyuan/</loc>
     <lastmod>2023-03-10T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/tags/ingress-nginx/</loc>
+    <loc>https://blog.mletter.cn/tags/ingress-nginx/</loc>
     <lastmod>2023-03-08T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/kubernetes/ingress/</loc>
+    <loc>https://blog.mletter.cn/kubernetes/ingress/</loc>
     <lastmod>2023-03-08T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/kubernetes/nodelocaldns/</loc>
+    <loc>https://blog.mletter.cn/kubernetes/nodelocaldns/</loc>
     <lastmod>2023-02-26T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/tags/coredns/</loc>
+    <loc>https://blog.mletter.cn/tags/coredns/</loc>
     <lastmod>2023-02-26T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/tags/etcd/</loc>
+    <loc>https://blog.mletter.cn/tags/etcd/</loc>
     <lastmod>2023-02-26T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/kubernetes/InstallEtcdHA/</loc>
+    <loc>https://blog.mletter.cn/kubernetes/InstallEtcdHA/</loc>
     <lastmod>2023-02-26T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/tags/configmap/</loc>
+    <loc>https://blog.mletter.cn/tags/configmap/</loc>
     <lastmod>2023-02-14T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/kubernetes/configmaporservice/</loc>
+    <loc>https://blog.mletter.cn/kubernetes/configmaporservice/</loc>
     <lastmod>2023-02-14T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/kubernetes/HorizontalPodAutoscaler/</loc>
+    <loc>https://blog.mletter.cn/kubernetes/HorizontalPodAutoscaler/</loc>
     <lastmod>2023-02-14T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/tags/hpa/</loc>
+    <loc>https://blog.mletter.cn/tags/hpa/</loc>
     <lastmod>2023-02-14T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/tags/secret/</loc>
+    <loc>https://blog.mletter.cn/tags/secret/</loc>
     <lastmod>2023-02-14T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/tags/api-server/</loc>
+    <loc>https://blog.mletter.cn/tags/api-server/</loc>
     <lastmod>2023-02-07T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/kubernetes/ApiServerRead/</loc>
+    <loc>https://blog.mletter.cn/kubernetes/ApiServerRead/</loc>
     <lastmod>2023-02-07T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/tags/dashboard/</loc>
+    <loc>https://blog.mletter.cn/tags/dashboard/</loc>
     <lastmod>2023-02-03T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/kubernetes/KubeDashboard/</loc>
+    <loc>https://blog.mletter.cn/kubernetes/KubeDashboard/</loc>
     <lastmod>2023-02-03T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/tourists/tianjin/</loc>
+    <loc>https://blog.mletter.cn/tourists/tianjin/</loc>
     <lastmod>2023-01-01T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/tags/%E5%A4%A9%E6%B4%A5/</loc>
+    <loc>https://blog.mletter.cn/tags/%E5%A4%A9%E6%B4%A5/</loc>
     <lastmod>2023-01-01T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/kubernetes/InstallKubernetes1.22.10</loc>
+    <loc>https://blog.mletter.cn/kubernetes/InstallKubernetes1.22.10</loc>
     <lastmod>2022-12-29T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/kubernetes/BaseKubeadmHA/</loc>
+    <loc>https://blog.mletter.cn/kubernetes/BaseKubeadmHA/</loc>
     <lastmod>2022-12-29T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/kubernetes/MemoryLeakageAnalysis/</loc>
+    <loc>https://blog.mletter.cn/kubernetes/MemoryLeakageAnalysis/</loc>
     <lastmod>2022-10-08T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/tags/ansible/</loc>
+    <loc>https://blog.mletter.cn/tags/ansible/</loc>
     <lastmod>2022-08-29T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/categories/ansible/</loc>
+    <loc>https://blog.mletter.cn/categories/ansible/</loc>
     <lastmod>2022-08-29T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/ansible/AnsibleTaskControll/</loc>
+    <loc>https://blog.mletter.cn/ansible/AnsibleTaskControll/</loc>
     <lastmod>2022-08-29T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/ansible/AnsibleVarbles/</loc>
+    <loc>https://blog.mletter.cn/ansible/AnsibleVarbles/</loc>
     <lastmod>2022-08-15T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/tags/mysql/</loc>
+    <loc>https://blog.mletter.cn/tags/mysql/</loc>
     <lastmod>2022-07-20T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/categories/mysql/</loc>
+    <loc>https://blog.mletter.cn/categories/mysql/</loc>
     <lastmod>2022-07-20T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/mysql/MysqlOptimization/</loc>
+    <loc>https://blog.mletter.cn/mysql/MysqlOptimization/</loc>
     <lastmod>2022-07-20T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/tags/docker/</loc>
+    <loc>https://blog.mletter.cn/tags/docker/</loc>
     <lastmod>2022-07-14T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/categories/docker/</loc>
+    <loc>https://blog.mletter.cn/categories/docker/</loc>
     <lastmod>2022-07-14T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/docker/DockerFrequentlyAskedQuestions/</loc>
+    <loc>https://blog.mletter.cn/docker/DockerFrequentlyAskedQuestions/</loc>
     <lastmod>2022-07-14T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/posts/playbook/</loc>
+    <loc>https://blog.mletter.cn/posts/playbook/</loc>
     <lastmod>2022-04-01T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/tags/nginx/</loc>
+    <loc>https://blog.mletter.cn/tags/nginx/</loc>
     <lastmod>2022-03-20T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/categories/nginx/</loc>
+    <loc>https://blog.mletter.cn/categories/nginx/</loc>
     <lastmod>2022-03-20T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/posts/nginx%E4%BC%98%E5%8C%96/</loc>
+    <loc>https://blog.mletter.cn/posts/nginx%E4%BC%98%E5%8C%96/</loc>
     <lastmod>2022-03-20T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/docker/DockerShimRead/</loc>
+    <loc>https://blog.mletter.cn/docker/DockerShimRead/</loc>
     <lastmod>2022-02-13T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/kubernetes/PodSchedulingIssues/</loc>
+    <loc>https://blog.mletter.cn/kubernetes/PodSchedulingIssues/</loc>
     <lastmod>2021-12-21T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/posts/kubernetes-skywallking/</loc>
+    <loc>https://blog.mletter.cn/posts/kubernetes-skywallking/</loc>
     <lastmod>2021-04-07T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/tags/skywalking/</loc>
+    <loc>https://blog.mletter.cn/tags/skywalking/</loc>
     <lastmod>2021-04-07T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/tags/redis/</loc>
+    <loc>https://blog.mletter.cn/tags/redis/</loc>
     <lastmod>2021-02-19T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/categories/redis/</loc>
+    <loc>https://blog.mletter.cn/categories/redis/</loc>
     <lastmod>2021-02-19T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/posts/redis-cluster/</loc>
+    <loc>https://blog.mletter.cn/posts/redis-cluster/</loc>
     <lastmod>2021-02-19T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/kubernetes/ServiceReader/</loc>
+    <loc>https://blog.mletter.cn/kubernetes/ServiceReader/</loc>
     <lastmod>2020-04-13T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/kubernetes/InstallNacosCluster/</loc>
+    <loc>https://blog.mletter.cn/kubernetes/InstallNacosCluster/</loc>
     <lastmod>2020-04-07T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/posts/scheduler/</loc>
+    <loc>https://blog.mletter.cn/posts/scheduler/</loc>
     <lastmod>2020-03-14T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/tags/%E8%B0%83%E5%BA%A6%E5%8E%9F%E7%90%86/</loc>
+    <loc>https://blog.mletter.cn/tags/%E8%B0%83%E5%BA%A6%E5%8E%9F%E7%90%86/</loc>
     <lastmod>2020-03-14T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/archives/</loc>
+    <loc>https://blog.mletter.cn/archives/</loc>
     <lastmod>2019-05-28T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/categories/</loc>
+    <loc>https://blog.mletter.cn/categories/</loc>
     <lastmod>2019-05-28T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/about/</loc>
+    <loc>https://blog.mletter.cn/about/</loc>
     <lastmod>2019-02-28T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/search/</loc>
+    <loc>https://blog.mletter.cn/search/</loc>
   </url><url>
-    <loc>http://localhost:1313/friends/</loc>
+    <loc>https://blog.mletter.cn/friends/</loc>
   </url>
 </urlset>

@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
     <channel>
         <title>调度原理 on 春日心动日记</title>
-        <link>http://localhost:1313/tags/%E8%B0%83%E5%BA%A6%E5%8E%9F%E7%90%86/</link>
+        <link>https://blog.mletter.cn/tags/%E8%B0%83%E5%BA%A6%E5%8E%9F%E7%90%86/</link>
         <description>Recent content in 调度原理 on 春日心动日记</description>
         <generator>Hugo -- gohugo.io</generator>
         <language>en-us</language>
         <copyright>Live and learn. 🌱</copyright>
-        <lastBuildDate>Sat, 14 Mar 2020 00:00:00 +0000</lastBuildDate><atom:link href="http://localhost:1313/tags/%E8%B0%83%E5%BA%A6%E5%8E%9F%E7%90%86/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Sat, 14 Mar 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://blog.mletter.cn/tags/%E8%B0%83%E5%BA%A6%E5%8E%9F%E7%90%86/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>kubernetes-Scheduler简单详解</title>
-        <link>http://localhost:1313/posts/scheduler/</link>
+        <link>https://blog.mletter.cn/posts/scheduler/</link>
         <pubDate>Sat, 14 Mar 2020 00:00:00 +0000</pubDate>
         
-        <guid>http://localhost:1313/posts/scheduler/</guid>
+        <guid>https://blog.mletter.cn/posts/scheduler/</guid>
         <description>&lt;img src="https://img14.360buyimg.com/ddimg/jfs/t1/164569/9/40677/14419/65bc6e4cFa1d8c0c3/5ccf7e6caadc9b83.jpg" alt="Featured image of post kubernetes-Scheduler简单详解" /&gt;&lt;p&gt;&lt;code&gt;kube-scheduler&lt;/code&gt; 是 kubernetes 的核心组件之一，主要负责整个集群资源的调度功能，根据特定的调度算法和策略，将 Pod 调度到最优的工作节点上面去，从而更加合理、更加充分的利用集群的资源，这也是我们选择使用 kubernetes 一个非常重要的理由。如果一门新的技术不能帮助企业节约成本、提供效率，我相信是很难推进的。&lt;/p&gt;
 &lt;h2 id=&#34;调度流程&#34;&gt;调度流程&lt;/h2&gt;
 &lt;p&gt;&lt;code&gt;kube-scheduler&lt;/code&gt; 提供的默认调度器能够满足我们绝大多数的要求，我们前面和大家接触的示例也基本上用的默认的策略，都可以保证我们的 Pod 可以被分配到资源充足的节点上运行。但是在实际的线上项目中，可能我们自己会比 kubernetes 更加了解我们自己的应用，比如我们希望一个 Pod 只能运行在特定的几个节点上，或者这几个节点只能用来运行特定类型的应用，这就需要我们的调度器能够可控。&lt;/p&gt;

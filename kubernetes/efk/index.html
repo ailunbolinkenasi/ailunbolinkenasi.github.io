@@ -6,7 +6,7 @@
 
 <link rel='canonical' href='https://blog.mletter.cn/kubernetes/efk/'>
 
-<link rel="stylesheet" href="/scss/style.min.3bdbbfe75dbf96262a90feae4542cc113dd8f0c53ce5cc941037823acfa9972b.css"><meta property='og:title' content='kubernetes基于EFK的日志落地实现'>
+<link rel="stylesheet" href="/scss/style.min.4cc65a35a2a178035758418a855ca4e2d849533504b65837affa76cf1e5d07bb.css"><meta property='og:title' content='kubernetes基于EFK的日志落地实现'>
 <meta property='og:description' content='Kubernetes 中比较流行的日志收集解决方案是 Elasticsearch、Fluentd 和 Kibana（EFK）技术栈，也是官方现在比较推荐的一种方案。 Elasticsearch'>
 <meta property='og:url' content='https://blog.mletter.cn/kubernetes/efk/'>
 <meta property='og:site_name' content='春日心动日记'>
@@ -17,7 +17,7 @@
   :root {
        
       --sys-font-family: -apple-system, "PingFang SC", Georgia, 'Nimbus Roman No9 L', 'Hiragino Sans GB', 'Noto Serif SC', 'Microsoft Yahei', 'WenQuanYi Micro Hei', 'ST Heiti', sans-serif;
-      --code-font-family: "JetBrainsMono Regular", Menlo, Monaco, Consolas, "Courier New";
+      --code-font-family: "JetBrains Mono", Menlo, Monaco, Consolas, "Courier New";
       --article-font-family: -apple-system, "PingFang SC", var(--base-font-family);
   }
 </style>
@@ -28,6 +28,15 @@
 
 
 
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/sunburst.css">
+<script src="https://npm.elemecdn.com/@highlightjs/cdn-assets@11.7.0/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/go.min.js"></script>
+
+<script>hljs.initHighlightingOnLoad();</script>
+<script>document.addEventListener('DOMContentLoaded', (event) => {document.querySelectorAll('pre code').forEach((el) => {hljs.highlightElement(el);});});</script>
 
     </head>
     <body class="

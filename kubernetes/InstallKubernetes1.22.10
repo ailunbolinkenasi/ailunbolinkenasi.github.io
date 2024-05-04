@@ -6,7 +6,7 @@
 
 <link rel='canonical' href='https://blog.mletter.cn/kubernetes/InstallKubernetes1.22.10'>
 
-<link rel="stylesheet" href="/scss/style.min.4cc65a35a2a178035758418a855ca4e2d849533504b65837affa76cf1e5d07bb.css"><meta property='og:title' content='kubernetes1.22.0单节点集群部署'>
+<link rel="stylesheet" href="/scss/style.min.5121d6360c90a039e57ab35de91cba8d0a4a75a9a7093fff0a6bc796e3510dba.css"><meta property='og:title' content='kubernetes1.22.0单节点集群部署'>
 <meta property='og:description' content='kubeadm版部署kubernetes方案'>
 <meta property='og:url' content='https://blog.mletter.cn/kubernetes/InstallKubernetes1.22.10'>
 <meta property='og:site_name' content='春日心动日记'>

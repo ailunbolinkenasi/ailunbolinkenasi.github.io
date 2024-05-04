@@ -6,20 +6,25 @@
 
 <link rel='canonical' href='https://blog.mletter.cn/posts/scheduler/'>
 
-<link rel="stylesheet" href="/scss/style.min.bb1b15e58039ccb178389052d3dc77bd2c4f244b1883e52eee6067c111daeffe.css"><meta property='og:title' content='kubernetes-Scheduler简单详解'>
+<link rel="stylesheet" href="/scss/style.min.3bdbbfe75dbf96262a90feae4542cc113dd8f0c53ce5cc941037823acfa9972b.css"><meta property='og:title' content='kubernetes-Scheduler简单详解'>
 <meta property='og:description' content='kube-scheduler 是 kubernetes 的核心组件之一'>
 <meta property='og:url' content='https://blog.mletter.cn/posts/scheduler/'>
 <meta property='og:site_name' content='春日心动日记'>
 <meta property='og:type' content='article'><meta property='article:section' content='Posts' /><meta property='article:tag' content='kubernetes' /><meta property='article:tag' content='调度原理' /><meta property='article:published_time' content='2020-03-14T00:00:00&#43;00:00'/><meta property='article:modified_time' content='2020-03-14T00:00:00&#43;00:00'/><meta property='og:image' content='https://img14.360buyimg.com/ddimg/jfs/t1/164569/9/40677/14419/65bc6e4cFa1d8c0c3/5ccf7e6caadc9b83.jpg' />
 <meta name="twitter:title" content="kubernetes-Scheduler简单详解">
 <meta name="twitter:description" content="kube-scheduler 是 kubernetes 的核心组件之一"><meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:image" content='https://img14.360buyimg.com/ddimg/jfs/t1/164569/9/40677/14419/65bc6e4cFa1d8c0c3/5ccf7e6caadc9b83.jpg' />
-
-
+    <meta name="twitter:image" content='https://img14.360buyimg.com/ddimg/jfs/t1/164569/9/40677/14419/65bc6e4cFa1d8c0c3/5ccf7e6caadc9b83.jpg' /><style>
+  :root {
+       
+      --sys-font-family: -apple-system, "PingFang SC", Georgia, 'Nimbus Roman No9 L', 'Hiragino Sans GB', 'Noto Serif SC', 'Microsoft Yahei', 'WenQuanYi Micro Hei', 'ST Heiti', sans-serif;
+      --code-font-family: "JetBrainsMono Regular", Menlo, Monaco, Consolas, "Courier New";
+      --article-font-family: -apple-system, "PingFang SC", var(--base-font-family);
+  }
+</style>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Long+Cang&family=Ma+Shan+Zheng&family=Noto+Sans+SC:wght@300&family=Noto+Serif+SC:wght@300&family=Zhi+Mang+Xing&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Long+Cang&family=JetBrains+Mono&family=Noto+Sans+SC:wght@500&family=Noto+Serif+SC:wght@300&family=Zhi+Mang+Xing&display=swap" rel="stylesheet">
 
 
 
@@ -785,7 +790,7 @@
     </div>
 
 </div><script 
-                src="https://cdn.bootcdn.net/ajax/libs/photoswipe/5.4.0/photoswipe.esm.min.js"crossorigin="anonymous"
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"crossorigin="anonymous"
                 defer
                 >
             </script><script 
@@ -797,7 +802,7 @@
                 href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
             ><link 
                 rel="stylesheet" 
-                href="https://cdn.bootcdn.net/ajax/libs/photoswipe/5.4.0/photoswipe.min.css"crossorigin="anonymous"
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
             >
 
             </main>

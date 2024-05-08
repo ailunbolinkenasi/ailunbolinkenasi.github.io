@@ -7,7 +7,79 @@
         <generator>Hugo -- gohugo.io</generator>
         <language>en-us</language>
         <copyright>Live and learn. 🌱</copyright>
-        <lastBuildDate>Wed, 01 May 2024 00:00:00 +0000</lastBuildDate><atom:link href="https://blog.mletter.cn/posts/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Wed, 08 May 2024 00:00:00 +0000</lastBuildDate><atom:link href="https://blog.mletter.cn/posts/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>优雅的多阶段构建微服务镜像</title>
+        <link>https://blog.mletter.cn/docker/review-docker/</link>
+        <pubDate>Wed, 08 May 2024 00:00:00 +0000</pubDate>
+        
+        <guid>https://blog.mletter.cn/docker/review-docker/</guid>
+        <description>&lt;img src="https://img12.360buyimg.com/ddimg/jfs/t1/221585/17/40296/38910/663b8f0aF38d1916d/5d09c604af566108.jpg" alt="Featured image of post 优雅的多阶段构建微服务镜像" /&gt;&lt;h2 id=&#34;借助maven-wrapper&#34;&gt;借助Maven Wrapper&lt;/h2&gt;
+&lt;p&gt;首先我们说说&lt;code&gt;maven wrapper&lt;/code&gt;的使用场景&lt;/p&gt;
+&lt;p&gt;假设我们所在的团队同时维护多个项目，不同的项目使用的&lt;code&gt;JDK&lt;/code&gt;版本不同，使用的&lt;code&gt;maven&lt;/code&gt;版本也不同，那么为了支持多项目开发，为了构建运行效果一致，你可能需要在本地管理多个&lt;code&gt;maven&lt;/code&gt;版本，这会非常繁琐，从而引出了&lt;code&gt;maven wrapper&lt;/code&gt;来解决这个&lt;code&gt;maven&lt;/code&gt;版本的管理问题。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;版本一致性：通过在&lt;code&gt;mvnw&lt;/code&gt;配置中指定 Maven 版本，确保所有开发人员和持续集成环境使用相同的&lt;code&gt;maven&lt;/code&gt;版本。&lt;/li&gt;
+&lt;li&gt;简化批量安装：不需要预先安装&lt;code&gt;maven&lt;/code&gt;，直接运行&lt;code&gt;mvnw&lt;/code&gt;命令就如安装了&lt;code&gt;mvn&lt;/code&gt;一样，从而简化了项目的初始设置和配置。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;maven-wrapper安装方式&#34;&gt;Maven Wrapper安装方式&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://maven.apache.org/wrapper/maven-wrapper/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;maven-wrapper&lt;/a&gt;: 提供&lt;code&gt;maven-wrapper.jar&lt;/code&gt;下载、安装和运行目标&lt;code&gt;maven&lt;/code&gt;发行版。&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://maven.apache.org/wrapper/maven-wrapper-distribution/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;maven-wrapper-distribution&lt;/a&gt;: 提供&lt;code&gt;mvnw&lt;/code&gt;/&lt;code&gt;mvnw.cmd&lt;/code&gt;脚本发行版，&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://maven.apache.org/wrapper/maven-wrapper-plugin/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;maven-wrapper-plugin&lt;/a&gt;: &lt;code&gt;wrapper&lt;/code&gt;用于轻松将 Wrapper 安装到项目中的插件。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;ol&gt;
+&lt;li&gt;首先安装&lt;code&gt;maven wrapper&lt;/code&gt;,默认情况下安装的是&lt;code&gt;only-script&lt;/code&gt;版本，也就是精简版，不需要额外的&lt;code&gt;maven-wrapper.jar&lt;/code&gt;。如果你需要安装&lt;code&gt;source&lt;/code&gt;版本请使用&lt;code&gt;-Dtype=source&lt;/code&gt;参数。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 假设你的本地已经有了一个特定版本的maven,可以直接通过如下命令进行引入&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;mvn -N wrapper:wrapper 
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 当然也可以指定引入的maven版本信息&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;mvn -N wrapper:wrapper -Dmaven&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;3.6.1
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;ol start=&#34;2&#34;&gt;
+&lt;li&gt;检查是否安装成功,正常来讲是会出现一个&lt;code&gt;mvnw&lt;/code&gt;和&lt;code&gt;mvnw.cmd&lt;/code&gt;以及&lt;code&gt;.mvn&lt;/code&gt;目录&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;root@localhost maven-wrapper&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;# tree -fa&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;.
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;├── ./.mvn
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;│   └── ./.mvn/wrapper
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;│       └── ./.mvn/wrapper/maven-wrapper.properties
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;├── ./mvnw
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;└── ./mvnw.cmd
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;m&#34;&gt;2&lt;/span&gt; directories, &lt;span class=&#34;m&#34;&gt;3&lt;/span&gt; files
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;ol start=&#34;3&#34;&gt;
+&lt;li&gt;修改&lt;code&gt;maven-wrapper.properties&lt;/code&gt;定义的路径地址，因为用的是官方地址可能由于墙的问题无法进行下载，我这边采用&lt;code&gt;MinioS3&lt;/code&gt;的地址来提前下好相关版本的&lt;code&gt;maven&lt;/code&gt;包进行上传。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-properties&#34; data-lang=&#34;properties&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;na&#34;&gt;wrapperVersion&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;3.3.1&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;na&#34;&gt;distributionUrl&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;https://repo.maven.apache.org/maven2/org/apache/maven/apache-maven/3.6.1/apache-maven-3.6.1-bin.zip&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 正常修改distributionUrl的地址就可以了&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;na&#34;&gt;distributionUrl&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;http://10.1.6.15:10240/software/apache-maven-3.6.1-bin.zip&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;正常能检测到相关的版本即表示成功&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;root@localhost maven-wrapper&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;# ./mvnw --version&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Apache Maven 3.6.1 &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;d66c9c0b3152b2e69ee9bac180bb8fcc8e6af555&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt; 2019-04-05T03:00:29+08:00&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Maven home: /root/.m2/wrapper/dists/apache-maven-3.6.1/5256b4e
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Java version: 1.8.0_391, vendor: Oracle Corporation, runtime: /usr/local/java/jre
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Default locale: en_US, platform encoding: UTF-8
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;OS name: &lt;span class=&#34;s2&#34;&gt;&amp;#34;linux&amp;#34;&lt;/span&gt;, version: &lt;span class=&#34;s2&#34;&gt;&amp;#34;4.18.0-372.9.1.el8.x86_64&amp;#34;&lt;/span&gt;, arch: &lt;span class=&#34;s2&#34;&gt;&amp;#34;amd64&amp;#34;&lt;/span&gt;, family: &lt;span class=&#34;s2&#34;&gt;&amp;#34;unix&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;遇到小问题&#34;&gt;遇到小问题&lt;/h2&gt;
+&lt;p&gt;如果大家在构建的过程中遇到了小问题可以看看小思路&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;问题一：我明明指定了&lt;code&gt;distributionUrl&lt;/code&gt;为我自的仓库地址，并且我上传的是&lt;code&gt;zip&lt;/code&gt;的包，为什么每次我执行的的时候都会提示&lt;code&gt;wget: Failed to fetch http://10.1.6.15:10240/software/apache-maven-3.6.1-bin.tar.gz&lt;/code&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# select .zip or .tar.gz&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;k&#34;&gt;if&lt;/span&gt; ! &lt;span class=&#34;nb&#34;&gt;command&lt;/span&gt; -v unzip &amp;gt;/dev/null&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;then&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  &lt;span class=&#34;nv&#34;&gt;distributionUrl&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span class=&#34;si&#34;&gt;${&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;distributionUrl&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;%.zip&lt;/span&gt;&lt;span class=&#34;si&#34;&gt;}&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;.tar.gz&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  &lt;span class=&#34;nv&#34;&gt;distributionUrlName&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span class=&#34;si&#34;&gt;${&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;distributionUrl&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;##*/&lt;/span&gt;&lt;span class=&#34;si&#34;&gt;}&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;k&#34;&gt;fi&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;blockquote&gt;
+&lt;p&gt;关于本问题的解释：由于官方的mvnw脚本当中存在select zip or tar.gz的文件类型判断，所以当服务器上没有&lt;code&gt;unzip&lt;/code&gt;的命令的时候会出现如上提示。&lt;/p&gt;
+&lt;/blockquote&gt;
+</description>
+        </item>
+        <item>
         <title>旅行日记-目的地-东莞</title>
         <link>https://blog.mletter.cn/tourists/3/</link>
         <pubDate>Wed, 01 May 2024 00:00:00 +0000</pubDate>

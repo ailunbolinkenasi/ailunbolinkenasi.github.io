@@ -13,7 +13,10 @@
 <meta property='og:type' content='article'><meta property='article:section' content='Posts' /><meta property='article:tag' content='kubernetes' /><meta property='article:tag' content='etcd' /><meta property='article:published_time' content='2023-02-26T00:00:00&#43;00:00'/><meta property='article:modified_time' content='2023-02-26T00:00:00&#43;00:00'/><meta property='og:image' content='https://img.linux.net.cn/data/attachment/album/201501/29/141718izklanww82qm888k.png' />
 <meta name="twitter:title" content="使用Kubeadm创建一个高可用的ETCD集群">
 <meta name="twitter:description" content="默认情况下，kubeadm 在每个控制平面节点上运行一个本地 etcd 实例。也可以使用外部的 etcd 集群，并在不同的主机上提供 etcd 实例。 这两种方法的区别在 高可用拓扑的选项 页面中阐述。这个任务将指导你创建一个由三个成员组成的高可用外部 etcd 集群，该集群在创建过程中可被 kubeadm 使用。"><meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:image" content='https://img.linux.net.cn/data/attachment/album/201501/29/141718izklanww82qm888k.png' /><style>
+    <meta name="twitter:image" content='https://img.linux.net.cn/data/attachment/album/201501/29/141718izklanww82qm888k.png' />
+  
+
+<style>
   :root {
        
       --sys-font-family: -apple-system, "PingFang SC", Georgia, 'Nimbus Roman No9 L', 'Hiragino Sans GB', 'Noto Serif SC', 'Microsoft Yahei', 'WenQuanYi Micro Hei', 'ST Heiti', sans-serif;

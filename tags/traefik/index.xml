@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
     <channel>
         <title>Traefik on 春日心动日记</title>
-        <link>https://blog.mletter.cn/tags/traefik/</link>
+        <link>http://localhost:1313/tags/traefik/</link>
         <description>Recent content in Traefik on 春日心动日记</description>
         <generator>Hugo -- gohugo.io</generator>
         <language>en-us</language>
         <copyright>Live and learn. 🌱</copyright>
-        <lastBuildDate>Fri, 07 Apr 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://blog.mletter.cn/tags/traefik/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Fri, 07 Apr 2023 00:00:00 +0000</lastBuildDate><atom:link href="http://localhost:1313/tags/traefik/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>Traekfik基础使用指南</title>
-        <link>https://blog.mletter.cn/kubernetes/traefik/</link>
+        <link>http://localhost:1313/kubernetes/traefik/</link>
         <pubDate>Fri, 07 Apr 2023 00:00:00 +0000</pubDate>
         
-        <guid>https://blog.mletter.cn/kubernetes/traefik/</guid>
+        <guid>http://localhost:1313/kubernetes/traefik/</guid>
         <description>&lt;img src="https://doc.traefik.io/traefik/assets/img/traefik-architecture.png" alt="Featured image of post Traekfik基础使用指南" /&gt;&lt;h2 id=&#34;traekfik是什么&#34;&gt;Traekfik是什么&lt;/h2&gt;
 &lt;p&gt;Traefik 是一种&lt;a class=&#34;link&#34; href=&#34;https://github.com/traefik/traefik&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;开源&lt;/a&gt; &lt;em&gt;边缘路由器&lt;/em&gt;，它使您发布服务成为一种有趣而轻松的体验。它代表您的系统接收请求并找出哪些组件负责处理它们。&lt;/p&gt;

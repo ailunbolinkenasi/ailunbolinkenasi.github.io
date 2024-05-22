@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
     <channel>
         <title>Linux on 春日心动日记</title>
-        <link>https://blog.mletter.cn/tags/linux/</link>
+        <link>http://localhost:1313/tags/linux/</link>
         <description>Recent content in Linux on 春日心动日记</description>
         <generator>Hugo -- gohugo.io</generator>
         <language>en-us</language>
         <copyright>Live and learn. 🌱</copyright>
-        <lastBuildDate>Wed, 08 May 2024 00:00:00 +0000</lastBuildDate><atom:link href="https://blog.mletter.cn/tags/linux/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Wed, 08 May 2024 00:00:00 +0000</lastBuildDate><atom:link href="http://localhost:1313/tags/linux/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>优雅的多阶段构建微服务镜像</title>
-        <link>https://blog.mletter.cn/docker/review-docker/</link>
+        <link>http://localhost:1313/docker/review-docker/</link>
         <pubDate>Wed, 08 May 2024 00:00:00 +0000</pubDate>
         
-        <guid>https://blog.mletter.cn/docker/review-docker/</guid>
+        <guid>http://localhost:1313/docker/review-docker/</guid>
         <description>&lt;img src="https://img12.360buyimg.com/ddimg/jfs/t1/221585/17/40296/38910/663b8f0aF38d1916d/5d09c604af566108.jpg" alt="Featured image of post 优雅的多阶段构建微服务镜像" /&gt;&lt;h2 id=&#34;借助maven-wrapper&#34;&gt;借助Maven Wrapper&lt;/h2&gt;
 &lt;p&gt;首先我们说说&lt;code&gt;maven wrapper&lt;/code&gt;的使用场景&lt;/p&gt;
 &lt;p&gt;假设我们所在的团队同时维护多个项目，不同的项目使用的&lt;code&gt;JDK&lt;/code&gt;版本不同，使用的&lt;code&gt;maven&lt;/code&gt;版本也不同，那么为了支持多项目开发，为了构建运行效果一致，你可能需要在本地管理多个&lt;code&gt;maven&lt;/code&gt;版本，这会非常繁琐，从而引出了&lt;code&gt;maven wrapper&lt;/code&gt;来解决这个&lt;code&gt;maven&lt;/code&gt;版本的管理问题。&lt;/p&gt;
@@ -78,6 +78,9 @@
 &lt;p&gt;关于本问题的解释：由于官方的mvnw脚本当中存在select zip or tar.gz的文件类型判断，所以当服务器上没有&lt;code&gt;unzip&lt;/code&gt;的命令的时候会出现如上提示。&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;h2 id=&#34;官方的dockerfile&#34;&gt;官方的Dockerfile&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;其实都是引用了&lt;code&gt;BuildKit&lt;/code&gt;的一些特性，如果需要了解更多的话可以使用&lt;code&gt;docker Desktop&lt;/code&gt;来进行初始化看一下官方写的这些脚本。&lt;/li&gt;
+&lt;/ul&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-dockerfile&#34; data-lang=&#34;dockerfile&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c&#34;&gt;# syntax=docker/dockerfile:1&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;err&#34;&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;err&#34;&gt;&lt;/span&gt;&lt;span class=&#34;c&#34;&gt;# Comments are provided throughout this file to help you get started.&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;
@@ -155,7 +158,10 @@
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;err&#34;&gt;&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;EXPOSE&lt;/span&gt;&lt;span class=&#34;s&#34;&gt; 9000&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;err&#34;&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;err&#34;&gt;&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;ENTRYPOINT&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;[&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;java&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;-jar&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;app.jar&amp;#34;&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;]&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description>
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;blockquote&gt;
+&lt;p&gt;另外说一句：我永远相信最佳实践的内容，但是大厂的东西一定适合大厂，但是不一定适合你自己，所以我觉得应该带一些辨证的眼光去看待最佳实践的这些内容。&lt;/p&gt;
+&lt;/blockquote&gt;
+</description>
         </item>
         
     </channel>

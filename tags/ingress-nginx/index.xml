@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
     <channel>
         <title>Ingress-Nginx on 春日心动日记</title>
-        <link>https://blog.mletter.cn/tags/ingress-nginx/</link>
+        <link>http://localhost:1313/tags/ingress-nginx/</link>
         <description>Recent content in Ingress-Nginx on 春日心动日记</description>
         <generator>Hugo -- gohugo.io</generator>
         <language>en-us</language>
         <copyright>Live and learn. 🌱</copyright>
-        <lastBuildDate>Wed, 08 Mar 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://blog.mletter.cn/tags/ingress-nginx/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Wed, 08 Mar 2023 00:00:00 +0000</lastBuildDate><atom:link href="http://localhost:1313/tags/ingress-nginx/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>Ingress的简单使用</title>
-        <link>https://blog.mletter.cn/kubernetes/ingress/</link>
+        <link>http://localhost:1313/kubernetes/ingress/</link>
         <pubDate>Wed, 08 Mar 2023 00:00:00 +0000</pubDate>
         
-        <guid>https://blog.mletter.cn/kubernetes/ingress/</guid>
+        <guid>http://localhost:1313/kubernetes/ingress/</guid>
         <description>&lt;img src="https://d33wubrfki0l68.cloudfront.net/4f01eaec32889ff16ee255e97822b6d165b633f0/a54b4/zh-cn/docs/images/ingress.svg" alt="Featured image of post Ingress的简单使用" /&gt;&lt;h1 id=&#34;什么是ingress&#34;&gt;什么是Ingress&lt;/h1&gt;
 &lt;p&gt;Ingress 是对集群中服务的外部访问进行管理的 API 对象，典型的访问方式是 HTTP。&lt;/p&gt;
 &lt;p&gt;Ingress 可以提供负载均衡、SSL 终结和基于名称的虚拟托管。&lt;/p&gt;

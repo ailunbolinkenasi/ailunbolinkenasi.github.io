@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
     <channel>
         <title>Mysql on 春日心动日记</title>
-        <link>https://blog.mletter.cn/categories/mysql/</link>
+        <link>http://localhost:1313/categories/mysql/</link>
         <description>Recent content in Mysql on 春日心动日记</description>
         <generator>Hugo -- gohugo.io</generator>
         <language>en-us</language>
         <copyright>Live and learn. 🌱</copyright>
-        <lastBuildDate>Wed, 20 Jul 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://blog.mletter.cn/categories/mysql/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Wed, 20 Jul 2022 00:00:00 +0000</lastBuildDate><atom:link href="http://localhost:1313/categories/mysql/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>MySQL小小优化思路简单版本</title>
-        <link>https://blog.mletter.cn/mysql/MysqlOptimization/</link>
+        <link>http://localhost:1313/mysql/MysqlOptimization/</link>
         <pubDate>Wed, 20 Jul 2022 00:00:00 +0000</pubDate>
         
-        <guid>https://blog.mletter.cn/mysql/MysqlOptimization/</guid>
+        <guid>http://localhost:1313/mysql/MysqlOptimization/</guid>
         <description>&lt;h2 id=&#34;mysql性能优化-优化思路&#34;&gt;MySQL性能优化-优化思路&lt;/h2&gt;
 &lt;blockquote&gt;
 &lt;p&gt;大概的优化思路分为以下几个内容&lt;/p&gt;

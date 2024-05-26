@@ -6,7 +6,7 @@
 
 <link rel='canonical' href='http://localhost:1313/kubernetes/architectural_design/'>
 
-<link rel="stylesheet" href="/scss/style.min.0a0461633e569623295b36de590c6772bb1457291f5d7f7633d137c00b2b686b.css"><meta property='og:title' content='Kubernetes的架构设计和对象属性基本理解'>
+<link rel="stylesheet" href="/scss/style.min.58e6cdaaaceac4de5435c6e51dd36805a0479a381c5e886664acd11f0a943301.css"><meta property='og:title' content='Kubernetes的架构设计和对象属性基本理解'>
 <meta property='og:description' content='主要讲解kubernetes的组成和组件的具体作用'>
 <meta property='og:url' content='http://localhost:1313/kubernetes/architectural_design/'>
 <meta property='og:site_name' content='春日心动日记'>
@@ -407,26 +407,84 @@
 <ol>
 <li>其实我觉得容器化带来的最大的优势就是交付和部署的优势</li>
 </ol>
-<p>
+<p><!doctype html>
+<html lang="en">
+    <head>
+        <meta
+            name="viewport"
+            content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1"
+        />
+        <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.7.1/jquery.js"></script>
+        <link
+            href="https://cdn.bootcdn.net/ajax/libs/nanogallery2/3.0.5/css/nanogallery2.min.css"
+            rel="stylesheet"
+        />
+        <script src="https://cdn.bootcdn.net/ajax/libs/nanogallery2/3.0.5/jquery.nanogallery2.min.js"></script>
+    </head>
+    <body>
+        <div
+            data-nanogallery2='{
+    "itemsBaseURL":               "https://nanogallery2.nanostudio.org/samples",
+    "thumbnailDisplayTransition":          "slideUp2",
+	"thumbnailHeight":    200,
+    "thumbnailWidth":     200,
+    "thumbnailAlignment": "fillWidth",
+    "thumbnailOpenInLightox": true,
+    "breadcrumbOnlyCurrentLevel": true,
+    "thumbnailLabel":     { "valign": "bottom", "position": "overImage", "hideIcons": true },
+    "galleryMosaic" :   [
+      { "c": 1, "r": 1, "w": 2, "h": 2 },
+      { "c": 3, "r": 1, "w": 1, "h": 1 },
+      { "c": 3, "r": 2, "w": 1, "h": 1 },
+      { "c": 4, "r": 1, "w": 1, "h": 1 },
+      { "c": 4, "r": 2, "w": 1, "h": 1 }
+    ],
+    "galleryLastRowFull" : true,
+     "thumbnailDisplayTransitionDuration":  500,
+     "thumbnailDisplayInterval":            30,
+     "galleryDisplayTransition":            "rotateX",
+     "galleryDisplayTransitionDuration":    500,
+     "galleryDisplayMode": "rows",
+     "thumbnailDisplayOutsideScreen": "true",
+     "eventsDebounceDelay": 10,
+     "thumbnailL1BorderHorizontal": 0,
+     "thumbnailL1BorderVertical": 0,
+     "thumbnailLabel": {
+        "titleFontSize": "0.6em"
+     },
+     "thumbnailHoverEffect2": "image_scale_1.00_1.10|label_backgroundColor_rgba(0,0,0,0)_rgba(255,255,255,0)",
+     "galleryTheme": {
+        "thumbnail": {
+            "borderRadius": "8px"
+        }
+     },
+     "thumbnailToolbarImage": {
+        "topLeft": "",
+        "topRight": "",
+        "bottomLeft": "",
+        "bottomRight": ""
+     },
+     "viewerToolbar":   {
+        "display": true,
+        "standard": "label"
+     },
+     "viewerTools":     {
+        "topLeft":    "pageCounter, playPauseButton",
+        "topRight":   "downloadButton, rotateLeft, zoomButton, fullscreenButton, closeButton"
+     },
+     "viewerGalleryTWidth": 40,
+     "viewerGalleryTHeight": 40
+}'
+        >
+            
+
+<a href="https://img13.360buyimg.com/ddimg/jfs/t1/164078/6/34165/22231/654ba81fFe1bf21d7/9d02bd791b795b3b.jpg" data-ngThumb="https://img13.360buyimg.com/ddimg/jfs/t1/164078/6/34165/22231/654ba81fFe1bf21d7/9d02bd791b795b3b.jpg">容器单点架构流程图</a>
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-  
-  <picture>
-  <img class="img-fluid" src="https://img13.360buyimg.com/ddimg/jfs/t1/164078/6/34165/22231/654ba81fFe1bf21d7/9d02bd791b795b3b.jpg" alt="容器单点架构流程图.png" loading="lazy" />
-</picture>
+        </div>
+    </body>
+</html>
 
 那么随之而来带来的问题是:</p>
 <blockquote>
@@ -666,29 +724,87 @@
 </ul>
 <h2 id="创建资源的工作流程">创建资源的工作流程</h2>
 <ol>
-<li>首先当用户的请求进入到<code>Api-Server</code>后会进入到<code>Authorization</code>认证授权的处理接口实际上就是加载我们的<code>config</code>配置文件,其具体代码在<code>loader.go:372</code>进行实现</li>
+<li>首先当用户的请求进入到<code>Api-Server</code>后会进入到<code>Authorization</code>认证授权的处理接口实际上就是加载我们的<code>config</code>配置文件,其具体代码在<code>loader.go:372</code>进行实现
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta
+            name="viewport"
+            content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1"
+        />
+        <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.7.1/jquery.js"></script>
+        <link
+            href="https://cdn.bootcdn.net/ajax/libs/nanogallery2/3.0.5/css/nanogallery2.min.css"
+            rel="stylesheet"
+        />
+        <script src="https://cdn.bootcdn.net/ajax/libs/nanogallery2/3.0.5/jquery.nanogallery2.min.js"></script>
+    </head>
+    <body>
+        <div
+            data-nanogallery2='{
+    "itemsBaseURL":               "https://nanogallery2.nanostudio.org/samples",
+    "thumbnailDisplayTransition":          "slideUp2",
+	"thumbnailHeight":    200,
+    "thumbnailWidth":     200,
+    "thumbnailAlignment": "fillWidth",
+    "thumbnailOpenInLightox": true,
+    "breadcrumbOnlyCurrentLevel": true,
+    "thumbnailLabel":     { "valign": "bottom", "position": "overImage", "hideIcons": true },
+    "galleryMosaic" :   [
+      { "c": 1, "r": 1, "w": 2, "h": 2 },
+      { "c": 3, "r": 1, "w": 1, "h": 1 },
+      { "c": 3, "r": 2, "w": 1, "h": 1 },
+      { "c": 4, "r": 1, "w": 1, "h": 1 },
+      { "c": 4, "r": 2, "w": 1, "h": 1 }
+    ],
+    "galleryLastRowFull" : true,
+     "thumbnailDisplayTransitionDuration":  500,
+     "thumbnailDisplayInterval":            30,
+     "galleryDisplayTransition":            "rotateX",
+     "galleryDisplayTransitionDuration":    500,
+     "galleryDisplayMode": "rows",
+     "thumbnailDisplayOutsideScreen": "true",
+     "eventsDebounceDelay": 10,
+     "thumbnailL1BorderHorizontal": 0,
+     "thumbnailL1BorderVertical": 0,
+     "thumbnailLabel": {
+        "titleFontSize": "0.6em"
+     },
+     "thumbnailHoverEffect2": "image_scale_1.00_1.10|label_backgroundColor_rgba(0,0,0,0)_rgba(255,255,255,0)",
+     "galleryTheme": {
+        "thumbnail": {
+            "borderRadius": "8px"
+        }
+     },
+     "thumbnailToolbarImage": {
+        "topLeft": "",
+        "topRight": "",
+        "bottomLeft": "",
+        "bottomRight": ""
+     },
+     "viewerToolbar":   {
+        "display": true,
+        "standard": "label"
+     },
+     "viewerTools":     {
+        "topLeft":    "pageCounter, playPauseButton",
+        "topRight":   "downloadButton, rotateLeft, zoomButton, fullscreenButton, closeButton"
+     },
+     "viewerGalleryTWidth": 40,
+     "viewerGalleryTHeight": 40
+}'
+        >
+            
+
+<a href="https://img12.360buyimg.com/ddimg/jfs/t1/228353/25/2337/91698/654ba7e1Fcf72fe29/40d7e21b0d3e5f2d.jpg" data-ngThumb="https://img12.360buyimg.com/ddimg/jfs/t1/228353/25/2337/91698/654ba7e1Fcf72fe29/40d7e21b0d3e5f2d.jpg">创建资源的工作流程</a>
+
+
+
+        </div>
+    </body>
+</html>
+</li>
 </ol>
-<p>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  
-  <picture>
-  <img class="img-fluid" src="https://img12.360buyimg.com/ddimg/jfs/t1/228353/25/2337/91698/654ba7e1Fcf72fe29/40d7e21b0d3e5f2d.jpg" alt="" loading="lazy" />
-</picture>
-</p>
 <h2 id="服务发现原理和应用">服务发现原理和应用</h2>
 <h3 id="kubernetes中pod的通信">kubernetes中Pod的通信</h3>
 <ul>
@@ -721,7 +837,7 @@
 </span></span><span class="line"><span class="cl">kube-dns-upstream    10.10.151.159:53,10.10.4.95:53,10.10.151.159:53 + <span class="m">1</span> more...   81d
 </span></span></code></pre></div><p>其次可以看到我们容器内所对应的<code>resolv.conf</code>所写内容的配置文件</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">search jiashicang.svc.cluster.local svc.cluster.local cluster.local
-</span></span><span class="line"><span class="cl">nameserver 169.254.20.10 
+</span></span><span class="line"><span class="cl">nameserver 169.254.20.10
 </span></span><span class="line"><span class="cl">options ndots:5 single-request-reopen
 </span></span></code></pre></div><p>由于我使用了<code>NodeLocalDns</code>所以我这个地方的nameserver不太一样,关于<code>NodeLocalDns</code>我们后续再说。
 总结以下几点:</p>

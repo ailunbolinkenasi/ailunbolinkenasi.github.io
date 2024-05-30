@@ -3,7 +3,22 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>http://localhost:1313/posts/</loc>
-    <lastmod>2024-05-08T00:00:00+00:00</lastmod>
+    <lastmod>2024-05-29T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/tags/</loc>
+    <lastmod>2024-05-29T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/</loc>
+    <lastmod>2024-05-29T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/tags/%E9%A3%9E%E6%88%88250/</loc>
+    <lastmod>2024-05-29T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/categories/%E6%97%A5%E8%AE%B0/</loc>
+    <lastmod>2024-05-29T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/tourists/120/</loc>
+    <lastmod>2024-05-29T00:00:00+00:00</lastmod>
   </url><url>
     <loc>http://localhost:1313/tags/docker/</loc>
     <lastmod>2024-05-08T00:00:00+00:00</lastmod>
@@ -12,12 +27,6 @@
     <lastmod>2024-05-08T00:00:00+00:00</lastmod>
   </url><url>
     <loc>http://localhost:1313/tags/linux/</loc>
-    <lastmod>2024-05-08T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>http://localhost:1313/tags/</loc>
-    <lastmod>2024-05-08T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>http://localhost:1313/</loc>
     <lastmod>2024-05-08T00:00:00+00:00</lastmod>
   </url><url>
     <loc>http://localhost:1313/docker/review-docker/</loc>
@@ -49,9 +58,6 @@
   </url><url>
     <loc>http://localhost:1313/kubernetes/sealos%E2%80%94install/</loc>
     <lastmod>2024-04-15T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>http://localhost:1313/categories/%E6%97%A5%E8%AE%B0/</loc>
-    <lastmod>2024-03-17T00:00:00+00:00</lastmod>
   </url><url>
     <loc>http://localhost:1313/tourists/119/</loc>
     <lastmod>2024-03-17T00:00:00+00:00</lastmod>

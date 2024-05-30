@@ -171,6 +171,84 @@
 &lt;/p&gt;
 &lt;h2 id=&#34;配置说明&#34;&gt;配置说明&lt;/h2&gt;
 &lt;p&gt;整车的配置看起来是相当的不错，有&lt;code&gt;玛吉斯轮胎&lt;/code&gt;、&lt;code&gt;自带行车记录仪&lt;/code&gt;、&lt;code&gt;TFT液晶仪表&lt;/code&gt;、&lt;code&gt;TBOX车联网+地图导航投屏&lt;/code&gt;、&lt;code&gt;ABS+TSC&lt;/code&gt;的高端组合。&lt;/p&gt;
+&lt;p&gt;另外车机这方面我觉得还是不错的，如果官方看到了偷偷问一句：是不是外包做滴！
+&lt;!doctype html&gt;
+&lt;html lang=&#34;en&#34;&gt;
+    &lt;head&gt;
+        &lt;meta
+            name=&#34;viewport&#34;
+            content=&#34;user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1&#34;
+        /&gt;
+        &lt;script src=&#34;https://cdn.bootcdn.net/ajax/libs/jquery/3.7.1/jquery.js&#34;&gt;&lt;/script&gt;
+        &lt;link
+            href=&#34;https://cdn.bootcdn.net/ajax/libs/nanogallery2/3.0.5/css/nanogallery2.min.css&#34;
+            rel=&#34;stylesheet&#34;
+        /&gt;
+        &lt;script src=&#34;https://cdn.bootcdn.net/ajax/libs/nanogallery2/3.0.5/jquery.nanogallery2.min.js&#34;&gt;&lt;/script&gt;
+    &lt;/head&gt;
+    &lt;body&gt;
+        &lt;div
+            data-nanogallery2=&#39;{
+    &#34;itemsBaseURL&#34;:               &#34;https://nanogallery2.nanostudio.org/samples&#34;,
+    &#34;thumbnailDisplayTransition&#34;:          &#34;slideUp2&#34;,
+	&#34;thumbnailHeight&#34;:    200,
+    &#34;thumbnailWidth&#34;:     200,
+    &#34;thumbnailAlignment&#34;: &#34;fillWidth&#34;,
+    &#34;thumbnailOpenInLightox&#34;: true,
+    &#34;breadcrumbOnlyCurrentLevel&#34;: true,
+    &#34;thumbnailLabel&#34;:     { &#34;valign&#34;: &#34;bottom&#34;, &#34;position&#34;: &#34;overImage&#34;, &#34;hideIcons&#34;: true },
+    &#34;galleryMosaic&#34; :   [
+      { &#34;c&#34;: 1, &#34;r&#34;: 1, &#34;w&#34;: 2, &#34;h&#34;: 2 },
+      { &#34;c&#34;: 3, &#34;r&#34;: 1, &#34;w&#34;: 1, &#34;h&#34;: 1 },
+      { &#34;c&#34;: 3, &#34;r&#34;: 2, &#34;w&#34;: 1, &#34;h&#34;: 1 },
+      { &#34;c&#34;: 4, &#34;r&#34;: 1, &#34;w&#34;: 1, &#34;h&#34;: 1 },
+      { &#34;c&#34;: 4, &#34;r&#34;: 2, &#34;w&#34;: 1, &#34;h&#34;: 1 }
+    ],
+    &#34;galleryLastRowFull&#34; : true,
+     &#34;thumbnailDisplayTransitionDuration&#34;:  500,
+     &#34;thumbnailDisplayInterval&#34;:            30,
+     &#34;galleryDisplayTransition&#34;:            &#34;rotateX&#34;,
+     &#34;galleryDisplayTransitionDuration&#34;:    500,
+     &#34;galleryDisplayMode&#34;: &#34;rows&#34;,
+     &#34;thumbnailDisplayOutsideScreen&#34;: &#34;true&#34;,
+     &#34;eventsDebounceDelay&#34;: 10,
+     &#34;thumbnailL1BorderHorizontal&#34;: 0,
+     &#34;thumbnailL1BorderVertical&#34;: 0,
+     &#34;thumbnailLabel&#34;: {
+        &#34;titleFontSize&#34;: &#34;0.6em&#34;
+     },
+     &#34;thumbnailHoverEffect2&#34;: &#34;image_scale_1.00_1.10|label_backgroundColor_rgba(0,0,0,0)_rgba(255,255,255,0)&#34;,
+     &#34;galleryTheme&#34;: {
+        &#34;thumbnail&#34;: {
+            &#34;borderRadius&#34;: &#34;8px&#34;
+        }
+     },
+     &#34;thumbnailToolbarImage&#34;: {
+        &#34;topLeft&#34;: &#34;&#34;,
+        &#34;topRight&#34;: &#34;&#34;,
+        &#34;bottomLeft&#34;: &#34;&#34;,
+        &#34;bottomRight&#34;: &#34;&#34;
+     },
+     &#34;viewerToolbar&#34;:   {
+        &#34;display&#34;: true,
+        &#34;standard&#34;: &#34;label&#34;
+     },
+     &#34;viewerTools&#34;:     {
+        &#34;topLeft&#34;:    &#34;pageCounter, playPauseButton&#34;,
+        &#34;topRight&#34;:   &#34;downloadButton, rotateLeft, zoomButton, fullscreenButton, closeButton&#34;
+     },
+     &#34;viewerGalleryTWidth&#34;: 40,
+     &#34;viewerGalleryTHeight&#34;: 40
+}&#39;
+        &gt;
+            
+&lt;a href=&#34;https://img10.360buyimg.com/ddimg/jfs/t1/222857/33/32788/30234/665899bdFee0ccd50/02ee9ccd7e08e749.jpg&#34; data-ngThumb=&#34;https://img10.360buyimg.com/ddimg/jfs/t1/222857/33/32788/30234/665899bdFee0ccd50/02ee9ccd7e08e749.jpg&#34;&gt;车机页面&lt;/a&gt;
+
+
+        &lt;/div&gt;
+    &lt;/body&gt;
+&lt;/html&gt;
+&lt;/p&gt;
 &lt;p&gt;另外我还看到了蓝牙接听、胎压监测、智能感应锁、单撑熄火、手把加热等内容。但是其中又一个值得注意的就是&lt;code&gt;250&lt;/code&gt;版本居然没有了&lt;code&gt;3秒启停&lt;/code&gt;&amp;hellip;.
 3秒启停就是&lt;code&gt;车辆可以在很短的时间内（通常在 3 秒左右）完成发动机的自动启动和停止动作，以减少燃油消耗和尾气排放,当需要继续前进时，系统又能快速地让发动机重新启动，不影响车辆的正常行驶&lt;/code&gt;。
 这也就是后来我听到传出了&lt;code&gt;飞戈150这车怎么动不动就熄火了&lt;/code&gt;、&lt;code&gt;飞戈一等红绿灯就熄火&lt;/code&gt;。&lt;/p&gt;

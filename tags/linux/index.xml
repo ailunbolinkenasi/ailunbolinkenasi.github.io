@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
     <channel>
         <title>Linux on 春日心动日记</title>
-        <link>http://localhost:1313/tags/linux/</link>
+        <link>https://blog.mletter.cn/tags/linux/</link>
         <description>Recent content in Linux on 春日心动日记</description>
         <generator>Hugo -- gohugo.io</generator>
         <language>en-us</language>
         <copyright>Live and learn. 🌱</copyright>
-        <lastBuildDate>Wed, 08 May 2024 00:00:00 +0000</lastBuildDate><atom:link href="http://localhost:1313/tags/linux/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Wed, 08 May 2024 00:00:00 +0000</lastBuildDate><atom:link href="https://blog.mletter.cn/tags/linux/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>优雅的多阶段构建微服务镜像</title>
-        <link>http://localhost:1313/docker/review-docker/</link>
+        <link>https://blog.mletter.cn/docker/review-docker/</link>
         <pubDate>Wed, 08 May 2024 00:00:00 +0000</pubDate>
         
-        <guid>http://localhost:1313/docker/review-docker/</guid>
+        <guid>https://blog.mletter.cn/docker/review-docker/</guid>
         <description>&lt;img src="https://img12.360buyimg.com/ddimg/jfs/t1/221585/17/40296/38910/663b8f0aF38d1916d/5d09c604af566108.jpg" alt="Featured image of post 优雅的多阶段构建微服务镜像" /&gt;&lt;h2 id=&#34;借助maven-wrapper&#34;&gt;借助Maven Wrapper&lt;/h2&gt;
 &lt;p&gt;首先我们说说&lt;code&gt;maven wrapper&lt;/code&gt;的使用场景&lt;/p&gt;
 &lt;p&gt;假设我们所在的团队同时维护多个项目，不同的项目使用的&lt;code&gt;JDK&lt;/code&gt;版本不同，使用的&lt;code&gt;maven&lt;/code&gt;版本也不同，那么为了支持多项目开发，为了构建运行效果一致，你可能需要在本地管理多个&lt;code&gt;maven&lt;/code&gt;版本，这会非常繁琐，从而引出了&lt;code&gt;maven wrapper&lt;/code&gt;来解决这个&lt;code&gt;maven&lt;/code&gt;版本的管理问题。&lt;/p&gt;

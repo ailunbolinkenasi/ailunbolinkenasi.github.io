@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
     <channel>
         <title>Redis on 春日心动日记</title>
-        <link>http://localhost:1313/categories/redis/</link>
+        <link>https://blog.mletter.cn/categories/redis/</link>
         <description>Recent content in Redis on 春日心动日记</description>
         <generator>Hugo -- gohugo.io</generator>
         <language>en-us</language>
         <copyright>Live and learn. 🌱</copyright>
-        <lastBuildDate>Fri, 19 Feb 2021 00:00:00 +0000</lastBuildDate><atom:link href="http://localhost:1313/categories/redis/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Fri, 19 Feb 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://blog.mletter.cn/categories/redis/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>Redis集群搭建</title>
-        <link>http://localhost:1313/posts/redis-cluster/</link>
+        <link>https://blog.mletter.cn/posts/redis-cluster/</link>
         <pubDate>Fri, 19 Feb 2021 00:00:00 +0000</pubDate>
         
-        <guid>http://localhost:1313/posts/redis-cluster/</guid>
+        <guid>https://blog.mletter.cn/posts/redis-cluster/</guid>
         <description>&lt;h2 id=&#34;redis-clusterredis集群简介&#34;&gt;Redis Cluster（Redis集群）简介&lt;/h2&gt;
 &lt;ul&gt;
 &lt;li&gt;redis是一个开源的key value存储系统，受到了广大互联网公司的青睐。redis3.0版本之前只支持单例模式，在3.0版本及以后才支持集群，我这里用的是redis3.0.0版本；&lt;/li&gt;

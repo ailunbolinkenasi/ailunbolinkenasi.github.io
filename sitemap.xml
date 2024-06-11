@@ -3,21 +3,27 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://blog.mletter.cn/posts/</loc>
-    <lastmod>2024-05-29T00:00:00+00:00</lastmod>
+    <lastmod>2024-06-12T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://blog.mletter.cn/tags/</loc>
-    <lastmod>2024-05-29T00:00:00+00:00</lastmod>
+    <lastmod>2024-06-12T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://blog.mletter.cn/</loc>
-    <lastmod>2024-05-29T00:00:00+00:00</lastmod>
+    <lastmod>2024-06-12T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://blog.mletter.cn/categories/%E6%97%A5%E8%AE%B0/</loc>
+    <lastmod>2024-06-12T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://blog.mletter.cn/tags/%E6%89%8B%E6%9C%BA%E6%91%84%E5%BD%B1/</loc>
+    <lastmod>2024-06-12T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://blog.mletter.cn/Takephoto/01/</loc>
+    <lastmod>2024-06-12T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://blog.mletter.cn/tags/%E9%A3%9E%E6%88%88250/</loc>
     <lastmod>2024-05-29T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://blog.mletter.cn/articles/120/</loc>
-    <lastmod>2024-05-29T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://blog.mletter.cn/categories/%E6%97%A5%E8%AE%B0/</loc>
     <lastmod>2024-05-29T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://blog.mletter.cn/tags/docker/</loc>
@@ -38,13 +44,7 @@
     <loc>https://blog.mletter.cn/tags/%E5%B9%BF%E4%B8%9C/</loc>
     <lastmod>2024-05-01T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://blog.mletter.cn/categories/%E6%97%85%E8%A1%8C%E6%97%A5%E8%AE%B0/</loc>
-    <lastmod>2024-05-01T00:00:00+00:00</lastmod>
-  </url><url>
     <loc>https://blog.mletter.cn/tourists/3/</loc>
-    <lastmod>2024-05-01T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://blog.mletter.cn/tags/%E6%97%A5%E8%AE%B0/</loc>
     <lastmod>2024-05-01T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://blog.mletter.cn/tags/kubernetes/</loc>
@@ -69,6 +69,9 @@
     <lastmod>2024-02-13T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://blog.mletter.cn/tags/%E6%98%A5%E8%8A%82/</loc>
+    <lastmod>2024-02-13T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://blog.mletter.cn/tags/%E6%97%A5%E8%AE%B0/</loc>
     <lastmod>2024-02-13T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://blog.mletter.cn/posts/2024/</loc>

@@ -7,7 +7,300 @@
         <generator>Hugo -- gohugo.io</generator>
         <language>en-us</language>
         <copyright>Live and learn. 🌱</copyright>
-        <lastBuildDate>Wed, 12 Jun 2024 00:00:00 +0000</lastBuildDate><atom:link href="https://blog.mletter.cn/posts/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Mon, 15 Jul 2024 00:00:00 +0000</lastBuildDate><atom:link href="https://blog.mletter.cn/posts/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>近期现状</title>
+        <link>https://blog.mletter.cn/posts/2024-07-15/</link>
+        <pubDate>Mon, 15 Jul 2024 00:00:00 +0000</pubDate>
+        
+        <guid>https://blog.mletter.cn/posts/2024-07-15/</guid>
+        <description>&lt;img src="https://img12.360buyimg.com/ddimg/jfs/t1/24625/11/20192/84890/6694d09cFe61e3f00/1d82e9a5c2de4b0a.jpg&amp;100px" alt="Featured image of post 近期现状" /&gt;&lt;h2 id=&#34;近期日常&#34;&gt;近期日常&lt;/h2&gt;
+&lt;p&gt;最近的日子，就像一部没有剧本的电影，情节跌宕起伏，让人应接不暇。&lt;/p&gt;
+&lt;p&gt;可谓是 “匆匆忙忙”&lt;/p&gt;
+&lt;h2 id=&#34;聊聊工作&#34;&gt;聊聊工作&lt;/h2&gt;
+&lt;p&gt;工作上，依旧充满了挑战和机遇。项目的推进虽然遇到了一些小波折，但团队成员们齐心协力，总能找到解决问题的办法。每一次的头脑风暴，每一次的方案修改，每一次的信创内容适配工作都让我抓耳挠腮。&lt;/p&gt;
+&lt;p&gt;平日里，我颇为喜欢运用&lt;code&gt;Docker&lt;/code&gt;来处理一些繁杂的单机部署问题。然而，最近实在是不巧，常用的镜像居然被屏蔽了。个中缘由，在此也就不多赘述。&lt;/p&gt;
+&lt;p&gt;随之而来的，便是我踏上了寻觅镜像源的漫漫征程。起初，我尝试了中科大、清华、阿里云的源，可基本上都不太顺遂，时不时就会碰到无法解析的状况。最终，在尝试了华为云的源之后，问题得以完美解决。在此声明，并非为任何厂商打广告，只要能切实解决咱们的问题，那就是好的！&lt;/p&gt;
+&lt;p&gt;更新一下最新可用的镜像源：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://mirrors.huaweicloud.com/home&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;HuaWeiCloud&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&#34;notice notice-tip&#34; &gt;
+    &lt;div class=&#34;notice-title&#34;&gt;&lt;svg xmlns=&#34;http://www.w3.org/2000/svg&#34; class=&#34;icon notice-icon&#34; viewBox=&#34;0 0 512 512&#34; fill=&#34;hsl(140, 65%, 65%)&#34;&gt;&lt;path d=&#34;M504 256a248 248 0 11-496 0 248 248 0 01496 0zM227 387l184-184c7-6 7-16 0-22l-22-23c-7-6-17-6-23 0L216 308l-70-70c-6-6-16-6-23 0l-22 23c-7 6-7 16 0 22l104 104c6 7 16 7 22 0z&#34;/&gt;&lt;/svg&gt;&lt;/div&gt;&lt;p&gt;虽然华为在手机方面总是不尽人意，但是在技术方面我愿称之为“中华有为”！！！&lt;/p&gt;&lt;/div&gt;
+
+&lt;h2 id=&#34;聊聊游戏&#34;&gt;聊聊游戏&lt;/h2&gt;
+&lt;p&gt;工作之余，游戏无疑成为了我放松身心的绝佳途径。近来，我迷上了一款策略游戏，名曰《三国·谋定天下》。想必大家一听这名字，心里就大概有个底，这确实是一款饱受争议、槽点满满的游戏。
+这是一款策略类的 SLG 游戏，其游戏背景以三国为蓝本展开，各州府的玩家们纷纷登场，群雄逐鹿，目标直指洛阳。&lt;/p&gt;
+&lt;p&gt;称得上是一款让玩家&lt;code&gt;氪服困难&lt;/code&gt;的一款SLG游戏，但是咱也不骂了都知道SLG就这样，事实上是比隔壁率土良心多了。&lt;/p&gt;
+&lt;p&gt;总的来讲，我在这个游戏里小充值了8000+。体验方面还算可以，但抽卡环节就不那么尽如人意了，总有种被锁卡的感觉。不得不提的是，这个游戏的策划似乎有些摸不着头脑，不晓得该如何规划这款游戏。也许吧，每个策划都有着自己独特的想法。毕竟开服首月签到200金币，次月签到100金币，没点脑子的策划是想不出来的。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://game.bilibili.com/nslg/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;三国·谋定天下&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;可玩性：⭐️⭐️⭐️⭐️⭐️&lt;/p&gt;
+&lt;p&gt;氪金度：⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐️&lt;/p&gt;
+&lt;p&gt;肝度：⭐️⭐️⭐️⭐️⭐️⭐️&lt;/p&gt;
+
+&lt;div class=&#34;notice notice-info&#34; &gt;
+    &lt;div class=&#34;notice-title&#34;&gt;&lt;svg xmlns=&#34;http://www.w3.org/2000/svg&#34; class=&#34;icon notice-icon&#34; viewBox=&#34;0 0 512 512&#34; fill=&#34;hsl(30, 80%, 70%)&#34;&gt;&lt;path d=&#34;M256 8a248 248 0 100 496 248 248 0 000-496zm0 110a42 42 0 110 84 42 42 0 010-84zm56 254c0 7-5 12-12 12h-88c-7 0-12-5-12-12v-24c0-7 5-12 12-12h12v-64h-12c-7 0-12-5-12-12v-24c0-7 5-12 12-12h64c7 0 12 5 12 12v100h12c7 0 12 5 12 12v24z&#34;/&gt;&lt;/svg&gt;&lt;/div&gt;&lt;p&gt;实在是闲得无聊想去试试SLG的小伙伴可以试试，玩儿这种游戏各位一定要理性氪金！&lt;/p&gt;&lt;/div&gt;
+
+&lt;h2 id=&#34;新入手机&#34;&gt;新入手机&lt;/h2&gt;
+&lt;p&gt;手机对于我来说其实并不是一个强烈必需品，买这个手机的原因在于之前拍照都是背着相机包出去拍照，实在是有些麻烦和沉重。但是现在我觉得，手机摄影的功能越来越强大，让我有了新的选择。&lt;/p&gt;
+&lt;p&gt;&lt;!doctype html&gt;
+&lt;html lang=&#34;en&#34;&gt;
+    &lt;head&gt;
+        &lt;meta
+            name=&#34;viewport&#34;
+            content=&#34;user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1&#34;
+        /&gt;
+        &lt;script src=&#34;https://cdn.bootcdn.net/ajax/libs/jquery/3.7.1/jquery.js&#34;&gt;&lt;/script&gt;
+        &lt;link
+            href=&#34;https://cdn.bootcdn.net/ajax/libs/nanogallery2/3.0.5/css/nanogallery2.min.css&#34;
+            rel=&#34;stylesheet&#34;
+        /&gt;
+        &lt;script src=&#34;https://cdn.bootcdn.net/ajax/libs/nanogallery2/3.0.5/jquery.nanogallery2.min.js&#34;&gt;&lt;/script&gt;
+    &lt;/head&gt;
+    &lt;body&gt;
+        &lt;div
+            data-nanogallery2=&#39;{
+    &#34;itemsBaseURL&#34;:               &#34;https://nanogallery2.nanostudio.org/samples&#34;,
+    &#34;thumbnailDisplayTransition&#34;:          &#34;slideUp2&#34;,
+	&#34;thumbnailHeight&#34;:    200,
+    &#34;thumbnailWidth&#34;:     200,
+    &#34;thumbnailAlignment&#34;: &#34;fillWidth&#34;,
+    &#34;thumbnailOpenInLightox&#34;: true,
+    &#34;breadcrumbOnlyCurrentLevel&#34;: true,
+    &#34;thumbnailLabel&#34;:     { &#34;valign&#34;: &#34;bottom&#34;, &#34;position&#34;: &#34;overImage&#34;, &#34;hideIcons&#34;: true },
+    &#34;galleryMosaic&#34; :   [
+      { &#34;c&#34;: 1, &#34;r&#34;: 1, &#34;w&#34;: 2, &#34;h&#34;: 2 },
+      { &#34;c&#34;: 3, &#34;r&#34;: 1, &#34;w&#34;: 1, &#34;h&#34;: 1 },
+      { &#34;c&#34;: 3, &#34;r&#34;: 2, &#34;w&#34;: 1, &#34;h&#34;: 1 },
+      { &#34;c&#34;: 4, &#34;r&#34;: 1, &#34;w&#34;: 1, &#34;h&#34;: 1 },
+      { &#34;c&#34;: 4, &#34;r&#34;: 2, &#34;w&#34;: 1, &#34;h&#34;: 1 }
+    ],
+    &#34;galleryLastRowFull&#34; : true,
+     &#34;thumbnailDisplayTransitionDuration&#34;:  500,
+     &#34;thumbnailDisplayInterval&#34;:            30,
+     &#34;galleryDisplayTransition&#34;:            &#34;rotateX&#34;,
+     &#34;galleryDisplayTransitionDuration&#34;:    500,
+     &#34;galleryDisplayMode&#34;: &#34;rows&#34;,
+     &#34;thumbnailDisplayOutsideScreen&#34;: &#34;true&#34;,
+     &#34;eventsDebounceDelay&#34;: 10,
+     &#34;thumbnailL1BorderHorizontal&#34;: 0,
+     &#34;thumbnailL1BorderVertical&#34;: 0,
+     &#34;thumbnailLabel&#34;: {
+        &#34;titleFontSize&#34;: &#34;0.6em&#34;
+     },
+     &#34;thumbnailHoverEffect2&#34;: &#34;image_scale_1.00_1.10|label_backgroundColor_rgba(0,0,0,0)_rgba(255,255,255,0)&#34;,
+     &#34;galleryTheme&#34;: {
+        &#34;thumbnail&#34;: {
+            &#34;borderRadius&#34;: &#34;8px&#34;
+        }
+     },
+     &#34;thumbnailToolbarImage&#34;: {
+        &#34;topLeft&#34;: &#34;&#34;,
+        &#34;topRight&#34;: &#34;&#34;,
+        &#34;bottomLeft&#34;: &#34;&#34;,
+        &#34;bottomRight&#34;: &#34;&#34;
+     },
+     &#34;viewerToolbar&#34;:   {
+        &#34;display&#34;: true,
+        &#34;standard&#34;: &#34;label&#34;
+     },
+     &#34;viewerTools&#34;:     {
+        &#34;topLeft&#34;:    &#34;pageCounter, playPauseButton&#34;,
+        &#34;topRight&#34;:   &#34;downloadButton, rotateLeft, zoomButton, fullscreenButton, closeButton&#34;
+     },
+     &#34;viewerGalleryTWidth&#34;: 40,
+     &#34;viewerGalleryTHeight&#34;: 40
+}&#39;
+        &gt;
+            
+&lt;a href=&#34;https://wwwstatic.vivo.com.cn/vivoportal/files/image/detail/20240321/92c3d3954ccda4218535bc130acdaf71.png&#34; data-ngThumb=&#34;https://wwwstatic.vivo.com.cn/vivoportal/files/image/detail/20240321/92c3d3954ccda4218535bc130acdaf71.png&#34;&gt;Vivo X Fold3 Pro&lt;/a&gt;
+
+
+        &lt;/div&gt;
+    &lt;/body&gt;
+&lt;/html&gt;
+
+其实我个人其实在影像方面是比较偏向于&lt;code&gt;OPPO&lt;/code&gt;的成像的，但是由于OPPO没有发布24年的新款机型，大家都说等等党很吃香，随之而来的就是Vivo映入眼帘
+Vivo在影像技术上的投入一直以来也很出色，它所呈现出的画面质感、色彩饱和度以及细节捕捉能力，其实在同行里都算是不错的。
+在我心里的大概排行是：&lt;/p&gt;
+&lt;p&gt;OPPO&amp;gt;Vivo&amp;gt;XiaoMi&amp;gt;HUAWEI&amp;gt;MEIZU&lt;/p&gt;
+&lt;p&gt;“遥遥领先”在价格上确实是遥遥领先了，或许是由于其硬件配置较高等原因所致。然而，强调性价比的用户而言，“遥遥领先”可能真的不符合选择的原则。毕竟，价格在很大程度上会影响消费者的购买决策。&lt;/p&gt;
+&lt;p&gt;至于魅族，黄章时代我曾特别看好它，也使用过不少魅族的手机。真的非常喜欢 Flyme 的系统体验和设计，简洁流畅、独具匠心的UI设计，但令人惋惜的是，渐渐地魅族在激烈的市场竞争中失去了往日的辉煌，逐渐淡出了人们的视野。曾经备受瞩目的品牌如今面临这样的境遇，不禁让人感叹市场的残酷和多变，特别是魅族还不肯去大胆的出一款真材实料的Phone！&lt;/p&gt;
+&lt;p&gt;所谓的 “长焦悬日”好评
+&lt;!doctype html&gt;
+&lt;html lang=&#34;en&#34;&gt;
+    &lt;head&gt;
+        &lt;meta
+            name=&#34;viewport&#34;
+            content=&#34;user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1&#34;
+        /&gt;
+        &lt;script src=&#34;https://cdn.bootcdn.net/ajax/libs/jquery/3.7.1/jquery.js&#34;&gt;&lt;/script&gt;
+        &lt;link
+            href=&#34;https://cdn.bootcdn.net/ajax/libs/nanogallery2/3.0.5/css/nanogallery2.min.css&#34;
+            rel=&#34;stylesheet&#34;
+        /&gt;
+        &lt;script src=&#34;https://cdn.bootcdn.net/ajax/libs/nanogallery2/3.0.5/jquery.nanogallery2.min.js&#34;&gt;&lt;/script&gt;
+    &lt;/head&gt;
+    &lt;body&gt;
+        &lt;div
+            data-nanogallery2=&#39;{
+    &#34;itemsBaseURL&#34;:               &#34;https://nanogallery2.nanostudio.org/samples&#34;,
+    &#34;thumbnailDisplayTransition&#34;:          &#34;slideUp2&#34;,
+	&#34;thumbnailHeight&#34;:    200,
+    &#34;thumbnailWidth&#34;:     200,
+    &#34;thumbnailAlignment&#34;: &#34;fillWidth&#34;,
+    &#34;thumbnailOpenInLightox&#34;: true,
+    &#34;breadcrumbOnlyCurrentLevel&#34;: true,
+    &#34;thumbnailLabel&#34;:     { &#34;valign&#34;: &#34;bottom&#34;, &#34;position&#34;: &#34;overImage&#34;, &#34;hideIcons&#34;: true },
+    &#34;galleryMosaic&#34; :   [
+      { &#34;c&#34;: 1, &#34;r&#34;: 1, &#34;w&#34;: 2, &#34;h&#34;: 2 },
+      { &#34;c&#34;: 3, &#34;r&#34;: 1, &#34;w&#34;: 1, &#34;h&#34;: 1 },
+      { &#34;c&#34;: 3, &#34;r&#34;: 2, &#34;w&#34;: 1, &#34;h&#34;: 1 },
+      { &#34;c&#34;: 4, &#34;r&#34;: 1, &#34;w&#34;: 1, &#34;h&#34;: 1 },
+      { &#34;c&#34;: 4, &#34;r&#34;: 2, &#34;w&#34;: 1, &#34;h&#34;: 1 }
+    ],
+    &#34;galleryLastRowFull&#34; : true,
+     &#34;thumbnailDisplayTransitionDuration&#34;:  500,
+     &#34;thumbnailDisplayInterval&#34;:            30,
+     &#34;galleryDisplayTransition&#34;:            &#34;rotateX&#34;,
+     &#34;galleryDisplayTransitionDuration&#34;:    500,
+     &#34;galleryDisplayMode&#34;: &#34;rows&#34;,
+     &#34;thumbnailDisplayOutsideScreen&#34;: &#34;true&#34;,
+     &#34;eventsDebounceDelay&#34;: 10,
+     &#34;thumbnailL1BorderHorizontal&#34;: 0,
+     &#34;thumbnailL1BorderVertical&#34;: 0,
+     &#34;thumbnailLabel&#34;: {
+        &#34;titleFontSize&#34;: &#34;0.6em&#34;
+     },
+     &#34;thumbnailHoverEffect2&#34;: &#34;image_scale_1.00_1.10|label_backgroundColor_rgba(0,0,0,0)_rgba(255,255,255,0)&#34;,
+     &#34;galleryTheme&#34;: {
+        &#34;thumbnail&#34;: {
+            &#34;borderRadius&#34;: &#34;8px&#34;
+        }
+     },
+     &#34;thumbnailToolbarImage&#34;: {
+        &#34;topLeft&#34;: &#34;&#34;,
+        &#34;topRight&#34;: &#34;&#34;,
+        &#34;bottomLeft&#34;: &#34;&#34;,
+        &#34;bottomRight&#34;: &#34;&#34;
+     },
+     &#34;viewerToolbar&#34;:   {
+        &#34;display&#34;: true,
+        &#34;standard&#34;: &#34;label&#34;
+     },
+     &#34;viewerTools&#34;:     {
+        &#34;topLeft&#34;:    &#34;pageCounter, playPauseButton&#34;,
+        &#34;topRight&#34;:   &#34;downloadButton, rotateLeft, zoomButton, fullscreenButton, closeButton&#34;
+     },
+     &#34;viewerGalleryTWidth&#34;: 40,
+     &#34;viewerGalleryTHeight&#34;: 40
+}&#39;
+        &gt;
+            
+&lt;a href=&#34;https://wwwstatic.vivo.com.cn/vivoportal/files/resource/product/1716878588321/images/pc/longfocussample.jpg.webp&#34; data-ngThumb=&#34;https://wwwstatic.vivo.com.cn/vivoportal/files/resource/product/1716878588321/images/pc/longfocussample.jpg.webp&#34;&gt;长焦悬日&lt;/a&gt;
+
+
+        &lt;/div&gt;
+    &lt;/body&gt;
+&lt;/html&gt;
+&lt;/p&gt;
+&lt;h2 id=&#34;谈谈网站&#34;&gt;谈谈网站&lt;/h2&gt;
+&lt;p&gt;最近修改了一下自己的摄影网站，之前称之为 xxx 图库，在我想了想看来倒不如称之为我的作品集。
+一方面原因是我多年来摄影成果的集中展示，另一方面是我摄影之路的见证和记录。
+每一张照片背后都有一个故事，都凝聚着我在特定时刻的情感、思考和创意。同时也希望访问者感受到我对摄影的热爱与执着。&lt;/p&gt;
+&lt;!doctype html&gt;
+&lt;html lang=&#34;en&#34;&gt;
+    &lt;head&gt;
+        &lt;meta
+            name=&#34;viewport&#34;
+            content=&#34;user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1&#34;
+        /&gt;
+        &lt;script src=&#34;https://cdn.bootcdn.net/ajax/libs/jquery/3.7.1/jquery.js&#34;&gt;&lt;/script&gt;
+        &lt;link
+            href=&#34;https://cdn.bootcdn.net/ajax/libs/nanogallery2/3.0.5/css/nanogallery2.min.css&#34;
+            rel=&#34;stylesheet&#34;
+        /&gt;
+        &lt;script src=&#34;https://cdn.bootcdn.net/ajax/libs/nanogallery2/3.0.5/jquery.nanogallery2.min.js&#34;&gt;&lt;/script&gt;
+    &lt;/head&gt;
+    &lt;body&gt;
+        &lt;div
+            data-nanogallery2=&#39;{
+    &#34;itemsBaseURL&#34;:               &#34;https://nanogallery2.nanostudio.org/samples&#34;,
+    &#34;thumbnailDisplayTransition&#34;:          &#34;slideUp2&#34;,
+	&#34;thumbnailHeight&#34;:    200,
+    &#34;thumbnailWidth&#34;:     200,
+    &#34;thumbnailAlignment&#34;: &#34;fillWidth&#34;,
+    &#34;thumbnailOpenInLightox&#34;: true,
+    &#34;breadcrumbOnlyCurrentLevel&#34;: true,
+    &#34;thumbnailLabel&#34;:     { &#34;valign&#34;: &#34;bottom&#34;, &#34;position&#34;: &#34;overImage&#34;, &#34;hideIcons&#34;: true },
+    &#34;galleryMosaic&#34; :   [
+      { &#34;c&#34;: 1, &#34;r&#34;: 1, &#34;w&#34;: 2, &#34;h&#34;: 2 },
+      { &#34;c&#34;: 3, &#34;r&#34;: 1, &#34;w&#34;: 1, &#34;h&#34;: 1 },
+      { &#34;c&#34;: 3, &#34;r&#34;: 2, &#34;w&#34;: 1, &#34;h&#34;: 1 },
+      { &#34;c&#34;: 4, &#34;r&#34;: 1, &#34;w&#34;: 1, &#34;h&#34;: 1 },
+      { &#34;c&#34;: 4, &#34;r&#34;: 2, &#34;w&#34;: 1, &#34;h&#34;: 1 }
+    ],
+    &#34;galleryLastRowFull&#34; : true,
+     &#34;thumbnailDisplayTransitionDuration&#34;:  500,
+     &#34;thumbnailDisplayInterval&#34;:            30,
+     &#34;galleryDisplayTransition&#34;:            &#34;rotateX&#34;,
+     &#34;galleryDisplayTransitionDuration&#34;:    500,
+     &#34;galleryDisplayMode&#34;: &#34;rows&#34;,
+     &#34;thumbnailDisplayOutsideScreen&#34;: &#34;true&#34;,
+     &#34;eventsDebounceDelay&#34;: 10,
+     &#34;thumbnailL1BorderHorizontal&#34;: 0,
+     &#34;thumbnailL1BorderVertical&#34;: 0,
+     &#34;thumbnailLabel&#34;: {
+        &#34;titleFontSize&#34;: &#34;0.6em&#34;
+     },
+     &#34;thumbnailHoverEffect2&#34;: &#34;image_scale_1.00_1.10|label_backgroundColor_rgba(0,0,0,0)_rgba(255,255,255,0)&#34;,
+     &#34;galleryTheme&#34;: {
+        &#34;thumbnail&#34;: {
+            &#34;borderRadius&#34;: &#34;8px&#34;
+        }
+     },
+     &#34;thumbnailToolbarImage&#34;: {
+        &#34;topLeft&#34;: &#34;&#34;,
+        &#34;topRight&#34;: &#34;&#34;,
+        &#34;bottomLeft&#34;: &#34;&#34;,
+        &#34;bottomRight&#34;: &#34;&#34;
+     },
+     &#34;viewerToolbar&#34;:   {
+        &#34;display&#34;: true,
+        &#34;standard&#34;: &#34;label&#34;
+     },
+     &#34;viewerTools&#34;:     {
+        &#34;topLeft&#34;:    &#34;pageCounter, playPauseButton&#34;,
+        &#34;topRight&#34;:   &#34;downloadButton, rotateLeft, zoomButton, fullscreenButton, closeButton&#34;
+     },
+     &#34;viewerGalleryTWidth&#34;: 40,
+     &#34;viewerGalleryTHeight&#34;: 40
+}&#39;
+        &gt;
+            
+&lt;a href=&#34;https://img10.360buyimg.com/ddimg/jfs/t1/237792/32/22019/57336/6694dd39F68eea515/2aecc63e5f14f08e.jpg&#34; data-ngThumb=&#34;https://img10.360buyimg.com/ddimg/jfs/t1/237792/32/22019/57336/6694dd39F68eea515/2aecc63e5f14f08e.jpg&#34;&gt;太阳可以是蓝色 の 作品集&lt;/a&gt;
+
+
+        &lt;/div&gt;
+    &lt;/body&gt;
+&lt;/html&gt;
+
+&lt;p&gt;摄影拍摄内容大致分成了：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;风光摄影：收纳了我在山川湖海间捕捉到的壮丽景色&lt;/li&gt;
+&lt;li&gt;生活日常：则记录了那些平凡却又温馨的瞬间。可能是清晨一杯热气腾腾的咖啡，可能是午后慵懒的猫咪在阳光下打盹，也可能是家人相聚时那一张张灿烂的笑脸。&lt;/li&gt;
+&lt;li&gt;人文摄影：在我看来大概就是街头巷尾的艺人专注表演的神情、集市中人们讨价还价的热闹场景、巷子里传承百年的传统技艺……&lt;/li&gt;
+&lt;/ul&gt;
+&lt;blockquote&gt;
+&lt;p&gt;好啦，本期的碎碎念就更新到这里。在这段随心而发的倾诉中，我把近期的点滴思绪都分享给了大家。接下来的日子要开始认真学习技术咯！有缘再见。&lt;/p&gt;
+&lt;/blockquote&gt;
+</description>
+        </item>
+        <item>
         <title>手机摄影碎片 | 01</title>
         <link>https://blog.mletter.cn/Takephoto/01/</link>
         <pubDate>Wed, 12 Jun 2024 00:00:00 +0000</pubDate>

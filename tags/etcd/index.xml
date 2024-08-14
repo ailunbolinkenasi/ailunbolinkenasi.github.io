@@ -1,14 +1,14 @@
 <rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
     <channel>
-        <title>Etcd - 标签 - 太阳可以是蓝色</title>
-        <link>http://example.org/tags/etcd/</link>
-        <description>Etcd - 标签 - 太阳可以是蓝色</description>
-        <generator>Hugo -- gohugo.io</generator><language>zh-CN</language><lastBuildDate>Sun, 26 Feb 2023 00:00:00 &#43;0000</lastBuildDate><atom:link href="http://example.org/tags/etcd/" rel="self" type="application/rss+xml" /><item>
+        <title>Etcd - 标签 - 春日心动日记</title>
+        <link>https://blog.mletter.cn/tags/etcd/</link>
+        <description>Etcd - 标签 - 春日心动日记</description>
+        <generator>Hugo -- gohugo.io</generator><language>zh-CN</language><lastBuildDate>Sun, 26 Feb 2023 00:00:00 &#43;0000</lastBuildDate><atom:link href="https://blog.mletter.cn/tags/etcd/" rel="self" type="application/rss+xml" /><item>
     <title>使用Kubeadm创建一个高可用的ETCD集群</title>
-    <link>http://example.org/kubernetes/InstallEtcdHA/</link>
+    <link>https://blog.mletter.cn/kubernetes/InstallEtcdHA/</link>
     <pubDate>Sun, 26 Feb 2023 00:00:00 &#43;0000</pubDate><author>
-        <name>太阳可以是蓝色</name>
-    </author><guid>http://example.org/kubernetes/InstallEtcdHA/</guid>
+        <name>春日心动日记</name>
+    </author><guid>https://blog.mletter.cn/kubernetes/InstallEtcdHA/</guid>
     <description><![CDATA[使用Kubeadm创建一个高可用的Etcd集群默认情况下，kubeadm 在每个控制平面节点上运行一个本地 etcd 实例。也可以使用外部的 etcd 集群，并在]]></description>
 </item></channel>
 </rss>

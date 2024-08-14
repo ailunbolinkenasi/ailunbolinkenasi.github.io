@@ -1,14 +1,14 @@
 <rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
     <channel>
-        <title>Sealos - 标签 - 太阳可以是蓝色</title>
-        <link>http://example.org/tags/sealos/</link>
-        <description>Sealos - 标签 - 太阳可以是蓝色</description>
-        <generator>Hugo -- gohugo.io</generator><language>zh-CN</language><lastBuildDate>Mon, 15 Apr 2024 00:00:00 &#43;0000</lastBuildDate><atom:link href="http://example.org/tags/sealos/" rel="self" type="application/rss+xml" /><item>
+        <title>Sealos - 标签 - 春日心动日记</title>
+        <link>https://blog.mletter.cn/tags/sealos/</link>
+        <description>Sealos - 标签 - 春日心动日记</description>
+        <generator>Hugo -- gohugo.io</generator><language>zh-CN</language><lastBuildDate>Mon, 15 Apr 2024 00:00:00 &#43;0000</lastBuildDate><atom:link href="https://blog.mletter.cn/tags/sealos/" rel="self" type="application/rss+xml" /><item>
     <title>基于SealOS部署高可用的kubernetes集群</title>
-    <link>http://example.org/kubernetes/sealos%E2%80%94install/</link>
+    <link>https://blog.mletter.cn/kubernetes/sealos%E2%80%94install/</link>
     <pubDate>Mon, 15 Apr 2024 00:00:00 &#43;0000</pubDate><author>
-        <name>太阳可以是蓝色</name>
-    </author><guid>http://example.org/kubernetes/sealos%E2%80%94install/</guid>
+        <name>春日心动日记</name>
+    </author><guid>https://blog.mletter.cn/kubernetes/sealos%E2%80%94install/</guid>
     <description><![CDATA[<div class="featured-image">
                 <img src="https://img10.360buyimg.com/ddimg/jfs/t1/244560/31/7618/14121/661de12eFfa7f6ba5/0239fa873abb0bd5.jpg" referrerpolicy="no-referrer">
             </div>准备SealOS机器信息如下： 服务器名称 IP Role ready-kubernetes-master1 10.1.11.100 Control-Plane ready-kubernetes-master2 10.1.11.101 Control-Plane ready-kubernetes-master3 10.1.11.102 Control-Plane ready-kubernetes-node1 10.1.11.103 Node ready-kubernetes-node2 10.1.11.104 Node ready-kubernetes-node3 10.1.11.105 Node 通过SealOS部署的前提条件 SealOS For Kubernetes 每个集群节点应该有不同的]]></description>

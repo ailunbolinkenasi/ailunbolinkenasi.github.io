@@ -1,14 +1,14 @@
 <rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
     <channel>
-        <title>Traefik - 标签 - 太阳可以是蓝色</title>
-        <link>http://example.org/tags/traefik/</link>
-        <description>Traefik - 标签 - 太阳可以是蓝色</description>
-        <generator>Hugo -- gohugo.io</generator><language>zh-CN</language><lastBuildDate>Fri, 07 Apr 2023 00:00:00 &#43;0000</lastBuildDate><atom:link href="http://example.org/tags/traefik/" rel="self" type="application/rss+xml" /><item>
+        <title>Traefik - 标签 - 春日心动日记</title>
+        <link>https://blog.mletter.cn/tags/traefik/</link>
+        <description>Traefik - 标签 - 春日心动日记</description>
+        <generator>Hugo -- gohugo.io</generator><language>zh-CN</language><lastBuildDate>Fri, 07 Apr 2023 00:00:00 &#43;0000</lastBuildDate><atom:link href="https://blog.mletter.cn/tags/traefik/" rel="self" type="application/rss+xml" /><item>
     <title>Traekfik基础使用指南</title>
-    <link>http://example.org/kubernetes/traefik/</link>
+    <link>https://blog.mletter.cn/kubernetes/traefik/</link>
     <pubDate>Fri, 07 Apr 2023 00:00:00 &#43;0000</pubDate><author>
-        <name>太阳可以是蓝色</name>
-    </author><guid>http://example.org/kubernetes/traefik/</guid>
+        <name>春日心动日记</name>
+    </author><guid>https://blog.mletter.cn/kubernetes/traefik/</guid>
     <description><![CDATA[Traekfik是什么Traefik 是一种开源 边缘路由器，它使您发布服务成为一种有趣而轻松的体验。它代表您的系统接收请求并找出哪些组件负责处]]></description>
 </item></channel>
 </rss>

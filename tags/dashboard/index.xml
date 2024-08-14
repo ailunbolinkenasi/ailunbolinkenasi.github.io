@@ -1,14 +1,14 @@
 <rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
     <channel>
-        <title>Dashboard - 标签 - 太阳可以是蓝色</title>
-        <link>http://example.org/tags/dashboard/</link>
-        <description>Dashboard - 标签 - 太阳可以是蓝色</description>
-        <generator>Hugo -- gohugo.io</generator><language>zh-CN</language><lastBuildDate>Fri, 03 Feb 2023 00:00:00 &#43;0000</lastBuildDate><atom:link href="http://example.org/tags/dashboard/" rel="self" type="application/rss+xml" /><item>
+        <title>Dashboard - 标签 - 春日心动日记</title>
+        <link>https://blog.mletter.cn/tags/dashboard/</link>
+        <description>Dashboard - 标签 - 春日心动日记</description>
+        <generator>Hugo -- gohugo.io</generator><language>zh-CN</language><lastBuildDate>Fri, 03 Feb 2023 00:00:00 &#43;0000</lastBuildDate><atom:link href="https://blog.mletter.cn/tags/dashboard/" rel="self" type="application/rss+xml" /><item>
     <title>kubernetes-dashboard</title>
-    <link>http://example.org/kubernetes/KubeDashboard/</link>
+    <link>https://blog.mletter.cn/kubernetes/KubeDashboard/</link>
     <pubDate>Fri, 03 Feb 2023 00:00:00 &#43;0000</pubDate><author>
-        <name>太阳可以是蓝色</name>
-    </author><guid>http://example.org/kubernetes/KubeDashboard/</guid>
+        <name>春日心动日记</name>
+    </author><guid>https://blog.mletter.cn/kubernetes/KubeDashboard/</guid>
     <description><![CDATA[官方WebUI部署 Dashboard 安装部署从官方仓库部署 bash [root@containerd-kube-master ~]# kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.6.1/aio/deploy/recommended.yaml 如果无法下载请新建dashboard.yaml复制以下内容进行应用 yaml # Copyright 2017 The Kubernetes Authors. # #]]></description>
 </item></channel>
 </rss>

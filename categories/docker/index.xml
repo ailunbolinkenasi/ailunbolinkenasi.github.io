@@ -1,37 +1,37 @@
 <rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
     <channel>
-        <title>Docker - 分类 - 太阳可以是蓝色</title>
-        <link>http://example.org/categories/docker/</link>
-        <description>Docker - 分类 - 太阳可以是蓝色</description>
-        <generator>Hugo -- gohugo.io</generator><language>zh-CN</language><lastBuildDate>Tue, 16 Jul 2024 00:00:00 &#43;0000</lastBuildDate><atom:link href="http://example.org/categories/docker/" rel="self" type="application/rss+xml" /><item>
+        <title>Docker - 分类 - 春日心动日记</title>
+        <link>https://blog.mletter.cn/categories/docker/</link>
+        <description>Docker - 分类 - 春日心动日记</description>
+        <generator>Hugo -- gohugo.io</generator><language>zh-CN</language><lastBuildDate>Tue, 16 Jul 2024 00:00:00 &#43;0000</lastBuildDate><atom:link href="https://blog.mletter.cn/categories/docker/" rel="self" type="application/rss+xml" /><item>
     <title>利用CloudFlare来实现镜像加速</title>
-    <link>http://example.org/docker/cloudflare-proxy/</link>
+    <link>https://blog.mletter.cn/docker/cloudflare-proxy/</link>
     <pubDate>Tue, 16 Jul 2024 00:00:00 &#43;0000</pubDate><author>
-        <name>太阳可以是蓝色</name>
-    </author><guid>http://example.org/docker/cloudflare-proxy/</guid>
+        <name>春日心动日记</name>
+    </author><guid>https://blog.mletter.cn/docker/cloudflare-proxy/</guid>
     <description><![CDATA[目前可用加速镜像仓库DockerProxy 代理加速：dockerproxy.com 百度云 Mirror: mirror.baidubce.com Daocloud: docker.m.daocloud.io 南京大学：docker.nju.edu.cn]]></description>
 </item><item>
     <title>优雅的多阶段构建微服务镜像</title>
-    <link>http://example.org/docker/review-docker/</link>
+    <link>https://blog.mletter.cn/docker/review-docker/</link>
     <pubDate>Wed, 08 May 2024 00:00:00 &#43;0000</pubDate><author>
-        <name>太阳可以是蓝色</name>
-    </author><guid>http://example.org/docker/review-docker/</guid>
+        <name>春日心动日记</name>
+    </author><guid>https://blog.mletter.cn/docker/review-docker/</guid>
     <description><![CDATA[<div class="featured-image">
                 <img src="https://img12.360buyimg.com/ddimg/jfs/t1/221585/17/40296/38910/663b8f0aF38d1916d/5d09c604af566108.jpg" referrerpolicy="no-referrer">
             </div>借助Maven Wrapper首先我们说说maven wrapper的使用场景 假设我们所在的团队同时维护多个项目，不同的项目使用的JDK版本不同]]></description>
 </item><item>
     <title>Docker常见的几个问题处理</title>
-    <link>http://example.org/docker/DockerFrequentlyAskedQuestions/</link>
+    <link>https://blog.mletter.cn/docker/DockerFrequentlyAskedQuestions/</link>
     <pubDate>Thu, 14 Jul 2022 00:00:00 &#43;0000</pubDate><author>
-        <name>太阳可以是蓝色</name>
-    </author><guid>http://example.org/docker/DockerFrequentlyAskedQuestions/</guid>
+        <name>春日心动日记</name>
+    </author><guid>https://blog.mletter.cn/docker/DockerFrequentlyAskedQuestions/</guid>
     <description><![CDATA[Docker迁移存储目录问题起因 由于公司最开始的服务器在/var/lib/docker没有挂载存储,容量只有40G,导致服务器磁盘用满。现将]]></description>
 </item><item>
     <title>什么是dockershim</title>
-    <link>http://example.org/docker/DockerShimRead/</link>
+    <link>https://blog.mletter.cn/docker/DockerShimRead/</link>
     <pubDate>Sun, 13 Feb 2022 00:00:00 &#43;0000</pubDate><author>
-        <name>太阳可以是蓝色</name>
-    </author><guid>http://example.org/docker/DockerShimRead/</guid>
+        <name>春日心动日记</name>
+    </author><guid>https://blog.mletter.cn/docker/DockerShimRead/</guid>
     <description><![CDATA[先前了解 参考链接 Githubissue kubelet中的Docker支持现在已弃用，并将在未来的版本中删除。kubelet使用了一个名为dockershim的模]]></description>
 </item></channel>
 </rss>

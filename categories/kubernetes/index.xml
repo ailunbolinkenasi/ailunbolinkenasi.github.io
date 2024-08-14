@@ -1,81 +1,81 @@
 <rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
     <channel>
-        <title>Kubernetes - 分类 - 太阳可以是蓝色</title>
-        <link>http://example.org/categories/kubernetes/</link>
-        <description>Kubernetes - 分类 - 太阳可以是蓝色</description>
-        <generator>Hugo -- gohugo.io</generator><language>zh-CN</language><lastBuildDate>Mon, 15 Apr 2024 00:00:00 &#43;0000</lastBuildDate><atom:link href="http://example.org/categories/kubernetes/" rel="self" type="application/rss+xml" /><item>
+        <title>Kubernetes - 分类 - 春日心动日记</title>
+        <link>https://blog.mletter.cn/categories/kubernetes/</link>
+        <description>Kubernetes - 分类 - 春日心动日记</description>
+        <generator>Hugo -- gohugo.io</generator><language>zh-CN</language><lastBuildDate>Mon, 15 Apr 2024 00:00:00 &#43;0000</lastBuildDate><atom:link href="https://blog.mletter.cn/categories/kubernetes/" rel="self" type="application/rss+xml" /><item>
     <title>基于SealOS部署高可用的kubernetes集群</title>
-    <link>http://example.org/kubernetes/sealos%E2%80%94install/</link>
+    <link>https://blog.mletter.cn/kubernetes/sealos%E2%80%94install/</link>
     <pubDate>Mon, 15 Apr 2024 00:00:00 &#43;0000</pubDate><author>
-        <name>太阳可以是蓝色</name>
-    </author><guid>http://example.org/kubernetes/sealos%E2%80%94install/</guid>
+        <name>春日心动日记</name>
+    </author><guid>https://blog.mletter.cn/kubernetes/sealos%E2%80%94install/</guid>
     <description><![CDATA[<div class="featured-image">
                 <img src="https://img10.360buyimg.com/ddimg/jfs/t1/244560/31/7618/14121/661de12eFfa7f6ba5/0239fa873abb0bd5.jpg" referrerpolicy="no-referrer">
             </div>准备SealOS机器信息如下： 服务器名称 IP Role ready-kubernetes-master1 10.1.11.100 Control-Plane ready-kubernetes-master2 10.1.11.101 Control-Plane ready-kubernetes-master3 10.1.11.102 Control-Plane ready-kubernetes-node1 10.1.11.103 Node ready-kubernetes-node2 10.1.11.104 Node ready-kubernetes-node3 10.1.11.105 Node 通过SealOS部署的前提条件 SealOS For Kubernetes 每个集群节点应该有不同的]]></description>
 </item><item>
     <title>kubernetes基于EFK的日志落地实现</title>
-    <link>http://example.org/kubernetes/efk/</link>
+    <link>https://blog.mletter.cn/kubernetes/efk/</link>
     <pubDate>Fri, 08 Dec 2023 00:00:00 &#43;0000</pubDate><author>
-        <name>太阳可以是蓝色</name>
-    </author><guid>http://example.org/kubernetes/efk/</guid>
+        <name>春日心动日记</name>
+    </author><guid>https://blog.mletter.cn/kubernetes/efk/</guid>
     <description><![CDATA[<div class="featured-image">
                 <img src="https://img14.360buyimg.com/ddimg/jfs/t1/177175/31/35833/30306/64cb08eeF5ba90f46/1da6311bbbec8921.jpg" referrerpolicy="no-referrer">
             </div>Kubernetes 中比较流行的日志收集解决方案是 Elasticsearch、Fluentd 和 Kibana（EFK）技术栈，也是官方现在比较推荐的一种方案。 Elasticsearch]]></description>
 </item><item>
     <title>Kubernetes的架构设计和对象属性基本理解</title>
-    <link>http://example.org/kubernetes/architectural_design/</link>
+    <link>https://blog.mletter.cn/kubernetes/architectural_design/</link>
     <pubDate>Tue, 07 Nov 2023 00:00:00 &#43;0000</pubDate><author>
-        <name>太阳可以是蓝色</name>
-    </author><guid>http://example.org/kubernetes/architectural_design/</guid>
+        <name>春日心动日记</name>
+    </author><guid>https://blog.mletter.cn/kubernetes/architectural_design/</guid>
     <description><![CDATA[为什么需要kubernetes？ 大规模多节点容器调度 快速扩缩容 故障自愈 弹性伸缩 技术趋势 一致性、不锁定 早期型多的一些服务都属于单体服务、单节点]]></description>
 </item><item>
     <title>OpenEBS存储的使用</title>
-    <link>http://example.org/kubernetes/openebs/</link>
+    <link>https://blog.mletter.cn/kubernetes/openebs/</link>
     <pubDate>Sun, 14 May 2023 00:00:00 &#43;0000</pubDate><author>
-        <name>太阳可以是蓝色</name>
-    </author><guid>http://example.org/kubernetes/openebs/</guid>
+        <name>春日心动日记</name>
+    </author><guid>https://blog.mletter.cn/kubernetes/openebs/</guid>
     <description><![CDATA[OpenEBS存储使用OpenEBS 是一种模拟了 AWS 的 EBS、阿里云的云盘等块存储实现的基于容器的存储开源软件。OpenEBS 是一种基于 CAS(Container Attached Storage)]]></description>
 </item><item>
     <title>Traekfik基础使用指南</title>
-    <link>http://example.org/kubernetes/traefik/</link>
+    <link>https://blog.mletter.cn/kubernetes/traefik/</link>
     <pubDate>Fri, 07 Apr 2023 00:00:00 &#43;0000</pubDate><author>
-        <name>太阳可以是蓝色</name>
-    </author><guid>http://example.org/kubernetes/traefik/</guid>
+        <name>春日心动日记</name>
+    </author><guid>https://blog.mletter.cn/kubernetes/traefik/</guid>
     <description><![CDATA[Traekfik是什么Traefik 是一种开源 边缘路由器，它使您发布服务成为一种有趣而轻松的体验。它代表您的系统接收请求并找出哪些组件负责处]]></description>
 </item><item>
     <title>Kubernetes-本地存储</title>
-    <link>http://example.org/kubernetes/localstorage/</link>
+    <link>https://blog.mletter.cn/kubernetes/localstorage/</link>
     <pubDate>Wed, 22 Mar 2023 00:00:00 &#43;0000</pubDate><author>
-        <name>太阳可以是蓝色</name>
-    </author><guid>http://example.org/kubernetes/localstorage/</guid>
+        <name>春日心动日记</name>
+    </author><guid>https://blog.mletter.cn/kubernetes/localstorage/</guid>
     <description><![CDATA[本地存储前面我们有通过 hostPath 或者 emptyDir 的方式来持久化我们的数据，但是显然我们还需要更加可靠的存储来保存应用的持久化数据，这样容器在重建后，依然可以使]]></description>
 </item><item>
     <title>Ingress的简单使用</title>
-    <link>http://example.org/kubernetes/ingress/</link>
+    <link>https://blog.mletter.cn/kubernetes/ingress/</link>
     <pubDate>Wed, 08 Mar 2023 00:00:00 &#43;0000</pubDate><author>
-        <name>太阳可以是蓝色</name>
-    </author><guid>http://example.org/kubernetes/ingress/</guid>
+        <name>春日心动日记</name>
+    </author><guid>https://blog.mletter.cn/kubernetes/ingress/</guid>
     <description><![CDATA[什么是IngressIngress 是对集群中服务的外部访问进行管理的 API 对象，典型的访问方式是 HTTP。 Ingress 可以提供负载均衡、SSL 终结和基于名]]></description>
 </item><item>
     <title>CacheDNS和DNS缓存</title>
-    <link>http://example.org/kubernetes/nodelocaldns/</link>
+    <link>https://blog.mletter.cn/kubernetes/nodelocaldns/</link>
     <pubDate>Sun, 26 Feb 2023 00:00:00 &#43;0000</pubDate><author>
-        <name>太阳可以是蓝色</name>
-    </author><guid>http://example.org/kubernetes/nodelocaldns/</guid>
+        <name>春日心动日记</name>
+    </author><guid>https://blog.mletter.cn/kubernetes/nodelocaldns/</guid>
     <description><![CDATA[如果在集群规模较大并发较高的情况下我们仍然需要对 DNS 进行优化，典型的就是大家比较熟悉的 CoreDNS 会出现超时5s的情况。 超时原因在 iptables 模式下（默认情况下）]]></description>
 </item><item>
     <title>使用Kubeadm创建一个高可用的ETCD集群</title>
-    <link>http://example.org/kubernetes/InstallEtcdHA/</link>
+    <link>https://blog.mletter.cn/kubernetes/InstallEtcdHA/</link>
     <pubDate>Sun, 26 Feb 2023 00:00:00 &#43;0000</pubDate><author>
-        <name>太阳可以是蓝色</name>
-    </author><guid>http://example.org/kubernetes/InstallEtcdHA/</guid>
+        <name>春日心动日记</name>
+    </author><guid>https://blog.mletter.cn/kubernetes/InstallEtcdHA/</guid>
     <description><![CDATA[使用Kubeadm创建一个高可用的Etcd集群默认情况下，kubeadm 在每个控制平面节点上运行一个本地 etcd 实例。也可以使用外部的 etcd 集群，并在]]></description>
 </item><item>
     <title>ConfigMap和Secret的使用</title>
-    <link>http://example.org/kubernetes/configmaporservice/</link>
+    <link>https://blog.mletter.cn/kubernetes/configmaporservice/</link>
     <pubDate>Tue, 14 Feb 2023 00:00:00 &#43;0000</pubDate><author>
-        <name>太阳可以是蓝色</name>
-    </author><guid>http://example.org/kubernetes/configmaporservice/</guid>
+        <name>春日心动日记</name>
+    </author><guid>https://blog.mletter.cn/kubernetes/configmaporservice/</guid>
     <description><![CDATA[ConfigMapConfigMap 是一种 API 对象，用来将非机密性的数据保存到键值对中。使用时， Pods 可以将其用作环境变量、命令行参数或者存储卷中的配置文件。 ConfigMap 将你的环境配置信息和]]></description>
 </item></channel>
 </rss>

@@ -1,14 +1,14 @@
 <rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
     <channel>
-        <title>纪录片 - 分类 - 太阳可以是蓝色</title>
-        <link>http://example.org/categories/%E7%BA%AA%E5%BD%95%E7%89%87/</link>
-        <description>纪录片 - 分类 - 太阳可以是蓝色</description>
-        <generator>Hugo -- gohugo.io</generator><language>zh-CN</language><lastBuildDate>Thu, 10 Aug 2023 00:00:00 &#43;0000</lastBuildDate><atom:link href="http://example.org/categories/%E7%BA%AA%E5%BD%95%E7%89%87/" rel="self" type="application/rss+xml" /><item>
+        <title>纪录片 - 分类 - 春日心动日记</title>
+        <link>https://blog.mletter.cn/categories/%E7%BA%AA%E5%BD%95%E7%89%87/</link>
+        <description>纪录片 - 分类 - 春日心动日记</description>
+        <generator>Hugo -- gohugo.io</generator><language>zh-CN</language><lastBuildDate>Thu, 10 Aug 2023 00:00:00 &#43;0000</lastBuildDate><atom:link href="https://blog.mletter.cn/categories/%E7%BA%AA%E5%BD%95%E7%89%87/" rel="self" type="application/rss+xml" /><item>
     <title>纪录片-人生第一次-告别</title>
-    <link>http://example.org/documentary/valedictory/</link>
+    <link>https://blog.mletter.cn/documentary/valedictory/</link>
     <pubDate>Thu, 10 Aug 2023 00:00:00 &#43;0000</pubDate><author>
-        <name>太阳可以是蓝色</name>
-    </author><guid>http://example.org/documentary/valedictory/</guid>
+        <name>春日心动日记</name>
+    </author><guid>https://blog.mletter.cn/documentary/valedictory/</guid>
     <description><![CDATA[<div class="featured-image">
                 <img src="https://img12.360buyimg.com/ddimg/jfs/t1/192726/25/35567/27205/64d4df78Ff9979209/ecdcae14b5eefcd1.jpg" referrerpolicy="no-referrer">
             </div>本主题内容题材取自bilibili-人生第一次(告别) 漫长的告别忘记我，也没事… 2019年12月9日 巢文臻，73岁，四年前，老伴聂爱荣被确诊]]></description>

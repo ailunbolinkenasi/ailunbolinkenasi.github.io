@@ -1,14 +1,14 @@
 <rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
     <channel>
-        <title>HPA - 标签 - 太阳可以是蓝色</title>
-        <link>http://example.org/tags/hpa/</link>
-        <description>HPA - 标签 - 太阳可以是蓝色</description>
-        <generator>Hugo -- gohugo.io</generator><language>zh-CN</language><lastBuildDate>Tue, 14 Feb 2023 00:00:00 &#43;0000</lastBuildDate><atom:link href="http://example.org/tags/hpa/" rel="self" type="application/rss+xml" /><item>
+        <title>HPA - 标签 - 春日心动日记</title>
+        <link>https://blog.mletter.cn/tags/hpa/</link>
+        <description>HPA - 标签 - 春日心动日记</description>
+        <generator>Hugo -- gohugo.io</generator><language>zh-CN</language><lastBuildDate>Tue, 14 Feb 2023 00:00:00 &#43;0000</lastBuildDate><atom:link href="https://blog.mletter.cn/tags/hpa/" rel="self" type="application/rss+xml" /><item>
     <title>HorizontalPodAutoscaler</title>
-    <link>http://example.org/kubernetes/HorizontalPodAutoscaler/</link>
+    <link>https://blog.mletter.cn/kubernetes/HorizontalPodAutoscaler/</link>
     <pubDate>Tue, 14 Feb 2023 00:00:00 &#43;0000</pubDate><author>
-        <name>太阳可以是蓝色</name>
-    </author><guid>http://example.org/kubernetes/HorizontalPodAutoscaler/</guid>
+        <name>春日心动日记</name>
+    </author><guid>https://blog.mletter.cn/kubernetes/HorizontalPodAutoscaler/</guid>
     <description><![CDATA[HorizontalPodAutoscaler HPA官方文档 在Kubernetes 中HorizontalPodAutoscaler自动更新工作负载资源 （例如 Deployment 或者 StatefulSet]]></description>
 </item></channel>
 </rss>

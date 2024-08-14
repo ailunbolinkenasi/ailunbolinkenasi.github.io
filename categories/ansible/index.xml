@@ -1,28 +1,28 @@
 <rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
     <channel>
-        <title>Ansible - 分类 - 太阳可以是蓝色</title>
-        <link>http://example.org/categories/ansible/</link>
-        <description>Ansible - 分类 - 太阳可以是蓝色</description>
-        <generator>Hugo -- gohugo.io</generator><language>zh-CN</language><lastBuildDate>Mon, 29 Aug 2022 00:00:00 &#43;0000</lastBuildDate><atom:link href="http://example.org/categories/ansible/" rel="self" type="application/rss+xml" /><item>
+        <title>Ansible - 分类 - 春日心动日记</title>
+        <link>https://blog.mletter.cn/categories/ansible/</link>
+        <description>Ansible - 分类 - 春日心动日记</description>
+        <generator>Hugo -- gohugo.io</generator><language>zh-CN</language><lastBuildDate>Mon, 29 Aug 2022 00:00:00 &#43;0000</lastBuildDate><atom:link href="https://blog.mletter.cn/categories/ansible/" rel="self" type="application/rss+xml" /><item>
     <title>Ansible-任务控制</title>
-    <link>http://example.org/ansible/AnsibleTaskControll/</link>
+    <link>https://blog.mletter.cn/ansible/AnsibleTaskControll/</link>
     <pubDate>Mon, 29 Aug 2022 00:00:00 &#43;0000</pubDate><author>
-        <name>太阳可以是蓝色</name>
-    </author><guid>http://example.org/ansible/AnsibleTaskControll/</guid>
+        <name>春日心动日记</name>
+    </author><guid>https://blog.mletter.cn/ansible/AnsibleTaskControll/</guid>
     <description><![CDATA[Ansible-with_items 通过with_items进行循环 语法 {{ item }}: 为读取with_items的固定写法 with_items: 是一个列表,下面可以有多个不同的内容 yaml - hosts: test remote_user: root gather_facts: false vars_files: ./public_vars.yaml tasks:]]></description>
 </item><item>
     <title>Ansible变量相关内容</title>
-    <link>http://example.org/ansible/AnsibleVarbles/</link>
+    <link>https://blog.mletter.cn/ansible/AnsibleVarbles/</link>
     <pubDate>Mon, 15 Aug 2022 00:00:00 &#43;0000</pubDate><author>
-        <name>太阳可以是蓝色</name>
-    </author><guid>http://example.org/ansible/AnsibleVarbles/</guid>
+        <name>春日心动日记</name>
+    </author><guid>https://blog.mletter.cn/ansible/AnsibleVarbles/</guid>
     <description><![CDATA[Ansible怎么定义变量 通过playbook中的play进行变量的定义 通过inventory主机清单进行变量定义 通过执行playbook的]]></description>
 </item><item>
     <title>Playbook的一些简单使用</title>
-    <link>http://example.org/playbook/</link>
+    <link>https://blog.mletter.cn/playbook/</link>
     <pubDate>Fri, 01 Apr 2022 00:00:00 &#43;0000</pubDate><author>
-        <name>太阳可以是蓝色</name>
-    </author><guid>http://example.org/playbook/</guid>
+        <name>春日心动日记</name>
+    </author><guid>https://blog.mletter.cn/playbook/</guid>
     <description><![CDATA[playbook是由一个或多个&quot;play&quot;组成的列表 playbook的主要功能在于将预定义的一组主机，装扮成事先通过an]]></description>
 </item></channel>
 </rss>

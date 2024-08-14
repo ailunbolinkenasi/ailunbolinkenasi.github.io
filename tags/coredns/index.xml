@@ -1,14 +1,14 @@
 <rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
     <channel>
-        <title>Coredns - 标签 - 太阳可以是蓝色</title>
-        <link>http://example.org/tags/coredns/</link>
-        <description>Coredns - 标签 - 太阳可以是蓝色</description>
-        <generator>Hugo -- gohugo.io</generator><language>zh-CN</language><lastBuildDate>Sun, 26 Feb 2023 00:00:00 &#43;0000</lastBuildDate><atom:link href="http://example.org/tags/coredns/" rel="self" type="application/rss+xml" /><item>
+        <title>Coredns - 标签 - 春日心动日记</title>
+        <link>https://blog.mletter.cn/tags/coredns/</link>
+        <description>Coredns - 标签 - 春日心动日记</description>
+        <generator>Hugo -- gohugo.io</generator><language>zh-CN</language><lastBuildDate>Sun, 26 Feb 2023 00:00:00 &#43;0000</lastBuildDate><atom:link href="https://blog.mletter.cn/tags/coredns/" rel="self" type="application/rss+xml" /><item>
     <title>CacheDNS和DNS缓存</title>
-    <link>http://example.org/kubernetes/nodelocaldns/</link>
+    <link>https://blog.mletter.cn/kubernetes/nodelocaldns/</link>
     <pubDate>Sun, 26 Feb 2023 00:00:00 &#43;0000</pubDate><author>
-        <name>太阳可以是蓝色</name>
-    </author><guid>http://example.org/kubernetes/nodelocaldns/</guid>
+        <name>春日心动日记</name>
+    </author><guid>https://blog.mletter.cn/kubernetes/nodelocaldns/</guid>
     <description><![CDATA[如果在集群规模较大并发较高的情况下我们仍然需要对 DNS 进行优化，典型的就是大家比较熟悉的 CoreDNS 会出现超时5s的情况。 超时原因在 iptables 模式下（默认情况下）]]></description>
 </item></channel>
 </rss>

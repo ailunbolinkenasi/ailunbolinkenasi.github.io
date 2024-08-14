@@ -1,14 +1,14 @@
 <rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
     <channel>
-        <title>Go - 标签 - 太阳可以是蓝色</title>
-        <link>http://example.org/tags/go/</link>
-        <description>Go - 标签 - 太阳可以是蓝色</description>
-        <generator>Hugo -- gohugo.io</generator><language>zh-CN</language><lastBuildDate>Sat, 26 Aug 2023 00:00:00 &#43;0000</lastBuildDate><atom:link href="http://example.org/tags/go/" rel="self" type="application/rss+xml" /><item>
+        <title>Go - 标签 - 春日心动日记</title>
+        <link>https://blog.mletter.cn/tags/go/</link>
+        <description>Go - 标签 - 春日心动日记</description>
+        <generator>Hugo -- gohugo.io</generator><language>zh-CN</language><lastBuildDate>Sat, 26 Aug 2023 00:00:00 &#43;0000</lastBuildDate><atom:link href="https://blog.mletter.cn/tags/go/" rel="self" type="application/rss+xml" /><item>
     <title>维扣图元-专属你的拍照摄影社区</title>
-    <link>http://example.org/go/gin-wecho/</link>
+    <link>https://blog.mletter.cn/go/gin-wecho/</link>
     <pubDate>Sat, 26 Aug 2023 00:00:00 &#43;0000</pubDate><author>
-        <name>太阳可以是蓝色</name>
-    </author><guid>http://example.org/go/gin-wecho/</guid>
+        <name>春日心动日记</name>
+    </author><guid>https://blog.mletter.cn/go/gin-wecho/</guid>
     <description><![CDATA[<div class="featured-image">
                 <img src="https://ydschool-online.nosdn.127.net/tiku/f291c1c8d5dccacd2b95ef4fdc68d07cefd0e92562794e5bcdd21a9729b3455d.jpg" referrerpolicy="no-referrer">
             </div>简单功能 是男人，就来分享你拍的照片！！！ RESTFul API 一会儿再说。 基本的后端技术栈 Gorm: 数据库工具 Gin: 速度极快的Go语言Web框架 Minio: 分布式存储 项目目录 一会儿]]></description>

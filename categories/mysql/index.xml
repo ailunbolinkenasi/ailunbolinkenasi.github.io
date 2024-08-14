@@ -1,14 +1,14 @@
 <rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
     <channel>
-        <title>Mysql - 分类 - 太阳可以是蓝色</title>
-        <link>http://example.org/categories/mysql/</link>
-        <description>Mysql - 分类 - 太阳可以是蓝色</description>
-        <generator>Hugo -- gohugo.io</generator><language>zh-CN</language><lastBuildDate>Wed, 20 Jul 2022 00:00:00 &#43;0000</lastBuildDate><atom:link href="http://example.org/categories/mysql/" rel="self" type="application/rss+xml" /><item>
+        <title>Mysql - 分类 - 春日心动日记</title>
+        <link>https://blog.mletter.cn/categories/mysql/</link>
+        <description>Mysql - 分类 - 春日心动日记</description>
+        <generator>Hugo -- gohugo.io</generator><language>zh-CN</language><lastBuildDate>Wed, 20 Jul 2022 00:00:00 &#43;0000</lastBuildDate><atom:link href="https://blog.mletter.cn/categories/mysql/" rel="self" type="application/rss+xml" /><item>
     <title>MySQL小小优化思路简单版本</title>
-    <link>http://example.org/mysql/MysqlOptimization/</link>
+    <link>https://blog.mletter.cn/mysql/MysqlOptimization/</link>
     <pubDate>Wed, 20 Jul 2022 00:00:00 &#43;0000</pubDate><author>
-        <name>太阳可以是蓝色</name>
-    </author><guid>http://example.org/mysql/MysqlOptimization/</guid>
+        <name>春日心动日记</name>
+    </author><guid>https://blog.mletter.cn/mysql/MysqlOptimization/</guid>
     <description><![CDATA[MySQL性能优化-优化思路 大概的优化思路分为以下几个内容 硬件层面优化 系统层面优化 MySQL版本选择优化 MySQL三层结构及参数优化 MySQ]]></description>
 </item></channel>
 </rss>

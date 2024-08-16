@@ -44,3 +44,5 @@
 {{< friend "Niuren.VIP" "https://niuren.vip" "https://vip.123pan.cn/1825601452/%E7%9B%B4%E8%BF%9E%E7%A9%BA%E9%97%B4/1ccd6949a46f5b49cf30ad635df8b3b0.png" "对牛弹琴，弹，弹，弹！" >}}
 
 {{< friend "纸鹿本鹿" "https://blog.zhilu.cyou" "https://cravatar.cn/avatar/13aa912754e6bb5e671f3e6654e4712d?s=480" "纸鹿至麓不知路，支炉制露不止漉" >}}
+
+{{< friend "Xdogの小岛" "https://blog.xdog.run/" "https://cdn.xdog.run/site/author.png" "结束即是开始" >}}

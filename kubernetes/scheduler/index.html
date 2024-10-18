@@ -1,231 +1,4 @@
-
-<!DOCTYPE html><html lang="zh-CN">
-
-<head>
-  <meta charset="utf-8">
-  <meta name="hexo-theme" content="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.29.1" theme-name="Stellar" theme-version="1.29.1">
-  
-  <meta name="generator" content="Hexo 7.3.0">
-  <meta http-equiv='x-dns-prefetch-control' content='on' />
-  
-  <meta name="renderer" content="webkit">
-  <meta name="force-rendering" content="webkit">
-  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
-  <meta name="HandheldFriendly" content="True" >
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#000">
-  <meta name="theme-color" content="#f9fafb">
-  
-  <title>kubernetes-Scheduler简单详解 - 太阳可以是蓝色</title>
-
-  
-  <meta name="description" content="kube-scheduler 是 kubernetes 的核心组件之一">
-  
-  <meta name="keywords" content="kubernetes,调度原理">
-
-  <!-- feed -->
-  
-
-  <link rel="stylesheet" href="/css/main.css?v=1.29.1">
-
-  
-
-  
-
-  
-<!-- hexo injector head_end start -->
-    <style>
-    .medium-zoom-overlay {
-      z-index: 20;
-    }
-    .medium-zoom-image {
-      z-index: 21;
-    }
-    </style>
-    <link href="https://cdn.jsdelivr.net/npm/medium-zoom@1.1.0/dist/style.min.css" rel="stylesheet">
-    <script src="https://cdn.staticfile.net/medium-zoom/1.1.0/medium-zoom.min.js"></script>
-  <!-- hexo injector head_end end --></head>
-
-
-
-
-<body>
-
-<div class="l_body s:aa content tech" id="start" layout="post" ><aside class="l_left"><div class="leftbar-container">
-
-
-<header class="header"><div class="logo-wrap"><a class="avatar" href="/about/"><div class="bg" style="opacity:0;background-image:url(https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/avatar/round/rainbow64@3x.webp);"></div><img no-lazy class="avatar" src="https://img14.360buyimg.com/ddimg/jfs/t1/77628/23/27254/26944/66bc1a36Fc596606a/d912965b8bba22af.jpg" onerror="javascript:this.classList.add('error');this.src='https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/image/2659360.svg';"></a><a class="title" href="/"><div class="main" ff="title">太阳可以是蓝色</div><div class="sub cap">Live and learn. 🌱</div></a></div></header>
-
-<div class="nav-area">
-<div class="search-wrapper" id="search-wrapper"><form class="search-form"><a class="search-button" onclick="document.getElementById(&quot;search-input&quot;).focus();"><svg t="1705074644177" viewBox="0 0 1025 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1560" width="200" height="200"><path d="M1008.839137 935.96571L792.364903 719.491476a56.783488 56.783488 0 0 0-80.152866 0 358.53545 358.53545 0 1 1 100.857314-335.166073 362.840335 362.840335 0 0 1-3.689902 170.145468 51.248635 51.248635 0 1 0 99.217358 26.444296 462.057693 462.057693 0 1 0-158.255785 242.303546l185.930047 185.725053a51.248635 51.248635 0 0 0 72.568068 0 51.248635 51.248635 0 0 0 0-72.978056z" p-id="1561"></path><path d="M616.479587 615.969233a50.428657 50.428657 0 0 0-61.498362-5.534852 174.655348 174.655348 0 0 1-177.525271 3.484907 49.403684 49.403684 0 0 0-58.833433 6.76482l-3.074918 2.869923a49.403684 49.403684 0 0 0 8.609771 78.10292 277.767601 277.767601 0 0 0 286.992355-5.739847 49.403684 49.403684 0 0 0 8.404776-76.667958z" p-id="1562"></path></svg></a><input type="text" class="search-input" id="search-input" placeholder="站内搜索"></form><div id="search-result"></div><div class="search-no-result">没有找到内容！</div></div>
-
-
-<nav class="menu dis-select"><a class="nav-item active" title="首页" href="/" style="color:#9AAEC7"><span>首页</span></a><a class="nav-item" title="摄影" target="_blank" rel="noopener" href="https://pic.mletter.cn" style="color:#9AAEC7"><span>摄影</span></a><a class="nav-item" title="关于" href="/about/" style="color:#9AAEC7"><span>关于</span></a><a class="nav-item" title="社交" href="/friends/" style="color:#9AAEC7"><span>社交</span></a></nav>
-</div>
-<div class="widgets">
-
-
-<widget class="widget-wrapper post-list"><div class="widget-header dis-select"><span class="name">最近更新</span></div><div class="widget-body fs14"><a class="item title" href="/kubernetes/architectural_design/"><span class="title">Kubernetes的架构设计和对象属性基本理解</span></a><a class="item title" href="/project/gin-wecho/"><span class="title">维扣图元-专属你的拍照摄影社区</span></a><a class="item title" href="/kubernetes/traefik/"><span class="title">Traekfik基础使用指南</span></a><a class="item title" href="/kubernetes/scheduler/"><span class="title">kubernetes-Scheduler简单详解</span></a><a class="item title" href="/2021/02/19/redis-cluster/"><span class="title">Redis集群搭建</span></a><a class="item title" href="/2022/04/01/Playbook/"><span class="title">Playbook的一些简单使用</span></a><a class="item title" href="/kubernetes/openebs/"><span class="title">OpenEBS存储的使用</span></a><a class="item title" href="/2022/03/20/nginx%E4%BC%98%E5%8C%96/"><span class="title">Nginx简单的常规优化</span></a><a class="item title" href="/mysql/MysqlOptimization/"><span class="title">MySQL小小优化思路简单版本</span></a><a class="item title" href="/kubernetes/localstorage/"><span class="title">Kubernetes-本地存储</span></a></div></widget>
-</div>
-<footer class="footer dis-select"><div class="social-wrap"><a class="social" onclick="switchTheme()"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024"><path fill="currentColor" fill-rule="evenodd" d="M582.4 326.4c-140.8 0-256 115.2-256 256s115.2 256 256 256 256-115.2 256-256-115.2-256-256-256z m0 448c-70.4 0-131.2-36.8-164.8-92.8 12.8 3.2 27.2 4.8 40 4.8 121.6 0 219.2-99.2 219.2-219.2 0-17.6-1.6-35.2-6.4-52.8 60.8 32 102.4 96 102.4 169.6 1.6 104-84.8 190.4-190.4 190.4zM582.4 262.4c17.6 0 32-14.4 32-32v-128c0-17.6-14.4-32-32-32s-32 14.4-32 32v128c0 17.6 14.4 32 32 32zM262.4 582.4c0-17.6-14.4-32-32-32h-128c-17.6 0-32 14.4-32 32s14.4 32 32 32h128c17.6 0 32-14.4 32-32zM310.4 356.8c6.4 6.4 14.4 9.6 22.4 9.6 8 0 16-3.2 22.4-9.6 12.8-12.8 12.8-32 0-44.8l-91.2-91.2c-12.8-12.8-32-12.8-44.8 0-12.8 12.8-12.8 32 0 44.8l91.2 91.2zM944 220.8c-12.8-12.8-32-12.8-44.8 0l-91.2 91.2c-12.8 12.8-12.8 32 0 44.8 6.4 6.4 14.4 9.6 22.4 9.6 8 0 16-3.2 22.4-9.6l91.2-91.2c12.8-12.8 12.8-33.6 0-44.8zM310.4 808l-91.2 91.2c-12.8 12.8-12.8 32 0 44.8 6.4 6.4 14.4 9.6 22.4 9.6 8 0 16-3.2 22.4-9.6l91.2-91.2c12.8-12.8 12.8-32 0-44.8-11.2-11.2-32-11.2-44.8 0z"></path></svg></a></div></footer>
-</div></aside><div class="l_main" id="main">
-
-
-
-
-
-<div class="article banner top"><img class="bg lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://img14.360buyimg.com/ddimg/jfs/t1/164569/9/40677/14419/65bc6e4cFa1d8c0c3/5ccf7e6caadc9b83.jpg">
-  <div class="content">
-    <div class="top bread-nav footnote"><div class="left"><div class="flex-row" id="breadcrumb"><a class="cap breadcrumb" href="/">主页</a>
-<span class="sep"></span><a class="cap breadcrumb" href="/">文章</a><span class="sep"></span><a class="cap breadcrumb-link" href="/categories/kubernetes/">kubernetes</a></div>
-<div class="flex-row" id="post-meta"><span class="text created">发布于：<time datetime="2020-03-13T16:00:00.000Z">2020-03-14</time></span><span class="sep updated"></span><span class="text updated">更新于：<time datetime="2024-08-23T09:18:15.587Z">2024-08-23</time></span></div></div></div>
-    
-    <div class="bottom only-title">
-      
-      <div class="text-area">
-        <h1 class="text title"><span>kubernetes-Scheduler简单详解</span></h1>
-        
-      </div>
-    </div>
-    
-  </div>
-  </div><article class="md-text content"><p><code>kube-scheduler</code> 是 kubernetes 的核心组件之一，主要负责整个集群资源的调度功能，根据特定的调度算法和策略，将 Pod 调度到最优的工作节点上面去，从而更加合理、更加充分的利用集群的资源，这也是我们选择使用 kubernetes 一个非常重要的理由。如果一门新的技术不能帮助企业节约成本、提供效率，我相信是很难推进的。</p>
-<h2 id="调度流程"><a href="#调度流程" class="headerlink" title="调度流程"></a>调度流程</h2><p><code>kube-scheduler</code> 提供的默认调度器能够满足我们绝大多数的要求，我们前面和大家接触的示例也基本上用的默认的策略，都可以保证我们的 Pod 可以被分配到资源充足的节点上运行。但是在实际的线上项目中，可能我们自己会比 kubernetes 更加了解我们自己的应用，比如我们希望一个 Pod 只能运行在特定的几个节点上，或者这几个节点只能用来运行特定类型的应用，这就需要我们的调度器能够可控。</p>
-<ol>
-<li>发起创建<code>Deployment</code>请求-&gt;<code>API Server</code>,这个时候<code>APIServer</code>会进行一系列的逻辑处理,例如: 鉴权、查看你是否有权限操作、Deployment创建是否合法等等,然后将请求存储到etcd当中并且转发给<code>Controller Manager</code></li>
-<li><code>Controller Manager</code>会监听<code>API Server</code>,这个时候假设监听到的是一个创建<code>Deployment</code>的请求,则会把请求转发到<code>Deployment Controller</code></li>
-<li><code>Deployment Controller</code>接受到请求后创建<code>ReplicaSet</code>,然后<code>ReplicaSet Controller</code>会根据<code>yaml</code>当中定义的<code>template</code>模板来进行创建Pod,然后返回给<code>API Server</code></li>
-<li>在创建之初的Pod属性中<code>nodeName</code>为空,也就是没有被调度过的,这个时候调度器就会对它进行调度,调度去watchPod对象,然后分析那个节点最适合这个Pod,然后将节点的名字通过类似于bind的这种方法写入到<code>nodeName</code>当中。</li>
-<li>然后该节点的kubelet会进行一系列的判断,然后进入Create Pod的流程,然后进行一系列的<code>CNI</code>和<code>CSI</code>的过程。</li>
-</ol>
-<blockquote>
-<p>这也就是我们常说的往往越简单的东西,背后实现的越复杂。</p>
-</blockquote>
-<h3 id="调度阶段"><a href="#调度阶段" class="headerlink" title="调度阶段"></a>调度阶段</h3><p><code>kube-scheduler</code>调度分为两个阶段</p>
-<ol>
-<li><code>predicate</code>: 过滤阶段，过滤不符合条件的节点。</li>
-<li><code>priority</code>: 优先级排序，选择优先级最高的节点，也就是给节点打分。</li>
-</ol>
-<h3 id="Predicates策略"><a href="#Predicates策略" class="headerlink" title="Predicates策略"></a>Predicates策略</h3><ol>
-<li><code>PodFitsHostPorts</code>: 检查是否有Host Ports冲突</li>
-<li><code>PodFitsPorts</code>: 同上</li>
-<li><code>PodFitsResources</code>: 检查Node的资源是否充足，包括允许的Pod数量、CPU、内存、GPU个数以及其他的OpaqueIntResources。</li>
-<li><code>HostName</code>:检查<code>pod.Spec.NodeName</code>是否与候选节点一致</li>
-<li><code>MatchNodeSelector</code>:检查候选节点的<code>pod.Spec.NodeSelector</code>是否匹配</li>
-<li><code>NoVolumeZoneConflict</code>:检查<code>volume zone</code>是否冲突</li>
-</ol>
-<h3 id="Priority策略"><a href="#Priority策略" class="headerlink" title="Priority策略"></a>Priority策略</h3><ol>
-<li><code>SelectorSpreadPriority</code>: 优先减少节点上属于同一个<code>Service</code>或<code>Replication Controller</code>的Pod数量。</li>
-<li><code>InterPodAffinityPriority</code>: 优先将Pod调度到相同的拓扑上</li>
-<li><code>LeastRequestedPriority</code>:优先调度到请求资源少的节点上</li>
-<li><code>BalancedResourceAllocation</code>: 优先平衡各节点的资源使用</li>
-<li><code>NodePreferAvoidPodsPriority</code>:权重判断</li>
-</ol>
-<blockquote>
-<p>太多了可以自己去官网了解一下，这些策略都可以通过<code>scheduler</code>配置文件去配置，其实一般来说我们不太需要，我觉得kubernetes的调度是最让我们省心的。</p>
-</blockquote>
-<h2 id="资源需求"><a href="#资源需求" class="headerlink" title="资源需求"></a>资源需求</h2><ul>
-<li><code>requests</code>:属于调度器调度的时候所参考的指标，也就是说我这个应用最少需要<code>250m</code>的cpu和<code>256m</code>的内存才能运行。</li>
-</ul>
-<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">kind:</span> <span class="string">Deployment</span></span><br><span class="line"><span class="attr">apiVersion:</span> <span class="string">apps/v1</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">nginx-deployment</span></span><br><span class="line">  <span class="attr">namespace:</span> <span class="string">default</span></span><br><span class="line">  <span class="attr">labels:</span></span><br><span class="line">    <span class="attr">app:</span> <span class="string">nginx</span></span><br><span class="line">    <span class="attr">version:</span> <span class="string">qa</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">replicas:</span> <span class="number">2</span></span><br><span class="line">  <span class="attr">selector:</span></span><br><span class="line">    <span class="attr">matchLabels:</span></span><br><span class="line">      <span class="attr">app:</span> <span class="string">nginx</span></span><br><span class="line">      <span class="attr">version:</span> <span class="string">qa</span></span><br><span class="line">  <span class="attr">template:</span></span><br><span class="line">    <span class="attr">metadata:</span></span><br><span class="line">      <span class="attr">creationTimestamp:</span> <span class="literal">null</span></span><br><span class="line">      <span class="attr">labels:</span></span><br><span class="line">        <span class="attr">app:</span> <span class="string">nginx</span></span><br><span class="line">        <span class="attr">version:</span> <span class="string">qa</span></span><br><span class="line">    <span class="attr">spec:</span></span><br><span class="line">      <span class="attr">volumes:</span></span><br><span class="line">        <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">host-time</span></span><br><span class="line">          <span class="attr">hostPath:</span></span><br><span class="line">            <span class="attr">path:</span> <span class="string">/etc/localtime</span></span><br><span class="line">            <span class="attr">type:</span> <span class="string">&#x27;&#x27;</span></span><br><span class="line">      <span class="attr">containers:</span></span><br><span class="line">        <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">nginx</span></span><br><span class="line">          <span class="attr">image:</span> <span class="string">nginx:latest</span></span><br><span class="line">          <span class="attr">ports:</span></span><br><span class="line">            <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">http-web</span></span><br><span class="line">              <span class="attr">containerPort:</span> <span class="number">80</span></span><br><span class="line">              <span class="attr">protocol:</span> <span class="string">TCP</span></span><br><span class="line">          <span class="attr">resources:</span></span><br><span class="line">            <span class="attr">limits:</span></span><br><span class="line">              <span class="attr">cpu:</span> <span class="string">&#x27;1&#x27;</span></span><br><span class="line">              <span class="attr">memory:</span> <span class="string">2Gi</span></span><br><span class="line">            <span class="attr">requests:</span></span><br><span class="line">              <span class="attr">cpu:</span> <span class="string">250m</span></span><br><span class="line">              <span class="attr">memory:</span> <span class="string">256Mi</span></span><br></pre></td></tr></table></figure>
-
-<p>可以查看你节点的一些资源状态</p>
-<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">[<span class="string">root@master1</span> <span class="string">~</span>]<span class="comment"># kubectl get nodes -o yaml</span></span><br><span class="line"><span class="attr">allocatable:</span></span><br><span class="line">  <span class="attr">cpu:</span> <span class="string">15600m</span></span><br><span class="line">  <span class="attr">ephemeral-storage:</span> <span class="string">104278276Ki</span></span><br><span class="line">  <span class="attr">hugepages-1Gi:</span> <span class="string">&quot;0&quot;</span></span><br><span class="line">  <span class="attr">hugepages-2Mi:</span> <span class="string">&quot;0&quot;</span></span><br><span class="line">  <span class="attr">memory:</span> <span class="string">&quot;38390677064&quot;</span></span><br><span class="line">  <span class="attr">pods:</span> <span class="string">&quot;330&quot;</span></span><br><span class="line"><span class="attr">capacity:</span></span><br><span class="line">  <span class="attr">cpu:</span> <span class="string">&quot;16&quot;</span></span><br><span class="line">  <span class="attr">ephemeral-storage:</span> <span class="string">104278276Ki</span></span><br><span class="line">  <span class="attr">hugepages-1Gi:</span> <span class="string">&quot;0&quot;</span></span><br><span class="line">  <span class="attr">hugepages-2Mi:</span> <span class="string">&quot;0&quot;</span></span><br><span class="line">  <span class="attr">memory:</span> <span class="string">40003048Ki</span></span><br><span class="line">  <span class="attr">pods:</span> <span class="string">&quot;330&quot;</span></span><br></pre></td></tr></table></figure>
-
-<p>可以看看这个<code>deployment</code>运行以后我们的<code>cgroup</code>对他做了如何的限制</p>
-<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">&quot;CgroupParent&quot;:</span> <span class="string">&quot;/kubepods/burstable/pod1ceee26d-2ec2-43a8-96ef-5aa9ac99779b&quot;</span></span><br></pre></td></tr></table></figure>
-
-<p>进入这个目录</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@node1 ~]# <span class="built_in">cd</span> /sys/fs/cgroup/cpu/kubepods/burstable/pod1ceee26d-2ec2-43a8-96ef-5aa9ac99779b</span><br><span class="line">[root@node1 pod1ceee26d-2ec2-43a8-96ef-5aa9ac99779b]# <span class="built_in">cat</span> cpu.shares </span><br><span class="line">358</span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>kubernetes对于不同的QOS的处理方式是不一样的。</p>
-</blockquote>
-<h3 id="Limit-range"><a href="#Limit-range" class="headerlink" title="Limit-range"></a>Limit-range</h3><p>一个 <strong>LimitRange（限制范围）</strong> 对象提供的限制能够做到：</p>
-<ul>
-<li>在一个命名空间中实施对每个 Pod 或 Container 最小和最大的资源使用量的限制。</li>
-<li>在一个命名空间中实施对每个 <a target="_blank" rel="noopener" href="https://kubernetes.io/zh-cn/docs/concepts/storage/persistent-volumes/#persistentvolumeclaims">PersistentVolumeClaim</a> 能申请的最小和最大的存储空间大小的限制。</li>
-<li>在一个命名空间中实施对一种资源的申请值和限制值的比值的控制。</li>
-<li>设置一个命名空间中对计算资源的默认申请&#x2F;限制值，并且自动的在运行时注入到多个 Container 中。</li>
-</ul>
-<p>当某命名空间中有一个 LimitRange 对象时，将在该命名空间中实施 LimitRange 限制。</p>
-<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">LimitRange</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">cpu-resource-constraint</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">limits:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="attr">default:</span> <span class="comment"># 此处定义默认限制值</span></span><br><span class="line">      <span class="attr">cpu:</span> <span class="string">500m</span></span><br><span class="line">    <span class="attr">defaultRequest:</span> <span class="comment"># 此处定义默认请求值</span></span><br><span class="line">      <span class="attr">cpu:</span> <span class="string">500m</span></span><br><span class="line">    <span class="attr">max:</span> <span class="comment"># max 和 min 定义限制范围</span></span><br><span class="line">      <span class="attr">cpu:</span> <span class="string">&quot;1&quot;</span></span><br><span class="line">    <span class="attr">min:</span></span><br><span class="line">      <span class="attr">cpu:</span> <span class="string">100m</span></span><br><span class="line">    <span class="attr">type:</span> <span class="string">Container</span></span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>这东西其实是不太常用的</p>
-</blockquote>
-<h2 id="生产环境需要考虑的问题"><a href="#生产环境需要考虑的问题" class="headerlink" title="生产环境需要考虑的问题"></a>生产环境需要考虑的问题</h2><ul>
-<li>是否公平调度</li>
-<li>资源是否高效利用</li>
-<li>QOS</li>
-<li><code>affinity</code>和<code>anti-affinity</code></li>
-<li>数据本地化</li>
-<li>内部负载干扰(inter-workload interference)</li>
-<li><code>deadlines</code></li>
-</ul>
-
-<div class="article-footer fs14">
-    <section id="license">
-      <div class="header"><span>许可协议</span></div>
-      <div class="body"><p>本文采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">署名-非商业性使用-相同方式共享 4.0 国际</a> 许可协议，转载请注明出处。</p>
-</div>
-    </section>
-    
-    <section id="share">
-      <div class="header"><span>分享文章</span></div>
-      <div class="body">
-        <div class="link"><input class="copy-area" readonly="true" id="copy-link" value="https://blog.mletter.cn/kubernetes/scheduler/" /></div>
-        <div class="social-wrap dis-select"><a class="social share-item wechat" onclick="util.toggle(&quot;qrcode-wechat&quot;)"><img class="lazy"  src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/social/b32ef3da1162a.svg" /></a><a class="social share-item weibo" target="_blank" rel="external nofollow noopener noreferrer" href="https://service.weibo.com/share/share.php?url=https://blog.mletter.cn/kubernetes/scheduler/&title=kubernetes-Scheduler简单详解 - 太阳可以是蓝色&pics=https://img14.360buyimg.com/ddimg/jfs/t1/164569/9/40677/14419/65bc6e4cFa1d8c0c3/5ccf7e6caadc9b83.jpg&summary=kube-scheduler 是 kubernetes 的核心组件之一"><img class="lazy"  src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/social/80c07e4dbb303.svg" /></a><a class="social share-item email" href="mailto:?subject=kubernetes-Scheduler简单详解 - 太阳可以是蓝色&amp;body=https://blog.mletter.cn/kubernetes/scheduler/"><img class="lazy"  src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/social/a1b00e20f425d.svg" /></a><a class="social share-item link" onclick="util.copy(&quot;copy-link&quot;, &quot;复制成功&quot;)"><img class="lazy"  src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/social/8411ed322ced6.svg" /></a></div>
-        
-        <div class="qrcode" id="qrcode-wechat" style="opacity:0;height:0">
-          <img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://api.qrserver.com/v1/create-qr-code/?size=256x256&data=https://blog.mletter.cn/kubernetes/scheduler/"/>
-        </div>
-        
-      </div>
-    </section>
-    </div>
-</article>
-<div class="related-wrap" id="read-next"><section class="body"><div class="item" id="prev"><div class="note">较新文章</div><a href="/kubernetes/InstallNacosCluster">基于kubernetes部署nacos集群</a></div><div class="item" id="next"></div></section></div>
-
-
-
-
-  <div class="related-wrap md-text" id="comments">
-    <section class='header cmt-title cap theme'>
-      <p>快来参与讨论吧~</p>
-
-    </section>
-    <section class='body cmt-body twikoo'>
-      
-
-<div id="twikoo_container"><svg class="loading" style="vertical-align:middle;fill:currentColor;overflow:hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2709"><path d="M832 512c0-176-144-320-320-320V128c211.2 0 384 172.8 384 384h-64zM192 512c0 176 144 320 320 320v64C300.8 896 128 723.2 128 512h64z" p-id="2710"></path></svg></div>
-    </section>
-  </div>
-
-
-
-<footer class="page-footer footnote"><hr><div class="sitemap"><div class="sitemap-group"><span class="fs15">项目</span><a href="/">开源库</a></div><div class="sitemap-group"><span class="fs15">社交</span><a href="/friends">友链</a></div><div class="sitemap-group"><span class="fs15">更多</span><a href="/about/">关于本站</a></div></div><div class="text"><p>本站由 <a href="/">太阳可以是蓝色</a> 使用 <a target="_blank" rel="noopener" href="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.29.1">Stellar 1.29.1</a> 主题创建。<br>本博客所有文章除特别声明外，均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议，转载请注明出处。</p>
-</div></footer>
-<div class="main-mask" onclick="sidebar.dismiss()"></div></div><aside class="l_right">
-<div class="widgets">
-
-
-
-<widget class="widget-wrapper toc" id="data-toc" collapse="false"><div class="widget-header dis-select"><span class="name">本文目录</span><a class="cap-action" onclick="sidebar.toggleTOC()" ><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg></a></div><div class="widget-body"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%B0%83%E5%BA%A6%E6%B5%81%E7%A8%8B"><span class="toc-text">调度流程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%B0%83%E5%BA%A6%E9%98%B6%E6%AE%B5"><span class="toc-text">调度阶段</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Predicates%E7%AD%96%E7%95%A5"><span class="toc-text">Predicates策略</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Priority%E7%AD%96%E7%95%A5"><span class="toc-text">Priority策略</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%B5%84%E6%BA%90%E9%9C%80%E6%B1%82"><span class="toc-text">资源需求</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Limit-range"><span class="toc-text">Limit-range</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%94%9F%E4%BA%A7%E7%8E%AF%E5%A2%83%E9%9C%80%E8%A6%81%E8%80%83%E8%99%91%E7%9A%84%E9%97%AE%E9%A2%98"><span class="toc-text">生产环境需要考虑的问题</span></a></li></ol></div><div class="widget-footer">
-
-<a class="top" onclick="util.scrollTop()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 12c0-4.714 0-7.071 1.464-8.536C4.93 2 7.286 2 12 2c4.714 0 7.071 0 8.535 1.464C22 4.93 22 7.286 22 12c0 4.714 0 7.071-1.465 8.535C19.072 22 16.714 22 12 22s-7.071 0-8.536-1.465C2 19.072 2 16.714 2 12Z"/><path stroke-linecap="round" stroke-linejoin="round" d="m9 15.5l3-3l3 3m-6-4l3-3l3 3"/></g></svg><span>回到顶部</span></a><a class="buttom" onclick="util.scrollComment()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M10.46 1.25h3.08c1.603 0 2.86 0 3.864.095c1.023.098 1.861.3 2.6.752a5.75 5.75 0 0 1 1.899 1.899c.452.738.654 1.577.752 2.6c.095 1.004.095 2.261.095 3.865v1.067c0 1.141 0 2.036-.05 2.759c-.05.735-.153 1.347-.388 1.913a5.75 5.75 0 0 1-3.112 3.112c-.805.334-1.721.408-2.977.43a10.81 10.81 0 0 0-.929.036c-.198.022-.275.054-.32.08c-.047.028-.112.078-.224.232c-.121.166-.258.396-.476.764l-.542.916c-.773 1.307-2.69 1.307-3.464 0l-.542-.916a10.605 10.605 0 0 0-.476-.764c-.112-.154-.177-.204-.224-.232c-.045-.026-.122-.058-.32-.08c-.212-.023-.49-.03-.93-.037c-1.255-.021-2.171-.095-2.976-.429A5.75 5.75 0 0 1 1.688 16.2c-.235-.566-.338-1.178-.389-1.913c-.049-.723-.049-1.618-.049-2.76v-1.066c0-1.604 0-2.86.095-3.865c.098-1.023.3-1.862.752-2.6a5.75 5.75 0 0 1 1.899-1.899c.738-.452 1.577-.654 2.6-.752C7.6 1.25 8.857 1.25 10.461 1.25M6.739 2.839c-.914.087-1.495.253-1.959.537A4.25 4.25 0 0 0 3.376 4.78c-.284.464-.45 1.045-.537 1.96c-.088.924-.089 2.11-.089 3.761v1c0 1.175 0 2.019.046 2.685c.045.659.131 1.089.278 1.441a4.25 4.25 0 0 0 2.3 2.3c.515.214 1.173.294 2.429.316h.031c.398.007.747.013 1.037.045c.311.035.616.104.909.274c.29.17.5.395.682.645c.169.232.342.525.538.856l.559.944a.52.52 0 0 0 .882 0l.559-.944c.196-.331.37-.624.538-.856c.182-.25.392-.476.682-.645c.293-.17.598-.24.909-.274c.29-.032.639-.038 1.037-.045h.032c1.255-.022 1.913-.102 2.428-.316a4.25 4.25 0 0 0 2.3-2.3c.147-.352.233-.782.278-1.441c.046-.666.046-1.51.046-2.685v-1c0-1.651 0-2.837-.089-3.762c-.087-.914-.253-1.495-.537-1.959a4.25 4.25 0 0 0-1.403-1.403c-.464-.284-1.045-.45-1.96-.537c-.924-.088-2.11-.089-3.761-.089h-3c-1.651 0-2.837 0-3.762.089" clip-rule="evenodd"/><path fill="currentColor" d="M9 11a1 1 0 1 1-2 0a1 1 0 0 1 2 0m4 0a1 1 0 1 1-2 0a1 1 0 0 1 2 0m4 0a1 1 0 1 1-2 0a1 1 0 0 1 2 0"/></svg><span>参与讨论</span></a></div></widget>
-</div></aside><div class='float-panel blur'>
-  <button type='button' style='display:none' class='laptop-only rightbar-toggle mobile' onclick='sidebar.rightbar()'>
-    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg>
-  </button>
-  <button type='button' style='display:none' class='mobile-only leftbar-toggle mobile' onclick='sidebar.leftbar()'>
-    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 11c0-3.771 0-5.657 1.172-6.828C4.343 3 6.229 3 10 3h4c3.771 0 5.657 0 6.828 1.172C22 5.343 22 7.229 22 11v2c0 3.771 0 5.657-1.172 6.828C19.657 21 17.771 21 14 21h-4c-3.771 0-5.657 0-6.828-1.172C2 18.657 2 16.771 2 13z"/><path id="sep" stroke-linecap="round" d="M5.5 10h6m-5 4h4m4.5 7V3"/></g></svg>
-  </button>
-</div>
-</div><div class="scripts">
-<script type="text/javascript">
-  const ctx = {
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="hexo-theme" content="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.29.1" theme-name="Stellar" theme-version="1.29.1"><meta name="generator" content="Hexo 7.3.0"><meta http-equiv="x-dns-prefetch-control" content="on"><meta name="renderer" content="webkit"><meta name="force-rendering" content="webkit"><meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1"><meta name="HandheldFriendly" content="True"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1"><meta name="theme-color" media="(prefers-color-scheme: dark)" content="#000"><meta name="theme-color" content="#f9fafb"><title>kubernetes-Scheduler简单详解 - 太阳可以是蓝色</title><meta name="description" content="kube-scheduler 是 kubernetes 的核心组件之一"><meta name="keywords" content="kubernetes,调度原理"><link rel="stylesheet" href="/css/main.css?v=1.29.1"><style>.medium-zoom-overlay{z-index:20}.medium-zoom-image{z-index:21}</style><script src="https://cdn.staticfile.net/medium-zoom/1.1.0/medium-zoom.min.js"></script></head><body><div class="l_body s:aa content tech" id="start" layout="post"><aside class="l_left"><div class="leftbar-container"><header class="header"><div class="logo-wrap"><a class="avatar" href="/about/"><div class="bg" style="opacity:0;background-image:url(undefined)"></div><img no-lazy class="avatar" src="https://img14.360buyimg.com/ddimg/jfs/t1/77628/23/27254/26944/66bc1a36Fc596606a/d912965b8bba22af.jpg" onerror="javascript:this.classList.add('error');this.src='https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/image/2659360.svg';"></a><a class="title" href="/"><div class="main" ff="title">太阳可以是蓝色</div><div class="sub cap">Live and learn. 🌱</div></a></div></header><div class="nav-area"><div class="search-wrapper" id="search-wrapper"><form class="search-form"><a class="search-button" onclick="document.getElementById(&quot;search-input&quot;).focus();"><svg t="1705074644177" viewBox="0 0 1025 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1560" width="200" height="200"><path d="M1008.839137 935.96571L792.364903 719.491476a56.783488 56.783488 0 0 0-80.152866 0 358.53545 358.53545 0 1 1 100.857314-335.166073 362.840335 362.840335 0 0 1-3.689902 170.145468 51.248635 51.248635 0 1 0 99.217358 26.444296 462.057693 462.057693 0 1 0-158.255785 242.303546l185.930047 185.725053a51.248635 51.248635 0 0 0 72.568068 0 51.248635 51.248635 0 0 0 0-72.978056z" p-id="1561"></path><path d="M616.479587 615.969233a50.428657 50.428657 0 0 0-61.498362-5.534852 174.655348 174.655348 0 0 1-177.525271 3.484907 49.403684 49.403684 0 0 0-58.833433 6.76482l-3.074918 2.869923a49.403684 49.403684 0 0 0 8.609771 78.10292 277.767601 277.767601 0 0 0 286.992355-5.739847 49.403684 49.403684 0 0 0 8.404776-76.667958z" p-id="1562"></path></svg></a><input type="text" class="search-input" id="search-input" placeholder="站内搜索"></form><div id="search-result"></div><div class="search-no-result">没有找到内容！</div></div><nav class="menu dis-select"><a class="nav-item active" title="首页" href="/" style="color:#9aaec7"><span>首页</span></a><a class="nav-item" title="摄影" target="_blank" rel="noopener" href="https://pic.mletter.cn" style="color:#9aaec7"><span>摄影</span></a><a class="nav-item" title="关于" href="/about/" style="color:#9aaec7"><span>关于</span></a><a class="nav-item" title="社交" href="/friends/" style="color:#9aaec7"><span>社交</span></a></nav></div><div class="widgets"><widget class="widget-wrapper post-list"><div class="widget-header dis-select"><span class="name">最近更新</span></div><div class="widget-body fs14"><a class="item title" href="/project/gin-wecho/"><span class="title">维扣图元-专属你的拍照摄影社区</span></a><a class="item title" href="/2021/02/19/redis-cluster/"><span class="title">Redis集群搭建</span></a><a class="item title" href="/2022/03/20/nginx%E4%BC%98%E5%8C%96/"><span class="title">Nginx简单的常规优化</span></a><a class="item title" href="/gitlab/GitLabRepositoryManagement/"><span class="title">管理好内部的代码仓库-GitLab篇</span></a><a class="item title" href="/mysql/MysqlOptimization/"><span class="title">MySQL小小优化思路简单版本</span></a><a class="item title" href="/kubernetes/ApiServerRead/"><span class="title">Kubernetes中Api-Server简单解读</span></a><a class="item title" href="/kubernetes/InstallEtcdHA/"><span class="title">使用Kubeadm创建一个高可用的ETCD集群</span></a><a class="item title" href="/tourists/119/"><span class="title">日记-又开始怀念夏天</span></a><a class="item title" href="/tourists/tianjin/"><span class="title">旅行日记-跨年•天津</span></a><a class="item title" href="/tourists/3/"><span class="title">旅行日记-目的地-东莞</span></a></div></widget></div><footer class="footer dis-select"><div class="social-wrap"><a class="social" onclick="switchTheme()"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024"><path fill="currentColor" fill-rule="evenodd" d="M582.4 326.4c-140.8 0-256 115.2-256 256s115.2 256 256 256 256-115.2 256-256-115.2-256-256-256z m0 448c-70.4 0-131.2-36.8-164.8-92.8 12.8 3.2 27.2 4.8 40 4.8 121.6 0 219.2-99.2 219.2-219.2 0-17.6-1.6-35.2-6.4-52.8 60.8 32 102.4 96 102.4 169.6 1.6 104-84.8 190.4-190.4 190.4zM582.4 262.4c17.6 0 32-14.4 32-32v-128c0-17.6-14.4-32-32-32s-32 14.4-32 32v128c0 17.6 14.4 32 32 32zM262.4 582.4c0-17.6-14.4-32-32-32h-128c-17.6 0-32 14.4-32 32s14.4 32 32 32h128c17.6 0 32-14.4 32-32zM310.4 356.8c6.4 6.4 14.4 9.6 22.4 9.6 8 0 16-3.2 22.4-9.6 12.8-12.8 12.8-32 0-44.8l-91.2-91.2c-12.8-12.8-32-12.8-44.8 0-12.8 12.8-12.8 32 0 44.8l91.2 91.2zM944 220.8c-12.8-12.8-32-12.8-44.8 0l-91.2 91.2c-12.8 12.8-12.8 32 0 44.8 6.4 6.4 14.4 9.6 22.4 9.6 8 0 16-3.2 22.4-9.6l91.2-91.2c12.8-12.8 12.8-33.6 0-44.8zM310.4 808l-91.2 91.2c-12.8 12.8-12.8 32 0 44.8 6.4 6.4 14.4 9.6 22.4 9.6 8 0 16-3.2 22.4-9.6l91.2-91.2c12.8-12.8 12.8-32 0-44.8-11.2-11.2-32-11.2-44.8 0z"></path></svg></a></div></footer></div></aside><div class="l_main" id="main"><div class="article banner top"><img class="bg lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://img14.360buyimg.com/ddimg/jfs/t1/164569/9/40677/14419/65bc6e4cFa1d8c0c3/5ccf7e6caadc9b83.jpg"><div class="content"><div class="top bread-nav footnote"><div class="left"><div class="flex-row" id="breadcrumb"><a class="cap breadcrumb" href="/">主页</a> <span class="sep"></span><a class="cap breadcrumb" href="/">文章</a><span class="sep"></span><a class="cap breadcrumb-link" href="/categories/kubernetes/">kubernetes</a></div><div class="flex-row" id="post-meta"><span class="text created">发布于：<time datetime="2020-03-13T16:00:00.000Z">2020-03-14</time></span><span class="sep updated"></span><span class="text updated">更新于：<time datetime="2024-08-23T09:18:15.587Z">2024-08-23</time></span></div></div></div><div class="bottom only-title"><div class="text-area"><h1 class="text title"><span>kubernetes-Scheduler简单详解</span></h1></div></div></div></div><article class="md-text content"><p><code>kube-scheduler</code> 是 kubernetes 的核心组件之一，主要负责整个集群资源的调度功能，根据特定的调度算法和策略，将 Pod 调度到最优的工作节点上面去，从而更加合理、更加充分的利用集群的资源，这也是我们选择使用 kubernetes 一个非常重要的理由。如果一门新的技术不能帮助企业节约成本、提供效率，我相信是很难推进的。</p><h2 id="调度流程"><a href="#调度流程" class="headerlink" title="调度流程"></a>调度流程</h2><p><code>kube-scheduler</code> 提供的默认调度器能够满足我们绝大多数的要求，我们前面和大家接触的示例也基本上用的默认的策略，都可以保证我们的 Pod 可以被分配到资源充足的节点上运行。但是在实际的线上项目中，可能我们自己会比 kubernetes 更加了解我们自己的应用，比如我们希望一个 Pod 只能运行在特定的几个节点上，或者这几个节点只能用来运行特定类型的应用，这就需要我们的调度器能够可控。</p><ol><li>发起创建<code>Deployment</code>请求-&gt;<code>API Server</code>,这个时候<code>APIServer</code>会进行一系列的逻辑处理,例如: 鉴权、查看你是否有权限操作、Deployment创建是否合法等等,然后将请求存储到etcd当中并且转发给<code>Controller Manager</code></li><li><code>Controller Manager</code>会监听<code>API Server</code>,这个时候假设监听到的是一个创建<code>Deployment</code>的请求,则会把请求转发到<code>Deployment Controller</code></li><li><code>Deployment Controller</code>接受到请求后创建<code>ReplicaSet</code>,然后<code>ReplicaSet Controller</code>会根据<code>yaml</code>当中定义的<code>template</code>模板来进行创建Pod,然后返回给<code>API Server</code></li><li>在创建之初的Pod属性中<code>nodeName</code>为空,也就是没有被调度过的,这个时候调度器就会对它进行调度,调度去watchPod对象,然后分析那个节点最适合这个Pod,然后将节点的名字通过类似于bind的这种方法写入到<code>nodeName</code>当中。</li><li>然后该节点的kubelet会进行一系列的判断,然后进入Create Pod的流程,然后进行一系列的<code>CNI</code>和<code>CSI</code>的过程。</li></ol><blockquote><p>这也就是我们常说的往往越简单的东西,背后实现的越复杂。</p></blockquote><h3 id="调度阶段"><a href="#调度阶段" class="headerlink" title="调度阶段"></a>调度阶段</h3><p><code>kube-scheduler</code>调度分为两个阶段</p><ol><li><code>predicate</code>: 过滤阶段，过滤不符合条件的节点。</li><li><code>priority</code>: 优先级排序，选择优先级最高的节点，也就是给节点打分。</li></ol><h3 id="Predicates策略"><a href="#Predicates策略" class="headerlink" title="Predicates策略"></a>Predicates策略</h3><ol><li><code>PodFitsHostPorts</code>: 检查是否有Host Ports冲突</li><li><code>PodFitsPorts</code>: 同上</li><li><code>PodFitsResources</code>: 检查Node的资源是否充足，包括允许的Pod数量、CPU、内存、GPU个数以及其他的OpaqueIntResources。</li><li><code>HostName</code>:检查<code>pod.Spec.NodeName</code>是否与候选节点一致</li><li><code>MatchNodeSelector</code>:检查候选节点的<code>pod.Spec.NodeSelector</code>是否匹配</li><li><code>NoVolumeZoneConflict</code>:检查<code>volume zone</code>是否冲突</li></ol><h3 id="Priority策略"><a href="#Priority策略" class="headerlink" title="Priority策略"></a>Priority策略</h3><ol><li><code>SelectorSpreadPriority</code>: 优先减少节点上属于同一个<code>Service</code>或<code>Replication Controller</code>的Pod数量。</li><li><code>InterPodAffinityPriority</code>: 优先将Pod调度到相同的拓扑上</li><li><code>LeastRequestedPriority</code>:优先调度到请求资源少的节点上</li><li><code>BalancedResourceAllocation</code>: 优先平衡各节点的资源使用</li><li><code>NodePreferAvoidPodsPriority</code>:权重判断</li></ol><blockquote><p>太多了可以自己去官网了解一下，这些策略都可以通过<code>scheduler</code>配置文件去配置，其实一般来说我们不太需要，我觉得kubernetes的调度是最让我们省心的。</p></blockquote><h2 id="资源需求"><a href="#资源需求" class="headerlink" title="资源需求"></a>资源需求</h2><ul><li><code>requests</code>:属于调度器调度的时候所参考的指标，也就是说我这个应用最少需要<code>250m</code>的cpu和<code>256m</code>的内存才能运行。</li></ul><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">kind:</span> <span class="string">Deployment</span></span><br><span class="line"><span class="attr">apiVersion:</span> <span class="string">apps/v1</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">nginx-deployment</span></span><br><span class="line">  <span class="attr">namespace:</span> <span class="string">default</span></span><br><span class="line">  <span class="attr">labels:</span></span><br><span class="line">    <span class="attr">app:</span> <span class="string">nginx</span></span><br><span class="line">    <span class="attr">version:</span> <span class="string">qa</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">replicas:</span> <span class="number">2</span></span><br><span class="line">  <span class="attr">selector:</span></span><br><span class="line">    <span class="attr">matchLabels:</span></span><br><span class="line">      <span class="attr">app:</span> <span class="string">nginx</span></span><br><span class="line">      <span class="attr">version:</span> <span class="string">qa</span></span><br><span class="line">  <span class="attr">template:</span></span><br><span class="line">    <span class="attr">metadata:</span></span><br><span class="line">      <span class="attr">creationTimestamp:</span> <span class="literal">null</span></span><br><span class="line">      <span class="attr">labels:</span></span><br><span class="line">        <span class="attr">app:</span> <span class="string">nginx</span></span><br><span class="line">        <span class="attr">version:</span> <span class="string">qa</span></span><br><span class="line">    <span class="attr">spec:</span></span><br><span class="line">      <span class="attr">volumes:</span></span><br><span class="line">        <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">host-time</span></span><br><span class="line">          <span class="attr">hostPath:</span></span><br><span class="line">            <span class="attr">path:</span> <span class="string">/etc/localtime</span></span><br><span class="line">            <span class="attr">type:</span> <span class="string">&#x27;&#x27;</span></span><br><span class="line">      <span class="attr">containers:</span></span><br><span class="line">        <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">nginx</span></span><br><span class="line">          <span class="attr">image:</span> <span class="string">nginx:latest</span></span><br><span class="line">          <span class="attr">ports:</span></span><br><span class="line">            <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">http-web</span></span><br><span class="line">              <span class="attr">containerPort:</span> <span class="number">80</span></span><br><span class="line">              <span class="attr">protocol:</span> <span class="string">TCP</span></span><br><span class="line">          <span class="attr">resources:</span></span><br><span class="line">            <span class="attr">limits:</span></span><br><span class="line">              <span class="attr">cpu:</span> <span class="string">&#x27;1&#x27;</span></span><br><span class="line">              <span class="attr">memory:</span> <span class="string">2Gi</span></span><br><span class="line">            <span class="attr">requests:</span></span><br><span class="line">              <span class="attr">cpu:</span> <span class="string">250m</span></span><br><span class="line">              <span class="attr">memory:</span> <span class="string">256Mi</span></span><br></pre></td></tr></table></figure><p>可以查看你节点的一些资源状态</p><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">[<span class="string">root@master1</span> <span class="string">~</span>]<span class="comment"># kubectl get nodes -o yaml</span></span><br><span class="line"><span class="attr">allocatable:</span></span><br><span class="line">  <span class="attr">cpu:</span> <span class="string">15600m</span></span><br><span class="line">  <span class="attr">ephemeral-storage:</span> <span class="string">104278276Ki</span></span><br><span class="line">  <span class="attr">hugepages-1Gi:</span> <span class="string">&quot;0&quot;</span></span><br><span class="line">  <span class="attr">hugepages-2Mi:</span> <span class="string">&quot;0&quot;</span></span><br><span class="line">  <span class="attr">memory:</span> <span class="string">&quot;38390677064&quot;</span></span><br><span class="line">  <span class="attr">pods:</span> <span class="string">&quot;330&quot;</span></span><br><span class="line"><span class="attr">capacity:</span></span><br><span class="line">  <span class="attr">cpu:</span> <span class="string">&quot;16&quot;</span></span><br><span class="line">  <span class="attr">ephemeral-storage:</span> <span class="string">104278276Ki</span></span><br><span class="line">  <span class="attr">hugepages-1Gi:</span> <span class="string">&quot;0&quot;</span></span><br><span class="line">  <span class="attr">hugepages-2Mi:</span> <span class="string">&quot;0&quot;</span></span><br><span class="line">  <span class="attr">memory:</span> <span class="string">40003048Ki</span></span><br><span class="line">  <span class="attr">pods:</span> <span class="string">&quot;330&quot;</span></span><br></pre></td></tr></table></figure><p>可以看看这个<code>deployment</code>运行以后我们的<code>cgroup</code>对他做了如何的限制</p><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">&quot;CgroupParent&quot;:</span> <span class="string">&quot;/kubepods/burstable/pod1ceee26d-2ec2-43a8-96ef-5aa9ac99779b&quot;</span></span><br></pre></td></tr></table></figure><p>进入这个目录</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@node1 ~]# <span class="built_in">cd</span> /sys/fs/cgroup/cpu/kubepods/burstable/pod1ceee26d-2ec2-43a8-96ef-5aa9ac99779b</span><br><span class="line">[root@node1 pod1ceee26d-2ec2-43a8-96ef-5aa9ac99779b]# <span class="built_in">cat</span> cpu.shares </span><br><span class="line">358</span><br></pre></td></tr></table></figure><blockquote><p>kubernetes对于不同的QOS的处理方式是不一样的。</p></blockquote><h3 id="Limit-range"><a href="#Limit-range" class="headerlink" title="Limit-range"></a>Limit-range</h3><p>一个 <strong>LimitRange（限制范围）</strong> 对象提供的限制能够做到：</p><ul><li>在一个命名空间中实施对每个 Pod 或 Container 最小和最大的资源使用量的限制。</li><li>在一个命名空间中实施对每个 <a target="_blank" rel="noopener" href="https://kubernetes.io/zh-cn/docs/concepts/storage/persistent-volumes/#persistentvolumeclaims">PersistentVolumeClaim</a> 能申请的最小和最大的存储空间大小的限制。</li><li>在一个命名空间中实施对一种资源的申请值和限制值的比值的控制。</li><li>设置一个命名空间中对计算资源的默认申请&#x2F;限制值，并且自动的在运行时注入到多个 Container 中。</li></ul><p>当某命名空间中有一个 LimitRange 对象时，将在该命名空间中实施 LimitRange 限制。</p><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">LimitRange</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">cpu-resource-constraint</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">limits:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="attr">default:</span> <span class="comment"># 此处定义默认限制值</span></span><br><span class="line">      <span class="attr">cpu:</span> <span class="string">500m</span></span><br><span class="line">    <span class="attr">defaultRequest:</span> <span class="comment"># 此处定义默认请求值</span></span><br><span class="line">      <span class="attr">cpu:</span> <span class="string">500m</span></span><br><span class="line">    <span class="attr">max:</span> <span class="comment"># max 和 min 定义限制范围</span></span><br><span class="line">      <span class="attr">cpu:</span> <span class="string">&quot;1&quot;</span></span><br><span class="line">    <span class="attr">min:</span></span><br><span class="line">      <span class="attr">cpu:</span> <span class="string">100m</span></span><br><span class="line">    <span class="attr">type:</span> <span class="string">Container</span></span><br></pre></td></tr></table></figure><blockquote><p>这东西其实是不太常用的</p></blockquote><h2 id="生产环境需要考虑的问题"><a href="#生产环境需要考虑的问题" class="headerlink" title="生产环境需要考虑的问题"></a>生产环境需要考虑的问题</h2><ul><li>是否公平调度</li><li>资源是否高效利用</li><li>QOS</li><li><code>affinity</code>和<code>anti-affinity</code></li><li>数据本地化</li><li>内部负载干扰(inter-workload interference)</li><li><code>deadlines</code></li></ul><div class="article-footer fs14"><section id="license"><div class="header"><span>许可协议</span></div><div class="body"><p>本文采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">署名-非商业性使用-相同方式共享 4.0 国际</a> 许可协议，转载请注明出处。</p></div></section><section id="share"><div class="header"><span>分享文章</span></div><div class="body"><div class="link"><input class="copy-area" readonly id="copy-link" value="https://blog.mletter.cn/kubernetes/scheduler/"></div><div class="social-wrap dis-select"><a class="social share-item wechat" onclick="util.toggle(&quot;qrcode-wechat&quot;)"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/social/b32ef3da1162a.svg"></a><a class="social share-item weibo" target="_blank" rel="external nofollow noopener noreferrer" href="https://service.weibo.com/share/share.php?url=https://blog.mletter.cn/kubernetes/scheduler/&title=kubernetes-Scheduler简单详解 - 太阳可以是蓝色&pics=https://img14.360buyimg.com/ddimg/jfs/t1/164569/9/40677/14419/65bc6e4cFa1d8c0c3/5ccf7e6caadc9b83.jpg&summary=kube-scheduler 是 kubernetes 的核心组件之一"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/social/80c07e4dbb303.svg"></a><a class="social share-item email" href="mailto:?subject=kubernetes-Scheduler简单详解 - 太阳可以是蓝色&amp;body=https://blog.mletter.cn/kubernetes/scheduler/"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/social/a1b00e20f425d.svg"></a><a class="social share-item link" onclick="util.copy(&quot;copy-link&quot;, &quot;复制成功&quot;)"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/social/8411ed322ced6.svg"></a></div><div class="qrcode" id="qrcode-wechat" style="opacity:0;height:0"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://api.qrserver.com/v1/create-qr-code/?size=256x256&data=https://blog.mletter.cn/kubernetes/scheduler/"></div></div></section></div></article><div class="related-wrap" id="read-next"><section class="body"><div class="item" id="prev"><div class="note">较新文章</div><a href="/kubernetes/InstallNacosCluster">基于kubernetes部署nacos集群</a></div><div class="item" id="next"></div></section></div><div class="related-wrap md-text" id="comments"><section class="header cmt-title cap theme"><p>快来参与讨论吧~</p></section><section class="body cmt-body twikoo"><div id="twikoo_container"><svg class="loading" style="vertical-align:middle;fill:currentColor;overflow:hidden" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2709"><path d="M832 512c0-176-144-320-320-320V128c211.2 0 384 172.8 384 384h-64zM192 512c0 176 144 320 320 320v64C300.8 896 128 723.2 128 512h64z" p-id="2710"></path></svg></div></section></div><footer class="page-footer footnote"><hr><div class="sitemap"><div class="sitemap-group"><span class="fs15">项目</span><a href="/">开源库</a></div><div class="sitemap-group"><span class="fs15">社交</span><a href="/friends">友链</a></div><div class="sitemap-group"><span class="fs15">更多</span><a target="_blank" rel="noopener" href="https://mletter.cn">主页</a><a href="/about/">关于本站</a></div></div><div class="text"><p>本站由 <a href="/">太阳可以是蓝色</a> 使用 <a target="_blank" rel="noopener" href="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.29.1">Stellar 1.29.1</a> 主题创建。<br>本博客所有文章除特别声明外，均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议，转载请注明出处。</p><script async defer src="https://test.mletter.cn/tracker.js" data-website-id="cm2ej97as0003gggungw5mt5g"></script></div></footer><div class="main-mask" onclick="sidebar.dismiss()"></div></div><aside class="l_right"><div class="widgets"><widget class="widget-wrapper toc" id="data-toc" collapse="false"><div class="widget-header dis-select"><span class="name">本文目录</span><a class="cap-action" onclick="sidebar.toggleTOC()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg></a></div><div class="widget-body"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%B0%83%E5%BA%A6%E6%B5%81%E7%A8%8B"><span class="toc-text">调度流程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%B0%83%E5%BA%A6%E9%98%B6%E6%AE%B5"><span class="toc-text">调度阶段</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Predicates%E7%AD%96%E7%95%A5"><span class="toc-text">Predicates策略</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Priority%E7%AD%96%E7%95%A5"><span class="toc-text">Priority策略</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%B5%84%E6%BA%90%E9%9C%80%E6%B1%82"><span class="toc-text">资源需求</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Limit-range"><span class="toc-text">Limit-range</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%94%9F%E4%BA%A7%E7%8E%AF%E5%A2%83%E9%9C%80%E8%A6%81%E8%80%83%E8%99%91%E7%9A%84%E9%97%AE%E9%A2%98"><span class="toc-text">生产环境需要考虑的问题</span></a></li></ol></div><div class="widget-footer"><a class="top" onclick="util.scrollTop()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 12c0-4.714 0-7.071 1.464-8.536C4.93 2 7.286 2 12 2c4.714 0 7.071 0 8.535 1.464C22 4.93 22 7.286 22 12c0 4.714 0 7.071-1.465 8.535C19.072 22 16.714 22 12 22s-7.071 0-8.536-1.465C2 19.072 2 16.714 2 12Z"/><path stroke-linecap="round" stroke-linejoin="round" d="m9 15.5l3-3l3 3m-6-4l3-3l3 3"/></g></svg><span>回到顶部</span></a><a class="buttom" onclick="util.scrollComment()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M10.46 1.25h3.08c1.603 0 2.86 0 3.864.095c1.023.098 1.861.3 2.6.752a5.75 5.75 0 0 1 1.899 1.899c.452.738.654 1.577.752 2.6c.095 1.004.095 2.261.095 3.865v1.067c0 1.141 0 2.036-.05 2.759c-.05.735-.153 1.347-.388 1.913a5.75 5.75 0 0 1-3.112 3.112c-.805.334-1.721.408-2.977.43a10.81 10.81 0 0 0-.929.036c-.198.022-.275.054-.32.08c-.047.028-.112.078-.224.232c-.121.166-.258.396-.476.764l-.542.916c-.773 1.307-2.69 1.307-3.464 0l-.542-.916a10.605 10.605 0 0 0-.476-.764c-.112-.154-.177-.204-.224-.232c-.045-.026-.122-.058-.32-.08c-.212-.023-.49-.03-.93-.037c-1.255-.021-2.171-.095-2.976-.429A5.75 5.75 0 0 1 1.688 16.2c-.235-.566-.338-1.178-.389-1.913c-.049-.723-.049-1.618-.049-2.76v-1.066c0-1.604 0-2.86.095-3.865c.098-1.023.3-1.862.752-2.6a5.75 5.75 0 0 1 1.899-1.899c.738-.452 1.577-.654 2.6-.752C7.6 1.25 8.857 1.25 10.461 1.25M6.739 2.839c-.914.087-1.495.253-1.959.537A4.25 4.25 0 0 0 3.376 4.78c-.284.464-.45 1.045-.537 1.96c-.088.924-.089 2.11-.089 3.761v1c0 1.175 0 2.019.046 2.685c.045.659.131 1.089.278 1.441a4.25 4.25 0 0 0 2.3 2.3c.515.214 1.173.294 2.429.316h.031c.398.007.747.013 1.037.045c.311.035.616.104.909.274c.29.17.5.395.682.645c.169.232.342.525.538.856l.559.944a.52.52 0 0 0 .882 0l.559-.944c.196-.331.37-.624.538-.856c.182-.25.392-.476.682-.645c.293-.17.598-.24.909-.274c.29-.032.639-.038 1.037-.045h.032c1.255-.022 1.913-.102 2.428-.316a4.25 4.25 0 0 0 2.3-2.3c.147-.352.233-.782.278-1.441c.046-.666.046-1.51.046-2.685v-1c0-1.651 0-2.837-.089-3.762c-.087-.914-.253-1.495-.537-1.959a4.25 4.25 0 0 0-1.403-1.403c-.464-.284-1.045-.45-1.96-.537c-.924-.088-2.11-.089-3.761-.089h-3c-1.651 0-2.837 0-3.762.089" clip-rule="evenodd"/><path fill="currentColor" d="M9 11a1 1 0 1 1-2 0a1 1 0 0 1 2 0m4 0a1 1 0 1 1-2 0a1 1 0 0 1 2 0m4 0a1 1 0 1 1-2 0a1 1 0 0 1 2 0"/></svg><span>参与讨论</span></a></div></widget></div></aside><div class="float-panel blur"><button type="button" style="display:none" class="laptop-only rightbar-toggle mobile" onclick="sidebar.rightbar()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg></button> <button type="button" style="display:none" class="mobile-only leftbar-toggle mobile" onclick="sidebar.leftbar()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 11c0-3.771 0-5.657 1.172-6.828C4.343 3 6.229 3 10 3h4c3.771 0 5.657 0 6.828 1.172C22 5.343 22 7.229 22 11v2c0 3.771 0 5.657-1.172 6.828C19.657 21 17.771 21 14 21h-4c-3.771 0-5.657 0-6.828-1.172C2 18.657 2 16.771 2 13z"/><path id="sep" stroke-linecap="round" d="M5.5 10h6m-5 4h4m4.5 7V3"/></g></svg></button></div></div><div class="scripts"><script type="text/javascript">const ctx = {
     date_suffix: {
       just: `刚刚`,
       min: `分钟前`,
@@ -249,15 +22,9 @@
     cover: `https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/cover/76b86c0226ffd.svg`,
   };
   const deps = {
-    jquery: `https://cdn.staticfile.net/jquery/3.7.1/jquery.min.js`,
+    jquery: `https://cdn.bootcdn.net/ajax/libs/jquery/3.7.1/jquery.min.js`,
     marked: `https://cdn.staticfile.net/marked/11.1.1/lib/marked.umd.min.js`
-  }
-  
-
-</script>
-
-<script type="text/javascript">
-  const utils = {
+  }</script><script type="text/javascript">const utils = {
     // 懒加载 css https://github.com/filamentgroup/loadCSS
     css: (href, before, media, attributes) => {
       var doc = window.document;
@@ -412,11 +179,7 @@
       }
       req();
     },
-  };
-</script>
-
-<script>
-  const sidebar = {
+  };</script><script>const sidebar = {
     leftbar: () => {
       if (l_body) {
         l_body.toggleAttribute('leftbar');
@@ -438,10 +201,7 @@
     toggleTOC: () => {
       document.querySelector('#data-toc').classList.toggle('collapse');
     }
-  }
-</script>
-<script type="text/javascript">
-  (() => {
+  }</script><script type="text/javascript">(() => {
     const tagSwitchers = document.querySelectorAll('.tag-subtree.parent-tag > a > .tag-switcher-wrapper')
     for (const tagSwitcher of tagSwitchers) {
       tagSwitcher.addEventListener('click', (e) => {
@@ -465,15 +225,7 @@
         }
       }
     }
-  })()
-</script>
-
-
-<!-- required -->
-<script src="/js/main.js?v=1.29.1" defer></script>
-
-<script type="text/javascript">
-  const applyTheme = (theme) => {
+  })()</script><script src="/js/main.js?v=1.29.1" defer></script><script type="text/javascript">const applyTheme = (theme) => {
     if (theme === 'auto') {
       document.documentElement.removeAttribute('data-theme')
     } else {
@@ -532,14 +284,7 @@
     if (theme !== null) {
       applyTheme(theme)
     }
-  })()
-</script>
-
-
-<!-- optional -->
-
-  <script type="module">
-  const el = document.getElementById('twikoo_container');
+  })()</script><script type="module">const el = document.getElementById('twikoo_container');
   util.viewportLazyload(el, load_twikoo, true);
 
   function load_twikoo() {
@@ -551,13 +296,7 @@
         path: path,
       }));
     });
-  }
-</script>
-
-
-
-<script defer>
-  window.addEventListener('DOMContentLoaded', (event) => {
+  }</script><script defer>window.addEventListener('DOMContentLoaded', (event) => {
     ctx.services = Object.assign({}, JSON.parse(`{"mdrender":{"js":"/js/services/mdrender.js"},"siteinfo":{"js":"/js/services/siteinfo.js","api":null},"ghinfo":{"js":"/js/services/ghinfo.js"},"sites":{"js":"/js/services/sites.js"},"friends":{"js":"/js/services/friends.js"},"timeline":{"js":"/js/services/timeline.js"},"fcircle":{"js":"/js/services/fcircle.js"},"weibo":{"js":"/js/services/weibo.js"},"memos":{"js":"/js/services/memos.js"}}`));
     for (let id of Object.keys(ctx.services)) {
       const js = ctx.services[id].js;
@@ -583,27 +322,12 @@
         }
       }
     }
-  });
-</script>
-
-<script>
-  window.addEventListener('DOMContentLoaded', (event) => {
+  });</script><script>window.addEventListener('DOMContentLoaded', (event) => {
     ctx.search = {
       path: `/search.json`,
     }
     utils.js('/js/search/local-search.js', { defer: true });
-  });
-</script><script>
-  window.FPConfig = {
-    delay: 0,
-    ignoreKeywords: [],
-    maxRPS: 5,
-    hoverDelay: 25
-  };
-</script>
-<script defer src="https://cdn.staticfile.net/flying-pages/2.1.2/flying-pages.min.js"></script><script defer src="https://cdn.staticfile.net/vanilla-lazyload/17.8.5/lazyload.min.js"></script>
-<script>
-  // https://www.npmjs.com/package/vanilla-lazyload
+  });</script><script>window.FPConfig={delay:0,ignoreKeywords:[],maxRPS:5,hoverDelay:25}</script><script defer src="https://cdn.staticfile.net/flying-pages/2.1.2/flying-pages.min.js"></script><script defer src="https://cdn.staticfile.net/vanilla-lazyload/17.8.5/lazyload.min.js"></script><script>// https://www.npmjs.com/package/vanilla-lazyload
   // Set the options globally
   // to make LazyLoad self-initialize
   window.lazyLoadOptions = {
@@ -620,9 +344,7 @@
   );
   document.addEventListener('DOMContentLoaded', function () {
     window.lazyLoadInstance?.update();
-  });
-</script><script>
-  window.addEventListener('DOMContentLoaded', (event) => {
+  });</script><script>window.addEventListener('DOMContentLoaded', (event) => {
     const swiper_api = document.getElementById('swiper-api');
     if (swiper_api != undefined) {
       utils.css(`https://lf26-cdn-tos.bytecdntp.com/cdn/expire-1-M/Swiper/8.0.6/swiper-bundle.min.css`);
@@ -645,15 +367,4 @@
         });
       })
     }
-  });
-</script>
-
-
-
-<!-- inject -->
-
-</div><!-- hexo injector body_end start -->
-  <script>
-    mediumZoom(".l_body img", { background: "var(--site-bg)" })
-  </script>
-  <!-- hexo injector body_end end --></body></html>
+  });</script></div><script>mediumZoom(".l_body img",{background:"var(--site-bg)"})</script></body></html>

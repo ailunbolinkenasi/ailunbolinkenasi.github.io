@@ -9,10 +9,10 @@
         <copyright>Live and learn. 🌱</copyright>
         <lastBuildDate>Thu, 10 Aug 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://blog.mletter.cn/categories/%E5%B7%A5%E5%85%B7%E5%88%86%E4%BA%AB/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>推荐几款好用的API文档管理工具</title>
-        <link>https://blog.mletter.cn/posts/api/</link>
+        <link>https://blog.mletter.cn/tech/api-tools/1/</link>
         <pubDate>Thu, 10 Aug 2023 00:00:00 +0000</pubDate>
         
-        <guid>https://blog.mletter.cn/posts/api/</guid>
+        <guid>https://blog.mletter.cn/tech/api-tools/1/</guid>
         <description>&lt;img src="https://img11.360buyimg.com/ddimg/jfs/t1/120366/32/35885/27184/64a24181F7497ff67/58deb560821eb1b2.jpg" alt="Featured image of post 推荐几款好用的API文档管理工具" /&gt;&lt;p&gt;互联网服务发展至今，作为开发者阵营的我们，已经用实践证明了&lt;strong&gt;前后端分离&lt;/strong&gt;开发模式正在逐渐成为越来越多互联网公司构建服务和应用的方式。&lt;/p&gt;
 &lt;p&gt;前后端分离优势多多，其中一个很重要的优势是：对于后台服务（系统）来讲，&lt;strong&gt;只需提供一套统一的API接口&lt;/strong&gt;，可被多个客户端所&lt;strong&gt;复用&lt;/strong&gt;，分工和协作被细化，大大提高了效率。&lt;/p&gt;
 &lt;p&gt;与此同时带来的一些副作用便是：&lt;/p&gt;
@@ -23,8 +23,8 @@
 &lt;li&gt;&lt;strong&gt;其他问题&lt;/strong&gt;。除此之外还有可能碰到诸如 文档导出、接口分类规划、操作便利性等一系列问题。&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;基于此情况，因此本文接下来就来推荐几个常用的 &lt;strong&gt;API管理系统&lt;/strong&gt;，帮助前后端分离开发模式下提升效率和可靠性，我想总有一个适合阁下吧☁️&lt;/p&gt;
-&lt;h2 id=&#34;swagger&#34;&gt;Swagger&lt;/h2&gt;
-&lt;p&gt;Swagger 是一种用于描述、构建和可视化 RESTful API 的开源工具集。它提供了一系列功能，包括 API 文档自动生成、API 调试和可视化等。下面是使用 Swagger 的一般步骤：&lt;/p&gt;
+&lt;h2 id=&#34;swagger&#34;&gt;&lt;/h&gt;Swagger
+&lt;/h2&gt;&lt;p&gt;Swagger 是一种用于描述、构建和可视化 RESTful API 的开源工具集。它提供了一系列功能，包括 API 文档自动生成、API 调试和可视化等。下面是使用 Swagger 的一般步骤：&lt;/p&gt;
 &lt;ol&gt;
 &lt;li&gt;定义 API 规范：使用 Swagger 规范（通常是 OpenAPI 规范）编写 API 的定义和描述。这些规范使用 YAML 或 JSON 格式表示，并描述了 API 的路径、参数、操作、响应等信息。&lt;/li&gt;
 &lt;li&gt;编写 Swagger 文档：根据 API 的定义和描述编写 Swagger 文档。您可以使用 Swagger 编辑器或其他文档工具来创建和编辑 Swagger 文档。&lt;/li&gt;
@@ -58,8 +58,8 @@
 &lt;p&gt;&lt;strong&gt;Demo地址：&lt;/strong&gt; &lt;a class=&#34;link&#34; href=&#34;https://petstore.swagger.io/?_ga=2.236281281.1352811789.1688009658-1749052190.1688009657&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;点我进入&lt;/a&gt;&lt;/p&gt;
 &lt;/blockquote&gt;
-&lt;h2 id=&#34;eolinker&#34;&gt;&lt;strong&gt;eolinker&lt;/strong&gt;&lt;/h2&gt;
-&lt;p&gt;eolinker是一款用于API管理和接口测试的工具。它提供了一个用户友好的界面，可以帮助开发人员和团队更好地管理和测试他们的API接口。&lt;/p&gt;
+&lt;h2 id=&#34;eolinker&#34;&gt;&lt;/h&gt;&lt;strong&gt;eolinker&lt;/strong&gt;
+&lt;/h2&gt;&lt;p&gt;eolinker是一款用于API管理和接口测试的工具。它提供了一个用户友好的界面，可以帮助开发人员和团队更好地管理和测试他们的API接口。&lt;/p&gt;
 &lt;p&gt;eolinker的主要功能包括：&lt;/p&gt;
 &lt;ol&gt;
 &lt;li&gt;接口文档管理：可以方便地创建、编辑和共享接口文档，包括接口的URL、请求方式、参数、返回结果等。&lt;/li&gt;
@@ -93,8 +93,8 @@
 &lt;p&gt;项目地址：&lt;a class=&#34;link&#34; href=&#34;https://www.eolink.com/apikit&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;点我进入&lt;/a&gt;&lt;/p&gt;
 &lt;/blockquote&gt;
-&lt;h2 id=&#34;showdoc&#34;&gt;&lt;strong&gt;ShowDoc&lt;/strong&gt;&lt;/h2&gt;
-&lt;p&gt;首先这是我最推荐的一个API管理工具，因为界面简单，风格清晰，个人觉得很好看的UI界面！！！&lt;/p&gt;
+&lt;h2 id=&#34;showdoc&#34;&gt;&lt;/h&gt;&lt;strong&gt;ShowDoc&lt;/strong&gt;
+&lt;/h2&gt;&lt;p&gt;首先这是我最推荐的一个API管理工具，因为界面简单，风格清晰，个人觉得很好看的UI界面！！！&lt;/p&gt;
 &lt;p&gt;ShowDoc的主要功能包括：&lt;/p&gt;
 &lt;ol&gt;
 &lt;li&gt;文档编写：提供了富文本编辑器和Markdown编辑器，可以方便地编写项目文档，支持插入图片、代码块等功能。&lt;/li&gt;

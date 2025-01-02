@@ -13,8 +13,8 @@
         <pubDate>Sun, 20 Oct 2024 00:00:00 +0000</pubDate>
         
         <guid>https://blog.mletter.cn/project/gin-wecho/</guid>
-        <description>&lt;img src="https://ydschool-online.nosdn.127.net/tiku/f291c1c8d5dccacd2b95ef4fdc68d07cefd0e92562794e5bcdd21a9729b3455d.jpg" alt="Featured image of post 维扣图元-专属你的拍照摄影社区" /&gt;&lt;h2 id=&#34;项目简介&#34;&gt;项目简介&lt;/h2&gt;
-&lt;ul&gt;
+        <description>&lt;img src="https://ydschool-online.nosdn.127.net/tiku/f291c1c8d5dccacd2b95ef4fdc68d07cefd0e92562794e5bcdd21a9729b3455d.jpg" alt="Featured image of post 维扣图元-专属你的拍照摄影社区" /&gt;&lt;h2 id=&#34;项目简介&#34;&gt;&lt;/h&gt;项目简介
+&lt;/h2&gt;&lt;ul&gt;
 &lt;li&gt;“维扣图元” 是一个充满创意与活力的拍照摄影社区开源项目。旨在为摄影爱好者们提供一个展示作品、交流心得、学习成长的平台。无论你是专业摄影师还是业余爱好者，都能在这里找到属于自己的交流小世界。&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;在这里你可以获得什么&lt;/p&gt;
@@ -28,8 +28,8 @@
 &lt;blockquote&gt;
 &lt;p&gt;摄影圈子，与志同道合的人共同成长,我们不歧视任何使用小灵通拍照的手机用户.&lt;/p&gt;
 &lt;/blockquote&gt;
-&lt;h2 id=&#34;项目时间线&#34;&gt;项目时间线&lt;/h2&gt;
-&lt;ul&gt;
+&lt;h2 id=&#34;项目时间线&#34;&gt;&lt;/h&gt;项目时间线
+&lt;/h2&gt;&lt;ul&gt;
 &lt;li&gt;&lt;code&gt;2024 年 10 月 20 日&lt;/code&gt; 目前问题&lt;/li&gt;
 &lt;/ul&gt;
 &lt;ol&gt;
@@ -46,14 +46,14 @@
 &lt;li&gt;&lt;code&gt;2023 年 8 月 16 日&lt;/code&gt; 想法来源
 偶然一次出门旅游，怀揣着对未知风景的期待与憧憬，踏上陌生的土地。阳光洒在肩头，每一处景色都仿佛在诉说着故事。我停下脚步，举起相机，准备记录下这美好的瞬间时，透过那小小的取景框，却意外地看见了少年时候的自己。所以我们的一切都值得被保存。&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h2 id=&#34;项目缓存规范&#34;&gt;项目缓存规范&lt;/h2&gt;
-&lt;ul&gt;
+&lt;h2 id=&#34;项目缓存规范&#34;&gt;&lt;/h&gt;项目缓存规范
+&lt;/h2&gt;&lt;ul&gt;
 &lt;li&gt;RedisKey的规范&lt;/li&gt;
 &lt;/ul&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;project:module:business:uk
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;项目名    模块名   业务名  唯一标识
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;缓存信息&#34;&gt;缓存信息&lt;/h3&gt;
-&lt;ul&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;缓存信息&#34;&gt;&lt;/h&gt;缓存信息
+&lt;/h3&gt;&lt;ul&gt;
 &lt;li&gt;这部分还没设计完成,等待完善吧。&lt;/li&gt;
 &lt;/ul&gt;
 &lt;table&gt;
@@ -86,8 +86,8 @@
       &lt;/tr&gt;
   &lt;/tbody&gt;
 &lt;/table&gt;
-&lt;h2 id=&#34;minio启动命令&#34;&gt;Minio启动命令&lt;/h2&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;docker run -d &lt;span class=&#34;se&#34;&gt;\
+&lt;h2 id=&#34;minio启动命令&#34;&gt;&lt;/h&gt;Minio启动命令
+&lt;/h2&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;docker run -d &lt;span class=&#34;se&#34;&gt;\
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;  -p 9000:9000 &lt;span class=&#34;se&#34;&gt;\
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;  -p 9001:9001 &lt;span class=&#34;se&#34;&gt;\
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;  --name minio1 &lt;span class=&#34;se&#34;&gt;\
@@ -97,8 +97,8 @@
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;  -e &lt;span class=&#34;s2&#34;&gt;&amp;#34;MINIO_ROOT_PASSWORD=xxx&amp;#34;&lt;/span&gt; &lt;span class=&#34;se&#34;&gt;\
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;  -e &lt;span class=&#34;s2&#34;&gt;&amp;#34;MINIO_SERVER_URL=xxx&amp;#34;&lt;/span&gt; &lt;span class=&#34;se&#34;&gt;\
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;  quay.io/minio/minio server /data  --console-address &lt;span class=&#34;s2&#34;&gt;&amp;#34;:9001&amp;#34;&lt;/span&gt; --certs-dir /tmp/certs
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;后端服务编译&#34;&gt;后端服务编译&lt;/h2&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# Windows编译Linux&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;后端服务编译&#34;&gt;&lt;/h&gt;后端服务编译
+&lt;/h2&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# Windows编译Linux&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 请在CMD中执行命令&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nb&#34;&gt;set&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;GOARCH&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;amd64
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nb&#34;&gt;set&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;GOOS&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;linux
@@ -106,8 +106,8 @@
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# Mac编译Linux&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nv&#34;&gt;CGO_ENABLED&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;0&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;GOOS&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;linux &lt;span class=&#34;nv&#34;&gt;GOARCH&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;amd64 go build main.go
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;接口统计大类&#34;&gt;接口统计(大类)&lt;/h2&gt;
-&lt;ul&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;接口统计大类&#34;&gt;&lt;/h&gt;接口统计(大类)
+&lt;/h2&gt;&lt;ul&gt;
 &lt;li&gt;&lt;input disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; 用户服务设计&lt;/li&gt;
 &lt;li&gt;&lt;input disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; 登录服务设计&lt;/li&gt;
 &lt;li&gt;&lt;input disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; 画板服务设计&lt;/li&gt;

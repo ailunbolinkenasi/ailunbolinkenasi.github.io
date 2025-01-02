@@ -9,15 +9,15 @@
         <copyright>Live and learn. 🌱</copyright>
         <lastBuildDate>Tue, 16 Jan 2024 00:00:00 +0000</lastBuildDate><atom:link href="https://blog.mletter.cn/tags/gitlab/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>管理好内部的代码仓库-GitLab篇</title>
-        <link>https://blog.mletter.cn/gitlab/GitLabRepositoryManagement/</link>
+        <link>https://blog.mletter.cn/tech/gitlab/repository-management/</link>
         <pubDate>Tue, 16 Jan 2024 00:00:00 +0000</pubDate>
         
-        <guid>https://blog.mletter.cn/gitlab/GitLabRepositoryManagement/</guid>
+        <guid>https://blog.mletter.cn/tech/gitlab/repository-management/</guid>
         <description>&lt;p&gt;今天聊聊如何来管理我们的&lt;code&gt;代码仓库&lt;/code&gt;
 在软件开发过程中，代码仓库是一个非常重要的组成部分。它不仅是存储代码的地方，也是团队协作和版本控制的基础。因此，管理好自己的代码仓库至关重要。&lt;/p&gt;
 &lt;p&gt;本文将介绍如何使用Git来管理自己的代码仓库。&lt;/p&gt;
-&lt;h2 id=&#34;部署gitlab&#34;&gt;部署GitLab&lt;/h2&gt;
-&lt;p&gt;相较于传动的部署方式比较繁琐，我这里直接采用&lt;code&gt;docker&lt;/code&gt;的部署方式来部署&lt;code&gt;gitlab&lt;/code&gt;以方便后续管理。&lt;/p&gt;
+&lt;h2 id=&#34;部署gitlab&#34;&gt;&lt;/h&gt;部署GitLab
+&lt;/h2&gt;&lt;p&gt;相较于传动的部署方式比较繁琐，我这里直接采用&lt;code&gt;docker&lt;/code&gt;的部署方式来部署&lt;code&gt;gitlab&lt;/code&gt;以方便后续管理。&lt;/p&gt;
 &lt;p&gt;说一下使用Docker来部署的一些痛点：&lt;/p&gt;&lt;/p&gt;
 &lt;ol&gt;
 &lt;li&gt;数据备份：在&lt;code&gt;Docker&lt;/code&gt;中运行&lt;code&gt;Gitlab&lt;/code&gt;，需要定期备份数据以防止数据丢失。但是备份数据的过程可能会很麻烦，并且需要设置合适的策略来避免数据丢失。所以这是我觉得不管是&lt;code&gt;GitLab&lt;/code&gt;还是其他的应用，保证数据的完整可靠性是至关重要的。 &lt;/p&gt;&lt;/li&gt;
@@ -64,13 +64,13 @@
     &gt;官方文档&lt;/a&gt;&lt;/li&gt;
 &lt;/ol&gt;
 &lt;p&gt;实际上到此为止，我们的一个代码仓库就已经创建完成了，剩下的工作就是在UI界面点点点。我就不多赘述了主要讲讲如何备份的问题。&lt;/p&gt;
-&lt;h2 id=&#34;如何高效的进行容器备份&#34;&gt;如何高效的进行容器备份&lt;/h2&gt;
-&lt;ul&gt;
+&lt;h2 id=&#34;如何高效的进行容器备份&#34;&gt;&lt;/h&gt;如何高效的进行容器备份
+&lt;/h2&gt;&lt;ul&gt;
 &lt;li&gt;当然了如果你想保证更安全的数据备份可以在深夜&lt;code&gt;stop&lt;/code&gt;掉你的代码仓库从而进行停机备份(暂不采取)&lt;/li&gt;
 &lt;li&gt;简单备份和扩展备份&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h3 id=&#34;简单备份&#34;&gt;简单备份&lt;/h3&gt;
-&lt;p&gt;如果您使用数据量少于 100 GB的可以使用一下三个步骤进行备份&lt;/p&gt;
+&lt;h3 id=&#34;简单备份&#34;&gt;&lt;/h&gt;简单备份
+&lt;/h3&gt;&lt;p&gt;如果您使用数据量少于 100 GB的可以使用一下三个步骤进行备份&lt;/p&gt;
 &lt;ol&gt;
 &lt;li&gt;运行备份命令&lt;/li&gt;
 &lt;/ol&gt;
@@ -123,8 +123,8 @@
 &lt;p&gt;如果这两种文件丢失请参考&lt;a class=&#34;link&#34; href=&#34;https://docs.gitlab.com/ee/administration/backup_restore/troubleshooting_backup_gitlab.html#when-the-secrets-file-is-lost&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;官方文档&lt;/a&gt;&lt;/p&gt;
 &lt;/blockquote&gt;
-&lt;h2 id=&#34;恢复保存的数据&#34;&gt;恢复保存的数据&lt;/h2&gt;
-&lt;p&gt;首先恢复数据要满足的一些&lt;code&gt;前提条件&lt;/code&gt;&lt;/p&gt;
+&lt;h2 id=&#34;恢复保存的数据&#34;&gt;&lt;/h&gt;恢复保存的数据
+&lt;/h2&gt;&lt;p&gt;首先恢复数据要满足的一些&lt;code&gt;前提条件&lt;/code&gt;&lt;/p&gt;
 &lt;ol&gt;
 &lt;li&gt;目标 GitLab 实例必须已在运行&lt;/li&gt;
 &lt;li&gt;目标 GitLab 实例必须具有完全相同的版本&lt;/li&gt;

@@ -9,12 +9,12 @@
         <copyright>Live and learn. 🌱</copyright>
         <lastBuildDate>Tue, 16 Jul 2024 00:00:00 +0000</lastBuildDate><atom:link href="https://blog.mletter.cn/categories/docker/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>利用CloudFlare来实现镜像加速</title>
-        <link>https://blog.mletter.cn/docker/cloudflare-proxy/</link>
+        <link>https://blog.mletter.cn/tech/docker/cloudflare-proxy/</link>
         <pubDate>Tue, 16 Jul 2024 00:00:00 +0000</pubDate>
         
-        <guid>https://blog.mletter.cn/docker/cloudflare-proxy/</guid>
-        <description>&lt;h2 id=&#34;目前可用加速镜像仓库&#34;&gt;目前可用加速镜像仓库&lt;/h2&gt;
-&lt;p&gt;DockerProxy 代理加速：&lt;code&gt;dockerproxy.com&lt;/code&gt;&lt;/p&gt;
+        <guid>https://blog.mletter.cn/tech/docker/cloudflare-proxy/</guid>
+        <description>&lt;h2 id=&#34;目前可用加速镜像仓库&#34;&gt;&lt;/h&gt;目前可用加速镜像仓库
+&lt;/h2&gt;&lt;p&gt;DockerProxy 代理加速：&lt;code&gt;dockerproxy.com&lt;/code&gt;&lt;/p&gt;
 &lt;p&gt;百度云 Mirror: &lt;code&gt;mirror.baidubce.com&lt;/code&gt;&lt;/p&gt;
 &lt;p&gt;Daocloud: &lt;code&gt;docker.m.daocloud.io&lt;/code&gt;&lt;/p&gt;
 &lt;p&gt;南京大学：&lt;code&gt;docker.nju.edu.cn&lt;/code&gt;&lt;/p&gt;
@@ -34,13 +34,13 @@
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;err&#34;&gt;EOF&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;err&#34;&gt;sudo&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;systemctl&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;daemon-reload&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;err&#34;&gt;sudo&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;systemctl&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;restart&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;docker&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;准备工作&#34;&gt;准备工作&lt;/h2&gt;
-&lt;ol&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;准备工作&#34;&gt;&lt;/h&gt;准备工作
+&lt;/h2&gt;&lt;ol&gt;
 &lt;li&gt;注册&lt;a class=&#34;link&#34; href=&#34;https://www.cloudflare.com/zh-cn/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;CloudFlare&lt;/a&gt;账号&lt;/li&gt;
 &lt;/ol&gt;
-&lt;h2 id=&#34;开始自建cloudflare仓库&#34;&gt;开始自建CloudFlare仓库&lt;/h2&gt;
-&lt;ol&gt;
+&lt;h2 id=&#34;开始自建cloudflare仓库&#34;&gt;&lt;/h&gt;开始自建CloudFlare仓库
+&lt;/h2&gt;&lt;ol&gt;
 &lt;li&gt;
 &lt;p&gt;首先进入&lt;code&gt;cloudflare&lt;/code&gt;创建一个&lt;a class=&#34;link&#34; href=&#34;https://dash.cloudflare.com/c579b91fceeb4c0fd92690ee27753575/workers-and-pages/create/integration/678adf9e-89f8-4235-9530-d95a12851369/version/0.0.3/integrations-setup&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;Workers&lt;/a&gt;,创建完成以后点击&lt;a class=&#34;link&#34; href=&#34;https://dash.cloudflare.com/c579b91fceeb4c0fd92690ee27753575/workers/services/edit/broken-wildflower-64b4/production&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
@@ -208,19 +208,19 @@
         </item>
         <item>
         <title>优雅的多阶段构建微服务镜像</title>
-        <link>https://blog.mletter.cn/docker/review-docker/</link>
+        <link>https://blog.mletter.cn/tech/docker/review-docker/</link>
         <pubDate>Wed, 08 May 2024 00:00:00 +0000</pubDate>
         
-        <guid>https://blog.mletter.cn/docker/review-docker/</guid>
-        <description>&lt;img src="https://img12.360buyimg.com/ddimg/jfs/t1/221585/17/40296/38910/663b8f0aF38d1916d/5d09c604af566108.jpg" alt="Featured image of post 优雅的多阶段构建微服务镜像" /&gt;&lt;h2 id=&#34;借助maven-wrapper&#34;&gt;借助Maven Wrapper&lt;/h2&gt;
-&lt;p&gt;首先我们说说&lt;code&gt;maven wrapper&lt;/code&gt;的使用场景&lt;/p&gt;
+        <guid>https://blog.mletter.cn/tech/docker/review-docker/</guid>
+        <description>&lt;img src="https://img12.360buyimg.com/ddimg/jfs/t1/221585/17/40296/38910/663b8f0aF38d1916d/5d09c604af566108.jpg" alt="Featured image of post 优雅的多阶段构建微服务镜像" /&gt;&lt;h2 id=&#34;借助maven-wrapper&#34;&gt;&lt;/h&gt;借助Maven Wrapper
+&lt;/h2&gt;&lt;p&gt;首先我们说说&lt;code&gt;maven wrapper&lt;/code&gt;的使用场景&lt;/p&gt;
 &lt;p&gt;假设我们所在的团队同时维护多个项目，不同的项目使用的&lt;code&gt;JDK&lt;/code&gt;版本不同，使用的&lt;code&gt;maven&lt;/code&gt;版本也不同，那么为了支持多项目开发，为了构建运行效果一致，你可能需要在本地管理多个&lt;code&gt;maven&lt;/code&gt;版本，这会非常繁琐，从而引出了&lt;code&gt;maven wrapper&lt;/code&gt;来解决这个&lt;code&gt;maven&lt;/code&gt;版本的管理问题。&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;版本一致性：通过在&lt;code&gt;mvnw&lt;/code&gt;配置中指定 Maven 版本，确保所有开发人员和持续集成环境使用相同的&lt;code&gt;maven&lt;/code&gt;版本。&lt;/li&gt;
 &lt;li&gt;简化批量安装：不需要预先安装&lt;code&gt;maven&lt;/code&gt;，直接运行&lt;code&gt;mvnw&lt;/code&gt;命令就如安装了&lt;code&gt;mvn&lt;/code&gt;一样，从而简化了项目的初始设置和配置。&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h2 id=&#34;maven-wrapper安装方式&#34;&gt;Maven Wrapper安装方式&lt;/h2&gt;
-&lt;ul&gt;
+&lt;h2 id=&#34;maven-wrapper安装方式&#34;&gt;&lt;/h&gt;Maven Wrapper安装方式
+&lt;/h2&gt;&lt;ul&gt;
 &lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://maven.apache.org/wrapper/maven-wrapper/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;maven-wrapper&lt;/a&gt;: 提供&lt;code&gt;maven-wrapper.jar&lt;/code&gt;下载、安装和运行目标&lt;code&gt;maven&lt;/code&gt;发行版。&lt;/li&gt;
 &lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://maven.apache.org/wrapper/maven-wrapper-distribution/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
@@ -263,8 +263,8 @@
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Java version: 1.8.0_391, vendor: Oracle Corporation, runtime: /usr/local/java/jre
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Default locale: en_US, platform encoding: UTF-8
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;OS name: &lt;span class=&#34;s2&#34;&gt;&amp;#34;linux&amp;#34;&lt;/span&gt;, version: &lt;span class=&#34;s2&#34;&gt;&amp;#34;4.18.0-372.9.1.el8.x86_64&amp;#34;&lt;/span&gt;, arch: &lt;span class=&#34;s2&#34;&gt;&amp;#34;amd64&amp;#34;&lt;/span&gt;, family: &lt;span class=&#34;s2&#34;&gt;&amp;#34;unix&amp;#34;&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;遇到小问题&#34;&gt;遇到小问题&lt;/h2&gt;
-&lt;p&gt;如果大家在构建的过程中遇到了小问题可以看看小思路&lt;/p&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;遇到小问题&#34;&gt;&lt;/h&gt;遇到小问题
+&lt;/h2&gt;&lt;p&gt;如果大家在构建的过程中遇到了小问题可以看看小思路&lt;/p&gt;
 &lt;ol&gt;
 &lt;li&gt;问题一：我明明指定了&lt;code&gt;distributionUrl&lt;/code&gt;为我自的仓库地址，并且我上传的是&lt;code&gt;zip&lt;/code&gt;的包，为什么每次我执行的的时候都会提示&lt;code&gt;wget: Failed to fetch http://10.1.6.15:10240/software/apache-maven-3.6.1-bin.tar.gz&lt;/code&gt;&lt;/li&gt;
 &lt;/ol&gt;
@@ -276,8 +276,8 @@
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;blockquote&gt;
 &lt;p&gt;关于本问题的解释：由于官方的mvnw脚本当中存在select zip or tar.gz的文件类型判断，所以当服务器上没有&lt;code&gt;unzip&lt;/code&gt;的命令的时候会出现如上提示。&lt;/p&gt;
 &lt;/blockquote&gt;
-&lt;h2 id=&#34;官方的dockerfile&#34;&gt;官方的Dockerfile&lt;/h2&gt;
-&lt;ul&gt;
+&lt;h2 id=&#34;官方的dockerfile&#34;&gt;&lt;/h&gt;官方的Dockerfile
+&lt;/h2&gt;&lt;ul&gt;
 &lt;li&gt;其实都是引用了&lt;code&gt;BuildKit&lt;/code&gt;的一些特性，如果需要了解更多的话可以使用&lt;code&gt;docker Desktop&lt;/code&gt;来进行初始化看一下官方写的这些脚本。&lt;/li&gt;
 &lt;/ul&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-dockerfile&#34; data-lang=&#34;dockerfile&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c&#34;&gt;# syntax=docker/dockerfile:1&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;
@@ -364,19 +364,19 @@
         </item>
         <item>
         <title>Docker常见的几个问题处理</title>
-        <link>https://blog.mletter.cn/docker/DockerFrequentlyAskedQuestions/</link>
+        <link>https://blog.mletter.cn/tech/docker/docker-frequently-asked-questions/</link>
         <pubDate>Thu, 14 Jul 2022 00:00:00 +0000</pubDate>
         
-        <guid>https://blog.mletter.cn/docker/DockerFrequentlyAskedQuestions/</guid>
-        <description>&lt;h2 id=&#34;docker迁移存储目录&#34;&gt;Docker迁移存储目录&lt;/h2&gt;
-&lt;p&gt;&lt;strong&gt;问题起因&lt;/strong&gt; 由于公司最开始的服务器在&lt;code&gt;/var/lib/docker&lt;/code&gt;没有挂载存储,容量只有40G,导致服务器磁盘用满。现将原有的Docker目录数据进行迁移。&lt;/p&gt;
+        <guid>https://blog.mletter.cn/tech/docker/docker-frequently-asked-questions/</guid>
+        <description>&lt;h2 id=&#34;docker迁移存储目录&#34;&gt;&lt;/h&gt;Docker迁移存储目录
+&lt;/h2&gt;&lt;p&gt;&lt;strong&gt;问题起因&lt;/strong&gt; 由于公司最开始的服务器在&lt;code&gt;/var/lib/docker&lt;/code&gt;没有挂载存储,容量只有40G,导致服务器磁盘用满。现将原有的Docker目录数据进行迁移。&lt;/p&gt;
 &lt;blockquote&gt;
 &lt;p&gt;请各位Kubernetes用户不要操作,因为容器编排不支持!&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 启动容器发现如下报错&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;ERROR：cannot  create temporary directory!
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;方法一-软连接方式&#34;&gt;方法一: 软连接方式&lt;/h3&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 1.停止docker服务&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;方法一-软连接方式&#34;&gt;&lt;/h&gt;方法一: 软连接方式
+&lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 1.停止docker服务&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;systemctl stop docker
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 2.开始迁移目录&lt;/span&gt;
@@ -390,8 +390,8 @@
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 4.启动docker服务&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;systemctl start docker
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;方法二-修改docker配置文件&#34;&gt;方法二: 修改docker配置文件&lt;/h3&gt;
-&lt;blockquote&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;方法二-修改docker配置文件&#34;&gt;&lt;/h&gt;方法二: 修改docker配置文件
+&lt;/h3&gt;&lt;blockquote&gt;
 &lt;p&gt;注意: 这是一个旧版本&lt;code&gt;docker&lt;/code&gt;修改存储目录的方式.&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-json&#34; data-lang=&#34;json&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;err&#34;&gt;vim&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;/etc/docker/daemon.json&lt;/span&gt;
@@ -426,9 +426,9 @@
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;修改完成之后重启&lt;code&gt;docker&lt;/code&gt;&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;systemctl daemon-reload &lt;span class=&#34;c1&#34;&gt;# 重载service配置&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;systemctl restart docker
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;docker存储空间不足&#34;&gt;Docker存储空间不足&lt;/h2&gt;
-&lt;h3 id=&#34;问题一-no-space-left-on-device&#34;&gt;问题一: No space left on device&lt;/h3&gt;
-&lt;p&gt;问题描述：&lt;code&gt;docker run &lt;/code&gt;的时候系统提示&lt;code&gt;No space left on device&lt;/code&gt;!&lt;/p&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;docker存储空间不足&#34;&gt;&lt;/h&gt;Docker存储空间不足
+&lt;/h2&gt;&lt;h3 id=&#34;问题一-no-space-left-on-device&#34;&gt;&lt;/h&gt;问题一: No space left on device
+&lt;/h3&gt;&lt;p&gt;问题描述：&lt;code&gt;docker run &lt;/code&gt;的时候系统提示&lt;code&gt;No space left on device&lt;/code&gt;!&lt;/p&gt;
 &lt;p&gt;这个问题无非就两种情况&lt;/p&gt;
 &lt;ol&gt;
 &lt;li&gt;
@@ -462,8 +462,8 @@
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;/dev/sda3       8.8G  8.8G     &lt;span class=&#34;m&#34;&gt;0&lt;/span&gt; 100% /
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;tmpfs           931M     &lt;span class=&#34;m&#34;&gt;0&lt;/span&gt;  931M   0% /dev/shm
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;/dev/sda1       190M   40M  141M  22% /boot
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;优雅地重启docker&#34;&gt;优雅地重启Docker&lt;/h2&gt;
-&lt;blockquote&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;优雅地重启docker&#34;&gt;&lt;/h&gt;优雅地重启Docker
+&lt;/h2&gt;&lt;blockquote&gt;
 &lt;p&gt;不停止重启,重启docker是一件多么美妙的事情!&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;p&gt;当 &lt;code&gt;Docker&lt;/code&gt; 守护程序终止时，它会关闭正在运行的容器。从 &lt;code&gt;Docker-ce 1.12&lt;/code&gt; 开始，可以在配置文件中添加 &lt;code&gt;live-restore&lt;/code&gt; 参数，以便在守护程序变得不可用时容器保持运行。需要注意的是 &lt;code&gt;Windows&lt;/code&gt; 平台暂时还是不支持该参数的配置。&lt;/p&gt;
@@ -482,8 +482,8 @@
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;root@VM-0-9-centos ~&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;# docker ps -a&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;CONTAINER ID   IMAGE     COMMAND                  CREATED         STATUS              PORTS     NAMES
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;e58a220f03c3   nginx     &lt;span class=&#34;s2&#34;&gt;&amp;#34;/docker-entrypoint.…&amp;#34;&lt;/span&gt;   &lt;span class=&#34;m&#34;&gt;7&lt;/span&gt; minutes ago   Up About a minute   80/tcp    web
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;live-restore的限制&#34;&gt;live-restore的限制&lt;/h3&gt;
-&lt;blockquote&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;live-restore的限制&#34;&gt;&lt;/h&gt;live-restore的限制
+&lt;/h3&gt;&lt;blockquote&gt;
 &lt;p&gt;当前的Live Restore特性可以在进行Daemon维护，或者在Daemon发生问题导致不可用的情况，减少容器的停机时间，不过其也有一定的限制。&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;ol&gt;
@@ -496,8 +496,8 @@ Live Restore仅支持Docker补丁版本升级时可用，也就是 YY.MM.x 最�
 &lt;li&gt;不支持Docker Swarm
 Live Restore只是独立Docker引擎的特性，而Swarm的服务是由Swarm管理器管理的。当Swarm管理器不可用时，Swarm服务是可以在工作节点上继续运行的，只是不同通过Swarm管理器进行管理，直到Swarm管理恢复工作。&lt;/li&gt;
 &lt;/ol&gt;
-&lt;h2 id=&#34;容器内部中文异常&#34;&gt;容器内部中文异常&lt;/h2&gt;
-&lt;p&gt;问题描述: 容器内部中文乱码、无法正常显示中文、&lt;/p&gt;
+&lt;h2 id=&#34;容器内部中文异常&#34;&gt;&lt;/h&gt;容器内部中文异常
+&lt;/h2&gt;&lt;p&gt;问题描述: 容器内部中文乱码、无法正常显示中文、&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;例如显示中文：&lt;code&gt;--------���&lt;/code&gt;&lt;/li&gt;
 &lt;/ul&gt;
@@ -512,12 +512,12 @@ Live Restore只是独立Docker引擎的特性，而Swarm的服务是由Swarm管�
         </item>
         <item>
         <title>什么是dockershim</title>
-        <link>https://blog.mletter.cn/docker/DockerShimRead/</link>
+        <link>https://blog.mletter.cn/tech/docker/docker-shim/</link>
         <pubDate>Sun, 13 Feb 2022 00:00:00 +0000</pubDate>
         
-        <guid>https://blog.mletter.cn/docker/DockerShimRead/</guid>
-        <description>&lt;h2 id=&#34;先前了解&#34;&gt;先前了解&lt;/h2&gt;
-&lt;ul&gt;
+        <guid>https://blog.mletter.cn/tech/docker/docker-shim/</guid>
+        <description>&lt;h2 id=&#34;先前了解&#34;&gt;&lt;/h&gt;先前了解
+&lt;/h2&gt;&lt;ul&gt;
 &lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.20.md#dockershim-deprecation&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;参考链接&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://github.com/kubernetes/kubernetes/pull/94624&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
@@ -526,8 +526,8 @@ Live Restore只是独立Docker引擎的特性，而Swarm的服务是由Swarm管�
 &lt;p&gt;kubelet中的Docker支持现在已弃用，并将在未来的版本中删除。kubelet使用了一个名为&lt;code&gt;dockershim&lt;/code&gt;的模块，该模块实现了对Docker的CRI支持，并在Kubernetes社区中发现了维护问题。我们鼓励您评估迁移到一个容器运行时的情况，该容器运行时是CRI（v1alpha1或v1兼容）的完整实现。&lt;/p&gt;
 &lt;p&gt;也就是说,在后续的Kubernetes&lt;code&gt;1.20x&lt;/code&gt;版本以后会删除&lt;code&gt;dockershim&lt;/code&gt;组件,但是由于目前Docker的使用用户众多,中间必然会有替换的一个过渡期,所以大家可以更多的关注一下其他的&lt;code&gt;Container Runtime&lt;/code&gt;。 例如我们的&lt;code&gt;Podman&lt;/code&gt;、&lt;code&gt;Containerd&lt;/code&gt;、&lt;code&gt;cri-o&lt;/code&gt;等其他容器运行时来运行kubernetes。&lt;/p&gt;
 &lt;p&gt;下面我们就具体来看看Kubernetes所提到的弃用&lt;code&gt;dockershim&lt;/code&gt;到底是什么东西.&lt;/p&gt;
-&lt;h2 id=&#34;cri容器运行时接口&#34;&gt;CRI容器运行时接口&lt;/h2&gt;
-&lt;ul&gt;
+&lt;h2 id=&#34;cri容器运行时接口&#34;&gt;&lt;/h&gt;CRI容器运行时接口
+&lt;/h2&gt;&lt;ul&gt;
 &lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://github.com/kubernetes/community/blob/master/contributors/devel/sig-node/container-runtime-interface.md&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;参考链接&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;CRI：容器运行时接口 container runtime interface，CRI 中定义了容器和镜像两个接口，实现了这两个接口目前主流的是：CRI-O、Containerd。（目前 PCI 产品使用的即为 Containerd）。&lt;/li&gt;
@@ -538,8 +538,8 @@ Live Restore只是独立Docker引擎的特性，而Swarm的服务是由Swarm管�
 &lt;li&gt;对镜像的操作，下载、删除镜像等. 即&lt;code&gt;pull&lt;/code&gt;、&lt;code&gt;rmi&lt;/code&gt;等操作。&lt;/li&gt;
 &lt;li&gt;podsandbox&lt;/li&gt;
 &lt;/ol&gt;
-&lt;h2 id=&#34;oci开放容器标准&#34;&gt;OCI开放容器标准&lt;/h2&gt;
-&lt;ul&gt;
+&lt;h2 id=&#34;oci开放容器标准&#34;&gt;&lt;/h&gt;OCI开放容器标准
+&lt;/h2&gt;&lt;ul&gt;
 &lt;li&gt;OCI：开放容器标准 open container initiative，OCI 中定义了两个标准：容器运行时标准 和 容器镜像标准，实现了这一标准的主流是：runc（也即我们日常说的 Docker）、Kata-Container。&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;OCI的作用在于&lt;/p&gt;
@@ -603,8 +603,8 @@ Live Restore只是独立Docker引擎的特性，而Swarm的服务是由Swarm管�
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        &lt;span class=&#34;nt&#34;&gt;&amp;#34;myKey&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;myValue&amp;#34;&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;dockershim&#34;&gt;Dockershim&lt;/h2&gt;
-&lt;p&gt;&lt;code&gt;Dockershim&lt;/code&gt; 作用：把外部收到的请求转化成 &lt;code&gt;docker daemon&lt;/code&gt; 能听懂的请求，让 Docker Daemon 执行创建、删除等容器操作。&lt;/p&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;dockershim&#34;&gt;&lt;/h&gt;Dockershim
+&lt;/h2&gt;&lt;p&gt;&lt;code&gt;Dockershim&lt;/code&gt; 作用：把外部收到的请求转化成 &lt;code&gt;docker daemon&lt;/code&gt; 能听懂的请求，让 Docker Daemon 执行创建、删除等容器操作。&lt;/p&gt;
 &lt;blockquote&gt;
 &lt;p&gt;具体看一下&lt;code&gt;kubelet&lt;/code&gt;是怎样创建容器的&lt;/p&gt;
 &lt;/blockquote&gt;
@@ -616,8 +616,8 @@ Live Restore只是独立Docker引擎的特性，而Swarm的服务是由Swarm管�
 &lt;li&gt;我们知道创建容器需要做一些设置 namespaces 和 cgroups，挂载 root filesystem 等等操作，而这些事该怎么做已经有了公开的规范，那就是 OCI。它的一个参考实现叫做 runC。于是，containerd-shim 在这一步需要调用 runC 这个命令行工具，来启动容器。&lt;/li&gt;
 &lt;li&gt;runC 启动完容器后本身会直接退出，&lt;code&gt;containerd-shim&lt;/code&gt; 则会成为容器进程的父进程，负责收集容器进程的状态，上报给 containerd，并在容器中 pid 为 1 的进程退出后接管容器中的子进程进行清理，确保不会出现僵尸进程。&lt;/li&gt;
 &lt;/ol&gt;
-&lt;h2 id=&#34;参考链接&#34;&gt;参考链接&lt;/h2&gt;
-&lt;ul&gt;
+&lt;h2 id=&#34;参考链接&#34;&gt;&lt;/h&gt;参考链接
+&lt;/h2&gt;&lt;ul&gt;
 &lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://kubernetes.io/zh/blog/2020/12/02/dont-panic-kubernetes-and-docker/#&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;不支持docker我该何去何从？ &lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;

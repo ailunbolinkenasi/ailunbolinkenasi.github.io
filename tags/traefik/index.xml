@@ -9,12 +9,12 @@
         <copyright>Live and learn. 🌱</copyright>
         <lastBuildDate>Fri, 07 Apr 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://blog.mletter.cn/tags/traefik/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>Traekfik基础使用指南</title>
-        <link>https://blog.mletter.cn/kubernetes/traefik/</link>
+        <link>https://blog.mletter.cn/tech/kubernetes/traefik/</link>
         <pubDate>Fri, 07 Apr 2023 00:00:00 +0000</pubDate>
         
-        <guid>https://blog.mletter.cn/kubernetes/traefik/</guid>
-        <description>&lt;img src="https://doc.traefik.io/traefik/assets/img/traefik-architecture.png" alt="Featured image of post Traekfik基础使用指南" /&gt;&lt;h2 id=&#34;traekfik是什么&#34;&gt;Traekfik是什么&lt;/h2&gt;
-&lt;p&gt;Traefik 是一种&lt;a class=&#34;link&#34; href=&#34;https://github.com/traefik/traefik&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+        <guid>https://blog.mletter.cn/tech/kubernetes/traefik/</guid>
+        <description>&lt;img src="https://doc.traefik.io/traefik/assets/img/traefik-architecture.png" alt="Featured image of post Traekfik基础使用指南" /&gt;&lt;h2 id=&#34;traekfik是什么&#34;&gt;&lt;/h&gt;Traekfik是什么
+&lt;/h2&gt;&lt;p&gt;Traefik 是一种&lt;a class=&#34;link&#34; href=&#34;https://github.com/traefik/traefik&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;开源&lt;/a&gt; &lt;em&gt;边缘路由器&lt;/em&gt;，它使您发布服务成为一种有趣而轻松的体验。它代表您的系统接收请求并找出哪些组件负责处理它们。&lt;/p&gt;
 &lt;p&gt;Traefik 的与众不同之处在于，除了它的许多功能之外，它还可以自动为您的服务发现正确的配置。当 Traefik 检查您的基础架构时，奇迹就会发生，它会在其中找到相关信息并发现哪个服务服务于哪个请求。&lt;/p&gt;
 &lt;p&gt;Traefik 原生兼容所有主要的集群技术，例如 Kubernetes、Docker、Docker Swarm、AWS、Mesos、Marathon，&lt;a class=&#34;link&#34; href=&#34;https://doc.traefik.io/traefik/providers/overview/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
@@ -41,8 +41,8 @@
   &lt;img class=&#34;img-fluid&#34; src=&#34;https://doc.traefik.io/traefik/assets/img/traefik-architecture.png&#34; alt=&#34;&#34; loading=&#34;lazy&#34; /&gt;
 &lt;/picture&gt;
 &lt;/p&gt;
-&lt;h3 id=&#34;边缘路由器&#34;&gt;边缘路由器&lt;/h3&gt;
-&lt;p&gt;Traefik 是一个&lt;em&gt;Edge Router&lt;/em&gt;，这意味着它是您平台的大门，它拦截并路由每个传入请求：它知道确定哪些服务处理哪些请求的所有逻辑和每条规则（基于&lt;a class=&#34;link&#34; href=&#34;https://doc.traefik.io/traefik/routing/routers/#rule&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+&lt;h3 id=&#34;边缘路由器&#34;&gt;&lt;/h&gt;边缘路由器
+&lt;/h3&gt;&lt;p&gt;Traefik 是一个&lt;em&gt;Edge Router&lt;/em&gt;，这意味着它是您平台的大门，它拦截并路由每个传入请求：它知道确定哪些服务处理哪些请求的所有逻辑和每条规则（基于&lt;a class=&#34;link&#34; href=&#34;https://doc.traefik.io/traefik/routing/routers/#rule&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;path&lt;/a&gt;，&lt;a class=&#34;link&#34; href=&#34;https://doc.traefik.io/traefik/routing/routers/#rule&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;host&lt;/a&gt;，&lt;a class=&#34;link&#34; href=&#34;https://doc.traefik.io/traefik/routing/routers/#rule&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;标头&lt;/a&gt;，&lt;a class=&#34;link&#34; href=&#34;https://doc.traefik.io/traefik/routing/routers/#rule&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
@@ -68,8 +68,8 @@
   &lt;img class=&#34;img-fluid&#34; src=&#34;https://doc.traefik.io/traefik/assets/img/traefik-concepts-1.png&#34; alt=&#34;边缘路由&#34; loading=&#34;lazy&#34; /&gt;
 &lt;/picture&gt;
 &lt;/p&gt;
-&lt;h3 id=&#34;自动服务发现&#34;&gt;自动服务发现&lt;/h3&gt;
-&lt;p&gt;传统上边缘路由器（或反向代理）需要一个配置文件，其中包含到您的服务的每条可能路径，Traefik 从服务本身获取它们。部署您的服务，您附加信息告诉 Traefik 服务可以处理的请求的特征。&lt;/p&gt;
+&lt;h3 id=&#34;自动服务发现&#34;&gt;&lt;/h&gt;自动服务发现
+&lt;/h3&gt;&lt;p&gt;传统上边缘路由器（或反向代理）需要一个配置文件，其中包含到您的服务的每条可能路径，Traefik 从服务本身获取它们。部署您的服务，您附加信息告诉 Traefik 服务可以处理的请求的特征。&lt;/p&gt;
 &lt;p&gt;
 
 
@@ -99,8 +99,8 @@
 &lt;li&gt;&lt;code&gt;Services&lt;/code&gt; 将请求转发给你的应用（load balancing, …），负责配置如何获取最终将处理传入请求的实际服务。&lt;/li&gt;
 &lt;li&gt;&lt;code&gt;Middlewares&lt;/code&gt; 中间件，用来修改请求或者根据请求来做出一些判断（authentication, rate limiting, headers, …），中间件被附件到路由上，是一种在请求发送到你的&lt;strong&gt;服务&lt;/strong&gt;之前（或者在服务的响应发送到客户端之前）调整请求的一种方法。&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h2 id=&#34;部署traefik&#34;&gt;部署Traefik&lt;/h2&gt;
-&lt;blockquote&gt;
+&lt;h2 id=&#34;部署traefik&#34;&gt;&lt;/h&gt;部署Traefik
+&lt;/h2&gt;&lt;blockquote&gt;
 &lt;p&gt;Traefik的配置可以使用两种方式：&lt;code&gt;静态配置&lt;/code&gt;和&lt;code&gt;动态配置&lt;/code&gt;&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;ul&gt;
@@ -190,8 +190,8 @@
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;    &lt;/span&gt;- --&lt;span class=&#34;l&#34;&gt;providers.kubernetescrd&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;    &lt;/span&gt;- --&lt;span class=&#34;l&#34;&gt;providers.kubernetesingress&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;    &lt;/span&gt;- --&lt;span class=&#34;l&#34;&gt;entrypoints.websecure.http.tls=true&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;创建用于-dashboard-访问的-ingressroute-资源&#34;&gt;创建用于 Dashboard 访问的 IngressRoute 资源&lt;/h3&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-yaml&#34; data-lang=&#34;yaml&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nt&#34;&gt;apiVersion&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;l&#34;&gt;traefik.containo.us/v1alpha1&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;创建用于-dashboard-访问的-ingressroute-资源&#34;&gt;&lt;/h&gt;创建用于 Dashboard 访问的 IngressRoute 资源
+&lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-yaml&#34; data-lang=&#34;yaml&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nt&#34;&gt;apiVersion&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;l&#34;&gt;traefik.containo.us/v1alpha1&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;kind&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;l&#34;&gt;IngressRoute&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;metadata&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;  &lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;name&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;l&#34;&gt;traefik-dashboard&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
@@ -207,9 +207,9 @@
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;      &lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;kind&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;l&#34;&gt;TraefikService &lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;c&#34;&gt;# 引用另外的 Traefik Service&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;l&#34;&gt;root@Online-Beijing-master1 yaml]# kubectl apply -f traefik.yaml&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;&lt;/span&gt;&lt;span class=&#34;l&#34;&gt;ingressroute.traefik.containo.us/traefik-dashboard created	&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;traefik的基本使用&#34;&gt;Traefik的基本使用&lt;/h2&gt;
-&lt;h3 id=&#34;自定义一个ingressroute&#34;&gt;自定义一个IngressRoute&lt;/h3&gt;
-&lt;p&gt;假设我们要访问一个简单地&lt;code&gt;nginx&lt;/code&gt;服务,下面是&lt;code&gt;traefik&lt;/code&gt;的匹配规则&lt;/p&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;traefik的基本使用&#34;&gt;&lt;/h&gt;Traefik的基本使用
+&lt;/h2&gt;&lt;h3 id=&#34;自定义一个ingressroute&#34;&gt;&lt;/h&gt;自定义一个IngressRoute
+&lt;/h3&gt;&lt;p&gt;假设我们要访问一个简单地&lt;code&gt;nginx&lt;/code&gt;服务,下面是&lt;code&gt;traefik&lt;/code&gt;的匹配规则&lt;/p&gt;
 &lt;table&gt;
   &lt;thead&gt;
       &lt;tr&gt;
@@ -290,8 +290,8 @@
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;      &lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;port&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;m&#34;&gt;80&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;  &lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;tls&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;    &lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;secretName&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;l&#34;&gt;traefik-demo-tls&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;acme自动签发&#34;&gt;ACME自动签发&lt;/h3&gt;
-&lt;p&gt;raefik 同样也支持使用 &lt;code&gt;Let’s Encrypt&lt;/code&gt; 自动生成证书，要使用 &lt;code&gt;Let’s Encrypt&lt;/code&gt; 来进行自动化 HTTPS，就需要首先开启 &lt;code&gt;ACME&lt;/code&gt;，开启 &lt;code&gt;ACME&lt;/code&gt; 需要通过静态配置的方式，也就是说可以通过环境变量、启动参数等方式来提供。&lt;/p&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;acme自动签发&#34;&gt;&lt;/h&gt;ACME自动签发
+&lt;/h3&gt;&lt;p&gt;raefik 同样也支持使用 &lt;code&gt;Let’s Encrypt&lt;/code&gt; 自动生成证书，要使用 &lt;code&gt;Let’s Encrypt&lt;/code&gt; 来进行自动化 HTTPS，就需要首先开启 &lt;code&gt;ACME&lt;/code&gt;，开启 &lt;code&gt;ACME&lt;/code&gt; 需要通过静态配置的方式，也就是说可以通过环境变量、启动参数等方式来提供。&lt;/p&gt;
 &lt;p&gt;ACME 有多种校验方式 &lt;code&gt;tlsChallenge&lt;/code&gt;、&lt;code&gt;httpChallenge&lt;/code&gt; 和 &lt;code&gt;dnsChallenge&lt;/code&gt; 三种验证方式，之前更常用的是 http 这种验证方式(可以百度一下)这几种的校验方式。要使用 tls 校验方式的话需要保证 Traefik 的 443 端口是可达的，dns 校验方式可以生成通配符的证书，只需要配置上 DNS 解析服务商的 API 访问密钥即可校验。我们这里用 DNS 校验的方式来为大家说明如何配置 ACME。&lt;/p&gt;
 &lt;ol&gt;
 &lt;li&gt;重新修改一下刚刚Traefik的参数&lt;code&gt;values.yaml&lt;/code&gt;&lt;/li&gt;
@@ -366,8 +366,8 @@
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;    &lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;domains&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;    &lt;/span&gt;- &lt;span class=&#34;nt&#34;&gt;main&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;*.qingyang.com&amp;#34;&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;只需要将 tls 部分改成我们定义的 &lt;code&gt;ali&lt;/code&gt; 这个证书解析器，如果我们想要生成一个通配符的域名证书的话可以定义 &lt;code&gt;domains&lt;/code&gt; 参数来指定，然后更新 &lt;code&gt;IngressRoute &lt;/code&gt;对象，这个时候我们再去用 HTTPS 访问我们的应用（当然需要将域名在阿里云 DNS 上做解析）&lt;/p&gt;
-&lt;h2 id=&#34;中间件&#34;&gt;中间件&lt;/h2&gt;
-&lt;p&gt;连接到路由器的中间件是一种在将请求发送到您的&lt;a class=&#34;link&#34; href=&#34;https://doc.traefik.io/traefik/routing/services/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+&lt;h2 id=&#34;中间件&#34;&gt;&lt;/h&gt;中间件
+&lt;/h2&gt;&lt;p&gt;连接到路由器的中间件是一种在将请求发送到您的&lt;a class=&#34;link&#34; href=&#34;https://doc.traefik.io/traefik/routing/services/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;服务&lt;/a&gt;之前（或在将服务的答案发送到客户端之前）调整请求的方法。&lt;/p&gt;
 &lt;p&gt;Traefik 中有几个可用的中间件，有的可以修改请求，headers，有的负责重定向，有的添加认证等等。&lt;/p&gt;
 &lt;p&gt;使用相同协议的中间件可以组合成链以适应各种场景。&lt;/p&gt;
@@ -398,8 +398,8 @@
   &lt;img class=&#34;img-fluid&#34; src=&#34;https://doc.traefik.io/traefik/assets/img/middleware/overview.png&#34; alt=&#34;img&#34; loading=&#34;lazy&#34; /&gt;
 &lt;/picture&gt;
 &lt;/p&gt;
-&lt;h3 id=&#34;强制跳转https&#34;&gt;强制跳转Https&lt;/h3&gt;
-&lt;p&gt;Traefik 中也是可以配置强制跳转的，只是这个功能现在是通过中间件来提供的了。如下所示，我们使用 &lt;code&gt;redirectScheme&lt;/code&gt; 中间件来创建提供强制跳转服务&lt;/p&gt;
+&lt;h3 id=&#34;强制跳转https&#34;&gt;&lt;/h&gt;强制跳转Https
+&lt;/h3&gt;&lt;p&gt;Traefik 中也是可以配置强制跳转的，只是这个功能现在是通过中间件来提供的了。如下所示，我们使用 &lt;code&gt;redirectScheme&lt;/code&gt; 中间件来创建提供强制跳转服务&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-yaml&#34; data-lang=&#34;yaml&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c&#34;&gt;# Redirect to https&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;apiVersion&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;l&#34;&gt;traefik.containo.us/v1alpha1&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;kind&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;l&#34;&gt;Middleware &lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;c&#34;&gt;# 创建一个中间件&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
@@ -429,8 +429,8 @@
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;blockquote&gt;
 &lt;p&gt;如果你有具体需求的话请前往官网文档查看更多中间件的适用方法。&lt;/p&gt;
 &lt;/blockquote&gt;
-&lt;h2 id=&#34;traefik-pilot&#34;&gt;Traefik Pilot&lt;/h2&gt;
-&lt;p&gt;虽然 Traefik 已经默认实现了很多中间件，可以满足大部分我们日常的需求，但是在实际工作中，用户仍然还是有自定义中间件的需求，这就 &lt;a class=&#34;link&#34; href=&#34;https://pilot.traefik.io/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+&lt;h2 id=&#34;traefik-pilot&#34;&gt;&lt;/h&gt;Traefik Pilot
+&lt;/h2&gt;&lt;p&gt;虽然 Traefik 已经默认实现了很多中间件，可以满足大部分我们日常的需求，但是在实际工作中，用户仍然还是有自定义中间件的需求，这就 &lt;a class=&#34;link&#34; href=&#34;https://pilot.traefik.io/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;Traefik Pilot&lt;/a&gt; 的功能了。&lt;/p&gt;
 &lt;p&gt;Traefik Pilot 是一个 SaaS 平台，和 Traefik 进行链接来扩展其功能，它提供了很多功能，通过一个全局控制面板和 Dashboard 来增强对 Traefik 的观测和控制：&lt;/p&gt;
 &lt;ul&gt;
@@ -442,10 +442,10 @@
 &lt;blockquote&gt;
 &lt;p&gt;注意: Traefik 代理必须要能访问互联网才能连接到 &lt;code&gt;Traefik Pilot&lt;/code&gt;，通过 HTTPS 在 443 端口上建立连接。 这个我就不演示了，我的虚拟机木有外网。&lt;/p&gt;
 &lt;/blockquote&gt;
-&lt;h2 id=&#34;灰度发布&#34;&gt;灰度发布&lt;/h2&gt;
-&lt;p&gt;跟Ingress-nginx是一样的就不多介绍灰度发布是啥了&lt;/p&gt;
-&lt;h3 id=&#34;基于权重的轮询&#34;&gt;基于权重的轮询&lt;/h3&gt;
-&lt;p&gt;这次使用的&lt;code&gt;Deployment&lt;/code&gt;和上次&lt;code&gt;Ingress-nginx&lt;/code&gt;一样，大家去Ingress那篇文章去找一下咯&lt;/p&gt;
+&lt;h2 id=&#34;灰度发布&#34;&gt;&lt;/h&gt;灰度发布
+&lt;/h2&gt;&lt;p&gt;跟Ingress-nginx是一样的就不多介绍灰度发布是啥了&lt;/p&gt;
+&lt;h3 id=&#34;基于权重的轮询&#34;&gt;&lt;/h&gt;基于权重的轮询
+&lt;/h3&gt;&lt;p&gt;这次使用的&lt;code&gt;Deployment&lt;/code&gt;和上次&lt;code&gt;Ingress-nginx&lt;/code&gt;一样，大家去Ingress那篇文章去找一下咯&lt;/p&gt;
 &lt;p&gt;我们可以直接利用&lt;code&gt;TraefikService&lt;/code&gt;这个对象来配置基于权重的轮询&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-yaml&#34; data-lang=&#34;yaml&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nt&#34;&gt;apiVersion&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;l&#34;&gt;traefik.containo.us/v1alpha1&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;kind&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;l&#34;&gt;TraefikService&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
@@ -476,8 +476,8 @@
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;    &lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;services&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;    &lt;/span&gt;- &lt;span class=&#34;nt&#34;&gt;name&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;l&#34;&gt;auy-cat-wrr&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;      &lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;kind&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;l&#34;&gt;TraefikService&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;c&#34;&gt;# 使用声明的 TraefikService 服务，而不是 K8S 的 Service&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;流量复制&#34;&gt;流量复制&lt;/h2&gt;
-&lt;p&gt;除了灰度发布之外，Traefik还引入了流量镜像服务，是一种可以将流入流量复制并同时将其发送给其他服务的方法，镜像服务可以获得给定百分比的请求同时也会忽略这部分请求的响应。&lt;/p&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;流量复制&#34;&gt;&lt;/h&gt;流量复制
+&lt;/h2&gt;&lt;p&gt;除了灰度发布之外，Traefik还引入了流量镜像服务，是一种可以将流入流量复制并同时将其发送给其他服务的方法，镜像服务可以获得给定百分比的请求同时也会忽略这部分请求的响应。&lt;/p&gt;
 &lt;p&gt;假设我们刚刚的&lt;code&gt;production&lt;/code&gt;为线上服务&lt;code&gt;canary&lt;/code&gt;为预览服务,现在希望请求&lt;code&gt;production&lt;/code&gt;的流量同时复制一份也请求到&lt;code&gt;canary&lt;/code&gt;版本中&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-yaml&#34; data-lang=&#34;yaml&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nt&#34;&gt;apiVersion&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;l&#34;&gt;traefik.containo.us/v1alpha1&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;kind&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;l&#34;&gt;TraefikService&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
@@ -506,8 +506,8 @@
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;    &lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;services&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;    &lt;/span&gt;- &lt;span class=&#34;nt&#34;&gt;name&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;l&#34;&gt;mirror-replication&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;      &lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;kind&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;l&#34;&gt;TraefikService&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;c&#34;&gt;# 使用声明的 TraefikService 服务，而不是 K8S 的 Service&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;代理tcpudp&#34;&gt;代理Tcp/Udp&lt;/h2&gt;
-&lt;p&gt;另外 Traefik2.X 已经支持了 TCP 服务的，下面我们以 mongo 为例来了解下 Traefik 是如何支持 TCP 服务得。&lt;/p&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;代理tcpudp&#34;&gt;&lt;/h&gt;代理Tcp/Udp
+&lt;/h2&gt;&lt;p&gt;另外 Traefik2.X 已经支持了 TCP 服务的，下面我们以 mongo 为例来了解下 Traefik 是如何支持 TCP 服务得。&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-yaml&#34; data-lang=&#34;yaml&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nt&#34;&gt;apiVersion&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;l&#34;&gt;apps/v1&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;kind&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;l&#34;&gt;Deployment&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;metadata&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
@@ -571,8 +571,8 @@
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;      &lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;port&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;m&#34;&gt;27017&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;我这里没有&lt;code&gt;mongo&lt;/code&gt;的客户端,直接校验一下端口就行了&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;telnet traefik.qingyang.com &lt;span class=&#34;m&#34;&gt;27017&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;使用特定的域名进行代理访问&#34;&gt;使用特定的域名进行代理访问&lt;/h3&gt;
-&lt;p&gt;假设我现在有一个&lt;code&gt;mysql&lt;/code&gt;服务，想通过&lt;code&gt;traefik.mysql.prod&lt;/code&gt;进行连接访问.&lt;/p&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;使用特定的域名进行代理访问&#34;&gt;&lt;/h&gt;使用特定的域名进行代理访问
+&lt;/h3&gt;&lt;p&gt;假设我现在有一个&lt;code&gt;mysql&lt;/code&gt;服务，想通过&lt;code&gt;traefik.mysql.prod&lt;/code&gt;进行连接访问.&lt;/p&gt;
 &lt;p&gt;我们在加一个&lt;code&gt;proxy-mysql&lt;/code&gt;的&lt;code&gt;entryPoints&lt;/code&gt;&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-yaml&#34; data-lang=&#34;yaml&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nt&#34;&gt;ports&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;  &lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;web&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
@@ -620,8 +620,8 @@
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;      &lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;port&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;m&#34;&gt;3306&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;  &lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;tls&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;c&#34;&gt;# 绑定Tls&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;    &lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;secretName&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;l&#34;&gt;tcp-demo-mysql&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;代理一个udp服务&#34;&gt;代理一个Udp服务&lt;/h3&gt;
-&lt;ol&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;代理一个udp服务&#34;&gt;&lt;/h&gt;代理一个Udp服务
+&lt;/h3&gt;&lt;ol&gt;
 &lt;li&gt;部署一个UDP服务&lt;/li&gt;
 &lt;/ol&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-yaml&#34; data-lang=&#34;yaml&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nt&#34;&gt;kind&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;l&#34;&gt;Deployment&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;

@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='说几个docker常见的解决方法和思路'>
+<title>Docker常见的几个问题处理</title>
+
+<link rel='canonical' href='https://blog.mletter.cn/tech/docker/docker-frequently-asked-questions/'>
+
+<link rel="stylesheet" href="https://blog.mletter.cn/scss/style.min.70d787237fc9ad0dc2ac1799d878ccd1237a9ff462eff40d7f64774f21f745b3.css"><meta property='og:title' content='Docker常见的几个问题处理'>
+<meta property='og:description' content='说几个docker常见的解决方法和思路'>
+<meta property='og:url' content='https://blog.mletter.cn/tech/docker/docker-frequently-asked-questions/'>
+<meta property='og:site_name' content='太阳可以是蓝色'>
+<meta property='og:type' content='article'><meta property='article:section' content='Posts' /><meta property='article:tag' content='docker' /><meta property='article:published_time' content='2022-07-14T00:00:00&#43;00:00'/><meta property='article:modified_time' content='2022-07-14T00:00:00&#43;00:00'/>
+<meta name="twitter:title" content="Docker常见的几个问题处理">
+<meta name="twitter:description" content="说几个docker常见的解决方法和思路">
+    <link rel="shortcut icon" href="wechat.svg" />
+<style>
+  :root {
+       
+      --sys-font-family: -apple-system, "PingFang SC", Georgia, 'Nimbus Roman No9 L', 'Hiragino Sans GB', 'Noto Serif SC', 'Microsoft Yahei', 'WenQuanYi Micro Hei', 'ST Heiti', sans-serif;
+      --code-font-family: "JetBrains Mono", Menlo, Monaco, Consolas, "Courier New";
+      --article-font-family: -apple-system, "PingFang SC", var(--base-font-family);
+  }
+</style>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+
+
+
+
+<script src="//tokinx.github.io/ViewImage/view-image.min.js"></script>
+
+<script>
+  window.ViewImage && ViewImage.init('.article-content img');
+</script>
+
+
+
+<link rel="stylesheet" href="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/highlight.js/11.4.0/styles/sunburst.min.css">
+<script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/highlight.js/11.4.0/highlight.min.js"></script>
+<script src="https://lf26-cdn-tos.bytecdntp.com/cdn/expire-1-M/highlight.js/11.4.0/languages/go.min.js"></script>
+
+<script>hljs.initHighlightingOnLoad();</script>
+<script>document.addEventListener('DOMContentLoaded', (event) => {document.querySelectorAll('pre code').forEach((el) => {hljs.highlightElement(el);});});</script>
+
+
+
+
+
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="https://blog.mletter.cn/">
+                
+                    <img src="https://img14.360buyimg.com/ddimg/jfs/t1/77628/23/27254/26944/66bc1a36Fc596606a/d912965b8bba22af.jpg" width="300" height="300" class="site-logo" loading="lazy" alt="Avatar">
+                
+                </a>
+                
+                    <span class="emoji">🍥</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="https://blog.mletter.cn/">太阳可以是蓝色</a></h1>
+            <h2 class="site-description">Live and learn. 🌱</h2>
+        </div>
+    </header><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='https://blog.mletter.cn/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>搜索</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='https://blog.mletter.cn/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>首页</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='https://blog.mletter.cn/posts' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-inbox" width="24" height="24" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 4m0 2a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2z" /><path d="M4 13h3l3 3h4l3 -3h3" /></svg>
+                
+                <span>文章</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='https://blog.mletter.cn/archives' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>归档</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='https://mletter.cn' target="_blank">
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-health-recognition" width="24" height="24" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 8v-2a2 2 0 0 1 2 -2h2" /><path d="M4 16v2a2 2 0 0 0 2 2h2" /><path d="M16 4h2a2 2 0 0 1 2 2v2" /><path d="M16 20h2a2 2 0 0 0 2 -2v-2" /><path d="M8.603 9.61a2.04 2.04 0 0 1 2.912 0l.485 .39l.5 -.396a2.035 2.035 0 0 1 2.897 .007a2.104 2.104 0 0 1 0 2.949l-3.397 3.44l-3.397 -3.44a2.104 2.104 0 0 1 0 -2.95z" /></svg>
+                
+                <span>主页</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='https://pic.mletter.cn' target="_blank">
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-photo-cog" width="24" height="24" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M15 8h.01" /><path d="M12 21h-6a3 3 0 0 1 -3 -3v-12a3 3 0 0 1 3 -3h12a3 3 0 0 1 3 3v6" /><path d="M3 16l5 -5c.928 -.893 2.072 -.893 3 0l3 3" /><path d="M14 14l1 -1c.48 -.461 1.016 -.684 1.551 -.67" /><path d="M19.001 19m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" /><path d="M19.001 15.5v1.5" /><path d="M19.001 21v1.5" /><path d="M22.032 17.25l-1.299 .75" /><path d="M17.27 20l-1.3 .75" /><path d="M15.97 17.25l1.3 .75" /><path d="M20.733 20l1.3 .75" /></svg>
+                
+                <span>相册</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='https://blog.mletter.cn/friends' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>友联</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='https://blog.mletter.cn/about' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>关于</span>
+            </a>
+        </li>
+        
+
+        <div class="menu-bottom-section">
+                
+            
+            
+            
+                <li id="dark-mode-toggle">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                    <span>暗色模式</span>
+                </li>
+            
+        </div>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">目录</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ul>
+    <li><a href="#docker迁移存储目录">Docker迁移存储目录</a>
+      <ul>
+        <li><a href="#方法一-软连接方式">方法一: 软连接方式</a></li>
+        <li><a href="#方法二-修改docker配置文件">方法二: 修改docker配置文件</a></li>
+      </ul>
+    </li>
+    <li><a href="#docker存储空间不足">Docker存储空间不足</a>
+      <ul>
+        <li><a href="#问题一-no-space-left-on-device">问题一: No space left on device</a></li>
+      </ul>
+    </li>
+    <li><a href="#优雅地重启docker">优雅地重启Docker</a>
+      <ul>
+        <li><a href="#live-restore的限制">live-restore的限制</a></li>
+      </ul>
+    </li>
+    <li><a href="#容器内部中文异常">容器内部中文异常</a></li>
+  </ul>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="https://blog.mletter.cn/categories/docker/" >
+                Docker
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="https://blog.mletter.cn/tech/docker/docker-frequently-asked-questions/">Docker常见的几个问题处理</a>
+        </h2>
+    
+        
+        <h3 class="article-subtitle">
+            说几个docker常见的解决方法和思路
+        </h3>
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Jul 14, 2022</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    阅读时长: 4 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <h2 id="docker迁移存储目录"></h>Docker迁移存储目录
+</h2><p><strong>问题起因</strong> 由于公司最开始的服务器在<code>/var/lib/docker</code>没有挂载存储,容量只有40G,导致服务器磁盘用满。现将原有的Docker目录数据进行迁移。</p>
+<blockquote>
+<p>请各位Kubernetes用户不要操作,因为容器编排不支持!</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 启动容器发现如下报错</span>
+</span></span><span class="line"><span class="cl">ERROR：cannot  create temporary directory!
+</span></span></code></pre></div><h3 id="方法一-软连接方式"></h>方法一: 软连接方式
+</h3><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 1.停止docker服务</span>
+</span></span><span class="line"><span class="cl">systemctl stop docker
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 2.开始迁移目录</span>
+</span></span><span class="line"><span class="cl">mv /var/lib/docker /data/
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 使用cp命令也可以</span>
+</span></span><span class="line"><span class="cl">cp -arv /var/lib/docker  /data/docker
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 3.添加软链接</span>
+</span></span><span class="line"><span class="cl">ln -s /data/docker /var/lib/docker
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 4.启动docker服务</span>
+</span></span><span class="line"><span class="cl">systemctl start docker
+</span></span></code></pre></div><h3 id="方法二-修改docker配置文件"></h>方法二: 修改docker配置文件
+</h3><blockquote>
+<p>注意: 这是一个旧版本<code>docker</code>修改存储目录的方式.</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-json" data-lang="json"><span class="line"><span class="cl"><span class="err">vim</span> <span class="err">/etc/docker/daemon.json</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;graph&#34;</span><span class="p">:</span> <span class="p">[</span> <span class="s2">&#34;/data/docker/&#34;</span> <span class="p">]</span>  <span class="err">#</span> <span class="err">更改docker镜像的存储目录</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>新版本修改存储目录方式</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 请找到你的docker.service存放位置</span>
+</span></span><span class="line"><span class="cl">vim /usr/lib/systemd/system/docker.service
+</span></span></code></pre></div><p>通过加入<code>--data-root=/data/docker</code>进行修改默认的数据存储位置</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">[</span>Unit<span class="o">]</span>
+</span></span><span class="line"><span class="cl"><span class="nv">Description</span><span class="o">=</span>Docker Application Container Engine
+</span></span><span class="line"><span class="cl"><span class="nv">Documentation</span><span class="o">=</span>https://docs.docker.com
+</span></span><span class="line"><span class="cl"><span class="nv">After</span><span class="o">=</span>network-online.target firewalld.service
+</span></span><span class="line"><span class="cl"><span class="nv">Wants</span><span class="o">=</span>network-online.target
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="o">[</span>Service<span class="o">]</span>
+</span></span><span class="line"><span class="cl"><span class="nv">Type</span><span class="o">=</span>notify
+</span></span><span class="line"><span class="cl"><span class="nv">ExecStart</span><span class="o">=</span>/usr/bin/dockerd --data-root<span class="o">=</span>/data/docker
+</span></span><span class="line"><span class="cl"><span class="nv">ExecReload</span><span class="o">=</span>/bin/kill -s HUP <span class="nv">$MAINPID</span>
+</span></span><span class="line"><span class="cl"><span class="nv">LimitNOFILE</span><span class="o">=</span>infinity
+</span></span><span class="line"><span class="cl"><span class="nv">LimitNPROC</span><span class="o">=</span>infinity
+</span></span><span class="line"><span class="cl"><span class="nv">TimeoutStartSec</span><span class="o">=</span><span class="m">0</span>
+</span></span><span class="line"><span class="cl"><span class="nv">Delegate</span><span class="o">=</span>yes
+</span></span><span class="line"><span class="cl"><span class="nv">KillMode</span><span class="o">=</span>process
+</span></span><span class="line"><span class="cl"><span class="nv">Restart</span><span class="o">=</span>on-failure
+</span></span><span class="line"><span class="cl"><span class="nv">StartLimitBurst</span><span class="o">=</span><span class="m">3</span>
+</span></span><span class="line"><span class="cl"><span class="nv">StartLimitInterval</span><span class="o">=</span>60s
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="o">[</span>Install<span class="o">]</span>
+</span></span><span class="line"><span class="cl"><span class="nv">WantedBy</span><span class="o">=</span>multi-user.target
+</span></span></code></pre></div><p>修改完成之后重启<code>docker</code></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">systemctl daemon-reload <span class="c1"># 重载service配置</span>
+</span></span><span class="line"><span class="cl">systemctl restart docker
+</span></span></code></pre></div><h2 id="docker存储空间不足"></h>Docker存储空间不足
+</h2><h3 id="问题一-no-space-left-on-device"></h>问题一: No space left on device
+</h3><p>问题描述：<code>docker run </code>的时候系统提示<code>No space left on device</code>!</p>
+<p>这个问题无非就两种情况</p>
+<ol>
+<li>
+<p>磁盘满了</p>
+</li>
+<li>
+<p>磁盘inode满了</p>
+</li>
+</ol>
+<p>因为 <code>ext3</code> 文件系统使用 <code>inode table</code> 存储 <code>inode</code> 信息，而 <code>xfs</code> 文件系统使用 <code>B+ tree</code> 来进行存储。考虑到性能问题，默认情况下这个 <code>B+ tree</code> 只会使用前 <code>1TB</code> 空间，当这 <code>1TB</code> 空间被写满后，就会导致无法写入 <code>inode</code> 信息，报磁盘空间不足的错误。我们可以在 <code>mount</code> 时，指定 <code>inode64</code> 即可将这个 <code>B+ tree</code> 使用的空间扩展到整个文件系统。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 查看inde信息</span>
+</span></span><span class="line"><span class="cl">df -i
+</span></span><span class="line"><span class="cl"><span class="c1"># 删除过多的小文件即可</span>
+</span></span><span class="line"><span class="cl">Filesystem     Inodes IUsed  IFree IUse% Mounted on
+</span></span><span class="line"><span class="cl">/dev/sda3      <span class="m">593344</span> <span class="m">56998</span> <span class="m">536346</span>   10% /
+</span></span><span class="line"><span class="cl">tmpfs          <span class="m">238282</span>     <span class="m">1</span> <span class="m">238281</span>    1% /dev/shm
+</span></span><span class="line"><span class="cl">/dev/sda1       <span class="m">51200</span>    <span class="m">39</span>  <span class="m">51161</span>    1% /boot
+</span></span><span class="line"><span class="cl">/tmp/1m           <span class="m">128</span>   <span class="m">128</span>      <span class="m">0</span>  100% /app/logs
+</span></span></code></pre></div><blockquote>
+<p>如果不知道小文件如何查找</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 查找系统中 目录大小大于1M（目录一般大小为4K，所以目录要是大了那么文件必然很多）</span>
+</span></span><span class="line"><span class="cl">find / -size +4k -type d <span class="p">|</span>xargs ls -ldhi
+</span></span></code></pre></div><blockquote>
+<p>如果是硬盘空间满了的话</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 查看磁盘使用容量</span>
+</span></span><span class="line"><span class="cl">df -h   
+</span></span><span class="line"><span class="cl"><span class="c1"># 查看到具体哪个目录满了,然后配合 du -sh命令解决即可</span>
+</span></span><span class="line"><span class="cl">Filesystem      Size  Used Avail Use% Mounted on
+</span></span><span class="line"><span class="cl">/dev/sda3       8.8G  8.8G     <span class="m">0</span> 100% /
+</span></span><span class="line"><span class="cl">tmpfs           931M     <span class="m">0</span>  931M   0% /dev/shm
+</span></span><span class="line"><span class="cl">/dev/sda1       190M   40M  141M  22% /boot
+</span></span></code></pre></div><h2 id="优雅地重启docker"></h>优雅地重启Docker
+</h2><blockquote>
+<p>不停止重启,重启docker是一件多么美妙的事情!</p>
+</blockquote>
+<p>当 <code>Docker</code> 守护程序终止时，它会关闭正在运行的容器。从 <code>Docker-ce 1.12</code> 开始，可以在配置文件中添加 <code>live-restore</code> 参数，以便在守护程序变得不可用时容器保持运行。需要注意的是 <code>Windows</code> 平台暂时还是不支持该参数的配置。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-json" data-lang="json"><span class="line"><span class="cl"><span class="err">vim</span> <span class="err">/etc/docker/daemon.json</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;live-restore&#34;</span><span class="p">:</span> <span class="kc">true</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>在守护进程关闭的时候保持容器运行</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 重载docker服务</span>
+</span></span><span class="line"><span class="cl">systemctl reload docker.service
+</span></span><span class="line"><span class="cl"><span class="o">[</span>root@VM-0-9-centos ~<span class="o">]</span><span class="c1"># docker ps -a</span>
+</span></span><span class="line"><span class="cl">CONTAINER ID   IMAGE     COMMAND                  CREATED         STATUS          PORTS     NAMES
+</span></span><span class="line"><span class="cl">e58a220f03c3   nginx     <span class="s2">&#34;/docker-entrypoint.…&#34;</span>   <span class="m">5</span> minutes ago   Up <span class="m">15</span> seconds   80/tcp    web
+</span></span><span class="line"><span class="cl"><span class="c1"># 这个时候重启docker服务,web服务并没有停止工作</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>root@VM-0-9-centos ~<span class="o">]</span><span class="c1"># systemctl restart docker</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>root@VM-0-9-centos ~<span class="o">]</span><span class="c1"># docker ps -a</span>
+</span></span><span class="line"><span class="cl">CONTAINER ID   IMAGE     COMMAND                  CREATED         STATUS              PORTS     NAMES
+</span></span><span class="line"><span class="cl">e58a220f03c3   nginx     <span class="s2">&#34;/docker-entrypoint.…&#34;</span>   <span class="m">7</span> minutes ago   Up About a minute   80/tcp    web
+</span></span></code></pre></div><h3 id="live-restore的限制"></h>live-restore的限制
+</h3><blockquote>
+<p>当前的Live Restore特性可以在进行Daemon维护，或者在Daemon发生问题导致不可用的情况，减少容器的停机时间，不过其也有一定的限制。</p>
+</blockquote>
+<ol>
+<li>Docker版本升级限制
+Live Restore仅支持Docker补丁版本升级时可用，也就是 YY.MM.x 最后一位发生变化的升级，而不支持大版本的升级。在进行大版本升级后，可能会导致Daemon无法重新连接到运行中容器的问题，这时候需要手动停止运行的容器。</li>
+<li>Daemon选项变更
+也就是说Live Restore仅仅在某些Daemon级别的配置选项不发生改变的情况工作，例如Bridge的IP地址，存储驱动类型等。如果在重启Daemon时候，这些选项发生了改变，则可能会到Daemon无法重新连接运行中的容器，这时也需要手动停止这些容器。</li>
+<li>影响容器的日志输出
+如果Daemon长时间停止，会影响运行容器的日志输出。因为默认情况下，日志管道的缓冲区大小为64k，当缓冲写满之后，必须启动Daemon来刷新缓冲区。</li>
+<li>不支持Docker Swarm
+Live Restore只是独立Docker引擎的特性，而Swarm的服务是由Swarm管理器管理的。当Swarm管理器不可用时，Swarm服务是可以在工作节点上继续运行的，只是不同通过Swarm管理器进行管理，直到Swarm管理恢复工作。</li>
+</ol>
+<h2 id="容器内部中文异常"></h>容器内部中文异常
+</h2><p>问题描述: 容器内部中文乱码、无法正常显示中文、</p>
+<ul>
+<li>例如显示中文：<code>--------���</code></li>
+</ul>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 查看容器内部编码</span>
+</span></span><span class="line"><span class="cl">root@e58a220f03c3:/# locale -a
+</span></span><span class="line"><span class="cl">C
+</span></span><span class="line"><span class="cl">C.UTF-8
+</span></span><span class="line"><span class="cl">POSIX
+</span></span></code></pre></div><p>然而 <code>POSIX</code> 字符集是不支持中文的，而 <code>C.UTF-8</code> 是支持中文的只要把系统中的环境 <code>LANG</code> 改为 <code>&quot;C.UTF-8&quot;</code> 格式即可解决问题。同理，在 <code>K8S</code> 进入 <code>pod</code> 不能输入中文也可用此方法解决。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="nb">export</span> <span class="nv">LANG</span><span class="o">=</span>zh_CN.UTF-8
+</span></span></code></pre></div>
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="https://blog.mletter.cn/tags/docker/">Docker</a>
+        
+    </section>
+
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">相关文章</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="">
+    <a href="https://blog.mletter.cn/tech/docker/cloudflare-proxy/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">利用CloudFlare来实现镜像加速</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="https://blog.mletter.cn/tech/docker/docker-shim/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">什么是dockershim</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    <script src="//lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/twikoo/1.4.18/twikoo.all.min.js"></script>
+<div id="tcomment"></div>
+<style>
+    .twikoo {
+        background-color: var(--card-background);
+        border-radius: var(--card-border-radius);
+        box-shadow: var(--shadow-l1);
+        padding: var(--card-padding);
+    }
+    :root[data-scheme="dark"] {
+        --twikoo-body-text-color-main: rgba(255, 255, 255, 0.9);
+        --twikoo-body-text-color: rgba(255, 255, 255, 0.7);
+    }
+    .twikoo .el-input-group__prepend,
+    .twikoo .tk-action-icon,
+    .twikoo .tk-submit-action-icon,
+    .twikoo .tk-time,
+    .twikoo .tk-comments-no,
+    .twikoo .tk-comments-count {
+        color: var(--twikoo-body-text-color);
+    }
+    .twikoo .el-input__inner,
+    .twikoo .el-textarea__inner,
+    .twikoo .tk-preview-container,
+    .twikoo .tk-content,
+    .twikoo .tk-nick,
+    .twikoo .tk-send {
+        color: var(--twikoo-body-text-color-main);
+    }
+    .twikoo .el-button{
+        color: var(--twikoo-body-text-color)!important;
+    }
+    .twikoo .el-input__count {
+        color: var(--twikoo-body-text-color) !important;
+    }
+    .OwO .OwO-body {
+        background-color: var(--body-background) !important;
+        color: var(--body-text-color) !important;
+    }
+</style><script>
+    twikoo.init({
+        envId: 'https:\/\/twikoo.mletter.cn\/',
+        el: '#tcomment',lang: 'zh-cn',})
+</script>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2020 - 
+        
+        2025 Live and learn. 🌱
+    </section>
+    
+    <section class="powerby">
+        Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo By Netlify</a> <br />
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.21.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://lf26-cdn-tos.bytecdntp.com/cdn/expire-1-M/photoswipe/4.1.3/photoswipe.min.js"crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://lf26-cdn-tos.bytecdntp.com/cdn/expire-1-M/photoswipe/4.1.3/photoswipe-ui-default.min.js"crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/photoswipe/4.1.3/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://lf26-cdn-tos.bytecdntp.com/cdn/expire-1-M/photoswipe/4.1.3/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://lf9-cdn-tos.bytecdntp.com/cdn/expire-1-M/vibrant.js/1.0.0/Vibrant.min.js"crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="https://blog.mletter.cn/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+<script src="https://lf26-cdn-tos.bytecdntp.com/cdn/expire-1-M/nprogress/0.2.0/nprogress.min.js" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://lf26-cdn-tos.bytecdntp.com/cdn/expire-1-M/nprogress/0.2.0/nprogress.css" crossorigin="anonymous" />
+<script>
+    NProgress.start();
+    document.addEventListener("readystatechange", () => {
+        if (document.readyState === "interactive") NProgress.inc(0.8);
+        if (document.readyState === "complete") NProgress.done();
+    });
+</script>
+    </body>
+</html>

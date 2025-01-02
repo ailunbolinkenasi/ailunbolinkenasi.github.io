@@ -1,0 +1,1070 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='kubeadm版部署kubernetes方案'>
+<title>kubernetes1.22.0单节点集群部署</title>
+
+<link rel='canonical' href='https://blog.mletter.cn/tech/kubernetes/install-kubernetes-1220/'>
+
+<link rel="stylesheet" href="https://blog.mletter.cn/scss/style.min.70d787237fc9ad0dc2ac1799d878ccd1237a9ff462eff40d7f64774f21f745b3.css"><meta property='og:title' content='kubernetes1.22.0单节点集群部署'>
+<meta property='og:description' content='kubeadm版部署kubernetes方案'>
+<meta property='og:url' content='https://blog.mletter.cn/tech/kubernetes/install-kubernetes-1220/'>
+<meta property='og:site_name' content='太阳可以是蓝色'>
+<meta property='og:type' content='article'><meta property='article:section' content='Posts' /><meta property='article:tag' content='kubernetes' /><meta property='article:published_time' content='2022-12-29T00:00:00&#43;00:00'/><meta property='article:modified_time' content='2022-12-29T00:00:00&#43;00:00'/><meta property='og:image' content='https://img14.360buyimg.com/ddimg/jfs/t1/164569/9/40677/14419/65bc6e4cFa1d8c0c3/5ccf7e6caadc9b83.jpg' />
+<meta name="twitter:title" content="kubernetes1.22.0单节点集群部署">
+<meta name="twitter:description" content="kubeadm版部署kubernetes方案"><meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content='https://img14.360buyimg.com/ddimg/jfs/t1/164569/9/40677/14419/65bc6e4cFa1d8c0c3/5ccf7e6caadc9b83.jpg' />
+    <link rel="shortcut icon" href="wechat.svg" />
+<style>
+  :root {
+       
+      --sys-font-family: -apple-system, "PingFang SC", Georgia, 'Nimbus Roman No9 L', 'Hiragino Sans GB', 'Noto Serif SC', 'Microsoft Yahei', 'WenQuanYi Micro Hei', 'ST Heiti', sans-serif;
+      --code-font-family: "JetBrains Mono", Menlo, Monaco, Consolas, "Courier New";
+      --article-font-family: -apple-system, "PingFang SC", var(--base-font-family);
+  }
+</style>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+
+
+
+
+<script src="//tokinx.github.io/ViewImage/view-image.min.js"></script>
+
+<script>
+  window.ViewImage && ViewImage.init('.article-content img');
+</script>
+
+
+
+<link rel="stylesheet" href="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/highlight.js/11.4.0/styles/sunburst.min.css">
+<script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/highlight.js/11.4.0/highlight.min.js"></script>
+<script src="https://lf26-cdn-tos.bytecdntp.com/cdn/expire-1-M/highlight.js/11.4.0/languages/go.min.js"></script>
+
+<script>hljs.initHighlightingOnLoad();</script>
+<script>document.addEventListener('DOMContentLoaded', (event) => {document.querySelectorAll('pre code').forEach((el) => {hljs.highlightElement(el);});});</script>
+
+
+
+
+
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="https://blog.mletter.cn/">
+                
+                    <img src="https://img14.360buyimg.com/ddimg/jfs/t1/77628/23/27254/26944/66bc1a36Fc596606a/d912965b8bba22af.jpg" width="300" height="300" class="site-logo" loading="lazy" alt="Avatar">
+                
+                </a>
+                
+                    <span class="emoji">🍥</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="https://blog.mletter.cn/">太阳可以是蓝色</a></h1>
+            <h2 class="site-description">Live and learn. 🌱</h2>
+        </div>
+    </header><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='https://blog.mletter.cn/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>搜索</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='https://blog.mletter.cn/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>首页</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='https://blog.mletter.cn/posts' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-inbox" width="24" height="24" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 4m0 2a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2z" /><path d="M4 13h3l3 3h4l3 -3h3" /></svg>
+                
+                <span>文章</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='https://blog.mletter.cn/archives' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>归档</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='https://mletter.cn' target="_blank">
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-health-recognition" width="24" height="24" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 8v-2a2 2 0 0 1 2 -2h2" /><path d="M4 16v2a2 2 0 0 0 2 2h2" /><path d="M16 4h2a2 2 0 0 1 2 2v2" /><path d="M16 20h2a2 2 0 0 0 2 -2v-2" /><path d="M8.603 9.61a2.04 2.04 0 0 1 2.912 0l.485 .39l.5 -.396a2.035 2.035 0 0 1 2.897 .007a2.104 2.104 0 0 1 0 2.949l-3.397 3.44l-3.397 -3.44a2.104 2.104 0 0 1 0 -2.95z" /></svg>
+                
+                <span>主页</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='https://pic.mletter.cn' target="_blank">
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-photo-cog" width="24" height="24" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M15 8h.01" /><path d="M12 21h-6a3 3 0 0 1 -3 -3v-12a3 3 0 0 1 3 -3h12a3 3 0 0 1 3 3v6" /><path d="M3 16l5 -5c.928 -.893 2.072 -.893 3 0l3 3" /><path d="M14 14l1 -1c.48 -.461 1.016 -.684 1.551 -.67" /><path d="M19.001 19m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" /><path d="M19.001 15.5v1.5" /><path d="M19.001 21v1.5" /><path d="M22.032 17.25l-1.299 .75" /><path d="M17.27 20l-1.3 .75" /><path d="M15.97 17.25l1.3 .75" /><path d="M20.733 20l1.3 .75" /></svg>
+                
+                <span>相册</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='https://blog.mletter.cn/friends' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>友联</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='https://blog.mletter.cn/about' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>关于</span>
+            </a>
+        </li>
+        
+
+        <div class="menu-bottom-section">
+                
+            
+            
+            
+                <li id="dark-mode-toggle">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                    <span>暗色模式</span>
+                </li>
+            
+        </div>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">目录</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ul>
+    <li><a href="#kubernetes12210部署">kubernetes1.22.10部署</a></li>
+    <li><a href="#准备工作">准备工作</a>
+      <ul>
+        <li><a href="#我的服务器配置列表">我的服务器配置列表</a></li>
+        <li><a href="#需要开放的端口">需要开放的端口</a></li>
+        <li><a href="#准备主机地址">准备主机地址</a></li>
+        <li><a href="#关闭swap分区以及防火墙">关闭swap分区以及防火墙</a></li>
+      </ul>
+    </li>
+    <li><a href="#containerd的基础安装和操作">Containerd的基础安装和操作</a>
+      <ul>
+        <li><a href="#通过阿里云镜像源安装">通过阿里云镜像源安装</a></li>
+        <li><a href="#生成containerd的配置文件">生成containerd的配置文件</a></li>
+        <li><a href="#修改sandbox_img">修改sandbox_img</a></li>
+        <li><a href="#修改systemd-cgroup驱动">修改Systemd Cgroup驱动</a></li>
+        <li><a href="#设置crictl-查找的容器运行时">设置Crictl 查找的容器运行时</a></li>
+        <li><a href="#额外-设置containerd的私有仓库">(额外) 设置Containerd的私有仓库</a></li>
+        <li><a href="#启动containerd">启动containerd</a></li>
+        <li><a href="#配置ipv4转发">配置IPV4转发</a></li>
+      </ul>
+    </li>
+    <li><a href="#kubernetes安装">kubernetes安装</a>
+      <ul>
+        <li><a href="#通过阿里云镜像源安装-1">通过阿里云镜像源安装</a></li>
+        <li><a href="#安装命令提示">安装命令提示</a></li>
+        <li><a href="#启动kubelet">启动kubelet</a></li>
+        <li><a href="#初始化集群配置信息">初始化集群配置信息</a></li>
+        <li><a href="#创建admin配置目录">创建admin配置目录</a></li>
+        <li><a href="#创建集群网络">创建集群网络</a></li>
+        <li><a href="#加入集群">加入集群</a></li>
+        <li><a href="#验证集群">验证集群</a></li>
+        <li><a href="#提一个小问题">提一个小问题</a></li>
+      </ul>
+    </li>
+    <li><a href="#问题解决">问题解决</a>
+      <ul>
+        <li><a href="#使用crictl-image出现warn0000-image-connect-using-default-endpoints">使用crictl image出现<code>WARN[0000] image connect using default endpoints</code></a></li>
+        <li><a href="#master主集群加入token过期如何处理">Master主集群加入token过期如何处理</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="has-image main-article">
+    <header class="article-header">
+        <div class="article-image">
+            <a href="https://blog.mletter.cn/tech/kubernetes/install-kubernetes-1220/">
+                
+                    <img src="https://img14.360buyimg.com/ddimg/jfs/t1/164569/9/40677/14419/65bc6e4cFa1d8c0c3/5ccf7e6caadc9b83.jpg" loading="lazy" alt="Featured image of post kubernetes1.22.0单节点集群部署" />
+                
+            </a>
+        </div>
+    
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="https://blog.mletter.cn/categories/kubernetes/" >
+                Kubernetes
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="https://blog.mletter.cn/tech/kubernetes/install-kubernetes-1220/">kubernetes1.22.0单节点集群部署</a>
+        </h2>
+    
+        
+        <h3 class="article-subtitle">
+            kubeadm版部署kubernetes方案
+        </h3>
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Dec 29, 2022</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    阅读时长: 6 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <h2 id="kubernetes12210部署"></h>kubernetes1.22.10部署
+</h2><h2 id="准备工作"></h>准备工作
+</h2><ul>
+<li>兼容的 Linux 主机。Kubernetes 项目为基于 Debian 和 Red Hat 的 Linux 发行版以及那些没有包管理器的发行版提供了通用说明。</li>
+<li>每台机器 2 GB 或更多 RAM（任何更少都会为您的应用程序留下很小的空间）。</li>
+<li>2 个 CPU 或更多。</li>
+<li>集群中所有机器之间的完整网络连接（公共或专用网络都可以）。</li>
+<li>每个节点的唯一主机名、MAC 地址和 product_uuid。有关更多详细信息，请参见<a class="link" href="https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/install-kubeadm/#verify-mac-address"  target="_blank" rel="noopener"
+    >此处</a>。</li>
+<li>您的机器上的某些端口是开放的。有关更多详细信息，请参见<a class="link" href="https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/install-kubeadm/#check-required-ports"  target="_blank" rel="noopener"
+    >此处</a>。</li>
+<li>交换Swap分区。必须禁用Swap才能使 kubelet 正常工作。</li>
+</ul>
+<h3 id="我的服务器配置列表"></h>我的服务器配置列表
+</h3><p>没有必要按照我的这个配置去操作个人建议实验环境：正常演示环境2核2G就够了</p>
+<h3 id="需要开放的端口"></h>需要开放的端口
+</h3><p>虽然 etcd 端口包含在控制平面部分，但您也可以在外部或自定义端口上托管自己的 etcd 集群。
+可以覆盖所有默认端口号。当使用自定义端口时，这些端口需要打开而不是此处提到的默认值。
+一个常见的例子是 API 服务器端口，有时会切换到 443。或者，默认端口保持原样，API 服务器放在负载均衡器后面，该负载均衡器监听 443 并将请求路由到默认端口上的 API 服务器。</p>
+<h3 id="准备主机地址"></h>准备主机地址
+</h3><ul>
+<li>修改每一台主机的<code>/etc/hosts</code>配置</li>
+</ul>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl"><span class="c1"># vim /etc/hosts</span>
+</span></span><span class="line"><span class="cl">10.1.6.45 containerd-kube-master
+</span></span><span class="line"><span class="cl">10.1.6.46 containerd-kube-work1
+</span></span><span class="line"><span class="cl">10.1.6.47 containerd-kube-work2
+</span></span></code></pre></div><h3 id="关闭swap分区以及防火墙"></h>关闭swap分区以及防火墙
+</h3><p>进入<code>fstab</code>后找到你挂载的swap分区注释即可.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl"><span class="o">[</span>root@bogon ~<span class="o">]</span><span class="c1"># swapoff -a</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>root@localhost ~<span class="o">]</span><span class="c1"># echo &#34;vm.swappiness = 0&#34; &gt;&gt; /etc/sysctl.conf</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>root@bogon ~<span class="o">]</span><span class="c1"># vim /etc/fstab</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># /dev/mapper/rl-swap     none                    swap    defaults        0 0</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>root@localhost ~<span class="o">]</span><span class="c1"># systemctl stop firewalld &amp;&amp; systemctl disable firewalld # 关闭并且禁用防火墙</span>
+</span></span></code></pre></div><p>所有内容准备完成后重启三台服务器!</p>
+<h2 id="containerd的基础安装和操作"></h>Containerd的基础安装和操作
+</h2><p>本文档后续基于<code>Containerd</code>+<code>RockyLinux</code>+<code>Kubeadmin</code>部署Kubernetes1.24版本的环境。</p>
+<ul>
+<li><a class="link" href="https://containerd.io/"  target="_blank" rel="noopener"
+    >containerd</a></li>
+<li><a class="link" href="https://www.docker.com/"  target="_blank" rel="noopener"
+    >Docker</a></li>
+<li><a class="link" href="https://cri-o.io/"  target="_blank" rel="noopener"
+    >CRI-O</a></li>
+</ul>
+<p>需要注意的是,根据Kubernetes官方给出的公告。Kubernetes 1.20x版本将会废弃对<code>Docker的支持</code></p>
+<ul>
+<li><a class="link" href="https://%20/github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-%201.20.md%20#deprecation"  target="_blank" rel="noopener"
+    >参考连接</a></li>
+</ul>
+<h3 id="通过阿里云镜像源安装"></h>通过阿里云镜像源安装
+</h3><ul>
+<li><a class="link" href="https://developer.aliyun.com/mirror/"  target="_blank" rel="noopener"
+    >官方镜像站</a></li>
+<li>三台主机全部执行此操作</li>
+</ul>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl"><span class="o">[</span>root@containerd-kube-master ~<span class="o">]</span><span class="c1"># yum install -y yum-utils device-mapper-persistent-data lvm2</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>root@containerd-kube-master ~<span class="o">]</span><span class="c1"># yum-config-manager --add-repo https://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>root@containerd-kube-master ~<span class="o">]</span><span class="c1"># yum -y install containerd.io</span>
+</span></span></code></pre></div><p>查看一下<code>containerd</code>的版本</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl"><span class="o">[</span>root@containerd-kube-master ~<span class="o">]</span><span class="c1"># containerd -v</span>
+</span></span><span class="line"><span class="cl">containerd containerd.io 1.6.8 9cd3357b7fd7218e4aec3eae239db1f68a5a6ec6
+</span></span></code></pre></div><h3 id="生成containerd的配置文件"></h>生成containerd的配置文件
+</h3><ul>
+<li>三台主机全部执行此操作
+默认情况下在<code>/etc/containerd/config.toml</code>已经有这个文件了,但是里面是一些简短的配置.</li>
+</ul>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl"><span class="o">[</span>root@containerd-kube-master containerd<span class="o">]</span><span class="c1"># mkdir - /etc/containerd/</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>root@containerd-kube-master containerd<span class="o">]</span><span class="c1"># containerd config default | tee /etc/containerd/config.toml # 生成contained的默认配置</span>
+</span></span></code></pre></div><h3 id="修改sandbox_img"></h>修改sandbox_img
+</h3><ul>
+<li><code>pause</code>： 此镜像是kubernetes的基础容器</li>
+<li>三台主机全部执行此操作
+由于部分用户无法进入<code>k8s.gcr.io</code>资源地址,需要对此地址进行替换.</li>
+</ul>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-toml" data-lang="toml"><span class="line"><span class="cl"><span class="p">[</span><span class="nx">root</span><span class="err">@</span><span class="nx">containerd-kube-master</span> <span class="nx">containerd</span><span class="p">]</span><span class="c"># vim /etc/containerd/config.toml</span>
+</span></span><span class="line"><span class="cl"><span class="nx">sandbox_image</span> <span class="p">=</span> <span class="s2">&#34;k8s.gcr.io/pause:3.6&#34;</span>  <span class="c"># 找到此选项并且修改为: registry.aliyuncs.com/google_containers/pause:3.6</span>
+</span></span><span class="line"><span class="cl"><span class="p">[</span><span class="nx">plugins</span><span class="p">.</span><span class="s2">&#34;io.containerd.grpc.v1.cri&#34;</span><span class="p">.</span><span class="nx">containerd</span><span class="p">.</span><span class="nx">default_runtime</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">runtime_type</span> <span class="p">=</span> <span class="s2">&#34;io.containerd.runtime.v1.linux&#34;</span><span class="c"># 修改为io.containerd.runtime.v1.linux</span>
+</span></span></code></pre></div><h3 id="修改systemd-cgroup驱动"></h>修改Systemd Cgroup驱动
+</h3><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-toml" data-lang="toml"><span class="line"><span class="cl"><span class="p">[</span><span class="nx">plugins</span><span class="p">.</span><span class="s2">&#34;io.containerd.grpc.v1.cri&#34;</span><span class="p">.</span><span class="nx">containerd</span><span class="p">.</span><span class="nx">runtimes</span><span class="p">.</span><span class="nx">runc</span><span class="p">.</span><span class="nx">options</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">SystemdCgroup</span> <span class="p">=</span> <span class="kc">true</span>
+</span></span></code></pre></div><p>然后重启<code>containerd</code></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl"> systemctl restart containerd
+</span></span></code></pre></div><h3 id="设置crictl-查找的容器运行时"></h>设置Crictl 查找的容器运行时
+</h3><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">crictl config runtime-endpoint unix:///var/run/containerd/containerd.sock
+</span></span></code></pre></div><h3 id="额外-设置containerd的私有仓库"></h>(额外) 设置Containerd的私有仓库
+</h3><p>如果你想用自己的私有仓库的话，可以通过如下方式进行设定</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-toml" data-lang="toml"><span class="line"><span class="cl"><span class="p">[</span><span class="nx">plugins</span><span class="p">.</span><span class="s2">&#34;io.containerd.grpc.v1.cri&#34;</span><span class="p">.</span><span class="nx">image_decryption</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">key_model</span> <span class="p">=</span> <span class="s2">&#34;node&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="p">[</span><span class="nx">plugins</span><span class="p">.</span><span class="s2">&#34;io.containerd.grpc.v1.cri&#34;</span><span class="p">.</span><span class="nx">registry</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">config_path</span> <span class="p">=</span> <span class="s2">&#34;&#34;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">[</span><span class="nx">plugins</span><span class="p">.</span><span class="s2">&#34;io.containerd.grpc.v1.cri&#34;</span><span class="p">.</span><span class="nx">registry</span><span class="p">.</span><span class="nx">auths</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">  <span class="p">[</span><span class="nx">plugins</span><span class="p">.</span><span class="s2">&#34;io.containerd.grpc.v1.cri&#34;</span><span class="p">.</span><span class="nx">registry</span><span class="p">.</span><span class="nx">configs</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl"><span class="p">[</span><span class="nx">plugins</span><span class="p">.</span><span class="s2">&#34;io.containerd.grpc.v1.cri&#34;</span><span class="p">.</span><span class="nx">registry</span><span class="p">.</span><span class="nx">configs</span><span class="p">.</span><span class="s2">&#34;10.1.6.15&#34;</span><span class="p">.</span><span class="nx">auth</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">	   <span class="nx">username</span> <span class="p">=</span> <span class="s2">&#34;&#34;</span> <span class="c"># 私有仓库账号</span>
+</span></span><span class="line"><span class="cl">	   <span class="nx">password</span> <span class="p">=</span> <span class="s2">&#34;&#34;</span> <span class="c"># 私有仓库密码</span>
+</span></span><span class="line"><span class="cl">  <span class="p">[</span><span class="nx">plugins</span><span class="p">.</span><span class="s2">&#34;io.containerd.grpc.v1.cri&#34;</span><span class="p">.</span><span class="nx">registry</span><span class="p">.</span><span class="nx">headers</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">  <span class="p">[</span><span class="nx">plugins</span><span class="p">.</span><span class="s2">&#34;io.containerd.grpc.v1.cri&#34;</span><span class="p">.</span><span class="nx">registry</span><span class="p">.</span><span class="nx">mirrors</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">  <span class="p">[</span><span class="nx">plugins</span><span class="p">.</span><span class="s2">&#34;io.containerd.grpc.v1.cri&#34;</span><span class="p">.</span><span class="nx">registry</span><span class="p">.</span><span class="nx">mirrors</span><span class="p">.</span><span class="s2">&#34;10.1.6.15&#34;</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">endpoint</span> <span class="p">=</span> <span class="p">[</span><span class="s2">&#34;&#34;</span><span class="p">]</span> <span class="c"># 私有仓库地址</span>
+</span></span></code></pre></div><h3 id="启动containerd"></h>启动containerd
+</h3><ul>
+<li>三台主机全部执行此操作
+保证<code>Active: active(running)</code>的状态即可</li>
+</ul>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl"><span class="o">[</span>root@containerd-kube-master containerd<span class="o">]</span><span class="c1"># systemctl restart containerd</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>root@containerd-kube-master containerd<span class="o">]</span><span class="c1"># systemctl enable containerd</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>root@containerd-kube-master containerd<span class="o">]</span><span class="c1"># systemctl status containerd</span>
+</span></span><span class="line"><span class="cl">● containerd.service - containerd container runtime
+</span></span><span class="line"><span class="cl">   Loaded: loaded <span class="o">(</span>/usr/lib/systemd/system/containerd.service<span class="p">;</span> disabled<span class="p">;</span> vendor preset: disabled<span class="o">)</span>
+</span></span><span class="line"><span class="cl">   Active: active <span class="o">(</span>running<span class="o">)</span> since Mon 2022-09-05 02:53:02 EDT<span class="p">;</span> 6s ago
+</span></span><span class="line"><span class="cl">     Docs: &lt;https://containerd.io&gt;
+</span></span><span class="line"><span class="cl">  Process: <span class="m">8465</span> <span class="nv">ExecStartPre</span><span class="o">=</span>/sbin/modprobe overlay <span class="o">(</span><span class="nv">code</span><span class="o">=</span>exited, <span class="nv">status</span><span class="o">=</span>0/SUCCESS<span class="o">)</span>
+</span></span><span class="line"><span class="cl"> Main PID: <span class="m">8467</span> <span class="o">(</span>containerd<span class="o">)</span>
+</span></span><span class="line"><span class="cl">    Tasks: <span class="m">12</span>
+</span></span><span class="line"><span class="cl">   Memory: 25.2M
+</span></span><span class="line"><span class="cl">   CGroup: /system.slice/containerd.service
+</span></span><span class="line"><span class="cl">           └─8467 /usr/bin/containerd
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Sep <span class="m">05</span> 02:53:02 containerd-kube-master containerd<span class="o">[</span>8467<span class="o">]</span>: <span class="nv">time</span><span class="o">=</span><span class="s2">&#34;2022-09-05T02:53:02.159619104-04:00&#34;</span> <span class="nv">level</span><span class="o">=</span>info <span class="nv">msg</span><span class="o">=</span><span class="s2">&#34;Start subscribing containerd event&#34;</span>
+</span></span><span class="line"><span class="cl">Sep <span class="m">05</span> 02:53:02 containerd-kube-master containerd<span class="o">[</span>8467<span class="o">]</span>: <span class="nv">time</span><span class="o">=</span><span class="s2">&#34;2022-09-05T02:53:02.159662811-04:00&#34;</span> <span class="nv">level</span><span class="o">=</span>info <span class="nv">msg</span><span class="o">=</span><span class="s2">&#34;Start recovering state&#34;</span>
+</span></span><span class="line"><span class="cl">Sep <span class="m">05</span> 02:53:02 containerd-kube-master containerd<span class="o">[</span>8467<span class="o">]</span>: <span class="nv">time</span><span class="o">=</span><span class="s2">&#34;2022-09-05T02:53:02.159718042-04:00&#34;</span> <span class="nv">level</span><span class="o">=</span>info <span class="nv">msg</span><span class="o">=</span><span class="s2">&#34;Start event monitor&#34;</span>
+</span></span><span class="line"><span class="cl">Sep <span class="m">05</span> 02:53:02 containerd-kube-master containerd<span class="o">[</span>8467<span class="o">]</span>: <span class="nv">time</span><span class="o">=</span><span class="s2">&#34;2022-09-05T02:53:02.159737174-04:00&#34;</span> <span class="nv">level</span><span class="o">=</span>info <span class="nv">msg</span><span class="o">=</span><span class="s2">&#34;Start snapshots syncer&#34;</span>
+</span></span><span class="line"><span class="cl">Sep <span class="m">05</span> 02:53:02 containerd-kube-master containerd<span class="o">[</span>8467<span class="o">]</span>: <span class="nv">time</span><span class="o">=</span><span class="s2">&#34;2022-09-05T02:53:02.159750064-04:00&#34;</span> <span class="nv">level</span><span class="o">=</span>info <span class="nv">msg</span><span class="o">=</span><span class="s2">&#34;Start cni network conf syncer for default&#34;</span>
+</span></span><span class="line"><span class="cl">Sep <span class="m">05</span> 02:53:02 containerd-kube-master containerd<span class="o">[</span>8467<span class="o">]</span>: <span class="nv">time</span><span class="o">=</span><span class="s2">&#34;2022-09-05T02:53:02.159756351-04:00&#34;</span> <span class="nv">level</span><span class="o">=</span>info <span class="nv">msg</span><span class="o">=</span><span class="s2">&#34;Start streaming server&#34;</span>
+</span></span><span class="line"><span class="cl">Sep <span class="m">05</span> 02:53:02 containerd-kube-master containerd<span class="o">[</span>8467<span class="o">]</span>: <span class="nv">time</span><span class="o">=</span><span class="s2">&#34;2022-09-05T02:53:02.159868546-04:00&#34;</span> <span class="nv">level</span><span class="o">=</span>info <span class="nv">msg</span><span class="o">=</span>serving... <span class="nv">address</span><span class="o">=</span>/run/containerd/containerd.sock.ttrpc
+</span></span><span class="line"><span class="cl">Sep <span class="m">05</span> 02:53:02 containerd-kube-master containerd<span class="o">[</span>8467<span class="o">]</span>: <span class="nv">time</span><span class="o">=</span><span class="s2">&#34;2022-09-05T02:53:02.159906215-04:00&#34;</span> <span class="nv">level</span><span class="o">=</span>info <span class="nv">msg</span><span class="o">=</span>serving... <span class="nv">address</span><span class="o">=</span>/run/containerd/containerd.sock
+</span></span><span class="line"><span class="cl">Sep <span class="m">05</span> 02:53:02 containerd-kube-master containerd<span class="o">[</span>8467<span class="o">]</span>: <span class="nv">time</span><span class="o">=</span><span class="s2">&#34;2022-09-05T02:53:02.160196660-04:00&#34;</span> <span class="nv">level</span><span class="o">=</span>info <span class="nv">msg</span><span class="o">=</span><span class="s2">&#34;containerd successfully booted in 0.021144s&#34;</span>
+</span></span><span class="line"><span class="cl">Sep <span class="m">05</span> 02:53:02 containerd-kube-master systemd<span class="o">[</span>1<span class="o">]</span>: Started containerd container runtime.
+</span></span></code></pre></div><h3 id="配置ipv4转发"></h>配置IPV4转发
+</h3><ul>
+<li>三台全部执行</li>
+</ul>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">cat <span class="s">&lt;&lt;EOF | tee /etc/modules-load.d/kubernetes1.24.conf
+</span></span></span><span class="line"><span class="cl"><span class="s">overlay
+</span></span></span><span class="line"><span class="cl"><span class="s">br_netfilter
+</span></span></span><span class="line"><span class="cl"><span class="s">EOF</span>
+</span></span><span class="line"><span class="cl">cat <span class="s">&lt;&lt;EOF | tee /etc/sysctl.d/kubernetes1.24-forsys.conf
+</span></span></span><span class="line"><span class="cl"><span class="s">net.bridge.bridge-nf-call-iptables = 1
+</span></span></span><span class="line"><span class="cl"><span class="s">net.bridge.bridge-nf-call-ip6tables = 1
+</span></span></span><span class="line"><span class="cl"><span class="s">net.ipv4.ip_forward = 1
+</span></span></span><span class="line"><span class="cl"><span class="s">EOF</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>root@containerd-kube-master containerd<span class="o">]</span><span class="c1"># modprobe br_netfilter</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>root@containerd-kube-master ~<span class="o">]</span><span class="c1"># sysctl --system</span>
+</span></span></code></pre></div><h2 id="kubernetes安装"></h>kubernetes安装
+</h2><p>kubernetes的安装依旧是基于aliyun</p>
+<h3 id="通过阿里云镜像源安装-1"></h>通过阿里云镜像源安装
+</h3><ul>
+<li>三台全部安装
+由于官网未开放同步方式, 可能会有索引gpg检查失败的情况, 这时请用 <code>yum install -y --nogpgcheck kubelet kubeadm kubectl</code> 安装</li>
+</ul>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">cat <span class="s">&lt;&lt;EOF &gt; /etc/yum.repos.d/kubernetes.repo
+</span></span></span><span class="line"><span class="cl"><span class="s">[kubernetes]
+</span></span></span><span class="line"><span class="cl"><span class="s">name=Kubernetes
+</span></span></span><span class="line"><span class="cl"><span class="s">baseurl=https://mirrors.aliyun.com/kubernetes/yum/repos/kubernetes-el7-x86_64/
+</span></span></span><span class="line"><span class="cl"><span class="s">enabled=1
+</span></span></span><span class="line"><span class="cl"><span class="s">gpgcheck=1
+</span></span></span><span class="line"><span class="cl"><span class="s">repo_gpgcheck=1
+</span></span></span><span class="line"><span class="cl"><span class="s">gpgkey=https://mirrors.aliyun.com/kubernetes/yum/doc/yum-key.gpg
+</span></span></span><span class="line"><span class="cl"><span class="s">EOF</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>root@containerd-kube-work1 ~<span class="o">]</span><span class="c1"># yum install -y kubelet-1.22.10 kubeadm-1.22.10 kubectl-1.22.10</span>
+</span></span></code></pre></div><p>可以通过<code>yum --showduplicates list kubelet</code>查看当前仓库中可用的版本</p>
+<h3 id="安装命令提示"></h>安装命令提示
+</h3><p>安装后可以使用tab进行快捷提示</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl"><span class="o">[</span>root@containerd-kube-master ~<span class="o">]</span><span class="c1"># yum -y install bash-completion</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>root@containerd-kube-master ~<span class="o">]</span><span class="c1"># source &lt;(kubeadm completion bash) &amp;&amp; source &lt;(kubectl completion bash)</span>
+</span></span></code></pre></div><p>如果你想要<code>永久</code>的使其生效,请把他们加入到<code>.bashrc</code>当中</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="nb">cd</span> ~
+</span></span><span class="line"><span class="cl"><span class="o">[</span>root@containerd-kube-master ~<span class="o">]</span><span class="c1"># vim .bashrc</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># .bashrc</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># User specific aliases and functions</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nb">alias</span> <span class="nv">rm</span><span class="o">=</span><span class="s1">&#39;rm -i&#39;</span>
+</span></span><span class="line"><span class="cl"><span class="nb">alias</span> <span class="nv">cp</span><span class="o">=</span><span class="s1">&#39;cp -i&#39;</span>
+</span></span><span class="line"><span class="cl"><span class="nb">alias</span> <span class="nv">mv</span><span class="o">=</span><span class="s1">&#39;mv -i&#39;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Source global definitions</span>
+</span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="o">[</span> -f /etc/bashrc <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl">        . /etc/bashrc
+</span></span><span class="line"><span class="cl"><span class="k">fi</span>
+</span></span><span class="line"><span class="cl"><span class="nb">source</span> &lt;<span class="o">(</span>kubeadm completion bash<span class="o">)</span>
+</span></span><span class="line"><span class="cl"><span class="nb">source</span> &lt;<span class="o">(</span>kubectl completion bash<span class="o">)</span>
+</span></span><span class="line"><span class="cl"><span class="nb">source</span> &lt;<span class="o">(</span>crictl completion bash<span class="o">)</span>
+</span></span></code></pre></div><h3 id="启动kubelet"></h>启动kubelet
+</h3><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">[</span>root@containerd-kube-master containerd<span class="o">]</span><span class="c1"># systemctl enable kubelet</span>
+</span></span></code></pre></div><h3 id="初始化集群配置信息"></h>初始化集群配置信息
+</h3><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">[</span>root@containerd-kube-master containerd<span class="o">]</span><span class="c1"># kubeadm config print init-defaults &gt; init.yaml</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">kubeadm.k8s.io/v1beta3</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">bootstrapTokens</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span>- <span class="nt">groups</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="l">system:bootstrappers:kubeadm:default-node-token</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">token</span><span class="p">:</span><span class="w"> </span><span class="l">abcdef.0123456789abcdef</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">ttl</span><span class="p">:</span><span class="w"> </span><span class="l">24h0m0s</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">usages</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="l">signing</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="l">authentication</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">InitConfiguration</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">localAPIEndpoint</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">advertiseAddress</span><span class="p">:</span><span class="w"> </span><span class="m">10.1.6.45</span><span class="w"> </span><span class="c"># 初始化的第一台master主机的地址</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">bindPort</span><span class="p">:</span><span class="w"> </span><span class="m">6443</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">nodeRegistration</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">criSocket</span><span class="p">:</span><span class="w"> </span><span class="l">unix:///var/run/containerd/containerd.sock</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">imagePullPolicy</span><span class="p">:</span><span class="w"> </span><span class="l">IfNotPresent</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">kubernetes-master</span><span class="w"> </span><span class="c"># 定义主机的唯一名称</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">taints</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nn">---</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">apiServer</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">timeoutForControlPlane</span><span class="p">:</span><span class="w"> </span><span class="l">4m0s</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">kubeadm.k8s.io/v1beta3</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">certificatesDir</span><span class="p">:</span><span class="w"> </span><span class="l">/etc/kubernetes/pki</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">clusterName</span><span class="p">:</span><span class="w"> </span><span class="l">kubernetes</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">controllerManager</span><span class="p">:</span><span class="w"> </span>{}<span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">dns</span><span class="p">:</span><span class="w"> </span>{}<span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">etcd</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">local</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">dataDir</span><span class="p">:</span><span class="w"> </span><span class="l">/var/lib/etcd</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">imageRepository</span><span class="p">:</span><span class="w"> </span><span class="l">registry.aliyuncs.com/google_containers</span><span class="w"> </span><span class="c"># 修改为阿里云地址</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">ClusterConfiguration</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">kubernetesVersion</span><span class="p">:</span><span class="w"> </span><span class="m">1.22.10</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">networking</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">dnsDomain</span><span class="p">:</span><span class="w"> </span><span class="l">cluster.local</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">serviceSubnet</span><span class="p">:</span><span class="w"> </span><span class="m">10.96.0.0</span><span class="l">/12  </span><span class="w"> </span><span class="c"># Pod使用的子网地址</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">scheduler</span><span class="p">:</span><span class="w"> </span>{}<span class="w">
+</span></span></span></code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">[</span>root@containerd-kube-master containerd<span class="o">]</span><span class="c1"># kubeadm init --config=init.yaml   # 等待镜像Pull完成</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>init<span class="o">]</span> Using Kubernetes version: v1.24.0
+</span></span><span class="line"><span class="cl"><span class="o">[</span>preflight<span class="o">]</span> Running pre-flight checks
+</span></span><span class="line"><span class="cl"><span class="o">[</span>preflight<span class="o">]</span> Pulling images required <span class="k">for</span> setting up a Kubernetes cluster
+</span></span><span class="line"><span class="cl"><span class="o">[</span>preflight<span class="o">]</span> This might take a minute or two, depending on the speed of your internet connection
+</span></span><span class="line"><span class="cl"><span class="o">[</span>preflight<span class="o">]</span> You can also perform this action in beforehand using <span class="s1">&#39;kubeadm config images pull&#39;</span>
+</span></span></code></pre></div><h3 id="创建admin配置目录"></h>创建admin配置目录
+</h3><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">[</span>root@containerd-kube-master containerd<span class="o">]</span><span class="c1"># mkdir -p $HOME/.kube</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>root@containerd-kube-master containerd<span class="o">]</span><span class="c1"># sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>root@containerd-kube-master containerd<span class="o">]</span><span class="c1"># sudo chown $(id -u):$(id -g) $HOME/.kube/config</span>
+</span></span></code></pre></div><h3 id="创建集群网络"></h>创建集群网络
+</h3><p>因为flannel不支持网络隔离,所以不想用了!</p>
+<ul>
+<li>不再基于<code>flannel</code>,而是基于<code>calico</code></li>
+</ul>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">[</span>root@containerd-kube-master .kube<span class="o">]</span><span class="c1"># curl https://raw.githubusercontent.com/projectcalico/calico/v3.24.1/manifests/calico.yaml -O</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># --&gt;这个地址好像是用不了了,现在404了...</span>
+</span></span><span class="line"><span class="cl">curl https://projectcalico.docs.tigera.io/manifests/calico.yaml -O
+</span></span></code></pre></div><p>编辑<code>calico.yaml</code></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl">- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">CALICO_IPV4POOL_CIDR</span><span class="w"> </span><span class="c"># 修改CIDR为Kubernetes的子网地址,即初始化集群的serviceSubnet</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;10.96.0.0/12&#34;</span><span class="w">
+</span></span></span></code></pre></div><p>创建<code>calico</code>网络</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">[</span>root@containerd-kube-master ~<span class="o">]</span><span class="c1"># kubectl apply -f calico.yaml</span>
+</span></span></code></pre></div><h3 id="加入集群"></h>加入集群
+</h3><p>如果初始化成功会出现<code>Your Kubernetes control-plane has initialized successfully!</code></p>
+<ul>
+<li>在node节点执行</li>
+</ul>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">[</span>root@containerd-kube-work1 containerd<span class="o">]</span><span class="c1"># kubeadm join 10.1.6.45:6443 --token abcdef.0123456789abcdef \\</span>
+</span></span><span class="line"><span class="cl">        --discovery-token-ca-cert-hash sha256:417d4385cc4f0cc572b106a6a13bf59fd865421f12a401f3660afa6ca19e500d
+</span></span></code></pre></div><h3 id="验证集群"></h>验证集群
+</h3><p>查看master节点的<code>Pod</code>是否全部启动</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">[</span>root@containerd-kube-master ~<span class="o">]</span><span class="c1"># kubectl get pods --all-namespaces</span>
+</span></span><span class="line"><span class="cl">NAMESPACE     NAME                                        READY   STATUS    RESTARTS   AGE
+</span></span><span class="line"><span class="cl">kube-system   calico-kube-controllers-6799f5f4b4-pf8w8    1/1     Running   <span class="m">0</span>          2m16s
+</span></span><span class="line"><span class="cl">kube-system   calico-node-lzcjk                           1/1     Running   <span class="m">0</span>          54s
+</span></span><span class="line"><span class="cl">kube-system   calico-node-mrqkd                           1/1     Running   <span class="m">0</span>          2m16s
+</span></span><span class="line"><span class="cl">kube-system   calico-node-r45bc                           1/1     Running   <span class="m">0</span>          71s
+</span></span><span class="line"><span class="cl">kube-system   coredns-74586cf9b6-gkmbl                    1/1     Running   <span class="m">0</span>          2m37s
+</span></span><span class="line"><span class="cl">kube-system   coredns-74586cf9b6-tgh6f                    1/1     Running   <span class="m">0</span>          2m37s
+</span></span><span class="line"><span class="cl">kube-system   etcd-kubernetes-master                      1/1     Running   <span class="m">2</span>          2m42s
+</span></span><span class="line"><span class="cl">kube-system   kube-apiserver-kubernetes-master            1/1     Running   <span class="m">2</span>          2m43s
+</span></span><span class="line"><span class="cl">kube-system   kube-controller-manager-kubernetes-master   1/1     Running   <span class="m">2</span>          2m43s
+</span></span><span class="line"><span class="cl">kube-system   kube-proxy-mx4bg                            1/1     Running   <span class="m">0</span>          54s
+</span></span><span class="line"><span class="cl">kube-system   kube-proxy-ssw98                            1/1     Running   <span class="m">0</span>          71s
+</span></span><span class="line"><span class="cl">kube-system   kube-proxy-tpgfj                            1/1     Running   <span class="m">0</span>          2m38s
+</span></span><span class="line"><span class="cl">kube-system   kube-scheduler-kubernetes-master            1/1     Running   <span class="m">2</span>          2m43s
+</span></span></code></pre></div><p>从master上查看节点是否已经全部<code>Ready</code></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">[</span>root@containerd-kube-master ~<span class="o">]</span><span class="c1"># kubectl get nodes</span>
+</span></span><span class="line"><span class="cl">NAME                    STATUS   ROLES           AGE     VERSION
+</span></span><span class="line"><span class="cl">containerd-kube-work1   Ready    &lt;none&gt;          55s     v1.24.2
+</span></span><span class="line"><span class="cl">containerd-kube-work2   Ready    &lt;none&gt;          38s     v1.24.2
+</span></span><span class="line"><span class="cl">containerd-kube-master  Ready    control-plane   2m29s   v1.24.2
+</span></span></code></pre></div><p>到此为止,1.24的kubernetes已经安装完毕</p>
+<h3 id="提一个小问题"></h>提一个小问题
+</h3><p>看一下你们的<code>coredns</code>是否在同一个节点上,如果在同一个节点上,建议重新分配一下coredns保证其高可用性</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">[</span>root@containerd-kube-master ~<span class="o">]</span><span class="c1"># kubectl get pods --all-namespaces -o wide</span>
+</span></span><span class="line"><span class="cl">NAMESPACE     NAME                                        READY   STATUS    RESTARTS   AGE   IP            NODE                    NOMINATED NODE   READINESS GATES
+</span></span><span class="line"><span class="cl">kube-system   coredns-74586cf9b6-gkmbl                    1/1     Running   <span class="m">0</span>          32m   10.105.56.1   kubernetes-master       &lt;none&gt;           &lt;none&gt;
+</span></span><span class="line"><span class="cl">kube-system   coredns-74586cf9b6-tgh6f                    1/1     Running   <span class="m">0</span>          32m   10.105.56.3   kubernetes-master       &lt;none&gt;           &lt;none&gt;
+</span></span></code></pre></div><p>重新分配<code>coredns</code></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">[</span>root@containerd-kube-master ~<span class="o">]</span><span class="c1"># kubectl --namespace kube-system rollout restart deployment coredns</span>
+</span></span></code></pre></div><h2 id="问题解决"></h>问题解决
+</h2><h3 id="使用crictl-image出现warn0000-image-connect-using-default-endpoints"></h>使用crictl image出现<code>WARN[0000] image connect using default endpoints</code>
+</h3><ul>
+<li>出现该问题的原因是由于crictl不知道使用那个<code>sock</code>导致的</li>
+</ul>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">[</span>root@containerd-kube-master ~<span class="o">]</span><span class="c1"># crictl image</span>
+</span></span><span class="line"><span class="cl">WARN<span class="o">[</span>0000<span class="o">]</span> image connect using default endpoints: <span class="o">[</span>unix:///var/run/dockershim.sock unix:///run/containerd/containerd.sock unix:///run/crio/crio.sock unix:///var/run/cri-dockerd.sock<span class="o">]</span>. As the default settings are now deprecated, you should <span class="nb">set</span> the endpoint instead.
+</span></span></code></pre></div><blockquote>
+<p>解决方法如下</p>
+</blockquote>
+<ul>
+<li>默认情况下<code>containerd</code>的<code>sock</code>存放于<code>/run/containerd/containerd.sock</code></li>
+</ul>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-toml" data-lang="toml"><span class="line"><span class="cl"><span class="c"># 重新设置一下使用的runtime-endpoint</span>
+</span></span><span class="line"><span class="cl"><span class="nx">crictl</span> <span class="nx">config</span> <span class="nx">runtime-endpoint</span> <span class="nx">unix</span><span class="err">:///</span><span class="nx">run</span><span class="err">/</span><span class="nx">containerd</span><span class="err">/</span><span class="nx">containerd</span><span class="p">.</span><span class="nx">sock</span>
+</span></span></code></pre></div><p>默认生成的<code>crictl</code>存放在<code>/etc/crictl.yaml</code></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">[</span>root@containerd-kube-master containerd<span class="o">]</span><span class="c1"># vim /etc/crictl.yaml</span>
+</span></span></code></pre></div><p>编辑配置文件</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">runtime-endpoint</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;unix:///run/containerd/containerd.sock&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">image-endpoint</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;unix:///run/containerd/containerd.sock&#34;</span><span class="w"> </span><span class="c"># 新版本增加了image-endpoint需要手动更改</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">timeout</span><span class="p">:</span><span class="w"> </span><span class="m">10</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">debug</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">pull-image-on-create</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">disable-pull-on-run</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="w">
+</span></span></span></code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">[</span>root@containerd-kube-master containerd<span class="o">]</span><span class="c1"># systemctl daemon-reload</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>root@containerd-kube-master containerd<span class="o">]</span><span class="c1"># crictl image</span>
+</span></span><span class="line"><span class="cl">IMAGE               TAG                 IMAGE ID            SIZE
+</span></span></code></pre></div><h3 id="master主集群加入token过期如何处理"></h>Master主集群加入token过期如何处理
+</h3><ul>
+<li>默认情况下,该token只有24小时,如果token值过期的话需要重新生成</li>
+</ul>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">--discovery-token-ca-cert-hash sha256:793106d3b4305808d55c3cdb211f89a768bec86ecef64264b131dc8f2548da16
+</span></span></code></pre></div><ol>
+<li>查看当前master集群的token列表</li>
+</ol>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">[</span>root@containerd-kube-master .kube<span class="o">]</span><span class="c1"># kubeadm token list</span>
+</span></span><span class="line"><span class="cl">TOKEN                     TTL         EXPIRES                USAGES                   DESCRIPTION                                                EXTRA GROUPS
+</span></span><span class="line"><span class="cl">abcdef.0123456789abcdef   8h          2022-09-06T10:10:05Z   authentication,signing   &lt;none&gt;                                                     system:bootstrappers:kubeadm:default-node-token
+</span></span></code></pre></div><ol start="2">
+<li>重新生成一份token</li>
+</ol>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">[</span>root@containerd-kube-master .kube<span class="o">]</span><span class="c1"># kubeadm token create</span>
+</span></span></code></pre></div><ol start="3">
+<li>通过证书hashtokne</li>
+</ol>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">[</span>root@containerd-kube-master .kube<span class="o">]</span><span class="c1"># openssl x509 -pubkey -in /etc/kubernetes/pki/ca.crt | openssl rsa -pubin -outform der 2&gt;/dev/null | openssl dgst -sha256 -hex | sed &#39;s/^.* //&#39;</span>
+</span></span></code></pre></div>
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="https://blog.mletter.cn/tags/kubernetes/">Kubernetes</a>
+        
+    </section>
+
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">相关文章</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="has-image">
+    <a href="https://blog.mletter.cn/tech/kubernetes/sealos/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://img10.360buyimg.com/ddimg/jfs/t1/244560/31/7618/14121/661de12eFfa7f6ba5/0239fa873abb0bd5.jpg" loading="lazy" data-key="" data-hash="https://img10.360buyimg.com/ddimg/jfs/t1/244560/31/7618/14121/661de12eFfa7f6ba5/0239fa873abb0bd5.jpg"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">基于SealOS部署高可用的kubernetes集群</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="https://blog.mletter.cn/tech/kubernetes/install-efk/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://img14.360buyimg.com/ddimg/jfs/t1/177175/31/35833/30306/64cb08eeF5ba90f46/1da6311bbbec8921.jpg" loading="lazy" data-key="" data-hash="https://img14.360buyimg.com/ddimg/jfs/t1/177175/31/35833/30306/64cb08eeF5ba90f46/1da6311bbbec8921.jpg"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">kubernetes基于EFK的日志落地实现</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="https://blog.mletter.cn/tech/kubernetes/architectural-design/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://img13.360buyimg.com/ddimg/jfs/t1/164078/6/34165/22231/654ba81fFe1bf21d7/9d02bd791b795b3b.jpg" loading="lazy" data-key="" data-hash="https://img13.360buyimg.com/ddimg/jfs/t1/164078/6/34165/22231/654ba81fFe1bf21d7/9d02bd791b795b3b.jpg"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Kubernetes的架构设计和对象属性基本理解</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="https://blog.mletter.cn/tech/kubernetes/openebs/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://openebs.io/docs/assets/images/control-plane-overview-93c59878e3356a11f03029dd0fc1cd6b.svg" loading="lazy" data-key="" data-hash="https://openebs.io/docs/assets/images/control-plane-overview-93c59878e3356a11f03029dd0fc1cd6b.svg"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">OpenEBS存储的使用</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="https://blog.mletter.cn/tech/kubernetes/traefik/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://doc.traefik.io/traefik/assets/img/traefik-architecture.png" loading="lazy" data-key="" data-hash="https://doc.traefik.io/traefik/assets/img/traefik-architecture.png"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Traekfik基础使用指南</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    <script src="//lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/twikoo/1.4.18/twikoo.all.min.js"></script>
+<div id="tcomment"></div>
+<style>
+    .twikoo {
+        background-color: var(--card-background);
+        border-radius: var(--card-border-radius);
+        box-shadow: var(--shadow-l1);
+        padding: var(--card-padding);
+    }
+    :root[data-scheme="dark"] {
+        --twikoo-body-text-color-main: rgba(255, 255, 255, 0.9);
+        --twikoo-body-text-color: rgba(255, 255, 255, 0.7);
+    }
+    .twikoo .el-input-group__prepend,
+    .twikoo .tk-action-icon,
+    .twikoo .tk-submit-action-icon,
+    .twikoo .tk-time,
+    .twikoo .tk-comments-no,
+    .twikoo .tk-comments-count {
+        color: var(--twikoo-body-text-color);
+    }
+    .twikoo .el-input__inner,
+    .twikoo .el-textarea__inner,
+    .twikoo .tk-preview-container,
+    .twikoo .tk-content,
+    .twikoo .tk-nick,
+    .twikoo .tk-send {
+        color: var(--twikoo-body-text-color-main);
+    }
+    .twikoo .el-button{
+        color: var(--twikoo-body-text-color)!important;
+    }
+    .twikoo .el-input__count {
+        color: var(--twikoo-body-text-color) !important;
+    }
+    .OwO .OwO-body {
+        background-color: var(--body-background) !important;
+        color: var(--body-text-color) !important;
+    }
+</style><script>
+    twikoo.init({
+        envId: 'https:\/\/twikoo.mletter.cn\/',
+        el: '#tcomment',lang: 'zh-cn',})
+</script>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2020 - 
+        
+        2025 Live and learn. 🌱
+    </section>
+    
+    <section class="powerby">
+        Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo By Netlify</a> <br />
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.21.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://lf26-cdn-tos.bytecdntp.com/cdn/expire-1-M/photoswipe/4.1.3/photoswipe.min.js"crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://lf26-cdn-tos.bytecdntp.com/cdn/expire-1-M/photoswipe/4.1.3/photoswipe-ui-default.min.js"crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/photoswipe/4.1.3/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://lf26-cdn-tos.bytecdntp.com/cdn/expire-1-M/photoswipe/4.1.3/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://lf9-cdn-tos.bytecdntp.com/cdn/expire-1-M/vibrant.js/1.0.0/Vibrant.min.js"crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="https://blog.mletter.cn/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+<script src="https://lf26-cdn-tos.bytecdntp.com/cdn/expire-1-M/nprogress/0.2.0/nprogress.min.js" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://lf26-cdn-tos.bytecdntp.com/cdn/expire-1-M/nprogress/0.2.0/nprogress.css" crossorigin="anonymous" />
+<script>
+    NProgress.start();
+    document.addEventListener("readystatechange", () => {
+        if (document.readyState === "interactive") NProgress.inc(0.8);
+        if (document.readyState === "complete") NProgress.done();
+    });
+</script>
+    </body>
+</html>

@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='如何使用Docker的多阶段构建功能来优雅的构建服务镜像'>
+<title>优雅的多阶段构建微服务镜像</title>
+
+<link rel='canonical' href='https://blog.mletter.cn/tech/docker/review-docker/'>
+
+<link rel="stylesheet" href="https://blog.mletter.cn/scss/style.min.70d787237fc9ad0dc2ac1799d878ccd1237a9ff462eff40d7f64774f21f745b3.css"><meta property='og:title' content='优雅的多阶段构建微服务镜像'>
+<meta property='og:description' content='如何使用Docker的多阶段构建功能来优雅的构建服务镜像'>
+<meta property='og:url' content='https://blog.mletter.cn/tech/docker/review-docker/'>
+<meta property='og:site_name' content='太阳可以是蓝色'>
+<meta property='og:type' content='article'><meta property='article:section' content='Posts' /><meta property='article:tag' content='微服务' /><meta property='article:published_time' content='2024-05-08T00:00:00&#43;00:00'/><meta property='article:modified_time' content='2024-05-08T00:00:00&#43;00:00'/><meta property='og:image' content='https://img12.360buyimg.com/ddimg/jfs/t1/221585/17/40296/38910/663b8f0aF38d1916d/5d09c604af566108.jpg' />
+<meta name="twitter:title" content="优雅的多阶段构建微服务镜像">
+<meta name="twitter:description" content="如何使用Docker的多阶段构建功能来优雅的构建服务镜像"><meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content='https://img12.360buyimg.com/ddimg/jfs/t1/221585/17/40296/38910/663b8f0aF38d1916d/5d09c604af566108.jpg' />
+    <link rel="shortcut icon" href="wechat.svg" />
+<style>
+  :root {
+       
+      --sys-font-family: -apple-system, "PingFang SC", Georgia, 'Nimbus Roman No9 L', 'Hiragino Sans GB', 'Noto Serif SC', 'Microsoft Yahei', 'WenQuanYi Micro Hei', 'ST Heiti', sans-serif;
+      --code-font-family: "JetBrains Mono", Menlo, Monaco, Consolas, "Courier New";
+      --article-font-family: -apple-system, "PingFang SC", var(--base-font-family);
+  }
+</style>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+
+
+
+
+<script src="//tokinx.github.io/ViewImage/view-image.min.js"></script>
+
+<script>
+  window.ViewImage && ViewImage.init('.article-content img');
+</script>
+
+
+
+<link rel="stylesheet" href="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/highlight.js/11.4.0/styles/sunburst.min.css">
+<script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/highlight.js/11.4.0/highlight.min.js"></script>
+<script src="https://lf26-cdn-tos.bytecdntp.com/cdn/expire-1-M/highlight.js/11.4.0/languages/go.min.js"></script>
+
+<script>hljs.initHighlightingOnLoad();</script>
+<script>document.addEventListener('DOMContentLoaded', (event) => {document.querySelectorAll('pre code').forEach((el) => {hljs.highlightElement(el);});});</script>
+
+
+
+
+
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="https://blog.mletter.cn/">
+                
+                    <img src="https://img14.360buyimg.com/ddimg/jfs/t1/77628/23/27254/26944/66bc1a36Fc596606a/d912965b8bba22af.jpg" width="300" height="300" class="site-logo" loading="lazy" alt="Avatar">
+                
+                </a>
+                
+                    <span class="emoji">🍥</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="https://blog.mletter.cn/">太阳可以是蓝色</a></h1>
+            <h2 class="site-description">Live and learn. 🌱</h2>
+        </div>
+    </header><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='https://blog.mletter.cn/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>搜索</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='https://blog.mletter.cn/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>首页</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='https://blog.mletter.cn/posts' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-inbox" width="24" height="24" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 4m0 2a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2z" /><path d="M4 13h3l3 3h4l3 -3h3" /></svg>
+                
+                <span>文章</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='https://blog.mletter.cn/archives' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>归档</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='https://mletter.cn' target="_blank">
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-health-recognition" width="24" height="24" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 8v-2a2 2 0 0 1 2 -2h2" /><path d="M4 16v2a2 2 0 0 0 2 2h2" /><path d="M16 4h2a2 2 0 0 1 2 2v2" /><path d="M16 20h2a2 2 0 0 0 2 -2v-2" /><path d="M8.603 9.61a2.04 2.04 0 0 1 2.912 0l.485 .39l.5 -.396a2.035 2.035 0 0 1 2.897 .007a2.104 2.104 0 0 1 0 2.949l-3.397 3.44l-3.397 -3.44a2.104 2.104 0 0 1 0 -2.95z" /></svg>
+                
+                <span>主页</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='https://pic.mletter.cn' target="_blank">
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-photo-cog" width="24" height="24" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M15 8h.01" /><path d="M12 21h-6a3 3 0 0 1 -3 -3v-12a3 3 0 0 1 3 -3h12a3 3 0 0 1 3 3v6" /><path d="M3 16l5 -5c.928 -.893 2.072 -.893 3 0l3 3" /><path d="M14 14l1 -1c.48 -.461 1.016 -.684 1.551 -.67" /><path d="M19.001 19m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" /><path d="M19.001 15.5v1.5" /><path d="M19.001 21v1.5" /><path d="M22.032 17.25l-1.299 .75" /><path d="M17.27 20l-1.3 .75" /><path d="M15.97 17.25l1.3 .75" /><path d="M20.733 20l1.3 .75" /></svg>
+                
+                <span>相册</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='https://blog.mletter.cn/friends' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>友联</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='https://blog.mletter.cn/about' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>关于</span>
+            </a>
+        </li>
+        
+
+        <div class="menu-bottom-section">
+                
+            
+            
+            
+                <li id="dark-mode-toggle">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                    <span>暗色模式</span>
+                </li>
+            
+        </div>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">目录</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ul>
+    <li><a href="#借助maven-wrapper">借助Maven Wrapper</a></li>
+    <li><a href="#maven-wrapper安装方式">Maven Wrapper安装方式</a></li>
+    <li><a href="#遇到小问题">遇到小问题</a></li>
+    <li><a href="#官方的dockerfile">官方的Dockerfile</a></li>
+  </ul>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="has-image main-article">
+    <header class="article-header">
+        <div class="article-image">
+            <a href="https://blog.mletter.cn/tech/docker/review-docker/">
+                
+                    <img src="https://img12.360buyimg.com/ddimg/jfs/t1/221585/17/40296/38910/663b8f0aF38d1916d/5d09c604af566108.jpg" loading="lazy" alt="Featured image of post 优雅的多阶段构建微服务镜像" />
+                
+            </a>
+        </div>
+    
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="https://blog.mletter.cn/categories/docker/" >
+                Docker
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="https://blog.mletter.cn/tech/docker/review-docker/">优雅的多阶段构建微服务镜像</a>
+        </h2>
+    
+        
+        <h3 class="article-subtitle">
+            如何使用Docker的多阶段构建功能来优雅的构建服务镜像
+        </h3>
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">May 08, 2024</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    阅读时长: 4 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <h2 id="借助maven-wrapper"></h>借助Maven Wrapper
+</h2><p>首先我们说说<code>maven wrapper</code>的使用场景</p>
+<p>假设我们所在的团队同时维护多个项目，不同的项目使用的<code>JDK</code>版本不同，使用的<code>maven</code>版本也不同，那么为了支持多项目开发，为了构建运行效果一致，你可能需要在本地管理多个<code>maven</code>版本，这会非常繁琐，从而引出了<code>maven wrapper</code>来解决这个<code>maven</code>版本的管理问题。</p>
+<ul>
+<li>版本一致性：通过在<code>mvnw</code>配置中指定 Maven 版本，确保所有开发人员和持续集成环境使用相同的<code>maven</code>版本。</li>
+<li>简化批量安装：不需要预先安装<code>maven</code>，直接运行<code>mvnw</code>命令就如安装了<code>mvn</code>一样，从而简化了项目的初始设置和配置。</li>
+</ul>
+<h2 id="maven-wrapper安装方式"></h>Maven Wrapper安装方式
+</h2><ul>
+<li><a class="link" href="https://maven.apache.org/wrapper/maven-wrapper/"  target="_blank" rel="noopener"
+    >maven-wrapper</a>: 提供<code>maven-wrapper.jar</code>下载、安装和运行目标<code>maven</code>发行版。</li>
+<li><a class="link" href="https://maven.apache.org/wrapper/maven-wrapper-distribution/"  target="_blank" rel="noopener"
+    >maven-wrapper-distribution</a>: 提供<code>mvnw</code>/<code>mvnw.cmd</code>脚本发行版，</li>
+<li><a class="link" href="https://maven.apache.org/wrapper/maven-wrapper-plugin/"  target="_blank" rel="noopener"
+    >maven-wrapper-plugin</a>: <code>wrapper</code>用于轻松将 Wrapper 安装到项目中的插件。</li>
+</ul>
+<ol>
+<li>首先安装<code>maven wrapper</code>,默认情况下安装的是<code>only-script</code>版本，也就是精简版，不需要额外的<code>maven-wrapper.jar</code>。如果你需要安装<code>source</code>版本请使用<code>-Dtype=source</code>参数。</li>
+</ol>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 假设你的本地已经有了一个特定版本的maven,可以直接通过如下命令进行引入</span>
+</span></span><span class="line"><span class="cl">mvn -N wrapper:wrapper
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 当然也可以指定引入的maven版本信息</span>
+</span></span><span class="line"><span class="cl">mvn -N wrapper:wrapper -Dmaven<span class="o">=</span>3.6.1
+</span></span></code></pre></div><ol start="2">
+<li>检查是否安装成功,正常来讲是会出现一个<code>mvnw</code>和<code>mvnw.cmd</code>以及<code>.mvn</code>目录</li>
+</ol>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">[</span>root@localhost maven-wrapper<span class="o">]</span><span class="c1"># tree -fa</span>
+</span></span><span class="line"><span class="cl">.
+</span></span><span class="line"><span class="cl">├── ./.mvn
+</span></span><span class="line"><span class="cl">│   └── ./.mvn/wrapper
+</span></span><span class="line"><span class="cl">│       └── ./.mvn/wrapper/maven-wrapper.properties
+</span></span><span class="line"><span class="cl">├── ./mvnw
+</span></span><span class="line"><span class="cl">└── ./mvnw.cmd
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="m">2</span> directories, <span class="m">3</span> files
+</span></span></code></pre></div><ol start="3">
+<li>修改<code>maven-wrapper.properties</code>定义的路径地址，因为用的是官方地址可能由于墙的问题无法进行下载，我这边采用<code>MinioS3</code>的地址来提前下好相关版本的<code>maven</code>包进行上传。</li>
+</ol>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-properties" data-lang="properties"><span class="line"><span class="cl"><span class="na">wrapperVersion</span><span class="o">=</span><span class="s">3.3.1</span>
+</span></span><span class="line"><span class="cl"><span class="na">distributionUrl</span><span class="o">=</span><span class="s">https://repo.maven.apache.org/maven2/org/apache/maven/apache-maven/3.6.1/apache-maven-3.6.1-bin.zip</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 正常修改distributionUrl的地址就可以了</span>
+</span></span><span class="line"><span class="cl"><span class="na">distributionUrl</span><span class="o">=</span><span class="s">http://10.1.6.15:10240/software/apache-maven-3.6.1-bin.zip</span>
+</span></span></code></pre></div><p>正常能检测到相关的版本即表示成功</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">[</span>root@localhost maven-wrapper<span class="o">]</span><span class="c1"># ./mvnw --version</span>
+</span></span><span class="line"><span class="cl">Apache Maven 3.6.1 <span class="o">(</span>d66c9c0b3152b2e69ee9bac180bb8fcc8e6af555<span class="p">;</span> 2019-04-05T03:00:29+08:00<span class="o">)</span>
+</span></span><span class="line"><span class="cl">Maven home: /root/.m2/wrapper/dists/apache-maven-3.6.1/5256b4e
+</span></span><span class="line"><span class="cl">Java version: 1.8.0_391, vendor: Oracle Corporation, runtime: /usr/local/java/jre
+</span></span><span class="line"><span class="cl">Default locale: en_US, platform encoding: UTF-8
+</span></span><span class="line"><span class="cl">OS name: <span class="s2">&#34;linux&#34;</span>, version: <span class="s2">&#34;4.18.0-372.9.1.el8.x86_64&#34;</span>, arch: <span class="s2">&#34;amd64&#34;</span>, family: <span class="s2">&#34;unix&#34;</span>
+</span></span></code></pre></div><h2 id="遇到小问题"></h>遇到小问题
+</h2><p>如果大家在构建的过程中遇到了小问题可以看看小思路</p>
+<ol>
+<li>问题一：我明明指定了<code>distributionUrl</code>为我自的仓库地址，并且我上传的是<code>zip</code>的包，为什么每次我执行的的时候都会提示<code>wget: Failed to fetch http://10.1.6.15:10240/software/apache-maven-3.6.1-bin.tar.gz</code></li>
+</ol>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># select .zip or .tar.gz</span>
+</span></span><span class="line"><span class="cl"><span class="k">if</span> ! <span class="nb">command</span> -v unzip &gt;/dev/null<span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl">  <span class="nv">distributionUrl</span><span class="o">=</span><span class="s2">&#34;</span><span class="si">${</span><span class="nv">distributionUrl</span><span class="p">%.zip</span><span class="si">}</span><span class="s2">.tar.gz&#34;</span>
+</span></span><span class="line"><span class="cl">  <span class="nv">distributionUrlName</span><span class="o">=</span><span class="s2">&#34;</span><span class="si">${</span><span class="nv">distributionUrl</span><span class="p">##*/</span><span class="si">}</span><span class="s2">&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="k">fi</span>
+</span></span></code></pre></div><blockquote>
+<p>关于本问题的解释：由于官方的mvnw脚本当中存在select zip or tar.gz的文件类型判断，所以当服务器上没有<code>unzip</code>的命令的时候会出现如上提示。</p>
+</blockquote>
+<h2 id="官方的dockerfile"></h>官方的Dockerfile
+</h2><ul>
+<li>其实都是引用了<code>BuildKit</code>的一些特性，如果需要了解更多的话可以使用<code>docker Desktop</code>来进行初始化看一下官方写的这些脚本。</li>
+</ul>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-dockerfile" data-lang="dockerfile"><span class="line"><span class="cl"><span class="c"># syntax=docker/dockerfile:1</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c"># Comments are provided throughout this file to help you get started.</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c"># If you need more help, visit the Dockerfile reference guide at</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c"># https://docs.docker.com/go/dockerfile-reference/</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c"># Want to help us make this template better? Share your feedback here: https://forms.gle/ybq9Krt8jtBL3iCk7</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c">################################################################################</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c"># Create a stage for resolving and downloading dependencies.</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">FROM</span><span class="s"> eclipse-temurin:17-jdk-jammy as deps</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">WORKDIR</span><span class="s"> /build</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c"># Copy the mvnw wrapper with executable permissions.</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">COPY</span> --chmod<span class="o">=</span><span class="m">0755</span> mvnw mvnw<span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">COPY</span> .mvn/ .mvn/<span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c"># Download dependencies as a separate step to take advantage of Docker&#39;s caching.</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c"># Leverage a cache mount to /root/.m2 so that subsequent builds don&#39;t have to</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c"># re-download packages.</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">RUN</span> --mount<span class="o">=</span><span class="nv">type</span><span class="o">=</span>bind,source<span class="o">=</span>pom.xml,target<span class="o">=</span>pom.xml <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    --mount<span class="o">=</span><span class="nv">type</span><span class="o">=</span>cache,target<span class="o">=</span>/root/.m2 ./mvnw dependency:go-offline -DskipTests<span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c">################################################################################</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c"># Create a stage for building the application based on the stage with downloaded dependencies.</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c"># This Dockerfile is optimized for Java applications that output an uber jar, which includes</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c"># all the dependencies needed to run your app inside a JVM. If your app doesn&#39;t output an uber</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c"># jar and instead relies on an application server like Apache Tomcat, you&#39;ll need to update this</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c"># stage with the correct filename of your package and update the base image of the &#34;final&#34; stage</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c"># use the relevant app server, e.g., using tomcat (https://hub.docker.com/_/tomcat/) as a base image.</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">FROM</span><span class="s"> deps as package</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">WORKDIR</span><span class="s"> /build</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">COPY</span> ./src src/<span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">RUN</span> --mount<span class="o">=</span><span class="nv">type</span><span class="o">=</span>bind,source<span class="o">=</span>pom.xml,target<span class="o">=</span>pom.xml <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    --mount<span class="o">=</span><span class="nv">type</span><span class="o">=</span>cache,target<span class="o">=</span>/root/.m2 <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    ./mvnw package -DskipTests <span class="o">&amp;&amp;</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    mv target/<span class="k">$(</span>./mvnw help:evaluate -Dexpression<span class="o">=</span>project.artifactId -q -DforceStdout<span class="k">)</span>-<span class="k">$(</span>./mvnw help:evaluate -Dexpression<span class="o">=</span>project.version -q -DforceStdout<span class="k">)</span>.jar target/app.jar<span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c">################################################################################</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c"># Create a new stage for running the application that contains the minimal</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c"># runtime dependencies for the application. This often uses a different base</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c"># image from the install or build stage where the necessary files are copied</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c"># from the install stage.</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c">#</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c"># The example below uses eclipse-turmin&#39;s JRE image as the foundation for running the app.</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c"># By specifying the &#34;17-jre-jammy&#34; tag, it will also use whatever happens to be the</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c"># most recent version of that tag when you build your Dockerfile.</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c"># If reproducability is important, consider using a specific digest SHA, like</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c"># eclipse-temurin@sha256:99cede493dfd88720b610eb8077c8688d3cca50003d76d1d539b0efc8cca72b4.</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">FROM</span><span class="s"> eclipse-temurin:17-jre-jammy AS final</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c"># Create a non-privileged user that the app will run under.</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c"># See https://docs.docker.com/go/dockerfile-user-best-practices/</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">ARG</span> <span class="nv">UID</span><span class="o">=</span><span class="m">10001</span>
+</span></span><span class="line"><span class="cl"><span class="k">RUN</span> adduser <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    --disabled-password <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    --gecos <span class="s2">&#34;&#34;</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    --home <span class="s2">&#34;/nonexistent&#34;</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    --shell <span class="s2">&#34;/sbin/nologin&#34;</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    --no-create-home <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    --uid <span class="s2">&#34;</span><span class="si">${</span><span class="nv">UID</span><span class="si">}</span><span class="s2">&#34;</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    appuser<span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">USER</span><span class="s"> appuser</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c"># Copy the executable from the &#34;package&#34; stage.</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">COPY</span> --from<span class="o">=</span>package build/target/app.jar app.jar<span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">EXPOSE</span><span class="s"> 9000</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">ENTRYPOINT</span> <span class="p">[</span> <span class="s2">&#34;java&#34;</span><span class="p">,</span> <span class="s2">&#34;-jar&#34;</span><span class="p">,</span> <span class="s2">&#34;app.jar&#34;</span> <span class="p">]</span><span class="err">
+</span></span></span></code></pre></div><blockquote>
+<p>另外说一句：我永远相信最佳实践的内容，但是大厂的东西一定适合大厂，但是不一定适合你自己，所以我觉得应该带一些辨证的眼光去看待最佳实践的这些内容。</p>
+</blockquote>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="https://blog.mletter.cn/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1/">微服务</a>
+        
+    </section>
+
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+     
+    
+        
+    <script src="//lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/twikoo/1.4.18/twikoo.all.min.js"></script>
+<div id="tcomment"></div>
+<style>
+    .twikoo {
+        background-color: var(--card-background);
+        border-radius: var(--card-border-radius);
+        box-shadow: var(--shadow-l1);
+        padding: var(--card-padding);
+    }
+    :root[data-scheme="dark"] {
+        --twikoo-body-text-color-main: rgba(255, 255, 255, 0.9);
+        --twikoo-body-text-color: rgba(255, 255, 255, 0.7);
+    }
+    .twikoo .el-input-group__prepend,
+    .twikoo .tk-action-icon,
+    .twikoo .tk-submit-action-icon,
+    .twikoo .tk-time,
+    .twikoo .tk-comments-no,
+    .twikoo .tk-comments-count {
+        color: var(--twikoo-body-text-color);
+    }
+    .twikoo .el-input__inner,
+    .twikoo .el-textarea__inner,
+    .twikoo .tk-preview-container,
+    .twikoo .tk-content,
+    .twikoo .tk-nick,
+    .twikoo .tk-send {
+        color: var(--twikoo-body-text-color-main);
+    }
+    .twikoo .el-button{
+        color: var(--twikoo-body-text-color)!important;
+    }
+    .twikoo .el-input__count {
+        color: var(--twikoo-body-text-color) !important;
+    }
+    .OwO .OwO-body {
+        background-color: var(--body-background) !important;
+        color: var(--body-text-color) !important;
+    }
+</style><script>
+    twikoo.init({
+        envId: 'https:\/\/twikoo.mletter.cn\/',
+        el: '#tcomment',lang: 'zh-cn',})
+</script>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2020 - 
+        
+        2025 Live and learn. 🌱
+    </section>
+    
+    <section class="powerby">
+        Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo By Netlify</a> <br />
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.21.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://lf26-cdn-tos.bytecdntp.com/cdn/expire-1-M/photoswipe/4.1.3/photoswipe.min.js"crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://lf26-cdn-tos.bytecdntp.com/cdn/expire-1-M/photoswipe/4.1.3/photoswipe-ui-default.min.js"crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/photoswipe/4.1.3/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://lf26-cdn-tos.bytecdntp.com/cdn/expire-1-M/photoswipe/4.1.3/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://lf9-cdn-tos.bytecdntp.com/cdn/expire-1-M/vibrant.js/1.0.0/Vibrant.min.js"crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="https://blog.mletter.cn/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+<script src="https://lf26-cdn-tos.bytecdntp.com/cdn/expire-1-M/nprogress/0.2.0/nprogress.min.js" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://lf26-cdn-tos.bytecdntp.com/cdn/expire-1-M/nprogress/0.2.0/nprogress.css" crossorigin="anonymous" />
+<script>
+    NProgress.start();
+    document.addEventListener("readystatechange", () => {
+        if (document.readyState === "interactive") NProgress.inc(0.8);
+        if (document.readyState === "complete") NProgress.done();
+    });
+</script>
+    </body>
+</html>

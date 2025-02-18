@@ -1,119 +1,124 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
-    <channel>
-        <title>刷机 on 太阳可以是蓝色</title>
-        <link>https://blog.mletter.cn/tags/%E5%88%B7%E6%9C%BA/</link>
-        <description>Recent content in 刷机 on 太阳可以是蓝色</description>
-        <generator>Hugo -- gohugo.io</generator>
-        <language>en-us</language>
-        <copyright>Live and learn. 🌱</copyright>
-        <lastBuildDate>Sat, 16 Nov 2024 00:00:00 +0000</lastBuildDate><atom:link href="https://blog.mletter.cn/tags/%E5%88%B7%E6%9C%BA/index.xml" rel="self" type="application/rss+xml" /><item>
-        <title>小米刷入PixelExperience指南</title>
-        <link>https://blog.mletter.cn/tech/flash/xiaomi-flash/</link>
-        <pubDate>Sat, 16 Nov 2024 00:00:00 +0000</pubDate>
-        
-        <guid>https://blog.mletter.cn/tech/flash/xiaomi-flash/</guid>
-        <description>&lt;img src="https://img10.360buyimg.com/ddimg/jfs/t1/136341/28/50928/16917/67396488Fdfa333bf/98aaaa3b10a88b53.jpg" alt="Featured image of post 小米刷入PixelExperience指南" /&gt;&lt;p&gt;最近，成功收购了一台安卓之光小米&lt;code&gt;11 Ultra&lt;/code&gt;，我的第一个计划，就是给它刷上类原生系统，开启一段全新的折腾之旅。&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;什么MIUI、HyperOS、三方改、都一边凉快去吧。&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;h2 id=&#34;为什么选择类原生&#34;&gt;&lt;/h&gt;为什么选择类原生
-&lt;/h2&gt;&lt;p&gt;对于我来说，类原生系统有着许多吸引我的地方。首先，类原生系统通常非常简洁，没有过多的预装软件和繁杂的功能，能够让手机运行更加流畅。其次，类原生系统更新速度快，能够及时体验到最新的安卓版本和功能。此外，类原生系统还具有高度的可定制性。相对于MIUI来说可能在某些适配方面小米做的更好吧，例如相机适配、音效适配、显示效果适配上。&lt;/p&gt;
-&lt;h2 id=&#34;准备工作&#34;&gt;&lt;/h&gt;准备工作
-&lt;/h2&gt;&lt;p&gt;在刷机之前，做充分的准备工作。&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;备份了手机中的重要数据，包括照片、联系人、短信等。&lt;/li&gt;
-&lt;li&gt;解锁了手机的&lt;code&gt;bootloader&lt;/code&gt;这是刷机的必要步骤。&lt;/li&gt;
-&lt;li&gt;有一定的搞基基础知识，变砖后可以恢复系统的能力。&lt;/li&gt;
-&lt;li&gt;热爱搞基，生命不息，折腾不止。&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2 id=&#34;选择你的类原生安装包&#34;&gt;&lt;/h&gt;选择你的类原生安装包
-&lt;/h2&gt;&lt;p&gt;推荐你们在选择类原生安装包的时候考虑一下这几个因素：&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;适配性：确保该系统与你的型号完全适配。不同的手机型号在硬件配置上可能存在差异，不恰当的安装包可能导致系统无法正常运行、功能缺失甚至损坏手机。&lt;/li&gt;
-&lt;li&gt;稳定性：多去论坛其他用户的评价和反馈，了解其他用户在使用过程中遇到的问题以及安装包的稳定性表现。&lt;/li&gt;
-&lt;li&gt;安全性：务必确保安装包来源可靠。避免从不可信的网站或渠道下载安装包，以免下载到恶意软件或被篡改的版本(很严重)。&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;下面简单介绍几个常用的类原生，具体的特性啥的就不说了可以自己去官网了解一下哈。&lt;/p&gt;
-&lt;h3 id=&#34;crdroid&#34;&gt;&lt;/h&gt;crDroid
-&lt;/h3&gt;&lt;ul&gt;
-&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://crdroid.net/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
-    &gt;官网&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;推荐程度：✨✨✨✨✨&lt;/li&gt;
-&lt;li&gt;上手程度：✨✨✨✨&lt;/li&gt;
-&lt;li&gt;流畅程度：✨✨✨✨&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h3 id=&#34;pixelexperience&#34;&gt;&lt;/h&gt;PixeLexperience
-&lt;/h3&gt;&lt;ul&gt;
-&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://get.pixelexperience.org/devices&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
-    &gt;官网&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;推荐程度：✨✨✨✨✨&lt;/li&gt;
-&lt;li&gt;上手程度：✨✨✨✨✨&lt;/li&gt;
-&lt;li&gt;流畅程度：✨✨✨✨✨&lt;/li&gt;
-&lt;/ul&gt;
-&lt;blockquote&gt;
-&lt;p&gt;给我打广告了，开玩笑的，这个体验了一把，流畅度和简易程度上没得说。&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;h3 id=&#34;projectelixiros&#34;&gt;&lt;/h&gt;ProjectElixiros
-&lt;/h3&gt;&lt;ul&gt;
-&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://projectelixiros.com/download&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
-    &gt;官网&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;推荐程度：✨✨✨✨&lt;/li&gt;
-&lt;li&gt;上手程度：✨✨✨✨&lt;/li&gt;
-&lt;li&gt;流畅程度：✨✨✨✨&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h3 id=&#34;ancientos&#34;&gt;&lt;/h&gt;AncientOS
-&lt;/h3&gt;&lt;p&gt;&amp;ldquo;Ancient OS  Crafted With Love&amp;rdquo;
-用爱打造的操作系统&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://ancientrom.xyz/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
-    &gt;官网&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;推荐程度：✨✨✨✨&lt;/li&gt;
-&lt;li&gt;上手程度：✨✨✨✨&lt;/li&gt;
-&lt;li&gt;流畅程度：✨✨✨✨&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h3 id=&#34;lineageos&#34;&gt;&lt;/h&gt;LineageOS
-&lt;/h3&gt;&lt;ul&gt;
-&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://lineageos.org/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
-    &gt;官网&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;推荐程度：✨✨✨✨&lt;/li&gt;
-&lt;li&gt;上手程度：✨✨✨✨&lt;/li&gt;
-&lt;li&gt;流畅程度：✨✨✨✨✨&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h3 id=&#34;准备开刷&#34;&gt;&lt;/h&gt;准备开刷
-&lt;/h3&gt;&lt;ul&gt;
-&lt;li&gt;确保您的计算机已安装&lt;code&gt;adb&lt;/code&gt;和&lt;code&gt;fastboot&lt;/code&gt;，如果没有请&lt;a class=&#34;link&#34; href=&#34;https://dl.google.com/android/repository/platform-tools-latest-windows.zip&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
-    &gt;点我下载&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;确保刷机之前手机已经启动&lt;code&gt;USB&lt;/code&gt;调试，不然无法使用&lt;code&gt;adb&lt;/code&gt;并且&lt;code&gt;adb&lt;/code&gt;也读取不到设备。&lt;/li&gt;
-&lt;/ul&gt;
-&lt;ol&gt;
-&lt;li&gt;下载&lt;code&gt;vendor_boot&lt;/code&gt;镜像保证恢复启动&lt;a class=&#34;link&#34; href=&#34;https://wiki-blobs-dl.pixelexperience.org/wiki_blobs_sm8350/fourteen/mars/android-14/vendor_boot.img&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
-    &gt;点我下载&lt;/a&gt;(需要进入Fastboot模式)&lt;/li&gt;
-&lt;/ol&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;fastboot flash vendor_boot &amp;lt;vendor_boot&amp;gt;.img
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;ol start=&#34;2&#34;&gt;
-&lt;li&gt;在&lt;code&gt;Fastboot&lt;/code&gt;模式下查看ADB是否可用&lt;/li&gt;
-&lt;/ol&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;fastboot devices
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;blockquote&gt;
-&lt;p&gt;这个地方如果没有输出类似于编号的信息，请检查自己的ADB服务是否可用。&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;ol start=&#34;3&#34;&gt;
-&lt;li&gt;线刷方式可以直接通过&lt;code&gt;adb sideload filename.zip&lt;/code&gt;进行输入，卡刷包用户可以直接进入&lt;code&gt;TWRP&lt;/code&gt;进行卡刷。&lt;/li&gt;
-&lt;/ol&gt;
-&lt;blockquote&gt;
-&lt;p&gt;正常情况下，adb会报告&lt;code&gt;Total xfer: 1.00x&lt;/code&gt;，但在某些情况下，即使进程成功，输出也会在 47% 处停止并报告&lt;code&gt;Total xfer: 0.98x&lt;/code&gt;或&lt;code&gt;adb: failed to read command: Success&lt;/code&gt;。在某些情况下它会报告&lt;code&gt;adb: failed to read command: No error&lt;/code&gt;或 ，&lt;code&gt;adb: failed to read command: Undefined error: 0&lt;/code&gt;这也是可以的。&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;h2 id=&#34;问题处理&#34;&gt;&lt;/h&gt;问题处理
-&lt;/h2&gt;&lt;ol&gt;
-&lt;li&gt;如果出现无法连接WIFI问题请切换国内接入点，因为谷歌开启了&lt;code&gt;captive_portal&lt;/code&gt;机制来确保WiFi是否可用。请开启USB调试模式以后进行修改。&lt;/li&gt;
-&lt;/ol&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# MIUI&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;adb shell settings put global captive_portal_http_url http://connect.rom.miui.com/generate_204
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;adb shell settings put global captive_portal_https_url https://connect.rom.miui.com/generate_204
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description>
-        </item>
-        
-    </channel>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>刷机 on 太阳可以是蓝色</title>
+    <link>https://blog.mletter.cn/tags/%E5%88%B7%E6%9C%BA/</link>
+    <description>Recent content in 刷机 on 太阳可以是蓝色</description>
+    <image>
+      <title>太阳可以是蓝色</title>
+      <url>https://blog.mletter.cn/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</url>
+      <link>https://blog.mletter.cn/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</link>
+    </image>
+    <generator>Hugo -- 0.138.0</generator>
+    <language>zh</language>
+    <lastBuildDate>Sat, 16 Nov 2024 00:00:00 +0000</lastBuildDate>
+    <atom:link href="https://blog.mletter.cn/tags/%E5%88%B7%E6%9C%BA/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>小米刷入PixelExperience指南</title>
+      <link>https://blog.mletter.cn/tech/flash/xiaomi-flash/</link>
+      <pubDate>Sat, 16 Nov 2024 00:00:00 +0000</pubDate>
+      <guid>https://blog.mletter.cn/tech/flash/xiaomi-flash/</guid>
+      <description>本文详细介绍了如何将小米设备刷入PixelExperience系统，提供步骤详解和注意事项，帮助用户轻松完成系统转换。</description>
+      <content:encoded><![CDATA[<p>最近，成功收购了一台安卓之光小米<code>11 Ultra</code>，我的第一个计划，就是给它刷上类原生系统，开启一段全新的折腾之旅。</p>
+<blockquote>
+<p>什么MIUI、HyperOS、三方改、都一边凉快去吧。</p>
+</blockquote>
+<h2 id="为什么选择类原生">为什么选择类原生</h2>
+<p>对于我来说，类原生系统有着许多吸引我的地方。首先，类原生系统通常非常简洁，没有过多的预装软件和繁杂的功能，能够让手机运行更加流畅。其次，类原生系统更新速度快，能够及时体验到最新的安卓版本和功能。此外，类原生系统还具有高度的可定制性。相对于MIUI来说可能在某些适配方面小米做的更好吧，例如相机适配、音效适配、显示效果适配上。</p>
+<h2 id="准备工作">准备工作</h2>
+<p>在刷机之前，做充分的准备工作。</p>
+<ul>
+<li>备份了手机中的重要数据，包括照片、联系人、短信等。</li>
+<li>解锁了手机的<code>bootloader</code>这是刷机的必要步骤。</li>
+<li>有一定的搞基基础知识，变砖后可以恢复系统的能力。</li>
+<li>热爱搞基，生命不息，折腾不止。</li>
+</ul>
+<h2 id="选择你的类原生安装包">选择你的类原生安装包</h2>
+<p>推荐你们在选择类原生安装包的时候考虑一下这几个因素：</p>
+<ul>
+<li>适配性：确保该系统与你的型号完全适配。不同的手机型号在硬件配置上可能存在差异，不恰当的安装包可能导致系统无法正常运行、功能缺失甚至损坏手机。</li>
+<li>稳定性：多去论坛其他用户的评价和反馈，了解其他用户在使用过程中遇到的问题以及安装包的稳定性表现。</li>
+<li>安全性：务必确保安装包来源可靠。避免从不可信的网站或渠道下载安装包，以免下载到恶意软件或被篡改的版本(很严重)。</li>
+</ul>
+<p>下面简单介绍几个常用的类原生，具体的特性啥的就不说了可以自己去官网了解一下哈。</p>
+<h3 id="crdroid">crDroid</h3>
+<ul>
+<li><a class="link" href="https://crdroid.net/"  target="_blank" rel="noopener"
+    >官网</a></li>
+<li>推荐程度：✨✨✨✨✨</li>
+<li>上手程度：✨✨✨✨</li>
+<li>流畅程度：✨✨✨✨</li>
+</ul>
+<h3 id="pixelexperience">PixeLexperience</h3>
+<ul>
+<li><a class="link" href="https://get.pixelexperience.org/devices"  target="_blank" rel="noopener"
+    >官网</a></li>
+<li>推荐程度：✨✨✨✨✨</li>
+<li>上手程度：✨✨✨✨✨</li>
+<li>流畅程度：✨✨✨✨✨</li>
+</ul>
+<blockquote>
+<p>给我打广告了，开玩笑的，这个体验了一把，流畅度和简易程度上没得说。</p>
+</blockquote>
+<h3 id="projectelixiros">ProjectElixiros</h3>
+<ul>
+<li><a class="link" href="https://projectelixiros.com/download"  target="_blank" rel="noopener"
+    >官网</a></li>
+<li>推荐程度：✨✨✨✨</li>
+<li>上手程度：✨✨✨✨</li>
+<li>流畅程度：✨✨✨✨</li>
+</ul>
+<h3 id="ancientos">AncientOS</h3>
+<p>&ldquo;Ancient OS  Crafted With Love&rdquo;
+用爱打造的操作系统</p>
+<ul>
+<li><a class="link" href="https://ancientrom.xyz/"  target="_blank" rel="noopener"
+    >官网</a></li>
+<li>推荐程度：✨✨✨✨</li>
+<li>上手程度：✨✨✨✨</li>
+<li>流畅程度：✨✨✨✨</li>
+</ul>
+<h3 id="lineageos">LineageOS</h3>
+<ul>
+<li><a class="link" href="https://lineageos.org/"  target="_blank" rel="noopener"
+    >官网</a></li>
+<li>推荐程度：✨✨✨✨</li>
+<li>上手程度：✨✨✨✨</li>
+<li>流畅程度：✨✨✨✨✨</li>
+</ul>
+<h3 id="准备开刷">准备开刷</h3>
+<ul>
+<li>确保您的计算机已安装<code>adb</code>和<code>fastboot</code>，如果没有请<a class="link" href="https://dl.google.com/android/repository/platform-tools-latest-windows.zip"  target="_blank" rel="noopener"
+    >点我下载</a></li>
+<li>确保刷机之前手机已经启动<code>USB</code>调试，不然无法使用<code>adb</code>并且<code>adb</code>也读取不到设备。</li>
+</ul>
+<ol>
+<li>下载<code>vendor_boot</code>镜像保证恢复启动<a class="link" href="https://wiki-blobs-dl.pixelexperience.org/wiki_blobs_sm8350/fourteen/mars/android-14/vendor_boot.img"  target="_blank" rel="noopener"
+    >点我下载</a>(需要进入Fastboot模式)</li>
+</ol>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">fastboot flash vendor_boot &lt;vendor_boot&gt;.img
+</span></span></code></pre></div><ol start="2">
+<li>在<code>Fastboot</code>模式下查看ADB是否可用</li>
+</ol>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">fastboot devices
+</span></span></code></pre></div><blockquote>
+<p>这个地方如果没有输出类似于编号的信息，请检查自己的ADB服务是否可用。</p>
+</blockquote>
+<ol start="3">
+<li>线刷方式可以直接通过<code>adb sideload filename.zip</code>进行输入，卡刷包用户可以直接进入<code>TWRP</code>进行卡刷。</li>
+</ol>
+<blockquote>
+<p>正常情况下，adb会报告<code>Total xfer: 1.00x</code>，但在某些情况下，即使进程成功，输出也会在 47% 处停止并报告<code>Total xfer: 0.98x</code>或<code>adb: failed to read command: Success</code>。在某些情况下它会报告<code>adb: failed to read command: No error</code>或 ，<code>adb: failed to read command: Undefined error: 0</code>这也是可以的。</p>
+</blockquote>
+<h2 id="问题处理">问题处理</h2>
+<ol>
+<li>如果出现无法连接WIFI问题请切换国内接入点，因为谷歌开启了<code>captive_portal</code>机制来确保WiFi是否可用。请开启USB调试模式以后进行修改。</li>
+</ol>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># MIUI</span>
+</span></span><span class="line"><span class="cl">adb shell settings put global captive_portal_http_url http://connect.rom.miui.com/generate_204
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">adb shell settings put global captive_portal_https_url https://connect.rom.miui.com/generate_204
+</span></span></code></pre></div>]]></content:encoded>
+    </item>
+  </channel>
 </rss>

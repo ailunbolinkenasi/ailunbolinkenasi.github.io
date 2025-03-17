@@ -1,28 +1,23 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
-  <channel>
-    <title>Gitlab on 太阳可以是蓝色</title>
-    <link>https://blog.mletter.cn/tags/gitlab/</link>
-    <description>Recent content in Gitlab on 太阳可以是蓝色</description>
-    <image>
-      <title>太阳可以是蓝色</title>
-      <url>https://blog.mletter.cn/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</url>
-      <link>https://blog.mletter.cn/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</link>
-    </image>
-    <generator>Hugo -- 0.138.0</generator>
-    <language>zh</language>
-    <lastBuildDate>Tue, 16 Jan 2024 00:00:00 +0000</lastBuildDate>
-    <atom:link href="https://blog.mletter.cn/tags/gitlab/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>管理好内部的代码仓库-GitLab篇</title>
-      <link>https://blog.mletter.cn/tech/gitlab/repository-management/</link>
-      <pubDate>Tue, 16 Jan 2024 00:00:00 +0000</pubDate>
-      <guid>https://blog.mletter.cn/tech/gitlab/repository-management/</guid>
-      <description>&lt;p&gt;今天聊聊如何来管理我们的&lt;code&gt;代码仓库&lt;/code&gt;
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>Gitlab on 太阳可以是蓝色</title>
+        <link>https://blog.mletter.cn/tags/gitlab/</link>
+        <description>Recent content in Gitlab on 太阳可以是蓝色</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>en-us</language>
+        <copyright>Live and learn. 🌱</copyright>
+        <lastBuildDate>Tue, 16 Jan 2024 00:00:00 +0000</lastBuildDate><atom:link href="https://blog.mletter.cn/tags/gitlab/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>管理好内部的代码仓库-GitLab篇</title>
+        <link>https://blog.mletter.cn/tech/gitlab/repository-management/</link>
+        <pubDate>Tue, 16 Jan 2024 00:00:00 +0000</pubDate>
+        
+        <guid>https://blog.mletter.cn/tech/gitlab/repository-management/</guid>
+        <description>&lt;p&gt;今天聊聊如何来管理我们的&lt;code&gt;代码仓库&lt;/code&gt;
 在软件开发过程中，代码仓库是一个非常重要的组成部分。它不仅是存储代码的地方，也是团队协作和版本控制的基础。因此，管理好自己的代码仓库至关重要。&lt;/p&gt;
 &lt;p&gt;本文将介绍如何使用Git来管理自己的代码仓库。&lt;/p&gt;
-&lt;h2 id=&#34;部署gitlab&#34;&gt;部署GitLab&lt;/h2&gt;
-&lt;p&gt;相较于传动的部署方式比较繁琐，我这里直接采用&lt;code&gt;docker&lt;/code&gt;的部署方式来部署&lt;code&gt;gitlab&lt;/code&gt;以方便后续管理。&lt;/p&gt;
+&lt;h2 id=&#34;部署gitlab&#34;&gt;&lt;/h&gt;部署GitLab
+&lt;/h2&gt;&lt;p&gt;相较于传动的部署方式比较繁琐，我这里直接采用&lt;code&gt;docker&lt;/code&gt;的部署方式来部署&lt;code&gt;gitlab&lt;/code&gt;以方便后续管理。&lt;/p&gt;
 &lt;p&gt;说一下使用Docker来部署的一些痛点：&lt;/p&gt;&lt;/p&gt;
 &lt;ol&gt;
 &lt;li&gt;数据备份：在&lt;code&gt;Docker&lt;/code&gt;中运行&lt;code&gt;Gitlab&lt;/code&gt;，需要定期备份数据以防止数据丢失。但是备份数据的过程可能会很麻烦，并且需要设置合适的策略来避免数据丢失。所以这是我觉得不管是&lt;code&gt;GitLab&lt;/code&gt;还是其他的应用，保证数据的完整可靠性是至关重要的。 &lt;/p&gt;&lt;/li&gt;
@@ -68,159 +63,109 @@
 &lt;li&gt;部署完成后的一些相关设置可以参考&lt;a class=&#34;link&#34; href=&#34;https://docs.gitlab.com/ee/install/next_steps.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;官方文档&lt;/a&gt;&lt;/li&gt;
 &lt;/ol&gt;
-&lt;p&gt;实际上到此为止，我们的一个代码仓库就已经创建完成了，剩下的工作就是在UI界面点点点。我就不多赘述了主要讲讲如何备份的问题。&lt;/p&gt;</description>
-      <content:encoded><![CDATA[<p>今天聊聊如何来管理我们的<code>代码仓库</code>
-在软件开发过程中，代码仓库是一个非常重要的组成部分。它不仅是存储代码的地方，也是团队协作和版本控制的基础。因此，管理好自己的代码仓库至关重要。</p>
-<p>本文将介绍如何使用Git来管理自己的代码仓库。</p>
-<h2 id="部署gitlab">部署GitLab</h2>
-<p>相较于传动的部署方式比较繁琐，我这里直接采用<code>docker</code>的部署方式来部署<code>gitlab</code>以方便后续管理。</p>
-<p>说一下使用Docker来部署的一些痛点：</p></p>
-<ol>
-<li>数据备份：在<code>Docker</code>中运行<code>Gitlab</code>，需要定期备份数据以防止数据丢失。但是备份数据的过程可能会很麻烦，并且需要设置合适的策略来避免数据丢失。所以这是我觉得不管是<code>GitLab</code>还是其他的应用，保证数据的完整可靠性是至关重要的。 </p></li>
-<li>版本更新：<code>Docker</code>部署<code>Gitlab</code>需要时刻关注版本更新，需要进行升级或者迁移，主要是数据迁移的数据保障工作需要额外注意。</li>
-</ol>
-<blockquote>
-<p>好了我们带着上面的两点问题，我们先来使用<code>docker</code>部署<code>GitLab</code>然后再慢慢探索。</p>
-</blockquote>
-<ul>
-<li><a class="link" href="https://github.com/docker/compose/releases/download/v2.24.0/docker-compose-linux-x86_64"  target="_blank" rel="noopener"
-    >DockerCompose</a></li>
-</ul>
-<ol>
-<li>我们使用<code>docker-compose</code>来部署<code>gitlab</code>仓库程序，注意镜像版本。如果你是尊贵的<code>ee</code>用户请修改镜像。如果你是普通的<code>ce</code>用户直接复制就行。</li>
-</ol>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">version</span><span class="p">:</span><span class="w"> </span><span class="s1">&#39;3.6&#39;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">services</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">web</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="s1">&#39;gitlab/gitlab-ce:latest&#39;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">restart</span><span class="p">:</span><span class="w"> </span><span class="l">always</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c"># 指定gitlab主机名称</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">hostname</span><span class="p">:</span><span class="w"> </span><span class="s1">&#39;gitlab.example.com&#39;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">environment</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">GITLAB_OMNIBUS_CONFIG</span><span class="p">:</span><span class="w"> </span><span class="p">|</span><span class="sd">
-</span></span></span><span class="line"><span class="cl"><span class="sd">        # gitlab访问地址
-</span></span></span><span class="line"><span class="cl"><span class="sd">        external_url &#39;http://10.1.6.100&#39;</span><span class="w">        
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">ports</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="s1">&#39;80:80&#39;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="s1">&#39;443:443&#39;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="s1">&#39;2212:22&#39;</span><span class="w"> </span><span class="c"># 防止与本地的22端口进行冲突</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">volumes</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="s1">&#39;/data/gitlab-app/config:/etc/gitlab&#39;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="s1">&#39;/data/gitlab-app/logs:/var/log/gitlab&#39;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="s1">&#39;/data/gitlab-app/data:/var/opt/gitlab&#39;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">shm_size</span><span class="p">:</span><span class="w"> </span><span class="s1">&#39;256m&#39;</span><span class="w">
-</span></span></span></code></pre></div><ol start="2">
-<li>启动<code>gitlab</code>程序</li>
-</ol>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">[</span>root@localhost gitlab-app<span class="o">]</span><span class="c1"># docker-compose up -d</span>
-</span></span><span class="line"><span class="cl"><span class="o">[</span>+<span class="o">]</span> Running 1/1
-</span></span><span class="line"><span class="cl"> ✔ Container gitlab-app-web-1  Started
-</span></span></code></pre></div><ol start="3">
-<li>部署完成后的一些相关设置可以参考<a class="link" href="https://docs.gitlab.com/ee/install/next_steps.html"  target="_blank" rel="noopener"
-    >官方文档</a></li>
-</ol>
-<p>实际上到此为止，我们的一个代码仓库就已经创建完成了，剩下的工作就是在UI界面点点点。我就不多赘述了主要讲讲如何备份的问题。</p>
-<h2 id="如何高效的进行容器备份">如何高效的进行容器备份</h2>
-<ul>
-<li>当然了如果你想保证更安全的数据备份可以在深夜<code>stop</code>掉你的代码仓库从而进行停机备份(暂不采取)</li>
-<li>简单备份和扩展备份</li>
-</ul>
-<h3 id="简单备份">简单备份</h3>
-<p>如果您使用数据量少于 100 GB的可以使用一下三个步骤进行备份</p>
-<ol>
-<li>运行备份命令</li>
-</ol>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">GitLab 12.2 或更高版本：
-</span></span><span class="line"><span class="cl">docker <span class="nb">exec</span> -t &lt;container name&gt; gitlab-backup create
-</span></span></code></pre></div><p>输出示例</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-txt" data-lang="txt"><span class="line"><span class="cl">Dumping database tables:
-</span></span><span class="line"><span class="cl">- Dumping table events... [DONE]
-</span></span><span class="line"><span class="cl">- Dumping table issues... [DONE]
-</span></span><span class="line"><span class="cl">- Dumping table keys... [DONE]
-</span></span><span class="line"><span class="cl">- Dumping table merge_requests... [DONE]
-</span></span><span class="line"><span class="cl">- Dumping table milestones... [DONE]
-</span></span><span class="line"><span class="cl">- Dumping table namespaces... [DONE]
-</span></span><span class="line"><span class="cl">- Dumping table notes... [DONE]
-</span></span><span class="line"><span class="cl">- Dumping table projects... [DONE]
-</span></span><span class="line"><span class="cl">- Dumping table protected_branches... [DONE]
-</span></span><span class="line"><span class="cl">- Dumping table schema_migrations... [DONE]
-</span></span><span class="line"><span class="cl">- Dumping table services... [DONE]
-</span></span><span class="line"><span class="cl">- Dumping table snippets... [DONE]
-</span></span><span class="line"><span class="cl">- Dumping table taggings... [DONE]
-</span></span><span class="line"><span class="cl">- Dumping table tags... [DONE]
-</span></span><span class="line"><span class="cl">- Dumping table users... [DONE]
-</span></span><span class="line"><span class="cl">- Dumping table users_projects... [DONE]
-</span></span><span class="line"><span class="cl">- Dumping table web_hooks... [DONE]
-</span></span><span class="line"><span class="cl">- Dumping table wikis... [DONE]
-</span></span><span class="line"><span class="cl">Dumping repositories:
-</span></span><span class="line"><span class="cl">- Dumping repository abcd... [DONE]
-</span></span><span class="line"><span class="cl">Creating backup archive: &lt;backup-id&gt;_gitlab_backup.tar [DONE]
-</span></span><span class="line"><span class="cl">Deleting tmp directories...[DONE]
-</span></span><span class="line"><span class="cl">Deleting old backups... [SKIPPING]
-</span></span></code></pre></div><p>这里说明一下关于<code>备份策略选项</code>的选项</p>
-<ul>
-<li>更多地备份选项可以参考<a class="link" href="https://docs.gitlab.com/ee/administration/backup_restore/backup_gitlab.html?tab=Docker"  target="_blank" rel="noopener"
-    >官方文档</a></li>
-</ul>
-<p><code>tar</code>默认备份策略本质上是使用 Linux 命令和将数据从相应的数据位置流式传输到备份<code>gzip</code>。这在大多数情况下工作正常，但当数据快速变化时可能会导致问题。</p>
-<p><code>tar</code>当读取数据时数据发生变化，<code>file changed as we read it</code>可能会发生错误，并导致备份过程失败。在这种情况下，您可以使用名为 的备份策略<code>copy</code>。<code>tar</code>该策略在调用和之前将数据文件复制到临时位置<code>gzip</code>，以避免错误。</p>
-<p>副作用是备份过程会额外占用 1X 的磁盘空间。该过程会尽力清理每个阶段的临时文件，因此问题不会变得复杂，但对于大型安装来说，这可能是一个相当大的变化。
-要使用该<code>copy</code>策略而不是默认的流策略，请 <code>STRATEGY=copy</code>在 <code>Rake</code> 任务命令中指定。</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">docker <span class="nb">exec</span> -t &lt;container name&gt; gitlab-backup create <span class="nv">STRATEGY</span><span class="o">=</span>copy
-</span></span></code></pre></div><ol start="2">
-<li>
-<p>考虑将备份出来的相关文件上传到<code>对象存储</code>: 例如 S3、<code>Minio</code>等程序。</p>
-</li>
-<li>
-<p>手动备份<code>gitlab.rb</code>和<code>gitlab-secrets.json</code>。您可能还需要备份所有 TLS 密钥和证书 <code>/etc/gitlab/ssl</code>、<code>/etc/gitlab/trusted-certs</code> 以及 SSH 主机密钥。</p>
-</li>
-</ol>
-<blockquote>
-<p>如果这两种文件丢失请参考<a class="link" href="https://docs.gitlab.com/ee/administration/backup_restore/troubleshooting_backup_gitlab.html#when-the-secrets-file-is-lost"  target="_blank" rel="noopener"
-    >官方文档</a></p>
-</blockquote>
-<h2 id="恢复保存的数据">恢复保存的数据</h2>
-<p>首先恢复数据要满足的一些<code>前提条件</code></p>
-<ol>
-<li>目标 GitLab 实例必须已在运行</li>
-<li>目标 GitLab 实例必须具有完全相同的版本</li>
-<li>必须恢复 GitLab 机密配置文件</li>
-<li>某些 GitLab 配置必须与原始备份环境匹配：例如TLS证书等内容</li>
-<li>恢复作为挂载点的目录：<a class="link" href="https://docs.gitlab.com/ee/administration/nfs.html"  target="_blank" rel="noopener"
-    >详细参考</a></li>
-</ol>
-<p>下面我们来具体看一下如何恢复已经从<code>gitlab</code>中备份的数据内容以及仓库等信息。</p>
-<ol>
-<li>如果使用<code>Docker Swarm</code>，容器可能会在恢复过程中重新启动，因为<code>Puma</code>已关闭，因此容器运行状况检查失败。要解决此问题，请暂时禁用运行状况检查机制。</li>
-</ol>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="c"># 修改docker-compose.yaml</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">healthcheck</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">disable</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
-</span></span></span></code></pre></div><ol start="2">
-<li>部署堆栈信息(仅限于<code>DockerSwarm</code>)，关于为啥这样做请参考<a class="link" href="https://gitlab.com/gitlab-org/omnibus-gitlab/-/issues/6846"  target="_blank" rel="noopener"
-    >issuse6846</a></li>
-</ol>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">docker stack deploy --compose-file docker-compose.yml mystack
-</span></span></code></pre></div><ol start="3">
-<li>恢复步骤</li>
-</ol>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 首先停止puma和sidekiq</span>
-</span></span><span class="line"><span class="cl">docker <span class="nb">exec</span> -it &lt;name of container&gt; gitlab-ctl stop puma
-</span></span><span class="line"><span class="cl">docker <span class="nb">exec</span> -it &lt;name of container&gt; gitlab-ctl stop sidekiq
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="c1"># 然后查看gitlab相关组件的状态 puma:down sidekiq:down</span>
-</span></span><span class="line"><span class="cl">docker <span class="nb">exec</span> -it &lt;name of container&gt; gitlab-ctl status
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="c1"># 开始恢复指定的备份文件</span>
-</span></span><span class="line"><span class="cl">docker <span class="nb">exec</span> -it &lt;name of container&gt; gitlab-backup restore <span class="nv">BACKUP</span><span class="o">=</span>11493107454_2018_04_25_10.6.4-ce
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="c1"># 重启你的gitlab</span>
-</span></span><span class="line"><span class="cl">docker-compose restart
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="c1"># 检查相关的元数据信息</span>
-</span></span><span class="line"><span class="cl">docker <span class="nb">exec</span> -it &lt;name of container&gt; gitlab-rake gitlab:check <span class="nv">SANITIZE</span><span class="o">=</span><span class="nb">true</span>
-</span></span></code></pre></div><p>这大概就是一个<code>gitlab</code>备份完整的恢复过程，当然本文没有涉及到的相关内容可以通过参考官网文档(上面有写)来进行扩充。</p>
-]]></content:encoded>
-    </item>
-  </channel>
+&lt;p&gt;实际上到此为止，我们的一个代码仓库就已经创建完成了，剩下的工作就是在UI界面点点点。我就不多赘述了主要讲讲如何备份的问题。&lt;/p&gt;
+&lt;h2 id=&#34;如何高效的进行容器备份&#34;&gt;&lt;/h&gt;如何高效的进行容器备份
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;当然了如果你想保证更安全的数据备份可以在深夜&lt;code&gt;stop&lt;/code&gt;掉你的代码仓库从而进行停机备份(暂不采取)&lt;/li&gt;
+&lt;li&gt;简单备份和扩展备份&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;简单备份&#34;&gt;&lt;/h&gt;简单备份
+&lt;/h3&gt;&lt;p&gt;如果您使用数据量少于 100 GB的可以使用一下三个步骤进行备份&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;运行备份命令&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;GitLab 12.2 或更高版本：
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;docker &lt;span class=&#34;nb&#34;&gt;exec&lt;/span&gt; -t &amp;lt;container name&amp;gt; gitlab-backup create
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;输出示例&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-txt&#34; data-lang=&#34;txt&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Dumping database tables:
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;- Dumping table events... [DONE]
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;- Dumping table issues... [DONE]
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;- Dumping table keys... [DONE]
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;- Dumping table merge_requests... [DONE]
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;- Dumping table milestones... [DONE]
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;- Dumping table namespaces... [DONE]
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;- Dumping table notes... [DONE]
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;- Dumping table projects... [DONE]
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;- Dumping table protected_branches... [DONE]
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;- Dumping table schema_migrations... [DONE]
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;- Dumping table services... [DONE]
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;- Dumping table snippets... [DONE]
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;- Dumping table taggings... [DONE]
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;- Dumping table tags... [DONE]
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;- Dumping table users... [DONE]
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;- Dumping table users_projects... [DONE]
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;- Dumping table web_hooks... [DONE]
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;- Dumping table wikis... [DONE]
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Dumping repositories:
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;- Dumping repository abcd... [DONE]
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Creating backup archive: &amp;lt;backup-id&amp;gt;_gitlab_backup.tar [DONE]
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Deleting tmp directories...[DONE]
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Deleting old backups... [SKIPPING]
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;这里说明一下关于&lt;code&gt;备份策略选项&lt;/code&gt;的选项&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;更多地备份选项可以参考&lt;a class=&#34;link&#34; href=&#34;https://docs.gitlab.com/ee/administration/backup_restore/backup_gitlab.html?tab=Docker&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;官方文档&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;code&gt;tar&lt;/code&gt;默认备份策略本质上是使用 Linux 命令和将数据从相应的数据位置流式传输到备份&lt;code&gt;gzip&lt;/code&gt;。这在大多数情况下工作正常，但当数据快速变化时可能会导致问题。&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;tar&lt;/code&gt;当读取数据时数据发生变化，&lt;code&gt;file changed as we read it&lt;/code&gt;可能会发生错误，并导致备份过程失败。在这种情况下，您可以使用名为 的备份策略&lt;code&gt;copy&lt;/code&gt;。&lt;code&gt;tar&lt;/code&gt;该策略在调用和之前将数据文件复制到临时位置&lt;code&gt;gzip&lt;/code&gt;，以避免错误。&lt;/p&gt;
+&lt;p&gt;副作用是备份过程会额外占用 1X 的磁盘空间。该过程会尽力清理每个阶段的临时文件，因此问题不会变得复杂，但对于大型安装来说，这可能是一个相当大的变化。
+要使用该&lt;code&gt;copy&lt;/code&gt;策略而不是默认的流策略，请 &lt;code&gt;STRATEGY=copy&lt;/code&gt;在 &lt;code&gt;Rake&lt;/code&gt; 任务命令中指定。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;docker &lt;span class=&#34;nb&#34;&gt;exec&lt;/span&gt; -t &amp;lt;container name&amp;gt; gitlab-backup create &lt;span class=&#34;nv&#34;&gt;STRATEGY&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;copy
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;ol start=&#34;2&#34;&gt;
+&lt;li&gt;
+&lt;p&gt;考虑将备份出来的相关文件上传到&lt;code&gt;对象存储&lt;/code&gt;: 例如 S3、&lt;code&gt;Minio&lt;/code&gt;等程序。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;手动备份&lt;code&gt;gitlab.rb&lt;/code&gt;和&lt;code&gt;gitlab-secrets.json&lt;/code&gt;。您可能还需要备份所有 TLS 密钥和证书 &lt;code&gt;/etc/gitlab/ssl&lt;/code&gt;、&lt;code&gt;/etc/gitlab/trusted-certs&lt;/code&gt; 以及 SSH 主机密钥。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;blockquote&gt;
+&lt;p&gt;如果这两种文件丢失请参考&lt;a class=&#34;link&#34; href=&#34;https://docs.gitlab.com/ee/administration/backup_restore/troubleshooting_backup_gitlab.html#when-the-secrets-file-is-lost&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;官方文档&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2 id=&#34;恢复保存的数据&#34;&gt;&lt;/h&gt;恢复保存的数据
+&lt;/h2&gt;&lt;p&gt;首先恢复数据要满足的一些&lt;code&gt;前提条件&lt;/code&gt;&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;目标 GitLab 实例必须已在运行&lt;/li&gt;
+&lt;li&gt;目标 GitLab 实例必须具有完全相同的版本&lt;/li&gt;
+&lt;li&gt;必须恢复 GitLab 机密配置文件&lt;/li&gt;
+&lt;li&gt;某些 GitLab 配置必须与原始备份环境匹配：例如TLS证书等内容&lt;/li&gt;
+&lt;li&gt;恢复作为挂载点的目录：&lt;a class=&#34;link&#34; href=&#34;https://docs.gitlab.com/ee/administration/nfs.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;详细参考&lt;/a&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;下面我们来具体看一下如何恢复已经从&lt;code&gt;gitlab&lt;/code&gt;中备份的数据内容以及仓库等信息。&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;如果使用&lt;code&gt;Docker Swarm&lt;/code&gt;，容器可能会在恢复过程中重新启动，因为&lt;code&gt;Puma&lt;/code&gt;已关闭，因此容器运行状况检查失败。要解决此问题，请暂时禁用运行状况检查机制。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-yaml&#34; data-lang=&#34;yaml&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c&#34;&gt;# 修改docker-compose.yaml&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;healthcheck&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;  &lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;disable&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;kc&#34;&gt;true&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;ol start=&#34;2&#34;&gt;
+&lt;li&gt;部署堆栈信息(仅限于&lt;code&gt;DockerSwarm&lt;/code&gt;)，关于为啥这样做请参考&lt;a class=&#34;link&#34; href=&#34;https://gitlab.com/gitlab-org/omnibus-gitlab/-/issues/6846&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;issuse6846&lt;/a&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;docker stack deploy --compose-file docker-compose.yml mystack
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;ol start=&#34;3&#34;&gt;
+&lt;li&gt;恢复步骤&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 首先停止puma和sidekiq&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;docker &lt;span class=&#34;nb&#34;&gt;exec&lt;/span&gt; -it &amp;lt;name of container&amp;gt; gitlab-ctl stop puma
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;docker &lt;span class=&#34;nb&#34;&gt;exec&lt;/span&gt; -it &amp;lt;name of container&amp;gt; gitlab-ctl stop sidekiq
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 然后查看gitlab相关组件的状态 puma:down sidekiq:down&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;docker &lt;span class=&#34;nb&#34;&gt;exec&lt;/span&gt; -it &amp;lt;name of container&amp;gt; gitlab-ctl status
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 开始恢复指定的备份文件&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;docker &lt;span class=&#34;nb&#34;&gt;exec&lt;/span&gt; -it &amp;lt;name of container&amp;gt; gitlab-backup restore &lt;span class=&#34;nv&#34;&gt;BACKUP&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;11493107454_2018_04_25_10.6.4-ce
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 重启你的gitlab&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;docker-compose restart
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 检查相关的元数据信息&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;docker &lt;span class=&#34;nb&#34;&gt;exec&lt;/span&gt; -it &amp;lt;name of container&amp;gt; gitlab-rake gitlab:check &lt;span class=&#34;nv&#34;&gt;SANITIZE&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;true&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;这大概就是一个&lt;code&gt;gitlab&lt;/code&gt;备份完整的恢复过程，当然本文没有涉及到的相关内容可以通过参考官网文档(上面有写)来进行扩充。&lt;/p&gt;
+</description>
+        </item>
+        
+    </channel>
 </rss>

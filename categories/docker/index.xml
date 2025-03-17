@@ -1,25 +1,20 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
-  <channel>
-    <title>Docker on 太阳可以是蓝色</title>
-    <link>https://blog.mletter.cn/categories/docker/</link>
-    <description>Recent content in Docker on 太阳可以是蓝色</description>
-    <image>
-      <title>太阳可以是蓝色</title>
-      <url>https://blog.mletter.cn/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</url>
-      <link>https://blog.mletter.cn/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</link>
-    </image>
-    <generator>Hugo -- 0.138.0</generator>
-    <language>zh</language>
-    <lastBuildDate>Tue, 16 Jul 2024 00:00:00 +0000</lastBuildDate>
-    <atom:link href="https://blog.mletter.cn/categories/docker/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>利用CloudFlare来实现镜像加速</title>
-      <link>https://blog.mletter.cn/tech/docker/cloudflare-proxy/</link>
-      <pubDate>Tue, 16 Jul 2024 00:00:00 +0000</pubDate>
-      <guid>https://blog.mletter.cn/tech/docker/cloudflare-proxy/</guid>
-      <description>&lt;h2 id=&#34;目前可用加速镜像仓库&#34;&gt;目前可用加速镜像仓库&lt;/h2&gt;
-&lt;p&gt;DockerProxy 代理加速：&lt;code&gt;dockerproxy.com&lt;/code&gt;&lt;/p&gt;
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>Docker on 太阳可以是蓝色</title>
+        <link>https://blog.mletter.cn/categories/docker/</link>
+        <description>Recent content in Docker on 太阳可以是蓝色</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>en-us</language>
+        <copyright>Live and learn. 🌱</copyright>
+        <lastBuildDate>Tue, 16 Jul 2024 00:00:00 +0000</lastBuildDate><atom:link href="https://blog.mletter.cn/categories/docker/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>利用CloudFlare来实现镜像加速</title>
+        <link>https://blog.mletter.cn/tech/docker/cloudflare-proxy/</link>
+        <pubDate>Tue, 16 Jul 2024 00:00:00 +0000</pubDate>
+        
+        <guid>https://blog.mletter.cn/tech/docker/cloudflare-proxy/</guid>
+        <description>&lt;h2 id=&#34;目前可用加速镜像仓库&#34;&gt;&lt;/h&gt;目前可用加速镜像仓库
+&lt;/h2&gt;&lt;p&gt;DockerProxy 代理加速：&lt;code&gt;dockerproxy.com&lt;/code&gt;&lt;/p&gt;
 &lt;p&gt;百度云 Mirror: &lt;code&gt;mirror.baidubce.com&lt;/code&gt;&lt;/p&gt;
 &lt;p&gt;Daocloud: &lt;code&gt;docker.m.daocloud.io&lt;/code&gt;&lt;/p&gt;
 &lt;p&gt;南京大学：&lt;code&gt;docker.nju.edu.cn&lt;/code&gt;&lt;/p&gt;
@@ -39,13 +34,13 @@
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;err&#34;&gt;EOF&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;err&#34;&gt;sudo&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;systemctl&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;daemon-reload&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;err&#34;&gt;sudo&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;systemctl&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;restart&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;docker&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;准备工作&#34;&gt;准备工作&lt;/h2&gt;
-&lt;ol&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;准备工作&#34;&gt;&lt;/h&gt;准备工作
+&lt;/h2&gt;&lt;ol&gt;
 &lt;li&gt;注册&lt;a class=&#34;link&#34; href=&#34;https://www.cloudflare.com/zh-cn/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;CloudFlare&lt;/a&gt;账号&lt;/li&gt;
 &lt;/ol&gt;
-&lt;h2 id=&#34;开始自建cloudflare仓库&#34;&gt;开始自建CloudFlare仓库&lt;/h2&gt;
-&lt;ol&gt;
+&lt;h2 id=&#34;开始自建cloudflare仓库&#34;&gt;&lt;/h&gt;开始自建CloudFlare仓库
+&lt;/h2&gt;&lt;ol&gt;
 &lt;li&gt;
 &lt;p&gt;首先进入&lt;code&gt;cloudflare&lt;/code&gt;创建一个&lt;a class=&#34;link&#34; href=&#34;https://dash.cloudflare.com/c579b91fceeb4c0fd92690ee27753575/workers-and-pages/create/integration/678adf9e-89f8-4235-9530-d95a12851369/version/0.0.3/integrations-setup&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;Workers&lt;/a&gt;,创建完成以后点击&lt;a class=&#34;link&#34; href=&#34;https://dash.cloudflare.com/c579b91fceeb4c0fd92690ee27753575/workers/services/edit/broken-wildflower-64b4/production&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
@@ -188,596 +183,446 @@
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;ol start=&#34;4&#34;&gt;
 &lt;li&gt;点击右侧的部署&lt;/li&gt;
 &lt;/ol&gt;
-&lt;p&gt;&lt;img style=&#34;max-width: 100%; height: auto;&#34; loading=&#34;lazy&#34; loading=&#34;lazy&#34; src=&#34;https://img10.360buyimg.com/ddimg/jfs/t1/233201/20/20655/112966/66960dbeF94b73bb3/5187c6eda27a9525.jpg&#34;&gt;&lt;/p&gt;</description>
-      <content:encoded><![CDATA[<h2 id="目前可用加速镜像仓库">目前可用加速镜像仓库</h2>
-<p>DockerProxy 代理加速：<code>dockerproxy.com</code></p>
-<p>百度云 Mirror: <code>mirror.baidubce.com</code></p>
-<p>Daocloud: <code>docker.m.daocloud.io</code></p>
-<p>南京大学：<code>docker.nju.edu.cn</code></p>
-<p>上海交大：<code>docker.mirrors.sjtug.sjtu.edu.cn</code></p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-json" data-lang="json"><span class="line"><span class="cl"><span class="err">sudo</span> <span class="err">mkdir</span> <span class="err">-p</span> <span class="err">/etc/docker</span>
-</span></span><span class="line"><span class="cl"><span class="err">sudo</span> <span class="err">tee</span> <span class="err">/etc/docker/daemon.json</span> <span class="err">&lt;&lt;-EOF</span>
-</span></span><span class="line"><span class="cl"><span class="p">{</span>
-</span></span><span class="line"><span class="cl">    <span class="nt">&#34;registry-mirrors&#34;</span><span class="p">:</span> <span class="p">[</span>
-</span></span><span class="line"><span class="cl">        <span class="s2">&#34;https://&lt;changme&gt;.mirror.aliyuncs.com&#34;</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">        <span class="s2">&#34;https://dockerproxy.com&#34;</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">        <span class="s2">&#34;https://mirror.baidubce.com&#34;</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">        <span class="s2">&#34;https://docker.m.daocloud.io&#34;</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">        <span class="s2">&#34;https://docker.nju.edu.cn&#34;</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">        <span class="s2">&#34;https://docker.mirrors.sjtug.sjtu.edu.cn&#34;</span>
-</span></span><span class="line"><span class="cl">    <span class="p">]</span>
-</span></span><span class="line"><span class="cl"><span class="p">}</span>
-</span></span><span class="line"><span class="cl"><span class="err">EOF</span>
-</span></span><span class="line"><span class="cl"><span class="err">sudo</span> <span class="err">systemctl</span> <span class="err">daemon-reload</span>
-</span></span><span class="line"><span class="cl"><span class="err">sudo</span> <span class="err">systemctl</span> <span class="err">restart</span> <span class="err">docker</span>
-</span></span></code></pre></div><h2 id="准备工作">准备工作</h2>
-<ol>
-<li>注册<a class="link" href="https://www.cloudflare.com/zh-cn/"  target="_blank" rel="noopener"
-    >CloudFlare</a>账号</li>
-</ol>
-<h2 id="开始自建cloudflare仓库">开始自建CloudFlare仓库</h2>
-<ol>
-<li>
-<p>首先进入<code>cloudflare</code>创建一个<a class="link" href="https://dash.cloudflare.com/c579b91fceeb4c0fd92690ee27753575/workers-and-pages/create/integration/678adf9e-89f8-4235-9530-d95a12851369/version/0.0.3/integrations-setup"  target="_blank" rel="noopener"
-    >Workers</a>,创建完成以后点击<a class="link" href="https://dash.cloudflare.com/c579b91fceeb4c0fd92690ee27753575/workers/services/edit/broken-wildflower-64b4/production"  target="_blank" rel="noopener"
-    >编辑代码</a></p>
-</li>
-<li>
-<p>编辑<code>Woker.js</code>文件</p>
-</li>
-</ol>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="line"><span class="cl"><span class="kr">import</span> <span class="nx">HTML</span> <span class="nx">from</span> <span class="s1">&#39;./docker.html&#39;</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl"><span class="kr">export</span> <span class="k">default</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">    <span class="kr">async</span> <span class="nx">fetch</span><span class="p">(</span><span class="nx">request</span><span class="p">)</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">        <span class="kr">const</span> <span class="nx">url</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">URL</span><span class="p">(</span><span class="nx">request</span><span class="p">.</span><span class="nx">url</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl">        <span class="kr">const</span> <span class="nx">path</span> <span class="o">=</span> <span class="nx">url</span><span class="p">.</span><span class="nx">pathname</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">        <span class="kr">const</span> <span class="nx">originalHost</span> <span class="o">=</span> <span class="nx">request</span><span class="p">.</span><span class="nx">headers</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s2">&#34;host&#34;</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl">        <span class="kr">const</span> <span class="nx">registryHost</span> <span class="o">=</span> <span class="s2">&#34;registry-1.docker.io&#34;</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="nx">path</span><span class="p">.</span><span class="nx">startsWith</span><span class="p">(</span><span class="s2">&#34;/v2/&#34;</span><span class="p">))</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">        <span class="kr">const</span> <span class="nx">headers</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Headers</span><span class="p">(</span><span class="nx">request</span><span class="p">.</span><span class="nx">headers</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl">        <span class="nx">headers</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s2">&#34;host&#34;</span><span class="p">,</span> <span class="nx">registryHost</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl">        <span class="kr">const</span> <span class="nx">registryUrl</span> <span class="o">=</span> <span class="sb">`https://</span><span class="si">${</span><span class="nx">registryHost</span><span class="si">}${</span><span class="nx">path</span><span class="si">}</span><span class="sb">`</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">        <span class="kr">const</span> <span class="nx">registryRequest</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Request</span><span class="p">(</span><span class="nx">registryUrl</span><span class="p">,</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">            <span class="nx">method</span><span class="o">:</span> <span class="nx">request</span><span class="p">.</span><span class="nx">method</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">            <span class="nx">headers</span><span class="o">:</span> <span class="nx">headers</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">            <span class="nx">body</span><span class="o">:</span> <span class="nx">request</span><span class="p">.</span><span class="nx">body</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">            <span class="c1">// redirect: &#34;manual&#34;,
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>            <span class="nx">redirect</span><span class="o">:</span> <span class="s2">&#34;follow&#34;</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">        <span class="p">});</span>
-</span></span><span class="line"><span class="cl">        <span class="kr">const</span> <span class="nx">registryResponse</span> <span class="o">=</span> <span class="kr">await</span> <span class="nx">fetch</span><span class="p">(</span><span class="nx">registryRequest</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl">        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">registryResponse</span><span class="p">.</span><span class="nx">status</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl">        <span class="kr">const</span> <span class="nx">responseHeaders</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Headers</span><span class="p">(</span><span class="nx">registryResponse</span><span class="p">.</span><span class="nx">headers</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl">        <span class="nx">responseHeaders</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s2">&#34;access-control-allow-origin&#34;</span><span class="p">,</span> <span class="nx">originalHost</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl">        <span class="nx">responseHeaders</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s2">&#34;access-control-allow-headers&#34;</span><span class="p">,</span> <span class="s2">&#34;Authorization&#34;</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="k">new</span> <span class="nx">Response</span><span class="p">(</span><span class="nx">registryResponse</span><span class="p">.</span><span class="nx">body</span><span class="p">,</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">            <span class="nx">status</span><span class="o">:</span> <span class="nx">registryResponse</span><span class="p">.</span><span class="nx">status</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">            <span class="nx">statusText</span><span class="o">:</span> <span class="nx">registryResponse</span><span class="p">.</span><span class="nx">statusText</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">            <span class="nx">headers</span><span class="o">:</span> <span class="nx">responseHeaders</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">        <span class="p">});</span>
-</span></span><span class="line"><span class="cl">        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="k">new</span> <span class="nx">Response</span><span class="p">(</span><span class="nx">HTML</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/{{host}}/g</span><span class="p">,</span> <span class="nx">originalHost</span><span class="p">),</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">            <span class="nx">status</span><span class="o">:</span> <span class="mi">200</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">            <span class="nx">headers</span><span class="o">:</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">            <span class="s2">&#34;content-type&#34;</span><span class="o">:</span> <span class="s2">&#34;text/html&#34;</span>
-</span></span><span class="line"><span class="cl">            <span class="p">}</span>
-</span></span><span class="line"><span class="cl">        <span class="p">});</span>
-</span></span><span class="line"><span class="cl">        <span class="p">}</span>
-</span></span><span class="line"><span class="cl">    <span class="p">}</span>
-</span></span><span class="line"><span class="cl"><span class="p">}</span>
-</span></span></code></pre></div><ol start="3">
-<li>编辑器内新建<code>docker.html</code></li>
-</ol>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="cl"><span class="cp">&lt;!DOCTYPE html&gt;</span>
-</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">html</span> <span class="na">lang</span><span class="o">=</span><span class="s">&#34;zh-CN&#34;</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">head</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nt">meta</span> <span class="na">charset</span><span class="o">=</span><span class="s">&#34;utf-8&#34;</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nt">meta</span> <span class="na">name</span><span class="o">=</span><span class="s">&#34;viewport&#34;</span> <span class="na">content</span><span class="o">=</span><span class="s">&#34;width=device-width, initial-scale=1&#34;</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nt">title</span><span class="p">&gt;</span>镜像使用说明<span class="p">&lt;/</span><span class="nt">title</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nt">style</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl">        <span class="nt">body</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">            <span class="k">font-family</span><span class="p">:</span> <span class="s1">&#39;Roboto&#39;</span><span class="p">,</span> <span class="kc">sans-serif</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">            <span class="k">margin</span><span class="p">:</span> <span class="mi">0</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">            <span class="k">padding</span><span class="p">:</span> <span class="mi">0</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">            <span class="k">background-color</span><span class="p">:</span> <span class="mh">#f4f4f4</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">        <span class="p">}</span>
-</span></span><span class="line"><span class="cl">        <span class="p">.</span><span class="nc">header</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">            <span class="k">background</span><span class="p">:</span> <span class="nb">linear-gradient</span><span class="p">(</span><span class="mi">135</span><span class="kt">deg</span><span class="p">,</span> <span class="mh">#667eea</span><span class="p">,</span> <span class="mh">#764ba2</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl">            <span class="k">color</span><span class="p">:</span> <span class="mh">#fff</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">            <span class="k">padding</span><span class="p">:</span> <span class="mi">20</span><span class="kt">px</span> <span class="mi">0</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">            <span class="k">text-align</span><span class="p">:</span> <span class="kc">center</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">            <span class="k">box-shadow</span><span class="p">:</span> <span class="mi">0</span> <span class="mi">2</span><span class="kt">px</span> <span class="mi">4</span><span class="kt">px</span> <span class="nb">rgba</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl">        <span class="p">}</span>
-</span></span><span class="line"><span class="cl">        <span class="p">.</span><span class="nc">container</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">            <span class="k">max-width</span><span class="p">:</span> <span class="mi">800</span><span class="kt">px</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">            <span class="k">margin</span><span class="p">:</span> <span class="mi">40</span><span class="kt">px</span> <span class="kc">auto</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">            <span class="k">padding</span><span class="p">:</span> <span class="mi">20</span><span class="kt">px</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">            <span class="k">background-color</span><span class="p">:</span> <span class="mh">#fff</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">            <span class="k">box-shadow</span><span class="p">:</span> <span class="mi">0</span> <span class="mi">4</span><span class="kt">px</span> <span class="mi">8</span><span class="kt">px</span> <span class="nb">rgba</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl">            <span class="k">border-radius</span><span class="p">:</span> <span class="mi">10</span><span class="kt">px</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">        <span class="p">}</span>
-</span></span><span class="line"><span class="cl">        <span class="p">.</span><span class="nc">content</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">            <span class="k">margin-bottom</span><span class="p">:</span> <span class="mi">20</span><span class="kt">px</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">        <span class="p">}</span>
-</span></span><span class="line"><span class="cl">        <span class="p">.</span><span class="nc">footer</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">            <span class="k">text-align</span><span class="p">:</span> <span class="kc">center</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">            <span class="k">padding</span><span class="p">:</span> <span class="mi">20</span><span class="kt">px</span> <span class="mi">0</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">            <span class="k">background-color</span><span class="p">:</span> <span class="mh">#333</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">            <span class="k">color</span><span class="p">:</span> <span class="mh">#fff</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">        <span class="p">}</span>
-</span></span><span class="line"><span class="cl">        <span class="nt">pre</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">            <span class="k">background-color</span><span class="p">:</span> <span class="mh">#272822</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">            <span class="k">color</span><span class="p">:</span> <span class="mh">#f8f8f2</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">            <span class="k">padding</span><span class="p">:</span> <span class="mi">15</span><span class="kt">px</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">            <span class="k">border-radius</span><span class="p">:</span> <span class="mi">5</span><span class="kt">px</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">            <span class="k">overflow-x</span><span class="p">:</span> <span class="kc">auto</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">        <span class="p">}</span>
-</span></span><span class="line"><span class="cl">        <span class="nt">code</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">            <span class="k">font-family</span><span class="p">:</span> <span class="s1">&#39;Source Code Pro&#39;</span><span class="p">,</span> <span class="kc">monospace</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">        <span class="p">}</span>
-</span></span><span class="line"><span class="cl">        <span class="nt">a</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">            <span class="k">color</span><span class="p">:</span> <span class="mh">#4CAF50</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">            <span class="k">text-decoration</span><span class="p">:</span> <span class="kc">none</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">        <span class="p">}</span>
-</span></span><span class="line"><span class="cl">        <span class="nt">a</span><span class="p">:</span><span class="nd">hover</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">            <span class="k">text-decoration</span><span class="p">:</span> <span class="kc">underline</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">        <span class="p">}</span>
-</span></span><span class="line"><span class="cl">        <span class="p">@</span><span class="k">media</span> <span class="o">(</span><span class="nt">max-width</span><span class="o">:</span> <span class="nt">600px</span><span class="o">)</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">            <span class="p">.</span><span class="nc">container</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">                <span class="k">margin</span><span class="p">:</span> <span class="mi">20</span><span class="kt">px</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">                <span class="k">padding</span><span class="p">:</span> <span class="mi">15</span><span class="kt">px</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">            <span class="p">}</span>
-</span></span><span class="line"><span class="cl">            <span class="p">.</span><span class="nc">header</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">                <span class="k">padding</span><span class="p">:</span> <span class="mi">15</span><span class="kt">px</span> <span class="mi">0</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">            <span class="p">}</span>
-</span></span><span class="line"><span class="cl">        <span class="p">}</span>
-</span></span><span class="line"><span class="cl">    <span class="p">&lt;/</span><span class="nt">style</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nt">link</span> <span class="na">href</span><span class="o">=</span><span class="s">&#34;https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&amp;family=Source+Code+Pro:wght@400;700&amp;display=swap&#34;</span> <span class="na">rel</span><span class="o">=</span><span class="s">&#34;stylesheet&#34;</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">head</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">body</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&#34;header&#34;</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl">        <span class="p">&lt;</span><span class="nt">h1</span><span class="p">&gt;</span>镜像仓库Hub加速说明<span class="p">&lt;/</span><span class="nt">h1</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl">    <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&#34;container&#34;</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl">        <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&#34;content&#34;</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl">            <span class="p">&lt;</span><span class="nt">p</span><span class="p">&gt;</span>为了加速镜像拉取，你可以使用以下命令设置 registry mirror:<span class="p">&lt;/</span><span class="nt">p</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl">            <span class="p">&lt;</span><span class="nt">pre</span><span class="p">&gt;&lt;</span><span class="nt">code</span><span class="p">&gt;</span>sudo tee /etc/docker/daemon.json <span class="ni">&amp;lt;&amp;lt;</span>EOF
-</span></span><span class="line"><span class="cl">{
-</span></span><span class="line"><span class="cl">    &#34;registry-mirrors&#34;: [&#34;https://{{host}}&#34;]
-</span></span><span class="line"><span class="cl">}
-</span></span><span class="line"><span class="cl">EOF<span class="p">&lt;/</span><span class="nt">code</span><span class="p">&gt;&lt;/</span><span class="nt">pre</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl">            <span class="p">&lt;</span><span class="nt">p</span><span class="p">&gt;</span>为了避免 Worker 用量耗尽，你可以手动 pull 镜像然后 re-tag 之后 push 至本地镜像仓库:<span class="p">&lt;/</span><span class="nt">p</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl">            <span class="p">&lt;</span><span class="nt">pre</span><span class="p">&gt;&lt;</span><span class="nt">code</span><span class="p">&gt;</span>docker pull {{host}}/library/alpine:latest # 拉取 library 镜像
-</span></span><span class="line"><span class="cl">docker pull {{host}}/coredns/coredns:latest # 拉取 coredns 镜像<span class="p">&lt;/</span><span class="nt">code</span><span class="p">&gt;&lt;/</span><span class="nt">pre</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl">        <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl">    <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&#34;footer&#34;</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl">        <span class="p">&lt;</span><span class="nt">p</span><span class="p">&gt;</span>Powered by Cloudflare Workers<span class="p">&lt;/</span><span class="nt">p</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl">        <span class="p">&lt;</span><span class="nt">p</span><span class="p">&gt;&lt;</span><span class="nt">a</span> <span class="na">href</span><span class="o">=</span><span class="s">&#34;https://blog.mletter.cn&#34;</span> <span class="na">target</span><span class="o">=</span><span class="s">&#34;_blank&#34;</span><span class="p">&gt;</span>技术支持: Cloudflare <span class="err">&amp;&amp;</span> 春日心动日记<span class="p">&lt;/</span><span class="nt">a</span><span class="p">&gt;&lt;/</span><span class="nt">p</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl">    <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">body</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">html</span><span class="p">&gt;</span>
-</span></span></code></pre></div><ol start="4">
-<li>点击右侧的部署</li>
-</ol>
-<p><img style="max-width: 100%; height: auto;" loading="lazy" loading="lazy" src="https://img10.360buyimg.com/ddimg/jfs/t1/233201/20/20655/112966/66960dbeF94b73bb3/5187c6eda27a9525.jpg"></p>
-]]></content:encoded>
-    </item>
-    <item>
-      <title>优雅的多阶段构建微服务镜像</title>
-      <link>https://blog.mletter.cn/tech/docker/review-docker/</link>
-      <pubDate>Wed, 08 May 2024 00:00:00 +0000</pubDate>
-      <guid>https://blog.mletter.cn/tech/docker/review-docker/</guid>
-      <description>如何使用Docker的多阶段构建功能来优雅的构建服务镜像</description>
-      <content:encoded><![CDATA[<h2 id="借助maven-wrapper">借助Maven Wrapper</h2>
-<p>首先我们说说<code>maven wrapper</code>的使用场景</p>
-<p>假设我们所在的团队同时维护多个项目，不同的项目使用的<code>JDK</code>版本不同，使用的<code>maven</code>版本也不同，那么为了支持多项目开发，为了构建运行效果一致，你可能需要在本地管理多个<code>maven</code>版本，这会非常繁琐，从而引出了<code>maven wrapper</code>来解决这个<code>maven</code>版本的管理问题。</p>
-<ul>
-<li>版本一致性：通过在<code>mvnw</code>配置中指定 Maven 版本，确保所有开发人员和持续集成环境使用相同的<code>maven</code>版本。</li>
-<li>简化批量安装：不需要预先安装<code>maven</code>，直接运行<code>mvnw</code>命令就如安装了<code>mvn</code>一样，从而简化了项目的初始设置和配置。</li>
-</ul>
-<h2 id="maven-wrapper安装方式">Maven Wrapper安装方式</h2>
-<ul>
-<li><a class="link" href="https://maven.apache.org/wrapper/maven-wrapper/"  target="_blank" rel="noopener"
-    >maven-wrapper</a>: 提供<code>maven-wrapper.jar</code>下载、安装和运行目标<code>maven</code>发行版。</li>
-<li><a class="link" href="https://maven.apache.org/wrapper/maven-wrapper-distribution/"  target="_blank" rel="noopener"
-    >maven-wrapper-distribution</a>: 提供<code>mvnw</code>/<code>mvnw.cmd</code>脚本发行版，</li>
-<li><a class="link" href="https://maven.apache.org/wrapper/maven-wrapper-plugin/"  target="_blank" rel="noopener"
-    >maven-wrapper-plugin</a>: <code>wrapper</code>用于轻松将 Wrapper 安装到项目中的插件。</li>
-</ul>
-<ol>
-<li>首先安装<code>maven wrapper</code>,默认情况下安装的是<code>only-script</code>版本，也就是精简版，不需要额外的<code>maven-wrapper.jar</code>。如果你需要安装<code>source</code>版本请使用<code>-Dtype=source</code>参数。</li>
-</ol>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 假设你的本地已经有了一个特定版本的maven,可以直接通过如下命令进行引入</span>
-</span></span><span class="line"><span class="cl">mvn -N wrapper:wrapper
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="c1"># 当然也可以指定引入的maven版本信息</span>
-</span></span><span class="line"><span class="cl">mvn -N wrapper:wrapper -Dmaven<span class="o">=</span>3.6.1
-</span></span></code></pre></div><ol start="2">
-<li>检查是否安装成功,正常来讲是会出现一个<code>mvnw</code>和<code>mvnw.cmd</code>以及<code>.mvn</code>目录</li>
-</ol>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">[</span>root@localhost maven-wrapper<span class="o">]</span><span class="c1"># tree -fa</span>
-</span></span><span class="line"><span class="cl">.
-</span></span><span class="line"><span class="cl">├── ./.mvn
-</span></span><span class="line"><span class="cl">│   └── ./.mvn/wrapper
-</span></span><span class="line"><span class="cl">│       └── ./.mvn/wrapper/maven-wrapper.properties
-</span></span><span class="line"><span class="cl">├── ./mvnw
-</span></span><span class="line"><span class="cl">└── ./mvnw.cmd
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="m">2</span> directories, <span class="m">3</span> files
-</span></span></code></pre></div><ol start="3">
-<li>修改<code>maven-wrapper.properties</code>定义的路径地址，因为用的是官方地址可能由于墙的问题无法进行下载，我这边采用<code>MinioS3</code>的地址来提前下好相关版本的<code>maven</code>包进行上传。</li>
-</ol>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-properties" data-lang="properties"><span class="line"><span class="cl"><span class="na">wrapperVersion</span><span class="o">=</span><span class="s">3.3.1</span>
-</span></span><span class="line"><span class="cl"><span class="na">distributionUrl</span><span class="o">=</span><span class="s">https://repo.maven.apache.org/maven2/org/apache/maven/apache-maven/3.6.1/apache-maven-3.6.1-bin.zip</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="c1"># 正常修改distributionUrl的地址就可以了</span>
-</span></span><span class="line"><span class="cl"><span class="na">distributionUrl</span><span class="o">=</span><span class="s">http://10.1.6.15:10240/software/apache-maven-3.6.1-bin.zip</span>
-</span></span></code></pre></div><p>正常能检测到相关的版本即表示成功</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">[</span>root@localhost maven-wrapper<span class="o">]</span><span class="c1"># ./mvnw --version</span>
-</span></span><span class="line"><span class="cl">Apache Maven 3.6.1 <span class="o">(</span>d66c9c0b3152b2e69ee9bac180bb8fcc8e6af555<span class="p">;</span> 2019-04-05T03:00:29+08:00<span class="o">)</span>
-</span></span><span class="line"><span class="cl">Maven home: /root/.m2/wrapper/dists/apache-maven-3.6.1/5256b4e
-</span></span><span class="line"><span class="cl">Java version: 1.8.0_391, vendor: Oracle Corporation, runtime: /usr/local/java/jre
-</span></span><span class="line"><span class="cl">Default locale: en_US, platform encoding: UTF-8
-</span></span><span class="line"><span class="cl">OS name: <span class="s2">&#34;linux&#34;</span>, version: <span class="s2">&#34;4.18.0-372.9.1.el8.x86_64&#34;</span>, arch: <span class="s2">&#34;amd64&#34;</span>, family: <span class="s2">&#34;unix&#34;</span>
-</span></span></code></pre></div><h2 id="遇到小问题">遇到小问题</h2>
-<p>如果大家在构建的过程中遇到了小问题可以看看小思路</p>
-<ol>
-<li>问题一：我明明指定了<code>distributionUrl</code>为我自的仓库地址，并且我上传的是<code>zip</code>的包，为什么每次我执行的的时候都会提示<code>wget: Failed to fetch http://10.1.6.15:10240/software/apache-maven-3.6.1-bin.tar.gz</code></li>
-</ol>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># select .zip or .tar.gz</span>
-</span></span><span class="line"><span class="cl"><span class="k">if</span> ! <span class="nb">command</span> -v unzip &gt;/dev/null<span class="p">;</span> <span class="k">then</span>
-</span></span><span class="line"><span class="cl">  <span class="nv">distributionUrl</span><span class="o">=</span><span class="s2">&#34;</span><span class="si">${</span><span class="nv">distributionUrl</span><span class="p">%.zip</span><span class="si">}</span><span class="s2">.tar.gz&#34;</span>
-</span></span><span class="line"><span class="cl">  <span class="nv">distributionUrlName</span><span class="o">=</span><span class="s2">&#34;</span><span class="si">${</span><span class="nv">distributionUrl</span><span class="p">##*/</span><span class="si">}</span><span class="s2">&#34;</span>
-</span></span><span class="line"><span class="cl"><span class="k">fi</span>
-</span></span></code></pre></div><blockquote>
-<p>关于本问题的解释：由于官方的mvnw脚本当中存在select zip or tar.gz的文件类型判断，所以当服务器上没有<code>unzip</code>的命令的时候会出现如上提示。</p>
-</blockquote>
-<h2 id="官方的dockerfile">官方的Dockerfile</h2>
-<ul>
-<li>其实都是引用了<code>BuildKit</code>的一些特性，如果需要了解更多的话可以使用<code>docker Desktop</code>来进行初始化看一下官方写的这些脚本。</li>
-</ul>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-dockerfile" data-lang="dockerfile"><span class="line"><span class="cl"><span class="c"># syntax=docker/dockerfile:1</span><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c"># Comments are provided throughout this file to help you get started.</span><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c"># If you need more help, visit the Dockerfile reference guide at</span><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c"># https://docs.docker.com/go/dockerfile-reference/</span><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c"># Want to help us make this template better? Share your feedback here: https://forms.gle/ybq9Krt8jtBL3iCk7</span><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c">################################################################################</span><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c"># Create a stage for resolving and downloading dependencies.</span><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">FROM</span><span class="s"> eclipse-temurin:17-jdk-jammy as deps</span><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">WORKDIR</span><span class="s"> /build</span><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c"># Copy the mvnw wrapper with executable permissions.</span><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">COPY</span> --chmod<span class="o">=</span><span class="m">0755</span> mvnw mvnw<span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">COPY</span> .mvn/ .mvn/<span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c"># Download dependencies as a separate step to take advantage of Docker&#39;s caching.</span><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c"># Leverage a cache mount to /root/.m2 so that subsequent builds don&#39;t have to</span><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c"># re-download packages.</span><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">RUN</span> --mount<span class="o">=</span><span class="nv">type</span><span class="o">=</span>bind,source<span class="o">=</span>pom.xml,target<span class="o">=</span>pom.xml <span class="se">\
-</span></span></span><span class="line"><span class="cl"><span class="se"></span>    --mount<span class="o">=</span><span class="nv">type</span><span class="o">=</span>cache,target<span class="o">=</span>/root/.m2 ./mvnw dependency:go-offline -DskipTests<span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c">################################################################################</span><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c"># Create a stage for building the application based on the stage with downloaded dependencies.</span><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c"># This Dockerfile is optimized for Java applications that output an uber jar, which includes</span><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c"># all the dependencies needed to run your app inside a JVM. If your app doesn&#39;t output an uber</span><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c"># jar and instead relies on an application server like Apache Tomcat, you&#39;ll need to update this</span><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c"># stage with the correct filename of your package and update the base image of the &#34;final&#34; stage</span><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c"># use the relevant app server, e.g., using tomcat (https://hub.docker.com/_/tomcat/) as a base image.</span><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">FROM</span><span class="s"> deps as package</span><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">WORKDIR</span><span class="s"> /build</span><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">COPY</span> ./src src/<span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">RUN</span> --mount<span class="o">=</span><span class="nv">type</span><span class="o">=</span>bind,source<span class="o">=</span>pom.xml,target<span class="o">=</span>pom.xml <span class="se">\
-</span></span></span><span class="line"><span class="cl"><span class="se"></span>    --mount<span class="o">=</span><span class="nv">type</span><span class="o">=</span>cache,target<span class="o">=</span>/root/.m2 <span class="se">\
-</span></span></span><span class="line"><span class="cl"><span class="se"></span>    ./mvnw package -DskipTests <span class="o">&amp;&amp;</span> <span class="se">\
-</span></span></span><span class="line"><span class="cl"><span class="se"></span>    mv target/<span class="k">$(</span>./mvnw help:evaluate -Dexpression<span class="o">=</span>project.artifactId -q -DforceStdout<span class="k">)</span>-<span class="k">$(</span>./mvnw help:evaluate -Dexpression<span class="o">=</span>project.version -q -DforceStdout<span class="k">)</span>.jar target/app.jar<span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c">################################################################################</span><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c"># Create a new stage for running the application that contains the minimal</span><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c"># runtime dependencies for the application. This often uses a different base</span><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c"># image from the install or build stage where the necessary files are copied</span><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c"># from the install stage.</span><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c">#</span><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c"># The example below uses eclipse-turmin&#39;s JRE image as the foundation for running the app.</span><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c"># By specifying the &#34;17-jre-jammy&#34; tag, it will also use whatever happens to be the</span><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c"># most recent version of that tag when you build your Dockerfile.</span><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c"># If reproducability is important, consider using a specific digest SHA, like</span><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c"># eclipse-temurin@sha256:99cede493dfd88720b610eb8077c8688d3cca50003d76d1d539b0efc8cca72b4.</span><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">FROM</span><span class="s"> eclipse-temurin:17-jre-jammy AS final</span><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c"># Create a non-privileged user that the app will run under.</span><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c"># See https://docs.docker.com/go/dockerfile-user-best-practices/</span><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">ARG</span> <span class="nv">UID</span><span class="o">=</span><span class="m">10001</span>
-</span></span><span class="line"><span class="cl"><span class="k">RUN</span> adduser <span class="se">\
-</span></span></span><span class="line"><span class="cl"><span class="se"></span>    --disabled-password <span class="se">\
-</span></span></span><span class="line"><span class="cl"><span class="se"></span>    --gecos <span class="s2">&#34;&#34;</span> <span class="se">\
-</span></span></span><span class="line"><span class="cl"><span class="se"></span>    --home <span class="s2">&#34;/nonexistent&#34;</span> <span class="se">\
-</span></span></span><span class="line"><span class="cl"><span class="se"></span>    --shell <span class="s2">&#34;/sbin/nologin&#34;</span> <span class="se">\
-</span></span></span><span class="line"><span class="cl"><span class="se"></span>    --no-create-home <span class="se">\
-</span></span></span><span class="line"><span class="cl"><span class="se"></span>    --uid <span class="s2">&#34;</span><span class="si">${</span><span class="nv">UID</span><span class="si">}</span><span class="s2">&#34;</span> <span class="se">\
-</span></span></span><span class="line"><span class="cl"><span class="se"></span>    appuser<span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">USER</span><span class="s"> appuser</span><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c"># Copy the executable from the &#34;package&#34; stage.</span><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">COPY</span> --from<span class="o">=</span>package build/target/app.jar app.jar<span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">EXPOSE</span><span class="s"> 9000</span><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">ENTRYPOINT</span> <span class="p">[</span> <span class="s2">&#34;java&#34;</span><span class="p">,</span> <span class="s2">&#34;-jar&#34;</span><span class="p">,</span> <span class="s2">&#34;app.jar&#34;</span> <span class="p">]</span><span class="err">
-</span></span></span></code></pre></div><blockquote>
-<p>另外说一句：我永远相信最佳实践的内容，但是大厂的东西一定适合大厂，但是不一定适合你自己，所以我觉得应该带一些辨证的眼光去看待最佳实践的这些内容。</p>
-</blockquote>
-]]></content:encoded>
-    </item>
-    <item>
-      <title>Docker常见的几个问题处理</title>
-      <link>https://blog.mletter.cn/tech/docker/docker-frequently-asked-questions/</link>
-      <pubDate>Thu, 14 Jul 2022 00:00:00 +0000</pubDate>
-      <guid>https://blog.mletter.cn/tech/docker/docker-frequently-asked-questions/</guid>
-      <description>说几个docker常见的解决方法和思路</description>
-      <content:encoded><![CDATA[<h2 id="docker迁移存储目录">Docker迁移存储目录</h2>
-<p><strong>问题起因</strong> 由于公司最开始的服务器在<code>/var/lib/docker</code>没有挂载存储,容量只有40G,导致服务器磁盘用满。现将原有的Docker目录数据进行迁移。</p>
-<blockquote>
-<p>请各位Kubernetes用户不要操作,因为容器编排不支持!</p>
-</blockquote>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 启动容器发现如下报错</span>
-</span></span><span class="line"><span class="cl">ERROR：cannot  create temporary directory!
-</span></span></code></pre></div><h3 id="方法一-软连接方式">方法一: 软连接方式</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 1.停止docker服务</span>
-</span></span><span class="line"><span class="cl">systemctl stop docker
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="c1"># 2.开始迁移目录</span>
-</span></span><span class="line"><span class="cl">mv /var/lib/docker /data/
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="c1"># 使用cp命令也可以</span>
-</span></span><span class="line"><span class="cl">cp -arv /var/lib/docker  /data/docker
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="c1"># 3.添加软链接</span>
-</span></span><span class="line"><span class="cl">ln -s /data/docker /var/lib/docker
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="c1"># 4.启动docker服务</span>
-</span></span><span class="line"><span class="cl">systemctl start docker
-</span></span></code></pre></div><h3 id="方法二-修改docker配置文件">方法二: 修改docker配置文件</h3>
-<blockquote>
-<p>注意: 这是一个旧版本<code>docker</code>修改存储目录的方式.</p>
-</blockquote>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-json" data-lang="json"><span class="line"><span class="cl"><span class="err">vim</span> <span class="err">/etc/docker/daemon.json</span>
-</span></span><span class="line"><span class="cl"><span class="p">{</span>
-</span></span><span class="line"><span class="cl">    <span class="nt">&#34;graph&#34;</span><span class="p">:</span> <span class="p">[</span> <span class="s2">&#34;/data/docker/&#34;</span> <span class="p">]</span>  <span class="err">#</span> <span class="err">更改docker镜像的存储目录</span>
-</span></span><span class="line"><span class="cl"><span class="p">}</span>
-</span></span></code></pre></div><p>新版本修改存储目录方式</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 请找到你的docker.service存放位置</span>
-</span></span><span class="line"><span class="cl">vim /usr/lib/systemd/system/docker.service
-</span></span></code></pre></div><p>通过加入<code>--data-root=/data/docker</code>进行修改默认的数据存储位置</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">[</span>Unit<span class="o">]</span>
-</span></span><span class="line"><span class="cl"><span class="nv">Description</span><span class="o">=</span>Docker Application Container Engine
-</span></span><span class="line"><span class="cl"><span class="nv">Documentation</span><span class="o">=</span>https://docs.docker.com
-</span></span><span class="line"><span class="cl"><span class="nv">After</span><span class="o">=</span>network-online.target firewalld.service
-</span></span><span class="line"><span class="cl"><span class="nv">Wants</span><span class="o">=</span>network-online.target
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="o">[</span>Service<span class="o">]</span>
-</span></span><span class="line"><span class="cl"><span class="nv">Type</span><span class="o">=</span>notify
-</span></span><span class="line"><span class="cl"><span class="nv">ExecStart</span><span class="o">=</span>/usr/bin/dockerd --data-root<span class="o">=</span>/data/docker
-</span></span><span class="line"><span class="cl"><span class="nv">ExecReload</span><span class="o">=</span>/bin/kill -s HUP <span class="nv">$MAINPID</span>
-</span></span><span class="line"><span class="cl"><span class="nv">LimitNOFILE</span><span class="o">=</span>infinity
-</span></span><span class="line"><span class="cl"><span class="nv">LimitNPROC</span><span class="o">=</span>infinity
-</span></span><span class="line"><span class="cl"><span class="nv">TimeoutStartSec</span><span class="o">=</span><span class="m">0</span>
-</span></span><span class="line"><span class="cl"><span class="nv">Delegate</span><span class="o">=</span>yes
-</span></span><span class="line"><span class="cl"><span class="nv">KillMode</span><span class="o">=</span>process
-</span></span><span class="line"><span class="cl"><span class="nv">Restart</span><span class="o">=</span>on-failure
-</span></span><span class="line"><span class="cl"><span class="nv">StartLimitBurst</span><span class="o">=</span><span class="m">3</span>
-</span></span><span class="line"><span class="cl"><span class="nv">StartLimitInterval</span><span class="o">=</span>60s
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="o">[</span>Install<span class="o">]</span>
-</span></span><span class="line"><span class="cl"><span class="nv">WantedBy</span><span class="o">=</span>multi-user.target
-</span></span></code></pre></div><p>修改完成之后重启<code>docker</code></p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">systemctl daemon-reload <span class="c1"># 重载service配置</span>
-</span></span><span class="line"><span class="cl">systemctl restart docker
-</span></span></code></pre></div><h2 id="docker存储空间不足">Docker存储空间不足</h2>
-<h3 id="问题一-no-space-left-on-device">问题一: No space left on device</h3>
-<p>问题描述：<code>docker run </code>的时候系统提示<code>No space left on device</code>!</p>
-<p>这个问题无非就两种情况</p>
-<ol>
-<li>
-<p>磁盘满了</p>
-</li>
-<li>
-<p>磁盘inode满了</p>
-</li>
-</ol>
-<p>因为 <code>ext3</code> 文件系统使用 <code>inode table</code> 存储 <code>inode</code> 信息，而 <code>xfs</code> 文件系统使用 <code>B+ tree</code> 来进行存储。考虑到性能问题，默认情况下这个 <code>B+ tree</code> 只会使用前 <code>1TB</code> 空间，当这 <code>1TB</code> 空间被写满后，就会导致无法写入 <code>inode</code> 信息，报磁盘空间不足的错误。我们可以在 <code>mount</code> 时，指定 <code>inode64</code> 即可将这个 <code>B+ tree</code> 使用的空间扩展到整个文件系统。</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 查看inde信息</span>
-</span></span><span class="line"><span class="cl">df -i
-</span></span><span class="line"><span class="cl"><span class="c1"># 删除过多的小文件即可</span>
-</span></span><span class="line"><span class="cl">Filesystem     Inodes IUsed  IFree IUse% Mounted on
-</span></span><span class="line"><span class="cl">/dev/sda3      <span class="m">593344</span> <span class="m">56998</span> <span class="m">536346</span>   10% /
-</span></span><span class="line"><span class="cl">tmpfs          <span class="m">238282</span>     <span class="m">1</span> <span class="m">238281</span>    1% /dev/shm
-</span></span><span class="line"><span class="cl">/dev/sda1       <span class="m">51200</span>    <span class="m">39</span>  <span class="m">51161</span>    1% /boot
-</span></span><span class="line"><span class="cl">/tmp/1m           <span class="m">128</span>   <span class="m">128</span>      <span class="m">0</span>  100% /app/logs
-</span></span></code></pre></div><blockquote>
-<p>如果不知道小文件如何查找</p>
-</blockquote>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 查找系统中 目录大小大于1M（目录一般大小为4K，所以目录要是大了那么文件必然很多）</span>
-</span></span><span class="line"><span class="cl">find / -size +4k -type d <span class="p">|</span>xargs ls -ldhi
-</span></span></code></pre></div><blockquote>
-<p>如果是硬盘空间满了的话</p>
-</blockquote>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 查看磁盘使用容量</span>
-</span></span><span class="line"><span class="cl">df -h   
-</span></span><span class="line"><span class="cl"><span class="c1"># 查看到具体哪个目录满了,然后配合 du -sh命令解决即可</span>
-</span></span><span class="line"><span class="cl">Filesystem      Size  Used Avail Use% Mounted on
-</span></span><span class="line"><span class="cl">/dev/sda3       8.8G  8.8G     <span class="m">0</span> 100% /
-</span></span><span class="line"><span class="cl">tmpfs           931M     <span class="m">0</span>  931M   0% /dev/shm
-</span></span><span class="line"><span class="cl">/dev/sda1       190M   40M  141M  22% /boot
-</span></span></code></pre></div><h2 id="优雅地重启docker">优雅地重启Docker</h2>
-<blockquote>
-<p>不停止重启,重启docker是一件多么美妙的事情!</p>
-</blockquote>
-<p>当 <code>Docker</code> 守护程序终止时，它会关闭正在运行的容器。从 <code>Docker-ce 1.12</code> 开始，可以在配置文件中添加 <code>live-restore</code> 参数，以便在守护程序变得不可用时容器保持运行。需要注意的是 <code>Windows</code> 平台暂时还是不支持该参数的配置。</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-json" data-lang="json"><span class="line"><span class="cl"><span class="err">vim</span> <span class="err">/etc/docker/daemon.json</span>
-</span></span><span class="line"><span class="cl"><span class="p">{</span>
-</span></span><span class="line"><span class="cl">  <span class="nt">&#34;live-restore&#34;</span><span class="p">:</span> <span class="kc">true</span>
-</span></span><span class="line"><span class="cl"><span class="p">}</span>
-</span></span></code></pre></div><p>在守护进程关闭的时候保持容器运行</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 重载docker服务</span>
-</span></span><span class="line"><span class="cl">systemctl reload docker.service
-</span></span><span class="line"><span class="cl"><span class="o">[</span>root@VM-0-9-centos ~<span class="o">]</span><span class="c1"># docker ps -a</span>
-</span></span><span class="line"><span class="cl">CONTAINER ID   IMAGE     COMMAND                  CREATED         STATUS          PORTS     NAMES
-</span></span><span class="line"><span class="cl">e58a220f03c3   nginx     <span class="s2">&#34;/docker-entrypoint.…&#34;</span>   <span class="m">5</span> minutes ago   Up <span class="m">15</span> seconds   80/tcp    web
-</span></span><span class="line"><span class="cl"><span class="c1"># 这个时候重启docker服务,web服务并没有停止工作</span>
-</span></span><span class="line"><span class="cl"><span class="o">[</span>root@VM-0-9-centos ~<span class="o">]</span><span class="c1"># systemctl restart docker</span>
-</span></span><span class="line"><span class="cl"><span class="o">[</span>root@VM-0-9-centos ~<span class="o">]</span><span class="c1"># docker ps -a</span>
-</span></span><span class="line"><span class="cl">CONTAINER ID   IMAGE     COMMAND                  CREATED         STATUS              PORTS     NAMES
-</span></span><span class="line"><span class="cl">e58a220f03c3   nginx     <span class="s2">&#34;/docker-entrypoint.…&#34;</span>   <span class="m">7</span> minutes ago   Up About a minute   80/tcp    web
-</span></span></code></pre></div><h3 id="live-restore的限制">live-restore的限制</h3>
-<blockquote>
-<p>当前的Live Restore特性可以在进行Daemon维护，或者在Daemon发生问题导致不可用的情况，减少容器的停机时间，不过其也有一定的限制。</p>
-</blockquote>
-<ol>
-<li>Docker版本升级限制
-Live Restore仅支持Docker补丁版本升级时可用，也就是 YY.MM.x 最后一位发生变化的升级，而不支持大版本的升级。在进行大版本升级后，可能会导致Daemon无法重新连接到运行中容器的问题，这时候需要手动停止运行的容器。</li>
-<li>Daemon选项变更
-也就是说Live Restore仅仅在某些Daemon级别的配置选项不发生改变的情况工作，例如Bridge的IP地址，存储驱动类型等。如果在重启Daemon时候，这些选项发生了改变，则可能会到Daemon无法重新连接运行中的容器，这时也需要手动停止这些容器。</li>
-<li>影响容器的日志输出
-如果Daemon长时间停止，会影响运行容器的日志输出。因为默认情况下，日志管道的缓冲区大小为64k，当缓冲写满之后，必须启动Daemon来刷新缓冲区。</li>
-<li>不支持Docker Swarm
-Live Restore只是独立Docker引擎的特性，而Swarm的服务是由Swarm管理器管理的。当Swarm管理器不可用时，Swarm服务是可以在工作节点上继续运行的，只是不同通过Swarm管理器进行管理，直到Swarm管理恢复工作。</li>
-</ol>
-<h2 id="容器内部中文异常">容器内部中文异常</h2>
-<p>问题描述: 容器内部中文乱码、无法正常显示中文、</p>
-<ul>
-<li>例如显示中文：<code>--------���</code></li>
-</ul>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 查看容器内部编码</span>
-</span></span><span class="line"><span class="cl">root@e58a220f03c3:/# locale -a
-</span></span><span class="line"><span class="cl">C
-</span></span><span class="line"><span class="cl">C.UTF-8
-</span></span><span class="line"><span class="cl">POSIX
-</span></span></code></pre></div><p>然而 <code>POSIX</code> 字符集是不支持中文的，而 <code>C.UTF-8</code> 是支持中文的只要把系统中的环境 <code>LANG</code> 改为 <code>&quot;C.UTF-8&quot;</code> 格式即可解决问题。同理，在 <code>K8S</code> 进入 <code>pod</code> 不能输入中文也可用此方法解决。</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="nb">export</span> <span class="nv">LANG</span><span class="o">=</span>zh_CN.UTF-8
-</span></span></code></pre></div>]]></content:encoded>
-    </item>
-    <item>
-      <title>什么是dockershim</title>
-      <link>https://blog.mletter.cn/tech/docker/docker-shim/</link>
-      <pubDate>Sun, 13 Feb 2022 00:00:00 +0000</pubDate>
-      <guid>https://blog.mletter.cn/tech/docker/docker-shim/</guid>
-      <description>kubelet中的Docker支持现在已弃用，并将在未来的版本中删除。kubelet使用了一个名为`dockershim`的模块，该模块实现了对Docker的CRI支持，并在Kubernetes社区中发现了维护问题。我们鼓励您评估迁移到一个容器运行时的情况，该容器运行时是CRI（v1alpha1或v1兼容）的完整实现。</description>
-      <content:encoded><![CDATA[<h2 id="先前了解">先前了解</h2>
-<ul>
-<li><a class="link" href="https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.20.md#dockershim-deprecation"  target="_blank" rel="noopener"
-    >参考链接</a></li>
-<li><a class="link" href="https://github.com/kubernetes/kubernetes/pull/94624"  target="_blank" rel="noopener"
-    >Githubissue</a></li>
-</ul>
-<p>kubelet中的Docker支持现在已弃用，并将在未来的版本中删除。kubelet使用了一个名为<code>dockershim</code>的模块，该模块实现了对Docker的CRI支持，并在Kubernetes社区中发现了维护问题。我们鼓励您评估迁移到一个容器运行时的情况，该容器运行时是CRI（v1alpha1或v1兼容）的完整实现。</p>
-<p>也就是说,在后续的Kubernetes<code>1.20x</code>版本以后会删除<code>dockershim</code>组件,但是由于目前Docker的使用用户众多,中间必然会有替换的一个过渡期,所以大家可以更多的关注一下其他的<code>Container Runtime</code>。 例如我们的<code>Podman</code>、<code>Containerd</code>、<code>cri-o</code>等其他容器运行时来运行kubernetes。</p>
-<p>下面我们就具体来看看Kubernetes所提到的弃用<code>dockershim</code>到底是什么东西.</p>
-<h2 id="cri容器运行时接口">CRI容器运行时接口</h2>
-<ul>
-<li><a class="link" href="https://github.com/kubernetes/community/blob/master/contributors/devel/sig-node/container-runtime-interface.md"  target="_blank" rel="noopener"
-    >参考链接</a></li>
-<li>CRI：容器运行时接口 container runtime interface，CRI 中定义了容器和镜像两个接口，实现了这两个接口目前主流的是：CRI-O、Containerd。（目前 PCI 产品使用的即为 Containerd）。</li>
-</ul>
-<p>CRI接口的具体用处就在于</p>
-<ol>
-<li>对容器操作的接口，包括容器的创建、启动和停止.即<code>create</code>、<code>stop</code>等操作。</li>
-<li>对镜像的操作，下载、删除镜像等. 即<code>pull</code>、<code>rmi</code>等操作。</li>
-<li>podsandbox</li>
-</ol>
-<h2 id="oci开放容器标准">OCI开放容器标准</h2>
-<ul>
-<li>OCI：开放容器标准 open container initiative，OCI 中定义了两个标准：容器运行时标准 和 容器镜像标准，实现了这一标准的主流是：runc（也即我们日常说的 Docker）、Kata-Container。</li>
-</ul>
-<p>OCI的作用在于</p>
-<ul>
-<li>ImageSpec(容器标准包)
-<ol>
-<li>文件系统：以 layer 保存的文件系统，每个 layer 保存了和上层之间变化的部分，layer 应该保存哪些文件，怎么表示增加、修改和删除的文件等</li>
-<li>config 文件：保存了文件系统的层级信息（每个层级的 hash 值，以及历史信息），以及容器运行时需要的一些信息（比如环境变量、工作目录、命令参数、mount 列表），指定了镜像在某个特定平台和系统的配置。比较接近我们使用 <code>docker inspect &lt;image_id&gt;</code> 看到的内容</li>
-<li>manifest 文件：镜像的 config 文件索引，有哪些 layer，额外的 annotation 信息，manifest 文件中保存了很多和当前平台有关的信息</li>
-<li>index 文件：可选的文件，指向不同平台的 manifest 文件，这个文件能保证一个镜像可以跨平台使用，每个平台拥有不同的 manifest 文件，使用 index 作为索引</li>
-</ol>
-</li>
-</ul>
-<p>2.runtimeSpec:</p>
-<ul>
-<li>
-<ol>
-<li><code>ociVersion(string, REQUIRED)</code>:是该州遵守的开放容器倡议运行时规范的版本。</li>
-</ol>
-</li>
-<li>
-<ol start="2">
-<li><code>id</code>： 容器的 ID。这在此主机上的所有容器中必须是唯一的。不要求它在主机之间是唯一的。</li>
-</ol>
-</li>
-<li>
-<ol start="3">
-<li>status(string, REQUIRED): 加冕时容器的几个状态</li>
-</ol>
-</li>
-</ul>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">1. creating
-</span></span><span class="line"><span class="cl">2. created
-</span></span><span class="line"><span class="cl">3. running
-</span></span><span class="line"><span class="cl">4. stopped
-</span></span></code></pre></div><ul>
-<li>
-<ol start="4">
-<li><code>pid</code>: host上看到的容器进程</li>
-</ol>
-</li>
-<li>
-<ol start="5">
-<li><code>bundle</code>：host上容器bundle目录的绝对路径</li>
-</ol>
-</li>
-<li>
-<ol start="6">
-<li><code>annotation</code>：容器相关的标注，可选</li>
-</ol>
-</li>
-</ul>
-<p>所以在Json的序列化时,必须遵守以下格式</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-json" data-lang="json"><span class="line"><span class="cl"><span class="p">{</span>
-</span></span><span class="line"><span class="cl">    <span class="nt">&#34;ociVersion&#34;</span><span class="p">:</span> <span class="s2">&#34;0.2.0&#34;</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">    <span class="nt">&#34;id&#34;</span><span class="p">:</span> <span class="s2">&#34;oci-container1&#34;</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">    <span class="nt">&#34;status&#34;</span><span class="p">:</span> <span class="s2">&#34;running&#34;</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">    <span class="nt">&#34;pid&#34;</span><span class="p">:</span> <span class="mi">4422</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">    <span class="nt">&#34;bundle&#34;</span><span class="p">:</span> <span class="s2">&#34;/containers/redis&#34;</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">    <span class="nt">&#34;annotations&#34;</span><span class="p">:</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">        <span class="nt">&#34;myKey&#34;</span><span class="p">:</span> <span class="s2">&#34;myValue&#34;</span>
-</span></span><span class="line"><span class="cl">    <span class="p">}</span>
-</span></span><span class="line"><span class="cl"><span class="p">}</span>
-</span></span></code></pre></div><h2 id="dockershim">Dockershim</h2>
-<p><code>Dockershim</code> 作用：把外部收到的请求转化成 <code>docker daemon</code> 能听懂的请求，让 Docker Daemon 执行创建、删除等容器操作。</p>
-<blockquote>
-<p>具体看一下<code>kubelet</code>是怎样创建容器的</p>
-</blockquote>
-<ol>
-<li>Kubelet 通过 CRI 接口（gRPC）调用<code>dockershim</code>,请求创建一个容器。CRI 即容器运行时接口，这一步中，Kubelet 可以视作一个简单的<code>CRI Client</code>，而 dockershim 就是接收请求的 Server。目前<code>dockershim</code>是内嵌在 Kubelet 中的，所以接收调用就是 Kubelet 进程。</li>
-<li><code>dockershim</code>收到请求后，转化成 docker daemon的请求，发到docker daemon 上请求创建一个容器。</li>
-<li>Docker Daemon 早在 1.12 版本中就已经将针对容器的操作移到另一个守护进程 containerd 中，因此 Docker Daemon 仍然不能帮我们创建容器，而是要请求 containerd 创建一个容器。</li>
-<li>containerd 收到请求后，并不会自己直接去操作容器，而是创建一个叫做 containerd-shim 的进程，让 <code>containerd-shim</code> 去操作容器。是因为容器进程需要一个父进程来做诸如收集状态，维持 stdin 等 fd 打开等工作。而假如这个父进程就是 containerd，那每次 containerd 挂掉或升级，整个宿主机上所有的容器都得退出了。而引入了 <code>containerd-shim</code> 就规避了这个问题（containerd 和 shim 并不是父子进程关系）。</li>
-<li>我们知道创建容器需要做一些设置 namespaces 和 cgroups，挂载 root filesystem 等等操作，而这些事该怎么做已经有了公开的规范，那就是 OCI。它的一个参考实现叫做 runC。于是，containerd-shim 在这一步需要调用 runC 这个命令行工具，来启动容器。</li>
-<li>runC 启动完容器后本身会直接退出，<code>containerd-shim</code> 则会成为容器进程的父进程，负责收集容器进程的状态，上报给 containerd，并在容器中 pid 为 1 的进程退出后接管容器中的子进程进行清理，确保不会出现僵尸进程。</li>
-</ol>
-<h2 id="参考链接">参考链接</h2>
-<ul>
-<li><a class="link" href="https://kubernetes.io/zh/blog/2020/12/02/dont-panic-kubernetes-and-docker/#"  target="_blank" rel="noopener"
-    >不支持docker我该何去何从？ </a></li>
-</ul>
-]]></content:encoded>
-    </item>
-  </channel>
+&lt;p&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  &lt;picture&gt;
+  &lt;img class=&#34;img-fluid&#34; src=&#34;https://img10.360buyimg.com/ddimg/jfs/t1/233201/20/20655/112966/66960dbeF94b73bb3/5187c6eda27a9525.jpg&#34; alt=&#34;&#34; loading=&#34;lazy&#34; /&gt;
+&lt;/picture&gt;
+&lt;/p&gt;
+</description>
+        </item>
+        <item>
+        <title>优雅的多阶段构建微服务镜像</title>
+        <link>https://blog.mletter.cn/tech/docker/review-docker/</link>
+        <pubDate>Wed, 08 May 2024 00:00:00 +0000</pubDate>
+        
+        <guid>https://blog.mletter.cn/tech/docker/review-docker/</guid>
+        <description>&lt;img src="https://img12.360buyimg.com/ddimg/jfs/t1/221585/17/40296/38910/663b8f0aF38d1916d/5d09c604af566108.jpg" alt="Featured image of post 优雅的多阶段构建微服务镜像" /&gt;&lt;h2 id=&#34;借助maven-wrapper&#34;&gt;&lt;/h&gt;借助Maven Wrapper
+&lt;/h2&gt;&lt;p&gt;首先我们说说&lt;code&gt;maven wrapper&lt;/code&gt;的使用场景&lt;/p&gt;
+&lt;p&gt;假设我们所在的团队同时维护多个项目，不同的项目使用的&lt;code&gt;JDK&lt;/code&gt;版本不同，使用的&lt;code&gt;maven&lt;/code&gt;版本也不同，那么为了支持多项目开发，为了构建运行效果一致，你可能需要在本地管理多个&lt;code&gt;maven&lt;/code&gt;版本，这会非常繁琐，从而引出了&lt;code&gt;maven wrapper&lt;/code&gt;来解决这个&lt;code&gt;maven&lt;/code&gt;版本的管理问题。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;版本一致性：通过在&lt;code&gt;mvnw&lt;/code&gt;配置中指定 Maven 版本，确保所有开发人员和持续集成环境使用相同的&lt;code&gt;maven&lt;/code&gt;版本。&lt;/li&gt;
+&lt;li&gt;简化批量安装：不需要预先安装&lt;code&gt;maven&lt;/code&gt;，直接运行&lt;code&gt;mvnw&lt;/code&gt;命令就如安装了&lt;code&gt;mvn&lt;/code&gt;一样，从而简化了项目的初始设置和配置。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;maven-wrapper安装方式&#34;&gt;&lt;/h&gt;Maven Wrapper安装方式
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://maven.apache.org/wrapper/maven-wrapper/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;maven-wrapper&lt;/a&gt;: 提供&lt;code&gt;maven-wrapper.jar&lt;/code&gt;下载、安装和运行目标&lt;code&gt;maven&lt;/code&gt;发行版。&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://maven.apache.org/wrapper/maven-wrapper-distribution/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;maven-wrapper-distribution&lt;/a&gt;: 提供&lt;code&gt;mvnw&lt;/code&gt;/&lt;code&gt;mvnw.cmd&lt;/code&gt;脚本发行版，&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://maven.apache.org/wrapper/maven-wrapper-plugin/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;maven-wrapper-plugin&lt;/a&gt;: &lt;code&gt;wrapper&lt;/code&gt;用于轻松将 Wrapper 安装到项目中的插件。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;ol&gt;
+&lt;li&gt;首先安装&lt;code&gt;maven wrapper&lt;/code&gt;,默认情况下安装的是&lt;code&gt;only-script&lt;/code&gt;版本，也就是精简版，不需要额外的&lt;code&gt;maven-wrapper.jar&lt;/code&gt;。如果你需要安装&lt;code&gt;source&lt;/code&gt;版本请使用&lt;code&gt;-Dtype=source&lt;/code&gt;参数。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 假设你的本地已经有了一个特定版本的maven,可以直接通过如下命令进行引入&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;mvn -N wrapper:wrapper
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 当然也可以指定引入的maven版本信息&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;mvn -N wrapper:wrapper -Dmaven&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;3.6.1
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;ol start=&#34;2&#34;&gt;
+&lt;li&gt;检查是否安装成功,正常来讲是会出现一个&lt;code&gt;mvnw&lt;/code&gt;和&lt;code&gt;mvnw.cmd&lt;/code&gt;以及&lt;code&gt;.mvn&lt;/code&gt;目录&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;root@localhost maven-wrapper&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;# tree -fa&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;.
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;├── ./.mvn
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;│   └── ./.mvn/wrapper
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;│       └── ./.mvn/wrapper/maven-wrapper.properties
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;├── ./mvnw
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;└── ./mvnw.cmd
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;m&#34;&gt;2&lt;/span&gt; directories, &lt;span class=&#34;m&#34;&gt;3&lt;/span&gt; files
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;ol start=&#34;3&#34;&gt;
+&lt;li&gt;修改&lt;code&gt;maven-wrapper.properties&lt;/code&gt;定义的路径地址，因为用的是官方地址可能由于墙的问题无法进行下载，我这边采用&lt;code&gt;MinioS3&lt;/code&gt;的地址来提前下好相关版本的&lt;code&gt;maven&lt;/code&gt;包进行上传。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-properties&#34; data-lang=&#34;properties&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;na&#34;&gt;wrapperVersion&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;3.3.1&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;na&#34;&gt;distributionUrl&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;https://repo.maven.apache.org/maven2/org/apache/maven/apache-maven/3.6.1/apache-maven-3.6.1-bin.zip&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 正常修改distributionUrl的地址就可以了&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;na&#34;&gt;distributionUrl&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;http://10.1.6.15:10240/software/apache-maven-3.6.1-bin.zip&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;正常能检测到相关的版本即表示成功&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;root@localhost maven-wrapper&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;# ./mvnw --version&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Apache Maven 3.6.1 &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;d66c9c0b3152b2e69ee9bac180bb8fcc8e6af555&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt; 2019-04-05T03:00:29+08:00&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Maven home: /root/.m2/wrapper/dists/apache-maven-3.6.1/5256b4e
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Java version: 1.8.0_391, vendor: Oracle Corporation, runtime: /usr/local/java/jre
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Default locale: en_US, platform encoding: UTF-8
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;OS name: &lt;span class=&#34;s2&#34;&gt;&amp;#34;linux&amp;#34;&lt;/span&gt;, version: &lt;span class=&#34;s2&#34;&gt;&amp;#34;4.18.0-372.9.1.el8.x86_64&amp;#34;&lt;/span&gt;, arch: &lt;span class=&#34;s2&#34;&gt;&amp;#34;amd64&amp;#34;&lt;/span&gt;, family: &lt;span class=&#34;s2&#34;&gt;&amp;#34;unix&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;遇到小问题&#34;&gt;&lt;/h&gt;遇到小问题
+&lt;/h2&gt;&lt;p&gt;如果大家在构建的过程中遇到了小问题可以看看小思路&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;问题一：我明明指定了&lt;code&gt;distributionUrl&lt;/code&gt;为我自的仓库地址，并且我上传的是&lt;code&gt;zip&lt;/code&gt;的包，为什么每次我执行的的时候都会提示&lt;code&gt;wget: Failed to fetch http://10.1.6.15:10240/software/apache-maven-3.6.1-bin.tar.gz&lt;/code&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# select .zip or .tar.gz&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;k&#34;&gt;if&lt;/span&gt; ! &lt;span class=&#34;nb&#34;&gt;command&lt;/span&gt; -v unzip &amp;gt;/dev/null&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;then&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  &lt;span class=&#34;nv&#34;&gt;distributionUrl&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span class=&#34;si&#34;&gt;${&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;distributionUrl&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;%.zip&lt;/span&gt;&lt;span class=&#34;si&#34;&gt;}&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;.tar.gz&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  &lt;span class=&#34;nv&#34;&gt;distributionUrlName&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span class=&#34;si&#34;&gt;${&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;distributionUrl&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;##*/&lt;/span&gt;&lt;span class=&#34;si&#34;&gt;}&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;k&#34;&gt;fi&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;blockquote&gt;
+&lt;p&gt;关于本问题的解释：由于官方的mvnw脚本当中存在select zip or tar.gz的文件类型判断，所以当服务器上没有&lt;code&gt;unzip&lt;/code&gt;的命令的时候会出现如上提示。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2 id=&#34;官方的dockerfile&#34;&gt;&lt;/h&gt;官方的Dockerfile
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;其实都是引用了&lt;code&gt;BuildKit&lt;/code&gt;的一些特性，如果需要了解更多的话可以使用&lt;code&gt;docker Desktop&lt;/code&gt;来进行初始化看一下官方写的这些脚本。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-dockerfile&#34; data-lang=&#34;dockerfile&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c&#34;&gt;# syntax=docker/dockerfile:1&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;err&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;err&#34;&gt;&lt;/span&gt;&lt;span class=&#34;c&#34;&gt;# Comments are provided throughout this file to help you get started.&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;err&#34;&gt;&lt;/span&gt;&lt;span class=&#34;c&#34;&gt;# If you need more help, visit the Dockerfile reference guide at&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;err&#34;&gt;&lt;/span&gt;&lt;span class=&#34;c&#34;&gt;# https://docs.docker.com/go/dockerfile-reference/&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;err&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;err&#34;&gt;&lt;/span&gt;&lt;span class=&#34;c&#34;&gt;# Want to help us make this template better? Share your feedback here: https://forms.gle/ybq9Krt8jtBL3iCk7&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;err&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;err&#34;&gt;&lt;/span&gt;&lt;span class=&#34;c&#34;&gt;################################################################################&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;err&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;err&#34;&gt;&lt;/span&gt;&lt;span class=&#34;c&#34;&gt;# Create a stage for resolving and downloading dependencies.&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;err&#34;&gt;&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;FROM&lt;/span&gt;&lt;span class=&#34;s&#34;&gt; eclipse-temurin:17-jdk-jammy as deps&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;err&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;err&#34;&gt;&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;WORKDIR&lt;/span&gt;&lt;span class=&#34;s&#34;&gt; /build&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;err&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;err&#34;&gt;&lt;/span&gt;&lt;span class=&#34;c&#34;&gt;# Copy the mvnw wrapper with executable permissions.&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;err&#34;&gt;&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;COPY&lt;/span&gt; --chmod&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;0755&lt;/span&gt; mvnw mvnw&lt;span class=&#34;err&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;err&#34;&gt;&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;COPY&lt;/span&gt; .mvn/ .mvn/&lt;span class=&#34;err&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;err&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;err&#34;&gt;&lt;/span&gt;&lt;span class=&#34;c&#34;&gt;# Download dependencies as a separate step to take advantage of Docker&amp;#39;s caching.&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;err&#34;&gt;&lt;/span&gt;&lt;span class=&#34;c&#34;&gt;# Leverage a cache mount to /root/.m2 so that subsequent builds don&amp;#39;t have to&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;err&#34;&gt;&lt;/span&gt;&lt;span class=&#34;c&#34;&gt;# re-download packages.&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;err&#34;&gt;&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;RUN&lt;/span&gt; --mount&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;type&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;bind,source&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;pom.xml,target&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;pom.xml &lt;span class=&#34;se&#34;&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;    --mount&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;type&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;cache,target&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;/root/.m2 ./mvnw dependency:go-offline -DskipTests&lt;span class=&#34;err&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;err&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;err&#34;&gt;&lt;/span&gt;&lt;span class=&#34;c&#34;&gt;################################################################################&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;err&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;err&#34;&gt;&lt;/span&gt;&lt;span class=&#34;c&#34;&gt;# Create a stage for building the application based on the stage with downloaded dependencies.&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;err&#34;&gt;&lt;/span&gt;&lt;span class=&#34;c&#34;&gt;# This Dockerfile is optimized for Java applications that output an uber jar, which includes&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;err&#34;&gt;&lt;/span&gt;&lt;span class=&#34;c&#34;&gt;# all the dependencies needed to run your app inside a JVM. If your app doesn&amp;#39;t output an uber&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;err&#34;&gt;&lt;/span&gt;&lt;span class=&#34;c&#34;&gt;# jar and instead relies on an application server like Apache Tomcat, you&amp;#39;ll need to update this&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;err&#34;&gt;&lt;/span&gt;&lt;span class=&#34;c&#34;&gt;# stage with the correct filename of your package and update the base image of the &amp;#34;final&amp;#34; stage&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;err&#34;&gt;&lt;/span&gt;&lt;span class=&#34;c&#34;&gt;# use the relevant app server, e.g., using tomcat (https://hub.docker.com/_/tomcat/) as a base image.&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;err&#34;&gt;&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;FROM&lt;/span&gt;&lt;span class=&#34;s&#34;&gt; deps as package&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;err&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;err&#34;&gt;&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;WORKDIR&lt;/span&gt;&lt;span class=&#34;s&#34;&gt; /build&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;err&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;err&#34;&gt;&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;COPY&lt;/span&gt; ./src src/&lt;span class=&#34;err&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;err&#34;&gt;&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;RUN&lt;/span&gt; --mount&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;type&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;bind,source&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;pom.xml,target&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;pom.xml &lt;span class=&#34;se&#34;&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;    --mount&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;type&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;cache,target&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;/root/.m2 &lt;span class=&#34;se&#34;&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;    ./mvnw package -DskipTests &lt;span class=&#34;o&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&#34;se&#34;&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;    mv target/&lt;span class=&#34;k&#34;&gt;$(&lt;/span&gt;./mvnw help:evaluate -Dexpression&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;project.artifactId -q -DforceStdout&lt;span class=&#34;k&#34;&gt;)&lt;/span&gt;-&lt;span class=&#34;k&#34;&gt;$(&lt;/span&gt;./mvnw help:evaluate -Dexpression&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;project.version -q -DforceStdout&lt;span class=&#34;k&#34;&gt;)&lt;/span&gt;.jar target/app.jar&lt;span class=&#34;err&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;err&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;err&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;err&#34;&gt;&lt;/span&gt;&lt;span class=&#34;c&#34;&gt;################################################################################&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;err&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;err&#34;&gt;&lt;/span&gt;&lt;span class=&#34;c&#34;&gt;# Create a new stage for running the application that contains the minimal&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;err&#34;&gt;&lt;/span&gt;&lt;span class=&#34;c&#34;&gt;# runtime dependencies for the application. This often uses a different base&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;err&#34;&gt;&lt;/span&gt;&lt;span class=&#34;c&#34;&gt;# image from the install or build stage where the necessary files are copied&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;err&#34;&gt;&lt;/span&gt;&lt;span class=&#34;c&#34;&gt;# from the install stage.&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;err&#34;&gt;&lt;/span&gt;&lt;span class=&#34;c&#34;&gt;#&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;err&#34;&gt;&lt;/span&gt;&lt;span class=&#34;c&#34;&gt;# The example below uses eclipse-turmin&amp;#39;s JRE image as the foundation for running the app.&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;err&#34;&gt;&lt;/span&gt;&lt;span class=&#34;c&#34;&gt;# By specifying the &amp;#34;17-jre-jammy&amp;#34; tag, it will also use whatever happens to be the&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;err&#34;&gt;&lt;/span&gt;&lt;span class=&#34;c&#34;&gt;# most recent version of that tag when you build your Dockerfile.&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;err&#34;&gt;&lt;/span&gt;&lt;span class=&#34;c&#34;&gt;# If reproducability is important, consider using a specific digest SHA, like&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;err&#34;&gt;&lt;/span&gt;&lt;span class=&#34;c&#34;&gt;# eclipse-temurin@sha256:99cede493dfd88720b610eb8077c8688d3cca50003d76d1d539b0efc8cca72b4.&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;err&#34;&gt;&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;FROM&lt;/span&gt;&lt;span class=&#34;s&#34;&gt; eclipse-temurin:17-jre-jammy AS final&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;err&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;err&#34;&gt;&lt;/span&gt;&lt;span class=&#34;c&#34;&gt;# Create a non-privileged user that the app will run under.&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;err&#34;&gt;&lt;/span&gt;&lt;span class=&#34;c&#34;&gt;# See https://docs.docker.com/go/dockerfile-user-best-practices/&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;err&#34;&gt;&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;ARG&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;UID&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;10001&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;k&#34;&gt;RUN&lt;/span&gt; adduser &lt;span class=&#34;se&#34;&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;    --disabled-password &lt;span class=&#34;se&#34;&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;    --gecos &lt;span class=&#34;s2&#34;&gt;&amp;#34;&amp;#34;&lt;/span&gt; &lt;span class=&#34;se&#34;&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;    --home &lt;span class=&#34;s2&#34;&gt;&amp;#34;/nonexistent&amp;#34;&lt;/span&gt; &lt;span class=&#34;se&#34;&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;    --shell &lt;span class=&#34;s2&#34;&gt;&amp;#34;/sbin/nologin&amp;#34;&lt;/span&gt; &lt;span class=&#34;se&#34;&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;    --no-create-home &lt;span class=&#34;se&#34;&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;    --uid &lt;span class=&#34;s2&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span class=&#34;si&#34;&gt;${&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;UID&lt;/span&gt;&lt;span class=&#34;si&#34;&gt;}&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;&lt;/span&gt; &lt;span class=&#34;se&#34;&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;    appuser&lt;span class=&#34;err&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;err&#34;&gt;&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;USER&lt;/span&gt;&lt;span class=&#34;s&#34;&gt; appuser&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;err&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;err&#34;&gt;&lt;/span&gt;&lt;span class=&#34;c&#34;&gt;# Copy the executable from the &amp;#34;package&amp;#34; stage.&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;err&#34;&gt;&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;COPY&lt;/span&gt; --from&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;package build/target/app.jar app.jar&lt;span class=&#34;err&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;err&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;err&#34;&gt;&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;EXPOSE&lt;/span&gt;&lt;span class=&#34;s&#34;&gt; 9000&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;err&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;err&#34;&gt;&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;ENTRYPOINT&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;[&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;java&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;-jar&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;app.jar&amp;#34;&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;]&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;blockquote&gt;
+&lt;p&gt;另外说一句：我永远相信最佳实践的内容，但是大厂的东西一定适合大厂，但是不一定适合你自己，所以我觉得应该带一些辨证的眼光去看待最佳实践的这些内容。&lt;/p&gt;
+&lt;/blockquote&gt;
+</description>
+        </item>
+        <item>
+        <title>Docker常见的几个问题处理</title>
+        <link>https://blog.mletter.cn/tech/docker/docker-frequently-asked-questions/</link>
+        <pubDate>Thu, 14 Jul 2022 00:00:00 +0000</pubDate>
+        
+        <guid>https://blog.mletter.cn/tech/docker/docker-frequently-asked-questions/</guid>
+        <description>&lt;h2 id=&#34;docker迁移存储目录&#34;&gt;&lt;/h&gt;Docker迁移存储目录
+&lt;/h2&gt;&lt;p&gt;&lt;strong&gt;问题起因&lt;/strong&gt; 由于公司最开始的服务器在&lt;code&gt;/var/lib/docker&lt;/code&gt;没有挂载存储,容量只有40G,导致服务器磁盘用满。现将原有的Docker目录数据进行迁移。&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;请各位Kubernetes用户不要操作,因为容器编排不支持!&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 启动容器发现如下报错&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;ERROR：cannot  create temporary directory!
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;方法一-软连接方式&#34;&gt;&lt;/h&gt;方法一: 软连接方式
+&lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 1.停止docker服务&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;systemctl stop docker
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 2.开始迁移目录&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;mv /var/lib/docker /data/
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 使用cp命令也可以&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;cp -arv /var/lib/docker  /data/docker
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 3.添加软链接&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;ln -s /data/docker /var/lib/docker
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 4.启动docker服务&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;systemctl start docker
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;方法二-修改docker配置文件&#34;&gt;&lt;/h&gt;方法二: 修改docker配置文件
+&lt;/h3&gt;&lt;blockquote&gt;
+&lt;p&gt;注意: 这是一个旧版本&lt;code&gt;docker&lt;/code&gt;修改存储目录的方式.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-json&#34; data-lang=&#34;json&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;err&#34;&gt;vim&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;/etc/docker/daemon.json&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;nt&#34;&gt;&amp;#34;graph&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;[&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;/data/docker/&amp;#34;&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;]&lt;/span&gt;  &lt;span class=&#34;err&#34;&gt;#&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;更改docker镜像的存储目录&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;新版本修改存储目录方式&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 请找到你的docker.service存放位置&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;vim /usr/lib/systemd/system/docker.service
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;通过加入&lt;code&gt;--data-root=/data/docker&lt;/code&gt;进行修改默认的数据存储位置&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;Unit&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nv&#34;&gt;Description&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;Docker Application Container Engine
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nv&#34;&gt;Documentation&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;https://docs.docker.com
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nv&#34;&gt;After&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;network-online.target firewalld.service
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nv&#34;&gt;Wants&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;network-online.target
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;Service&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nv&#34;&gt;Type&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;notify
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nv&#34;&gt;ExecStart&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;/usr/bin/dockerd --data-root&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;/data/docker
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nv&#34;&gt;ExecReload&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;/bin/kill -s HUP &lt;span class=&#34;nv&#34;&gt;$MAINPID&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nv&#34;&gt;LimitNOFILE&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;infinity
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nv&#34;&gt;LimitNPROC&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;infinity
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nv&#34;&gt;TimeoutStartSec&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;0&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nv&#34;&gt;Delegate&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;yes
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nv&#34;&gt;KillMode&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;process
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nv&#34;&gt;Restart&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;on-failure
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nv&#34;&gt;StartLimitBurst&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;3&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nv&#34;&gt;StartLimitInterval&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;60s
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;Install&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nv&#34;&gt;WantedBy&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;multi-user.target
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;修改完成之后重启&lt;code&gt;docker&lt;/code&gt;&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;systemctl daemon-reload &lt;span class=&#34;c1&#34;&gt;# 重载service配置&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;systemctl restart docker
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;docker存储空间不足&#34;&gt;&lt;/h&gt;Docker存储空间不足
+&lt;/h2&gt;&lt;h3 id=&#34;问题一-no-space-left-on-device&#34;&gt;&lt;/h&gt;问题一: No space left on device
+&lt;/h3&gt;&lt;p&gt;问题描述：&lt;code&gt;docker run &lt;/code&gt;的时候系统提示&lt;code&gt;No space left on device&lt;/code&gt;!&lt;/p&gt;
+&lt;p&gt;这个问题无非就两种情况&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;磁盘满了&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;磁盘inode满了&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;因为 &lt;code&gt;ext3&lt;/code&gt; 文件系统使用 &lt;code&gt;inode table&lt;/code&gt; 存储 &lt;code&gt;inode&lt;/code&gt; 信息，而 &lt;code&gt;xfs&lt;/code&gt; 文件系统使用 &lt;code&gt;B+ tree&lt;/code&gt; 来进行存储。考虑到性能问题，默认情况下这个 &lt;code&gt;B+ tree&lt;/code&gt; 只会使用前 &lt;code&gt;1TB&lt;/code&gt; 空间，当这 &lt;code&gt;1TB&lt;/code&gt; 空间被写满后，就会导致无法写入 &lt;code&gt;inode&lt;/code&gt; 信息，报磁盘空间不足的错误。我们可以在 &lt;code&gt;mount&lt;/code&gt; 时，指定 &lt;code&gt;inode64&lt;/code&gt; 即可将这个 &lt;code&gt;B+ tree&lt;/code&gt; 使用的空间扩展到整个文件系统。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 查看inde信息&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;df -i
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 删除过多的小文件即可&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Filesystem     Inodes IUsed  IFree IUse% Mounted on
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;/dev/sda3      &lt;span class=&#34;m&#34;&gt;593344&lt;/span&gt; &lt;span class=&#34;m&#34;&gt;56998&lt;/span&gt; &lt;span class=&#34;m&#34;&gt;536346&lt;/span&gt;   10% /
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;tmpfs          &lt;span class=&#34;m&#34;&gt;238282&lt;/span&gt;     &lt;span class=&#34;m&#34;&gt;1&lt;/span&gt; &lt;span class=&#34;m&#34;&gt;238281&lt;/span&gt;    1% /dev/shm
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;/dev/sda1       &lt;span class=&#34;m&#34;&gt;51200&lt;/span&gt;    &lt;span class=&#34;m&#34;&gt;39&lt;/span&gt;  &lt;span class=&#34;m&#34;&gt;51161&lt;/span&gt;    1% /boot
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;/tmp/1m           &lt;span class=&#34;m&#34;&gt;128&lt;/span&gt;   &lt;span class=&#34;m&#34;&gt;128&lt;/span&gt;      &lt;span class=&#34;m&#34;&gt;0&lt;/span&gt;  100% /app/logs
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;blockquote&gt;
+&lt;p&gt;如果不知道小文件如何查找&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 查找系统中 目录大小大于1M（目录一般大小为4K，所以目录要是大了那么文件必然很多）&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;find / -size +4k -type d &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;xargs ls -ldhi
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;blockquote&gt;
+&lt;p&gt;如果是硬盘空间满了的话&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 查看磁盘使用容量&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;df -h   
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 查看到具体哪个目录满了,然后配合 du -sh命令解决即可&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Filesystem      Size  Used Avail Use% Mounted on
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;/dev/sda3       8.8G  8.8G     &lt;span class=&#34;m&#34;&gt;0&lt;/span&gt; 100% /
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;tmpfs           931M     &lt;span class=&#34;m&#34;&gt;0&lt;/span&gt;  931M   0% /dev/shm
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;/dev/sda1       190M   40M  141M  22% /boot
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;优雅地重启docker&#34;&gt;&lt;/h&gt;优雅地重启Docker
+&lt;/h2&gt;&lt;blockquote&gt;
+&lt;p&gt;不停止重启,重启docker是一件多么美妙的事情!&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;当 &lt;code&gt;Docker&lt;/code&gt; 守护程序终止时，它会关闭正在运行的容器。从 &lt;code&gt;Docker-ce 1.12&lt;/code&gt; 开始，可以在配置文件中添加 &lt;code&gt;live-restore&lt;/code&gt; 参数，以便在守护程序变得不可用时容器保持运行。需要注意的是 &lt;code&gt;Windows&lt;/code&gt; 平台暂时还是不支持该参数的配置。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-json&#34; data-lang=&#34;json&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;err&#34;&gt;vim&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;/etc/docker/daemon.json&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  &lt;span class=&#34;nt&#34;&gt;&amp;#34;live-restore&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;kc&#34;&gt;true&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;在守护进程关闭的时候保持容器运行&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 重载docker服务&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;systemctl reload docker.service
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;root@VM-0-9-centos ~&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;# docker ps -a&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;CONTAINER ID   IMAGE     COMMAND                  CREATED         STATUS          PORTS     NAMES
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;e58a220f03c3   nginx     &lt;span class=&#34;s2&#34;&gt;&amp;#34;/docker-entrypoint.…&amp;#34;&lt;/span&gt;   &lt;span class=&#34;m&#34;&gt;5&lt;/span&gt; minutes ago   Up &lt;span class=&#34;m&#34;&gt;15&lt;/span&gt; seconds   80/tcp    web
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 这个时候重启docker服务,web服务并没有停止工作&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;root@VM-0-9-centos ~&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;# systemctl restart docker&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;root@VM-0-9-centos ~&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;# docker ps -a&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;CONTAINER ID   IMAGE     COMMAND                  CREATED         STATUS              PORTS     NAMES
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;e58a220f03c3   nginx     &lt;span class=&#34;s2&#34;&gt;&amp;#34;/docker-entrypoint.…&amp;#34;&lt;/span&gt;   &lt;span class=&#34;m&#34;&gt;7&lt;/span&gt; minutes ago   Up About a minute   80/tcp    web
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;live-restore的限制&#34;&gt;&lt;/h&gt;live-restore的限制
+&lt;/h3&gt;&lt;blockquote&gt;
+&lt;p&gt;当前的Live Restore特性可以在进行Daemon维护，或者在Daemon发生问题导致不可用的情况，减少容器的停机时间，不过其也有一定的限制。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;ol&gt;
+&lt;li&gt;Docker版本升级限制
+Live Restore仅支持Docker补丁版本升级时可用，也就是 YY.MM.x 最后一位发生变化的升级，而不支持大版本的升级。在进行大版本升级后，可能会导致Daemon无法重新连接到运行中容器的问题，这时候需要手动停止运行的容器。&lt;/li&gt;
+&lt;li&gt;Daemon选项变更
+也就是说Live Restore仅仅在某些Daemon级别的配置选项不发生改变的情况工作，例如Bridge的IP地址，存储驱动类型等。如果在重启Daemon时候，这些选项发生了改变，则可能会到Daemon无法重新连接运行中的容器，这时也需要手动停止这些容器。&lt;/li&gt;
+&lt;li&gt;影响容器的日志输出
+如果Daemon长时间停止，会影响运行容器的日志输出。因为默认情况下，日志管道的缓冲区大小为64k，当缓冲写满之后，必须启动Daemon来刷新缓冲区。&lt;/li&gt;
+&lt;li&gt;不支持Docker Swarm
+Live Restore只是独立Docker引擎的特性，而Swarm的服务是由Swarm管理器管理的。当Swarm管理器不可用时，Swarm服务是可以在工作节点上继续运行的，只是不同通过Swarm管理器进行管理，直到Swarm管理恢复工作。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id=&#34;容器内部中文异常&#34;&gt;&lt;/h&gt;容器内部中文异常
+&lt;/h2&gt;&lt;p&gt;问题描述: 容器内部中文乱码、无法正常显示中文、&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;例如显示中文：&lt;code&gt;--------���&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 查看容器内部编码&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;root@e58a220f03c3:/# locale -a
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;C
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;C.UTF-8
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;POSIX
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;然而 &lt;code&gt;POSIX&lt;/code&gt; 字符集是不支持中文的，而 &lt;code&gt;C.UTF-8&lt;/code&gt; 是支持中文的只要把系统中的环境 &lt;code&gt;LANG&lt;/code&gt; 改为 &lt;code&gt;&amp;quot;C.UTF-8&amp;quot;&lt;/code&gt; 格式即可解决问题。同理，在 &lt;code&gt;K8S&lt;/code&gt; 进入 &lt;code&gt;pod&lt;/code&gt; 不能输入中文也可用此方法解决。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nb&#34;&gt;export&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;LANG&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;zh_CN.UTF-8
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description>
+        </item>
+        <item>
+        <title>什么是dockershim</title>
+        <link>https://blog.mletter.cn/tech/docker/docker-shim/</link>
+        <pubDate>Sun, 13 Feb 2022 00:00:00 +0000</pubDate>
+        
+        <guid>https://blog.mletter.cn/tech/docker/docker-shim/</guid>
+        <description>&lt;h2 id=&#34;先前了解&#34;&gt;&lt;/h&gt;先前了解
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.20.md#dockershim-deprecation&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;参考链接&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://github.com/kubernetes/kubernetes/pull/94624&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Githubissue&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;kubelet中的Docker支持现在已弃用，并将在未来的版本中删除。kubelet使用了一个名为&lt;code&gt;dockershim&lt;/code&gt;的模块，该模块实现了对Docker的CRI支持，并在Kubernetes社区中发现了维护问题。我们鼓励您评估迁移到一个容器运行时的情况，该容器运行时是CRI（v1alpha1或v1兼容）的完整实现。&lt;/p&gt;
+&lt;p&gt;也就是说,在后续的Kubernetes&lt;code&gt;1.20x&lt;/code&gt;版本以后会删除&lt;code&gt;dockershim&lt;/code&gt;组件,但是由于目前Docker的使用用户众多,中间必然会有替换的一个过渡期,所以大家可以更多的关注一下其他的&lt;code&gt;Container Runtime&lt;/code&gt;。 例如我们的&lt;code&gt;Podman&lt;/code&gt;、&lt;code&gt;Containerd&lt;/code&gt;、&lt;code&gt;cri-o&lt;/code&gt;等其他容器运行时来运行kubernetes。&lt;/p&gt;
+&lt;p&gt;下面我们就具体来看看Kubernetes所提到的弃用&lt;code&gt;dockershim&lt;/code&gt;到底是什么东西.&lt;/p&gt;
+&lt;h2 id=&#34;cri容器运行时接口&#34;&gt;&lt;/h&gt;CRI容器运行时接口
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://github.com/kubernetes/community/blob/master/contributors/devel/sig-node/container-runtime-interface.md&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;参考链接&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;CRI：容器运行时接口 container runtime interface，CRI 中定义了容器和镜像两个接口，实现了这两个接口目前主流的是：CRI-O、Containerd。（目前 PCI 产品使用的即为 Containerd）。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;CRI接口的具体用处就在于&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;对容器操作的接口，包括容器的创建、启动和停止.即&lt;code&gt;create&lt;/code&gt;、&lt;code&gt;stop&lt;/code&gt;等操作。&lt;/li&gt;
+&lt;li&gt;对镜像的操作，下载、删除镜像等. 即&lt;code&gt;pull&lt;/code&gt;、&lt;code&gt;rmi&lt;/code&gt;等操作。&lt;/li&gt;
+&lt;li&gt;podsandbox&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id=&#34;oci开放容器标准&#34;&gt;&lt;/h&gt;OCI开放容器标准
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;OCI：开放容器标准 open container initiative，OCI 中定义了两个标准：容器运行时标准 和 容器镜像标准，实现了这一标准的主流是：runc（也即我们日常说的 Docker）、Kata-Container。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;OCI的作用在于&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;ImageSpec(容器标准包)
+&lt;ol&gt;
+&lt;li&gt;文件系统：以 layer 保存的文件系统，每个 layer 保存了和上层之间变化的部分，layer 应该保存哪些文件，怎么表示增加、修改和删除的文件等&lt;/li&gt;
+&lt;li&gt;config 文件：保存了文件系统的层级信息（每个层级的 hash 值，以及历史信息），以及容器运行时需要的一些信息（比如环境变量、工作目录、命令参数、mount 列表），指定了镜像在某个特定平台和系统的配置。比较接近我们使用 &lt;code&gt;docker inspect &amp;lt;image_id&amp;gt;&lt;/code&gt; 看到的内容&lt;/li&gt;
+&lt;li&gt;manifest 文件：镜像的 config 文件索引，有哪些 layer，额外的 annotation 信息，manifest 文件中保存了很多和当前平台有关的信息&lt;/li&gt;
+&lt;li&gt;index 文件：可选的文件，指向不同平台的 manifest 文件，这个文件能保证一个镜像可以跨平台使用，每个平台拥有不同的 manifest 文件，使用 index 作为索引&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;2.runtimeSpec:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;code&gt;ociVersion(string, REQUIRED)&lt;/code&gt;:是该州遵守的开放容器倡议运行时规范的版本。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;ol start=&#34;2&#34;&gt;
+&lt;li&gt;&lt;code&gt;id&lt;/code&gt;： 容器的 ID。这在此主机上的所有容器中必须是唯一的。不要求它在主机之间是唯一的。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;ol start=&#34;3&#34;&gt;
+&lt;li&gt;status(string, REQUIRED): 加冕时容器的几个状态&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;1. creating
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;2. created
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;3. running
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;4. stopped
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;ul&gt;
+&lt;li&gt;
+&lt;ol start=&#34;4&#34;&gt;
+&lt;li&gt;&lt;code&gt;pid&lt;/code&gt;: host上看到的容器进程&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;ol start=&#34;5&#34;&gt;
+&lt;li&gt;&lt;code&gt;bundle&lt;/code&gt;：host上容器bundle目录的绝对路径&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;ol start=&#34;6&#34;&gt;
+&lt;li&gt;&lt;code&gt;annotation&lt;/code&gt;：容器相关的标注，可选&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;所以在Json的序列化时,必须遵守以下格式&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-json&#34; data-lang=&#34;json&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;nt&#34;&gt;&amp;#34;ociVersion&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;0.2.0&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;nt&#34;&gt;&amp;#34;id&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;oci-container1&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;nt&#34;&gt;&amp;#34;status&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;running&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;nt&#34;&gt;&amp;#34;pid&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;4422&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;nt&#34;&gt;&amp;#34;bundle&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;/containers/redis&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;nt&#34;&gt;&amp;#34;annotations&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        &lt;span class=&#34;nt&#34;&gt;&amp;#34;myKey&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;myValue&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;dockershim&#34;&gt;&lt;/h&gt;Dockershim
+&lt;/h2&gt;&lt;p&gt;&lt;code&gt;Dockershim&lt;/code&gt; 作用：把外部收到的请求转化成 &lt;code&gt;docker daemon&lt;/code&gt; 能听懂的请求，让 Docker Daemon 执行创建、删除等容器操作。&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;具体看一下&lt;code&gt;kubelet&lt;/code&gt;是怎样创建容器的&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;ol&gt;
+&lt;li&gt;Kubelet 通过 CRI 接口（gRPC）调用&lt;code&gt;dockershim&lt;/code&gt;,请求创建一个容器。CRI 即容器运行时接口，这一步中，Kubelet 可以视作一个简单的&lt;code&gt;CRI Client&lt;/code&gt;，而 dockershim 就是接收请求的 Server。目前&lt;code&gt;dockershim&lt;/code&gt;是内嵌在 Kubelet 中的，所以接收调用就是 Kubelet 进程。&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;dockershim&lt;/code&gt;收到请求后，转化成 docker daemon的请求，发到docker daemon 上请求创建一个容器。&lt;/li&gt;
+&lt;li&gt;Docker Daemon 早在 1.12 版本中就已经将针对容器的操作移到另一个守护进程 containerd 中，因此 Docker Daemon 仍然不能帮我们创建容器，而是要请求 containerd 创建一个容器。&lt;/li&gt;
+&lt;li&gt;containerd 收到请求后，并不会自己直接去操作容器，而是创建一个叫做 containerd-shim 的进程，让 &lt;code&gt;containerd-shim&lt;/code&gt; 去操作容器。是因为容器进程需要一个父进程来做诸如收集状态，维持 stdin 等 fd 打开等工作。而假如这个父进程就是 containerd，那每次 containerd 挂掉或升级，整个宿主机上所有的容器都得退出了。而引入了 &lt;code&gt;containerd-shim&lt;/code&gt; 就规避了这个问题（containerd 和 shim 并不是父子进程关系）。&lt;/li&gt;
+&lt;li&gt;我们知道创建容器需要做一些设置 namespaces 和 cgroups，挂载 root filesystem 等等操作，而这些事该怎么做已经有了公开的规范，那就是 OCI。它的一个参考实现叫做 runC。于是，containerd-shim 在这一步需要调用 runC 这个命令行工具，来启动容器。&lt;/li&gt;
+&lt;li&gt;runC 启动完容器后本身会直接退出，&lt;code&gt;containerd-shim&lt;/code&gt; 则会成为容器进程的父进程，负责收集容器进程的状态，上报给 containerd，并在容器中 pid 为 1 的进程退出后接管容器中的子进程进行清理，确保不会出现僵尸进程。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id=&#34;参考链接&#34;&gt;&lt;/h&gt;参考链接
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://kubernetes.io/zh/blog/2020/12/02/dont-panic-kubernetes-and-docker/#&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;不支持docker我该何去何从？ &lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        </item>
+        
+    </channel>
 </rss>

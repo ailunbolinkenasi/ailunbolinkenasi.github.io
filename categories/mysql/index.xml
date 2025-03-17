@@ -1,273 +1,268 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
-  <channel>
-    <title>Mysql on 太阳可以是蓝色</title>
-    <link>https://blog.mletter.cn/categories/mysql/</link>
-    <description>Recent content in Mysql on 太阳可以是蓝色</description>
-    <image>
-      <title>太阳可以是蓝色</title>
-      <url>https://blog.mletter.cn/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</url>
-      <link>https://blog.mletter.cn/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</link>
-    </image>
-    <generator>Hugo -- 0.138.0</generator>
-    <language>zh</language>
-    <lastBuildDate>Wed, 20 Jul 2022 00:00:00 +0000</lastBuildDate>
-    <atom:link href="https://blog.mletter.cn/categories/mysql/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>MySQL小小优化思路简单版本</title>
-      <link>https://blog.mletter.cn/tech/mysql/mysql-optimization/</link>
-      <pubDate>Wed, 20 Jul 2022 00:00:00 +0000</pubDate>
-      <guid>https://blog.mletter.cn/tech/mysql/mysql-optimization/</guid>
-      <description>大概的优化思路分为以下几个内容</description>
-      <content:encoded><![CDATA[<h2 id="mysql性能优化-优化思路">MySQL性能优化-优化思路</h2>
-<blockquote>
-<p>大概的优化思路分为以下几个内容</p>
-</blockquote>
-<ul>
-<li>硬件层面优化</li>
-<li>系统层面优化</li>
-<li>MySQL版本选择优化</li>
-<li>MySQL三层结构及参数优化</li>
-<li>MySQL开发规范</li>
-<li>MySQL的索引优化</li>
-<li>MySQL的事务以及锁优化</li>
-<li>MySQL架构优化</li>
-<li>MySQL安全优化</li>
-</ul>
-<p>PS: 优化是有风险的,如果你要优化就要变更。</p>
-<h2 id="硬件层面优化">硬件层面优化</h2>
-<blockquote>
-<p>这个地方就略过了就是一些加大硬件配置的需求.</p>
-</blockquote>
-<h2 id="系统层面优化">系统层面优化</h2>
-<ul>
-<li>id: 空闲状态,如果数值越大,表示空闲状态越多。如果可能达到0的情况下,表示当前CPU的核心处于满负荷状态。</li>
-<li>us: 表示当前CPU核心数量的使用率。</li>
-<li>sy: 表示CPU与内核交互的频率,内核与CPU处理请求的占用,如果此参数高,表示内核很忙。</li>
-<li>wa: CPU从内存中刷数据到硬盘中的占用,可能会出现I/O的问题。</li>
-</ul>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">[</span>root@mysql-master ~<span class="o">]</span><span class="c1"># top</span>
-</span></span><span class="line"><span class="cl">top - 15:05:11 up <span class="m">35</span> days,  5:54,  <span class="m">2</span> users,  load average: 0.00, 0.01, 0.05
-</span></span><span class="line"><span class="cl">Tasks: <span class="m">225</span> total,   <span class="m">2</span> running, <span class="m">223</span> sleeping,   <span class="m">0</span> stopped,   <span class="m">0</span> zombie
-</span></span><span class="line"><span class="cl">%Cpu0  :  0.0 us,  0.0 sy,  0.0 ni,100.0 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
-</span></span><span class="line"><span class="cl">%Cpu1  :  0.0 us,  0.0 sy,  0.0 ni,100.0 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
-</span></span><span class="line"><span class="cl">%Cpu2  :  0.0 us,  0.0 sy,  0.0 ni,100.0 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
-</span></span><span class="line"><span class="cl">%Cpu3  :  0.0 us,  0.0 sy,  0.0 ni,100.0 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
-</span></span><span class="line"><span class="cl">%Cpu4  :  0.0 us,  0.0 sy,  0.0 ni,100.0 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
-</span></span><span class="line"><span class="cl">%Cpu5  :  0.0 us,  0.0 sy,  0.0 ni,100.0 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
-</span></span><span class="line"><span class="cl">%Cpu6  :  0.0 us,  0.0 sy,  0.0 ni,100.0 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
-</span></span><span class="line"><span class="cl">%Cpu7  :  0.0 us,  0.0 sy,  0.0 ni,100.0 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
-</span></span><span class="line"><span class="cl">KiB Mem : <span class="m">24522416</span> total, <span class="m">14931524</span> free,  <span class="m">3675344</span> used,  <span class="m">5915548</span> buff/cache
-</span></span><span class="line"><span class="cl">KiB Swap: <span class="m">12386300</span> total, <span class="m">12386300</span> free,        <span class="m">0</span> used. <span class="m">20450988</span> avail Mem
-</span></span></code></pre></div><p>通过 <code>top -Hp 10380</code> 指定占用高的进程,可以看到具体是那些线程占用过高</p>
-<p>假设 <code>1893</code>线程占用过高,可以从数据库中查看<code>performance_schema</code>库中具体的信息</p>
-<blockquote>
-<p>定位操作系统线程-&gt;从系统线程中定位数据库线程</p>
-</blockquote>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="o">***************************</span><span class="w"> </span><span class="mi">38</span><span class="p">.</span><span class="w"> </span><span class="k">row</span><span class="w"> </span><span class="o">***************************</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="n">THREAD_ID</span><span class="p">:</span><span class="w"> </span><span class="mi">128014</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">               </span><span class="n">NAME</span><span class="p">:</span><span class="w"> </span><span class="n">thread</span><span class="o">/</span><span class="k">sql</span><span class="o">/</span><span class="n">one_connection</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">               </span><span class="k">TYPE</span><span class="p">:</span><span class="w"> </span><span class="n">FOREGROUND</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">     </span><span class="n">PROCESSLIST_ID</span><span class="p">:</span><span class="w"> </span><span class="mi">127988</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">   </span><span class="n">PROCESSLIST_USER</span><span class="p">:</span><span class="w"> </span><span class="n">ooooo</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">   </span><span class="n">PROCESSLIST_HOST</span><span class="p">:</span><span class="w"> </span><span class="mi">192</span><span class="p">.</span><span class="mi">168</span><span class="p">.</span><span class="mi">0</span><span class="p">.</span><span class="mi">1</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">     </span><span class="n">PROCESSLIST_DB</span><span class="p">:</span><span class="w"> </span><span class="n">test</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="n">PROCESSLIST_COMMAND</span><span class="p">:</span><span class="w"> </span><span class="n">Sleep</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">   </span><span class="n">PROCESSLIST_TIME</span><span class="p">:</span><span class="w"> </span><span class="mi">104</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="n">PROCESSLIST_STATE</span><span class="p">:</span><span class="w"> </span><span class="k">NULL</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">   </span><span class="n">PROCESSLIST_INFO</span><span class="p">:</span><span class="w"> </span><span class="o">**</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">   </span><span class="n">PARENT_THREAD_ID</span><span class="p">:</span><span class="w"> </span><span class="k">NULL</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">               </span><span class="k">ROLE</span><span class="p">:</span><span class="w"> </span><span class="k">NULL</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">       </span><span class="n">INSTRUMENTED</span><span class="p">:</span><span class="w"> </span><span class="n">YES</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="n">HISTORY</span><span class="p">:</span><span class="w"> </span><span class="n">YES</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">CONNECTION_TYPE</span><span class="p">:</span><span class="w"> </span><span class="n">SSL</span><span class="o">/</span><span class="n">TLS</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">       </span><span class="n">THREAD_OS_ID</span><span class="p">:</span><span class="w"> </span><span class="mi">16165</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="o">***************************</span><span class="w"> </span><span class="mi">39</span><span class="p">.</span><span class="w"> </span><span class="k">row</span><span class="w"> </span><span class="o">***************************</span><span class="w">
-</span></span></span></code></pre></div><h3 id="如果可能存在的是io问题">如果可能存在的是IO问题</h3>
-<ul>
-<li>查询<code>MySQL</code>中的<code>sys</code>库中存在记录<code>IO</code>的表</li>
-</ul>
-<blockquote>
-<p>如果存在IO问题： 可以选择用内存换取时间的方法…</p>
-</blockquote>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="n">mysql</span><span class="o">&gt;</span><span class="w"> </span><span class="n">use</span><span class="w"> </span><span class="n">sys</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="n">mysql</span><span class="o">&gt;</span><span class="w"> </span><span class="k">show</span><span class="w"> </span><span class="n">tables</span><span class="p">;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="o">|</span><span class="w"> </span><span class="n">x$io_by_thread_by_latency</span><span class="w">                     </span><span class="o">|</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="o">|</span><span class="w"> </span><span class="n">x$io_global_by_file_by_bytes</span><span class="w">                  </span><span class="o">|</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="o">|</span><span class="w"> </span><span class="n">x$io_global_by_file_by_latency</span><span class="w">                </span><span class="o">|</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="o">|</span><span class="w"> </span><span class="n">x$io_global_by_wait_by_bytes</span><span class="w">                  </span><span class="o">|</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="o">|</span><span class="w"> </span><span class="n">x$io_global_by_wait_by_latency</span><span class="w">                </span><span class="o">|</span><span class="w"> 
-</span></span></span></code></pre></div><h2 id="mysql版本选择优化">MySQL版本选择优化</h2>
-<blockquote>
-<p>在这里…笔者非常推荐MySQL8.0x!!! 同样的机器,8.0比5.7快2.5倍左右吧</p>
-</blockquote>
-<ol>
-<li>选择稳定版,选择开源社区的稳定版和GA版本</li>
-<li>选择MySQL数据库GA版本发布后6-12个月的GA双数版本</li>
-<li>要选择开发兼容的MySQL版本</li>
-</ol>
-<h2 id="mysql三层结构及参数优化">MySQL三层结构及参数优化</h2>
-<h3 id="连接层优化">连接层优化</h3>
-<blockquote>
-<p>一切根据自己或者项目需要自由设置吧!</p>
-</blockquote>
-<pre tabindex="0"><code class="language-conf" data-lang="conf">max_connections = 1000
-max_connect_errors = 999999
-wait_timeout = 600
-interactive_wait_timeout = 3600
-net_read_timeout = 120
-new_write_timeout = 120
-max_allowed_packet = 500M
-</code></pre><h3 id="server层优化">Server层优化</h3>
-<blockquote>
-<p>一切根据自己或者项目需要自由设置吧!</p>
-</blockquote>
-<pre tabindex="0"><code class="language-conf" data-lang="conf">sort_buffer_size = 8M
-sql_safe_updates = 1
-slow_query_log = 1
-long_query_time = 1
-slow_query_log_file = /data/mysql/mysql-slow.log
-log_queries_not_using_indexes = 10
-read_buffer_size = 2M
-read_rnd_buffer_size = 8M
-sort_buffer_size = 8M
-join_buffer_size = 8M
-key_buffer_size = 16M
-max_binlog_size = 500M
-max_execution_time = 28800
-log_timestamps = SYSTEM
-init_connect = &#34;set names utf8mb4&#34;
-binlog_format = ROW
-event_scheduler = OFF
-lock_wait_timeout =
-sync_binlog = 1
-</code></pre><h3 id="engine层优化">Engine层优化</h3>
-<blockquote>
-<p>一切根据自己或者项目需要自由设置吧!</p>
-</blockquote>
-<pre tabindex="0"><code class="language-conf" data-lang="conf">transaction-isolation = &#34;READ-COMMITIED&#34;
-innodb_data_home_dir = /xxx
-innodb_log_group_home_dir = /xxx
-innodb_log_file_size = 2048M
-innodb_log_files_in_group = 3
-innodb_flush_log_at_trx_commit = 2
-innodb_flush_method = O_DIRECT
-innodb_io_capacity = 1000
-innodb_io_capacity_max = 4000
-innodb_buffer_pool_size = 64G
-innodb_buffer_pool_instances = 4
-innodb_log_buffer_size = 64M
-innodb_max_dirty_pages_pct = 85
-</code></pre><h2 id="全局锁读global-read-lock-grl">全局锁读Global Read Lock (GRL）</h2>
-<p>加锁方法：FTWRL,flush tables with read lock.</p>
-<p>解锁方法：unlock tables；</p>
-<p>可能出现的场景</p>
-<ul>
-<li>
-<p>记录binlog日志-&gt;不让所有事务提交</p>
-</li>
-<li>
-<p>FTWRL-&gt;不让新的修改进入</p>
-</li>
-<li>
-<p>snapshot innodb-&gt; 允许所有的DML语句,但是不允许DDL</p>
-</li>
-</ul>
-<p>属于类型: MDL(matedatalock)层面锁</p>
-<blockquote>
-<p>影响情况: 加锁的期间,阻塞所有事务的写入,阻塞所有事务的commit,时间受到<code>lock_wait_timeout=315336000</code></p>
-</blockquote>
-<h3 id="全局读锁的排查方法">全局读锁的排查方法</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="n">MySQL</span><span class="w"> </span><span class="p">[(</span><span class="k">none</span><span class="p">)]</span><span class="o">&gt;</span><span class="w"> </span><span class="n">USE</span><span class="w"> </span><span class="n">performance_schema</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="n">MySQL</span><span class="w"> </span><span class="p">[</span><span class="n">performance_schema</span><span class="p">]</span><span class="o">&gt;</span><span class="w"> 
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="o">#</span><span class="w"> </span><span class="mi">5</span><span class="p">.</span><span class="mi">6</span><span class="err">需要手动开启</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="n">MySQL</span><span class="w"> </span><span class="p">[</span><span class="n">performance_schema</span><span class="p">]</span><span class="o">&gt;</span><span class="w"> </span><span class="k">UPDATE</span><span class="w"> </span><span class="n">setup_instruments</span><span class="w"> </span><span class="k">SET</span><span class="w"> </span><span class="n">ENABLED</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&#34;YES&#34;</span><span class="p">,</span><span class="n">TIMED</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&#34;YES&#34;</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">NAME</span><span class="o">=</span><span class="s1">&#39;wait/lock/metadata/sql/mdl&#39;</span><span class="p">;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="o">#</span><span class="w">  </span><span class="err">查看是否有阻塞问题</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="n">MySQL</span><span class="w"> </span><span class="p">[</span><span class="n">performance_schema</span><span class="p">]</span><span class="o">&gt;</span><span class="w"> </span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">metadata_locks</span><span class="p">;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="n">mysql</span><span class="o">&gt;</span><span class="w"> </span><span class="k">SELECT</span><span class="w"> </span><span class="n">OBJECT_SCHEMA</span><span class="p">,</span><span class="n">OBJECT_NAME</span><span class="p">,</span><span class="n">LOCK_TYPE</span><span class="p">,</span><span class="n">LOCK_DURATION</span><span class="p">,</span><span class="n">LOCK_STATUS</span><span class="p">,</span><span class="n">OWNER_THREAD_ID</span><span class="p">,</span><span class="n">OWNER_EVENT_ID</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">performance_schema</span><span class="p">.</span><span class="n">metadata_locks</span><span class="p">;</span><span class="w">
-</span></span></span></code></pre></div><h3 id="57版本全局读锁排查">5.7版本全局读锁排查</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="n">mysql</span><span class="o">&gt;</span><span class="w"> </span><span class="k">SHOW</span><span class="w"> </span><span class="n">proceslist</span><span class="err">\</span><span class="k">G</span><span class="p">;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="n">mysql</span><span class="o">&gt;</span><span class="w"> </span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">FORM</span><span class="w"> </span><span class="n">sys</span><span class="p">.</span><span class="n">schema_table_lock_waits</span><span class="p">;</span><span class="w">
-</span></span></span></code></pre></div><h3 id="经典故障案例">经典故障案例</h3>
-<ul>
-<li>假设模拟一个大的查询或者事物</li>
-<li>模拟备份时的TWRL,此时会发现命令阻塞</li>
-<li>发起正常查询请求,发现查询被阻塞</li>
-</ul>
-<blockquote>
-<p>5.7版本的Xbackup/mysqldump备份数据库出现锁表状态,所有的查询不能正常进行.</p>
-</blockquote>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="p">,</span><span class="n">SLEEP</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span><span class="w"> </span><span class="n">FORM</span><span class="w"> </span><span class="o">`</span><span class="k">user</span><span class="o">`</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">username</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;test1&#39;</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="k">update</span><span class="p">;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="n">flush</span><span class="w"> </span><span class="n">tables</span><span class="w"> </span><span class="k">with</span><span class="w"> </span><span class="k">read</span><span class="w"> </span><span class="k">lock</span><span class="p">;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">icours</span><span class="p">.</span><span class="k">user</span><span class="w"> </span><span class="k">where</span><span class="w"> </span><span class="n">username</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;test&#39;</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="k">update</span><span class="w">
-</span></span></span></code></pre></div><h2 id="table-lock表级锁">Table Lock(表级锁)</h2>
-<ul>
-<li>加锁方式: <code>lock table t1 read;</code> 所有会话只读,属于MDL锁。<code>lock table write; </code>当前会话可以可以RW,属于MDL锁. <code>SELECT FOR UPDATE;</code> <code>SELECT FOR SHARE</code></li>
-<li>解锁方式: <code>unlock tables</code>;</li>
-</ul>
-<h3 id="检测方式">检测方式</h3>
-<pre tabindex="0"><code>[mysqld]
-performance-schema-instrument = &#39;wait/lock/metadata/sql/mdl=ON&#39;
-
-SELECT * FROM performance_schema.metadata_locks;
-SELECT * FROM performance_schema.threads;
-</code></pre><h2 id="metadatalock元数据锁">MetaDataLock(元数据锁)</h2>
-<ul>
-<li>作用范围: global、commit、tablespace、schema、table</li>
-<li>默认时间： <code>lock_wait_timeout</code></li>
-</ul>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="n">mysql</span><span class="o">&gt;</span><span class="w"> </span><span class="k">select</span><span class="w"> </span><span class="o">@@</span><span class="n">lock_wait_timeout</span><span class="p">;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="o">+</span><span class="c1">---------------------+
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="o">|</span><span class="w"> </span><span class="o">@@</span><span class="n">lock_wait_timeout</span><span class="w"> </span><span class="o">|</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="o">+</span><span class="c1">---------------------+
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="o">|</span><span class="w">            </span><span class="mi">31536000</span><span class="w"> </span><span class="o">|</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="o">+</span><span class="c1">---------------------+
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="mi">1</span><span class="w"> </span><span class="k">row</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="k">set</span><span class="w"> </span><span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">00</span><span class="w"> </span><span class="n">sec</span><span class="p">)</span><span class="w">
-</span></span></span></code></pre></div><h3 id="检测方式-1">检测方式</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="p">[</span><span class="n">mysqld</span><span class="p">]</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="n">performance</span><span class="o">-</span><span class="k">schema</span><span class="o">-</span><span class="n">instrument</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;wait/lock/metadata/sql/mdl=ON&#39;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">performance_schema</span><span class="p">.</span><span class="n">metadata_locks</span><span class="p">;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="o">//</span><span class="w"> </span><span class="err">找到阻塞的</span><span class="n">Id</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="n">OWNER_THREAD_ID</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">12</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="n">mysql</span><span class="o">&gt;</span><span class="w"> </span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">threads</span><span class="w"> </span><span class="k">where</span><span class="w"> </span><span class="n">thread_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;12&#39;</span><span class="err">\</span><span class="k">G</span><span class="p">;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="n">kill</span><span class="w"> </span><span class="mi">12</span><span class="p">;</span><span class="w">
-</span></span></span></code></pre></div><h2 id="autoinclock自增锁">AutoincLock(自增锁)</h2>
-<ul>
-<li>通过参数: <code>innodb_autoinc_lock_mod = 0 | 1 | 2</code></li>
-<li>0 表锁：每次插入都请求表锁,效率低下</li>
-<li>1 mutex： 预计插入多少行,预申请自增序列.如果出现load或者insert select方式会退化为0。</li>
-<li>2 : 强制使用mutex的方式,并发插入会更高效！</li>
-</ul>
-<h2 id="innodb-row-lock行级锁">Innodb Row Lock(行级锁)</h2>
-<ul>
-<li>record lock、gap、next、lock</li>
-</ul>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="n">MySQL</span><span class="w"> </span><span class="p">[(</span><span class="k">none</span><span class="p">)]</span><span class="o">&gt;</span><span class="w"> </span><span class="k">SHOW</span><span class="w"> </span><span class="n">STATUS</span><span class="w"> </span><span class="k">LIKE</span><span class="w"> </span><span class="s1">&#39;innodb_row_lock&#39;</span><span class="p">;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="n">MySQL</span><span class="w"> </span><span class="p">[</span><span class="n">information_schema</span><span class="p">]</span><span class="o">&gt;</span><span class="w"> </span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">information_schema</span><span class="p">.</span><span class="n">innodb_trx</span><span class="p">;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="n">MySQL</span><span class="w"> </span><span class="p">[</span><span class="n">information_schema</span><span class="p">]</span><span class="o">&gt;</span><span class="w"> </span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">FORM</span><span class="w"> </span><span class="n">sys</span><span class="p">.</span><span class="n">schema_table_lock_waits</span><span class="p">;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="n">MySQL</span><span class="w"> </span><span class="p">[</span><span class="n">information_schema</span><span class="p">]</span><span class="o">&gt;</span><span class="w"> </span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w">  </span><span class="n">performance_schema</span><span class="p">.</span><span class="n">threads</span><span class="p">;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="n">MySQL</span><span class="w"> </span><span class="p">[</span><span class="n">information_schema</span><span class="p">]</span><span class="o">&gt;</span><span class="w"> </span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">performance_schema</span><span class="p">.</span><span class="n">events_statements_current</span><span class="p">;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="n">MySQL</span><span class="w"> </span><span class="p">[</span><span class="n">information_schema</span><span class="p">]</span><span class="o">&gt;</span><span class="w">
-</span></span></span></code></pre></div><h3 id="优化方向">优化方向</h3>
-<ol>
-<li>优化索引</li>
-<li>减少事务的更新范围</li>
-<li>RC级别</li>
-<li>拆分语句</li>
-</ol>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="o">//</span><span class="w"> </span><span class="err">假设</span><span class="w"> </span><span class="n">k1是辅助索引</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="k">update</span><span class="w"> </span><span class="n">t1</span><span class="w"> </span><span class="k">set</span><span class="w"> </span><span class="n">num</span><span class="o">=</span><span class="n">num</span><span class="o">+</span><span class="mi">10</span><span class="w"> </span><span class="k">where</span><span class="w"> </span><span class="n">k1</span><span class="o">&lt;</span><span class="mi">100</span><span class="p">;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="o">//</span><span class="w"> </span><span class="err">改为</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="k">select</span><span class="w"> </span><span class="n">id</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">t1</span><span class="w"> </span><span class="k">where</span><span class="w"> </span><span class="n">k1</span><span class="o">&lt;</span><span class="mi">100</span><span class="p">;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="k">update</span><span class="w"> </span><span class="n">t1</span><span class="w"> </span><span class="k">set</span><span class="w"> </span><span class="n">num</span><span class="o">=</span><span class="n">num</span><span class="o">+</span><span class="mi">10</span><span class="w"> </span><span class="k">where</span><span class="w"> </span><span class="n">id</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="p">(</span><span class="mi">20</span><span class="p">,</span><span class="mi">30</span><span class="p">,</span><span class="mi">50</span><span class="p">)</span><span class="w">
-</span></span></span></code></pre></div><h2 id="dead-lock死锁">Dead Lock死锁</h2>
-<blockquote>
-<p>dead lock 多个并发事务之间发生交叉依赖的时候,会出现死锁.</p>
-</blockquote>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="k">SHOW</span><span class="w"> </span><span class="n">ENGINE</span><span class="w"> </span><span class="n">innodb</span><span class="w"> </span><span class="n">STATUS</span><span class="err">\</span><span class="k">G</span><span class="p">;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="n">innodb_print</span><span class="err">——</span><span class="n">all_deadlocks</span><span class="w"> </span><span class="o">=</span><span class="mi">1</span><span class="w"> </span><span class="o">//</span><span class="w"> </span><span class="err">开启记录死锁日志</span><span class="w">
-</span></span></span></code></pre></div>]]></content:encoded>
-    </item>
-  </channel>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>Mysql on 太阳可以是蓝色</title>
+        <link>https://blog.mletter.cn/categories/mysql/</link>
+        <description>Recent content in Mysql on 太阳可以是蓝色</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>en-us</language>
+        <copyright>Live and learn. 🌱</copyright>
+        <lastBuildDate>Wed, 20 Jul 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://blog.mletter.cn/categories/mysql/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>MySQL小小优化思路简单版本</title>
+        <link>https://blog.mletter.cn/tech/mysql/mysql-optimization/</link>
+        <pubDate>Wed, 20 Jul 2022 00:00:00 +0000</pubDate>
+        
+        <guid>https://blog.mletter.cn/tech/mysql/mysql-optimization/</guid>
+        <description>&lt;h2 id=&#34;mysql性能优化-优化思路&#34;&gt;&lt;/h&gt;MySQL性能优化-优化思路
+&lt;/h2&gt;&lt;blockquote&gt;
+&lt;p&gt;大概的优化思路分为以下几个内容&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;硬件层面优化&lt;/li&gt;
+&lt;li&gt;系统层面优化&lt;/li&gt;
+&lt;li&gt;MySQL版本选择优化&lt;/li&gt;
+&lt;li&gt;MySQL三层结构及参数优化&lt;/li&gt;
+&lt;li&gt;MySQL开发规范&lt;/li&gt;
+&lt;li&gt;MySQL的索引优化&lt;/li&gt;
+&lt;li&gt;MySQL的事务以及锁优化&lt;/li&gt;
+&lt;li&gt;MySQL架构优化&lt;/li&gt;
+&lt;li&gt;MySQL安全优化&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;PS: 优化是有风险的,如果你要优化就要变更。&lt;/p&gt;
+&lt;h2 id=&#34;硬件层面优化&#34;&gt;&lt;/h&gt;硬件层面优化
+&lt;/h2&gt;&lt;blockquote&gt;
+&lt;p&gt;这个地方就略过了就是一些加大硬件配置的需求.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2 id=&#34;系统层面优化&#34;&gt;&lt;/h&gt;系统层面优化
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;id: 空闲状态,如果数值越大,表示空闲状态越多。如果可能达到0的情况下,表示当前CPU的核心处于满负荷状态。&lt;/li&gt;
+&lt;li&gt;us: 表示当前CPU核心数量的使用率。&lt;/li&gt;
+&lt;li&gt;sy: 表示CPU与内核交互的频率,内核与CPU处理请求的占用,如果此参数高,表示内核很忙。&lt;/li&gt;
+&lt;li&gt;wa: CPU从内存中刷数据到硬盘中的占用,可能会出现I/O的问题。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;root@mysql-master ~&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;# top&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;top - 15:05:11 up &lt;span class=&#34;m&#34;&gt;35&lt;/span&gt; days,  5:54,  &lt;span class=&#34;m&#34;&gt;2&lt;/span&gt; users,  load average: 0.00, 0.01, 0.05
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Tasks: &lt;span class=&#34;m&#34;&gt;225&lt;/span&gt; total,   &lt;span class=&#34;m&#34;&gt;2&lt;/span&gt; running, &lt;span class=&#34;m&#34;&gt;223&lt;/span&gt; sleeping,   &lt;span class=&#34;m&#34;&gt;0&lt;/span&gt; stopped,   &lt;span class=&#34;m&#34;&gt;0&lt;/span&gt; zombie
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;%Cpu0  :  0.0 us,  0.0 sy,  0.0 ni,100.0 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;%Cpu1  :  0.0 us,  0.0 sy,  0.0 ni,100.0 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;%Cpu2  :  0.0 us,  0.0 sy,  0.0 ni,100.0 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;%Cpu3  :  0.0 us,  0.0 sy,  0.0 ni,100.0 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;%Cpu4  :  0.0 us,  0.0 sy,  0.0 ni,100.0 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;%Cpu5  :  0.0 us,  0.0 sy,  0.0 ni,100.0 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;%Cpu6  :  0.0 us,  0.0 sy,  0.0 ni,100.0 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;%Cpu7  :  0.0 us,  0.0 sy,  0.0 ni,100.0 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;KiB Mem : &lt;span class=&#34;m&#34;&gt;24522416&lt;/span&gt; total, &lt;span class=&#34;m&#34;&gt;14931524&lt;/span&gt; free,  &lt;span class=&#34;m&#34;&gt;3675344&lt;/span&gt; used,  &lt;span class=&#34;m&#34;&gt;5915548&lt;/span&gt; buff/cache
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;KiB Swap: &lt;span class=&#34;m&#34;&gt;12386300&lt;/span&gt; total, &lt;span class=&#34;m&#34;&gt;12386300&lt;/span&gt; free,        &lt;span class=&#34;m&#34;&gt;0&lt;/span&gt; used. &lt;span class=&#34;m&#34;&gt;20450988&lt;/span&gt; avail Mem
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;通过 &lt;code&gt;top -Hp 10380&lt;/code&gt; 指定占用高的进程,可以看到具体是那些线程占用过高&lt;/p&gt;
+&lt;p&gt;假设 &lt;code&gt;1893&lt;/code&gt;线程占用过高,可以从数据库中查看&lt;code&gt;performance_schema&lt;/code&gt;库中具体的信息&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;定位操作系统线程-&amp;gt;从系统线程中定位数据库线程&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-sql&#34; data-lang=&#34;sql&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;***************************&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;38&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;k&#34;&gt;row&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;o&#34;&gt;***************************&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;          &lt;/span&gt;&lt;span class=&#34;n&#34;&gt;THREAD_ID&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;128014&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;               &lt;/span&gt;&lt;span class=&#34;n&#34;&gt;NAME&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;n&#34;&gt;thread&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;/&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;sql&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;/&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;one_connection&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;               &lt;/span&gt;&lt;span class=&#34;k&#34;&gt;TYPE&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;n&#34;&gt;FOREGROUND&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;     &lt;/span&gt;&lt;span class=&#34;n&#34;&gt;PROCESSLIST_ID&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;127988&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;   &lt;/span&gt;&lt;span class=&#34;n&#34;&gt;PROCESSLIST_USER&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;n&#34;&gt;ooooo&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;   &lt;/span&gt;&lt;span class=&#34;n&#34;&gt;PROCESSLIST_HOST&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;192&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;168&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;     &lt;/span&gt;&lt;span class=&#34;n&#34;&gt;PROCESSLIST_DB&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;n&#34;&gt;test&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;PROCESSLIST_COMMAND&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;n&#34;&gt;Sleep&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;   &lt;/span&gt;&lt;span class=&#34;n&#34;&gt;PROCESSLIST_TIME&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;104&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;  &lt;/span&gt;&lt;span class=&#34;n&#34;&gt;PROCESSLIST_STATE&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;k&#34;&gt;NULL&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;   &lt;/span&gt;&lt;span class=&#34;n&#34;&gt;PROCESSLIST_INFO&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;o&#34;&gt;**&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;   &lt;/span&gt;&lt;span class=&#34;n&#34;&gt;PARENT_THREAD_ID&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;k&#34;&gt;NULL&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;               &lt;/span&gt;&lt;span class=&#34;k&#34;&gt;ROLE&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;k&#34;&gt;NULL&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;       &lt;/span&gt;&lt;span class=&#34;n&#34;&gt;INSTRUMENTED&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;n&#34;&gt;YES&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;            &lt;/span&gt;&lt;span class=&#34;n&#34;&gt;HISTORY&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;n&#34;&gt;YES&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;    &lt;/span&gt;&lt;span class=&#34;n&#34;&gt;CONNECTION_TYPE&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;n&#34;&gt;SSL&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;/&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;TLS&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;       &lt;/span&gt;&lt;span class=&#34;n&#34;&gt;THREAD_OS_ID&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;16165&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;***************************&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;39&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;k&#34;&gt;row&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;o&#34;&gt;***************************&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;如果可能存在的是io问题&#34;&gt;&lt;/h&gt;如果可能存在的是IO问题
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;查询&lt;code&gt;MySQL&lt;/code&gt;中的&lt;code&gt;sys&lt;/code&gt;库中存在记录&lt;code&gt;IO&lt;/code&gt;的表&lt;/li&gt;
+&lt;/ul&gt;
+&lt;blockquote&gt;
+&lt;p&gt;如果存在IO问题： 可以选择用内存换取时间的方法…&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-sql&#34; data-lang=&#34;sql&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;mysql&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;&amp;gt;&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;n&#34;&gt;use&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;n&#34;&gt;sys&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;mysql&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;&amp;gt;&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;k&#34;&gt;show&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;n&#34;&gt;tables&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;|&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;n&#34;&gt;x$io_by_thread_by_latency&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;                     &lt;/span&gt;&lt;span class=&#34;o&#34;&gt;|&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;|&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;n&#34;&gt;x$io_global_by_file_by_bytes&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;                  &lt;/span&gt;&lt;span class=&#34;o&#34;&gt;|&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;|&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;n&#34;&gt;x$io_global_by_file_by_latency&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;                &lt;/span&gt;&lt;span class=&#34;o&#34;&gt;|&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;|&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;n&#34;&gt;x$io_global_by_wait_by_bytes&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;                  &lt;/span&gt;&lt;span class=&#34;o&#34;&gt;|&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;|&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;n&#34;&gt;x$io_global_by_wait_by_latency&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;                &lt;/span&gt;&lt;span class=&#34;o&#34;&gt;|&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; 
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;mysql版本选择优化&#34;&gt;&lt;/h&gt;MySQL版本选择优化
+&lt;/h2&gt;&lt;blockquote&gt;
+&lt;p&gt;在这里…笔者非常推荐MySQL8.0x!!! 同样的机器,8.0比5.7快2.5倍左右吧&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;ol&gt;
+&lt;li&gt;选择稳定版,选择开源社区的稳定版和GA版本&lt;/li&gt;
+&lt;li&gt;选择MySQL数据库GA版本发布后6-12个月的GA双数版本&lt;/li&gt;
+&lt;li&gt;要选择开发兼容的MySQL版本&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id=&#34;mysql三层结构及参数优化&#34;&gt;&lt;/h&gt;MySQL三层结构及参数优化
+&lt;/h2&gt;&lt;h3 id=&#34;连接层优化&#34;&gt;&lt;/h&gt;连接层优化
+&lt;/h3&gt;&lt;blockquote&gt;
+&lt;p&gt;一切根据自己或者项目需要自由设置吧!&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;max_connections = 1000
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;max_connect_errors = 999999
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;wait_timeout = 600
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;interactive_wait_timeout = 3600
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;net_read_timeout = 120
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;new_write_timeout = 120
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;max_allowed_packet = 500M
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;server层优化&#34;&gt;&lt;/h&gt;Server层优化
+&lt;/h3&gt;&lt;blockquote&gt;
+&lt;p&gt;一切根据自己或者项目需要自由设置吧!&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;sort_buffer_size = 8M
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;sql_safe_updates = 1
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;slow_query_log = 1
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;long_query_time = 1
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;slow_query_log_file = /data/mysql/mysql-slow.log
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;log_queries_not_using_indexes = 10
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;read_buffer_size = 2M
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;read_rnd_buffer_size = 8M
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;sort_buffer_size = 8M
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;join_buffer_size = 8M
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;key_buffer_size = 16M
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;max_binlog_size = 500M
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;max_execution_time = 28800
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;log_timestamps = SYSTEM
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;init_connect = &amp;#34;set names utf8mb4&amp;#34;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;binlog_format = ROW
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;event_scheduler = OFF
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;lock_wait_timeout =
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;sync_binlog = 1
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;engine层优化&#34;&gt;&lt;/h&gt;Engine层优化
+&lt;/h3&gt;&lt;blockquote&gt;
+&lt;p&gt;一切根据自己或者项目需要自由设置吧!&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;transaction-isolation = &amp;#34;READ-COMMITIED&amp;#34;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;innodb_data_home_dir = /xxx
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;innodb_log_group_home_dir = /xxx
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;innodb_log_file_size = 2048M
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;innodb_log_files_in_group = 3
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;innodb_flush_log_at_trx_commit = 2
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;innodb_flush_method = O_DIRECT
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;innodb_io_capacity = 1000
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;innodb_io_capacity_max = 4000
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;innodb_buffer_pool_size = 64G
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;innodb_buffer_pool_instances = 4
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;innodb_log_buffer_size = 64M
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;innodb_max_dirty_pages_pct = 85
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;全局锁读global-read-lock-grl&#34;&gt;&lt;/h&gt;全局锁读Global Read Lock (GRL）
+&lt;/h2&gt;&lt;p&gt;加锁方法：FTWRL,flush tables with read lock.&lt;/p&gt;
+&lt;p&gt;解锁方法：unlock tables；&lt;/p&gt;
+&lt;p&gt;可能出现的场景&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;记录binlog日志-&amp;gt;不让所有事务提交&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;FTWRL-&amp;gt;不让新的修改进入&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;snapshot innodb-&amp;gt; 允许所有的DML语句,但是不允许DDL&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;属于类型: MDL(matedatalock)层面锁&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;影响情况: 加锁的期间,阻塞所有事务的写入,阻塞所有事务的commit,时间受到&lt;code&gt;lock_wait_timeout=315336000&lt;/code&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h3 id=&#34;全局读锁的排查方法&#34;&gt;&lt;/h&gt;全局读锁的排查方法
+&lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-sql&#34; data-lang=&#34;sql&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;MySQL&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[(&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;none&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)]&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;&amp;gt;&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;n&#34;&gt;USE&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;n&#34;&gt;performance_schema&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;MySQL&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;performance_schema&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;&amp;gt;&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; 
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;#&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;5&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;6&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;需要手动开启&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;MySQL&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;performance_schema&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;&amp;gt;&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;k&#34;&gt;UPDATE&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;n&#34;&gt;setup_instruments&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;k&#34;&gt;SET&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;n&#34;&gt;ENABLED&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;YES&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;TIMED&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;YES&amp;#34;&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;k&#34;&gt;WHERE&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;n&#34;&gt;NAME&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;wait/lock/metadata/sql/mdl&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;#&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;  &lt;/span&gt;&lt;span class=&#34;err&#34;&gt;查看是否有阻塞问题&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;MySQL&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;performance_schema&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;&amp;gt;&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;k&#34;&gt;SELECT&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;o&#34;&gt;*&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;k&#34;&gt;FROM&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;n&#34;&gt;metadata_locks&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;mysql&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;&amp;gt;&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;k&#34;&gt;SELECT&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;n&#34;&gt;OBJECT_SCHEMA&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;OBJECT_NAME&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;LOCK_TYPE&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;LOCK_DURATION&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;LOCK_STATUS&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;OWNER_THREAD_ID&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;OWNER_EVENT_ID&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;k&#34;&gt;FROM&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;n&#34;&gt;performance_schema&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;metadata_locks&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;57版本全局读锁排查&#34;&gt;&lt;/h&gt;5.7版本全局读锁排查
+&lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-sql&#34; data-lang=&#34;sql&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;mysql&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;&amp;gt;&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;k&#34;&gt;SHOW&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;n&#34;&gt;proceslist&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;\&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;G&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;mysql&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;&amp;gt;&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;k&#34;&gt;SELECT&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;o&#34;&gt;*&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;n&#34;&gt;FORM&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;n&#34;&gt;sys&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;schema_table_lock_waits&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;经典故障案例&#34;&gt;&lt;/h&gt;经典故障案例
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;假设模拟一个大的查询或者事物&lt;/li&gt;
+&lt;li&gt;模拟备份时的TWRL,此时会发现命令阻塞&lt;/li&gt;
+&lt;li&gt;发起正常查询请求,发现查询被阻塞&lt;/li&gt;
+&lt;/ul&gt;
+&lt;blockquote&gt;
+&lt;p&gt;5.7版本的Xbackup/mysqldump备份数据库出现锁表状态,所有的查询不能正常进行.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-sql&#34; data-lang=&#34;sql&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;k&#34;&gt;SELECT&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;o&#34;&gt;*&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;SLEEP&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;100&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;n&#34;&gt;FORM&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;o&#34;&gt;`&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;user&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;`&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;k&#34;&gt;WHERE&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;n&#34;&gt;username&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;test1&amp;#39;&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;k&#34;&gt;for&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;k&#34;&gt;update&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;flush&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;n&#34;&gt;tables&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;k&#34;&gt;with&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;k&#34;&gt;read&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;k&#34;&gt;lock&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;SELECT&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;o&#34;&gt;*&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;k&#34;&gt;FROM&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;n&#34;&gt;icours&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;user&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;k&#34;&gt;where&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;n&#34;&gt;username&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;test&amp;#39;&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;k&#34;&gt;for&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;k&#34;&gt;update&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;table-lock表级锁&#34;&gt;&lt;/h&gt;Table Lock(表级锁)
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;加锁方式: &lt;code&gt;lock table t1 read;&lt;/code&gt; 所有会话只读,属于MDL锁。&lt;code&gt;lock table write; &lt;/code&gt;当前会话可以可以RW,属于MDL锁. &lt;code&gt;SELECT FOR UPDATE;&lt;/code&gt; &lt;code&gt;SELECT FOR SHARE&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;解锁方式: &lt;code&gt;unlock tables&lt;/code&gt;;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;检测方式&#34;&gt;&lt;/h&gt;检测方式
+&lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;[mysqld]
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;performance-schema-instrument = &amp;#39;wait/lock/metadata/sql/mdl=ON&amp;#39;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;SELECT * FROM performance_schema.metadata_locks;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;SELECT * FROM performance_schema.threads;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;metadatalock元数据锁&#34;&gt;&lt;/h&gt;MetaDataLock(元数据锁)
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;作用范围: global、commit、tablespace、schema、table&lt;/li&gt;
+&lt;li&gt;默认时间： &lt;code&gt;lock_wait_timeout&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-sql&#34; data-lang=&#34;sql&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;mysql&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;&amp;gt;&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;k&#34;&gt;select&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;o&#34;&gt;@@&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;lock_wait_timeout&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;+&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;---------------------+
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;|&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;o&#34;&gt;@@&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;lock_wait_timeout&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;o&#34;&gt;|&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;+&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;---------------------+
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;|&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;            &lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;31536000&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;o&#34;&gt;|&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;+&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;---------------------+
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;k&#34;&gt;row&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;k&#34;&gt;in&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;k&#34;&gt;set&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;00&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;n&#34;&gt;sec&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;检测方式-1&#34;&gt;&lt;/h&gt;检测方式
+&lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-sql&#34; data-lang=&#34;sql&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;mysqld&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;performance&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;-&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;schema&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;-&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;instrument&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;wait/lock/metadata/sql/mdl=ON&amp;#39;&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;SELECT&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;o&#34;&gt;*&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;k&#34;&gt;FROM&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;n&#34;&gt;performance_schema&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;metadata_locks&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;//&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;err&#34;&gt;找到阻塞的&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;Id&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;OWNER_THREAD_ID&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;12&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;mysql&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;&amp;gt;&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;k&#34;&gt;SELECT&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;o&#34;&gt;*&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;k&#34;&gt;FROM&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;n&#34;&gt;threads&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;k&#34;&gt;where&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;n&#34;&gt;thread_id&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;12&amp;#39;&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;\&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;G&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;kill&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;12&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;autoinclock自增锁&#34;&gt;&lt;/h&gt;AutoincLock(自增锁)
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;通过参数: &lt;code&gt;innodb_autoinc_lock_mod = 0 | 1 | 2&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;0 表锁：每次插入都请求表锁,效率低下&lt;/li&gt;
+&lt;li&gt;1 mutex： 预计插入多少行,预申请自增序列.如果出现load或者insert select方式会退化为0。&lt;/li&gt;
+&lt;li&gt;2 : 强制使用mutex的方式,并发插入会更高效！&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;innodb-row-lock行级锁&#34;&gt;&lt;/h&gt;Innodb Row Lock(行级锁)
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;record lock、gap、next、lock&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-sql&#34; data-lang=&#34;sql&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;MySQL&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[(&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;none&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)]&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;&amp;gt;&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;k&#34;&gt;SHOW&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;n&#34;&gt;STATUS&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;k&#34;&gt;LIKE&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;innodb_row_lock&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;MySQL&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;information_schema&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;&amp;gt;&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;k&#34;&gt;SELECT&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;o&#34;&gt;*&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;k&#34;&gt;FROM&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;n&#34;&gt;information_schema&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;innodb_trx&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;MySQL&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;information_schema&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;&amp;gt;&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;k&#34;&gt;SELECT&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;o&#34;&gt;*&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;n&#34;&gt;FORM&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;n&#34;&gt;sys&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;schema_table_lock_waits&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;MySQL&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;information_schema&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;&amp;gt;&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;k&#34;&gt;SELECT&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;o&#34;&gt;*&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;k&#34;&gt;FROM&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;  &lt;/span&gt;&lt;span class=&#34;n&#34;&gt;performance_schema&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;threads&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;MySQL&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;information_schema&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;&amp;gt;&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;k&#34;&gt;SELECT&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;o&#34;&gt;*&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;k&#34;&gt;FROM&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;n&#34;&gt;performance_schema&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;events_statements_current&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;MySQL&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;information_schema&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;&amp;gt;&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;优化方向&#34;&gt;&lt;/h&gt;优化方向
+&lt;/h3&gt;&lt;ol&gt;
+&lt;li&gt;优化索引&lt;/li&gt;
+&lt;li&gt;减少事务的更新范围&lt;/li&gt;
+&lt;li&gt;RC级别&lt;/li&gt;
+&lt;li&gt;拆分语句&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-sql&#34; data-lang=&#34;sql&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;//&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;err&#34;&gt;假设&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;n&#34;&gt;k1是辅助索引&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;update&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;n&#34;&gt;t1&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;k&#34;&gt;set&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;n&#34;&gt;num&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;num&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;+&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;10&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;k&#34;&gt;where&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;n&#34;&gt;k1&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;100&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;//&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;err&#34;&gt;改为&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;select&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;n&#34;&gt;id&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;k&#34;&gt;from&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;n&#34;&gt;t1&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;k&#34;&gt;where&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;n&#34;&gt;k1&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;100&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;update&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;n&#34;&gt;t1&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;k&#34;&gt;set&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;n&#34;&gt;num&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;num&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;+&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;10&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;k&#34;&gt;where&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;n&#34;&gt;id&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;k&#34;&gt;in&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;20&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;30&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;50&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;dead-lock死锁&#34;&gt;&lt;/h&gt;Dead Lock死锁
+&lt;/h2&gt;&lt;blockquote&gt;
+&lt;p&gt;dead lock 多个并发事务之间发生交叉依赖的时候,会出现死锁.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-sql&#34; data-lang=&#34;sql&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;k&#34;&gt;SHOW&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;n&#34;&gt;ENGINE&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;n&#34;&gt;innodb&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;n&#34;&gt;STATUS&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;\&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;G&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;innodb_print&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;——&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;all_deadlocks&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;o&#34;&gt;//&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;err&#34;&gt;开启记录死锁日志&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description>
+        </item>
+        
+    </channel>
 </rss>

@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 <!DOCTYPE html>
 <html lang="en-us" dir="ltr">
     <head><meta charset='utf-8'>
@@ -432,11 +431,6 @@
     <body>
         <div
             data-nanogallery2='{
-=======
-<!doctype html><html lang=zh dir=auto><head><meta charset=utf-8><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=robots content="index, follow"><title>Kubernetes的架构设计和对象属性基本理解 | 太阳可以是蓝色</title>
-<meta name=keywords content="kubernetes"><meta name=description content="主要讲解kubernetes的组成和组件的具体作用"><meta name=author content="iren."><link rel=canonical href=https://blog.mletter.cn/tech/kubernetes/architectural-design/><link crossorigin=anonymous href=/assets/css/stylesheet.54398d0fb317133a824d0a4034cf0879e64c7449a21217c62f4c262009100d8f.css integrity="sha256-VDmND7MXEzqCTQpANM8IeeZMdEmiEhfGL0wmIAkQDY8=" rel="preload stylesheet" as=style><link rel=icon href=https://blog.mletter.cn/%3Clink%20/%20abs%20url%3E><link rel=icon type=image/png sizes=16x16 href=https://blog.mletter.cn/%3Clink%20/%20abs%20url%3E><link rel=icon type=image/png sizes=32x32 href=https://blog.mletter.cn/%3Clink%20/%20abs%20url%3E><link rel=apple-touch-icon href=https://blog.mletter.cn/%3Clink%20/%20abs%20url%3E><link rel=mask-icon href=https://blog.mletter.cn/%3Clink%20/%20abs%20url%3E><meta name=theme-color content="#2e2e33"><meta name=msapplication-TileColor content="#2e2e33"><link rel=alternate hreflang=zh href=https://blog.mletter.cn/tech/kubernetes/architectural-design/><noscript><style>#theme-toggle,.top-link{display:none}</style><style>@media(prefers-color-scheme:dark){:root{--theme:rgb(29, 30, 32);--entry:rgb(46, 46, 51);--primary:rgb(218, 218, 219);--secondary:rgb(155, 156, 157);--tertiary:rgb(65, 66, 68);--content:rgb(196, 196, 197);--code-block-bg:rgb(46, 46, 51);--code-bg:rgb(55, 56, 62);--border:rgb(51, 51, 51)}.list{background:var(--theme)}.list:not(.dark)::-webkit-scrollbar-track{background:0 0}.list:not(.dark)::-webkit-scrollbar-thumb{border-color:var(--theme)}}</style></noscript><script src=/view-image.min.js></script><script>window.ViewImage&&ViewImage.init("img")</script><style>:root{--sys-font-family:-apple-system, "PingFang SC", Georgia, 'Nimbus Roman No9 L', 'Hiragino Sans GB', 'Noto Serif SC', 'Microsoft Yahei', 'WenQuanYi Micro Hei', 'ST Heiti', sans-serif;--code-font-family:"JetBrains Mono", Menlo, Monaco, Consolas, "Courier New";--article-font-family:-apple-system, "PingFang SC", var(--base-font-family)}</style><link rel=preconnect href=https://fonts.googleapis.com><link rel=preconnect href=https://fonts.gstatic.com crossorigin><meta property="og:url" content="https://blog.mletter.cn/tech/kubernetes/architectural-design/"><meta property="og:site_name" content="太阳可以是蓝色"><meta property="og:title" content="Kubernetes的架构设计和对象属性基本理解"><meta property="og:description" content="主要讲解kubernetes的组成和组件的具体作用"><meta property="og:locale" content="zh"><meta property="og:type" content="article"><meta property="article:section" content="posts"><meta property="article:published_time" content="2023-11-07T00:00:00+00:00"><meta property="article:modified_time" content="2023-11-07T00:00:00+00:00"><meta property="article:tag" content="Kubernetes"><meta property="og:image" content="https://img13.360buyimg.com/ddimg/jfs/t1/164078/6/34165/22231/654ba81fFe1bf21d7/9d02bd791b795b3b.jpg"><meta name=twitter:card content="summary_large_image"><meta name=twitter:image content="https://img13.360buyimg.com/ddimg/jfs/t1/164078/6/34165/22231/654ba81fFe1bf21d7/9d02bd791b795b3b.jpg"><meta name=twitter:title content="Kubernetes的架构设计和对象属性基本理解"><meta name=twitter:description content="主要讲解kubernetes的组成和组件的具体作用"><script type=application/ld+json>{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"","item":"https://blog.mletter.cn/posts/"},{"@type":"ListItem","position":2,"name":"Kubernetes的架构设计和对象属性基本理解","item":"https://blog.mletter.cn/tech/kubernetes/architectural-design/"}]}</script><script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","headline":"Kubernetes的架构设计和对象属性基本理解","name":"Kubernetes的架构设计和对象属性基本理解","description":"主要讲解kubernetes的组成和组件的具体作用","keywords":["kubernetes"],"articleBody":"为什么需要kubernetes？ 大规模多节点容器调度 快速扩缩容 故障自愈 弹性伸缩 技术趋势 一致性、不锁定 早期型多的一些服务都属于单体服务、单节点、单进程的一种单体服务架构，后续随着技术的发展衍生出了容器技术。容器技术其实也不能满足我们的多节点、分布式的应用架构体系，从而衍生出了kubernetes容器编排引擎。 那么我们来看一下早期单体容器架构\n其实对于容器化技术带来了那些优势呢?\n其实我觉得容器化带来的最大的优势就是交付和部署的优势 \u003c!doctype html\u003e 容器单点架构流程图 那么随之而来带来的问题是:\n那么由于Docker的容器镜像可以在A、B、C任意一台机器上运行,那么是否可以当A机器所运行的镜像挂掉以后自动的帮我在B机器上进行重启呢?\nokey 带着这个问题 一起往下进行。\nkubernes组件 先看一张官方给出的kubernetes的架构图 图中列出了kubernetes的组成以及相对应的组件\nControlPlane: 控制平面节点 Node: 工作节点 Kubelet: 用于控制staticPod,其主要就是用来控制静态Pod，因为静态Pod不受ApiServer的影响。 Oh 不插一句嘴 学到了一个新的命令\n# jq命令是一个用于处理json的命令 kubectl get deploy wecho-canary -o json | jq .spec okey 继续… 我们时长谈起到的control-plane实际上并不是一台机器他只是一个抽象出来的概念,实际上我们是在说所谓的control-plane层面的组件。也就是说这些组件可以运行在控制面的机器上同时也可以运行在Node机器上\nkubernetes核心概念 ResourceObject: 是我认为相对而言kubernetes集群当中比较核心的资源对象,其实也就是我们所说的Pod、Deployment、Daemonset等kubernetes的资源类型 对于一个Pod而言,kubernetes对其定义的键值无非以下的几种 [root@Online-Beijing-master1 ~]# kubectl get deploy wecho-canary -o json | jq keys [ \"apiVersion\", \"kind\", \"metadata\", \"spec\", // spec描述的是Pod预期的状态 \"status\" ] 你可以通过kubectl api-resource来获取kubernetes相对应的资源类型。\nkubernets的资源提交 我们平时使用的kubectl run nginx-$RANDOM --image=\"nginx:alpine\"究竟是执行了什么样的内容？\n正常来说Api-Server本身就是服务,那么当我把请求发送给Api-Server的时候,我是以什么样的请求内容进行了提交?那Api-Server接收了我的请求内容又对我的请求内容做出了什么样的处理呢?\n首先我们来看实际作为客户端,也就是client端提交的请求\n# 可以通过--dry-run=client来模拟客户端提交的请求内容 kubectl run nginx-$RANDOM --image=\"nginx:alpine\" --dry-run=client -ojson -v6 正常的返回响应应该如下,这是一个我们正常通过kubelet创建一个Pod所发送的请求体内容,但作为clinet只会在我们本地进行处理,所以你也可以看到返回的结构内容中带有I1108 21:54:49.922270 1219589 loader.go:374] Config loaded from file: /root/.kube/config,也就证明了它并没有像Api-Server发送任何请求,只是读取了相关的配置信息。\n{ \"kind\": \"Pod\", \"apiVersion\": \"v1\", \"metadata\": { \"name\": \"nginx-27147\", \"creationTimestamp\": null, \"labels\": { \"run\": \"nginx-27147\" } }, \"spec\": { \"containers\": [ { \"name\": \"nginx-27147\", \"image\": \"nginx:alpine\", \"resources\": {} } ], \"restartPolicy\": \"Always\", \"dnsPolicy\": \"ClusterFirst\" }, \"status\": {} } 很好上面我们模拟了一个client端所生产的内容,那么下面我们看看当实际发送给Api-Server的时候产生了哪些内容\nkubectl run nginx-$RANDOM --image=\"nginx:alpine\" --dry-run=server -ojson -v6 我们可以清晰地看到日志的输出\n首先第一步加载了kubernetes相关的配置文件信息。 发送了相关请求(盲猜应该是验证api-server是否正常) 向https://resk8s.api.beijing.io:8443/api/v1/namespaces/default/pods?dryRun=All\u0026fieldManager=kubectl-run发送了POST请求用于创建Pod I1108 21:58:14.866131 1221713 loader.go:374] Config loaded from file: /root/.kube/config I1108 21:58:14.884329 1221713 round_trippers.go:553] GET https://resk8s.api.beijing.io:8443/openapi/v2?timeout=32s 200 OK in 15 milliseconds I1108 21:58:14.946553 1221713 round_trippers.go:553] POST https://resk8s.api.beijing.io:8443/api/v1/namespaces/default/pods?dryRun=All\u0026fieldManager=kubectl-run 201 Created in 15 milliseconds 事实上我们由此可见发送到Api-Server的请求内容多了很多东西\n{ \"kind\": \"Pod\", \"apiVersion\": \"v1\", \"metadata\": { \"name\": \"nginx-14483\", \"namespace\": \"default\", \"uid\": \"d27e1836-8bac-40d4-805b-420f4bca4ee1\", \"creationTimestamp\": \"2023-11-08T14:05:36Z\", \"labels\": { \"run\": \"nginx-14483\" }, \"annotations\": { \"kubernetes.customized/fabric-networks\": \"default\" } }, \"spec\": { \"volumes\": [ { \"name\": \"kube-api-access-vwtvp\", \"projected\": { \"sources\": [ { \"serviceAccountToken\": { \"expirationSeconds\": 3607, \"path\": \"token\" } }, { \"configMap\": { \"name\": \"kube-root-ca.crt\", \"items\": [ { \"key\": \"ca.crt\", \"path\": \"ca.crt\" } ] } }, { \"downwardAPI\": { \"items\": [ { \"path\": \"namespace\", \"fieldRef\": { \"apiVersion\": \"v1\", \"fieldPath\": \"metadata.namespace\" } } ] } } ], \"defaultMode\": 420 } } ], \"containers\": [ { \"name\": \"nginx-14483\", \"image\": \"nginx:alpine\", \"resources\": {}, \"volumeMounts\": [ { \"name\": \"kube-api-access-vwtvp\", \"readOnly\": true, \"mountPath\": \"/var/run/secrets/kubernetes.io/serviceaccount\" } ], \"terminationMessagePath\": \"/dev/termination-log\", \"terminationMessagePolicy\": \"File\", \"imagePullPolicy\": \"IfNotPresent\" } ], \"restartPolicy\": \"Always\", \"terminationGracePeriodSeconds\": 30, \"dnsPolicy\": \"ClusterFirst\", \"serviceAccountName\": \"default\", \"serviceAccount\": \"default\", \"securityContext\": {}, \"schedulerName\": \"default-scheduler\", \"tolerations\": [ { \"key\": \"node.kubernetes.io/not-ready\", \"operator\": \"Exists\", \"effect\": \"NoExecute\", \"tolerationSeconds\": 300 }, { \"key\": \"node.kubernetes.io/unreachable\", \"operator\": \"Exists\", \"effect\": \"NoExecute\", \"tolerationSeconds\": 300 } ], \"priority\": 0, \"dnsConfig\": { \"options\": [ { \"name\": \"single-request-reopen\" } ] }, \"enableServiceLinks\": true, \"preemptionPolicy\": \"PreemptLowerPriority\" }, \"status\": { \"phase\": \"Pending\", // 可以看到当前处于Pending阶段 \"qosClass\": \"BestEffort\" } } 另外: 当你需要创建资源类型的时候,我并不建议你从头开始去编写相关文件,可以灵活的应用kubectl run来进行填充相关的字段信息。\nkubernetes设计理念 声明式：典型就是在资源文件中进行声明 无侵入性 可移植: 所有符合kubernetes标准的kubernetes平台都可以进行迁移 显示接口：所有的操作都是开放性的,不会存在私有接口,无论是Api-Server或者Clinet-go所操作的接口都是一模一样的。 创建资源的工作流程 首先当用户的请求进入到Api-Server后会进入到Authorization认证授权的处理接口实际上就是加载我们的config配置文件,其具体代码在loader.go:372进行实现 \u003c!doctype html\u003e 创建资源的工作流程 服务发现原理和应用 kubernetes中Pod的通信 每个Pod都有自己的IP分配 Pod间的可以通过IP进行通信 Pod的IP是可变的 Pod的IP通常不能被提前获取,一般都是网络插件进行分配 kubernetes的Service通信 它是一种抽象，帮助你将 Pod 集合在网络上公开出去。 每个 Service 对象定义端点的一个逻辑集合（通常这些端点就是 Pod）以及如何访问到这些 Pod 的策略。 我们通常可以使用以下命令来简单的暴露一个Service\nkubectl expose deploy/nginx --port=80 通常来说我们访问某个服务都是访问服务的IP地址，当然了,在kubernetes中访问Service对应的地址也可以访问到服务\n[root@Online-Beijing-master1 ~]# kubectl get service NAME TYPE CLUSTER-IP EXTERNAL-IP PORT(S) AGE wecho-canary ClusterIP 10.10.166.79 80/TCP,9113/TCP 69d kubernetes ClusterIP 10.10.0.1 443/TCP 279d 实际上也就是说当我需要访问wecho-canary这个服务的时候,我无需关心他后端end如何进行变化,我只需要记住访问wecho-canary的Service所给出的ClusterIP即可进行访问到相应的服务。\n另外的一种方式就是通过我们的Service名称来进行访问，下面说一下具体是如何通过Service名称进行访问的。\n我们假设使用上面的wecho-canary名称进行一次访问\ncurl -v wecho-canary # 假设访问正常 很简单,大家都知道当我们访问一个域名的时候背后肯定又DNS服务器来解析其所对应的IP地址,那么其实在kubernetes当中也有一个内部的DNS服务器,名字叫做kube-dns 我们可以通过kubectl get svc -A 进行查看,其中所指定的10.10.0.10就是我们kube-dns的IP地址.\nkube-system kube-dns ClusterIP 10.10.0.10 53/UDP,53/TCP,9153/TCP 279d 看到我们kube-dns有以下端点\n[root@Online-Beijing-master1 ~]# kubectl get ep -n kube-system | grep kube-dns kube-dns 10.10.151.159:53,10.10.4.95:53,10.10.151.159:53 + 3 more... 279d kube-dns-upstream 10.10.151.159:53,10.10.4.95:53,10.10.151.159:53 + 1 more... 81d 其次可以看到我们容器内所对应的resolv.conf所写内容的配置文件\nsearch jiashicang.svc.cluster.local svc.cluster.local cluster.local nameserver 169.254.20.10 options ndots:5 single-request-reopen 由于我使用了NodeLocalDns所以我这个地方的nameserver不太一样,关于NodeLocalDns我们后续再说。 总结以下几点:\n当我们访问wecho-canary的时候实际上是访问了wecho-canary.default.cluster.local.svc,即ServiceName.Namespace.cluster.local.svc 所有的解析域名请求都会请求到kube-dns当中,当kube-dns无法完成解析的时候,我们会将请求forward到本地的解析文件当中,如果本地解析文件也无法解析则认为失败。典型的就是超时、无法解析等问题。 Service通过监视API server的数据变化来感知后端Pod的变化,并及时更新负载均衡规则。具体来说,Kubernetes ApiServer负责管理集群状态,它会记录每一个对象(包括Pod)的Spec和Status。Service对象使用ApiServer的watch接口,监视后端关联Pod对象的变化事件。比如Pod实例加入或销毁时,ApiServer会主动通知Service。一旦检测到Pod变化,Service会立即使用新的Pod列表,重新计算并更新自己负载均衡的端口转发规则。例如使用iptables规则或IPVS表更新后端目标地址。这样,无论Pod是动态伸缩还是故障转移,Service都能即时感知,保持负载均衡入口地址的高可靠性。这就是Service如何实现动态更新负载均衡规则的原理。 Service类型 ClusterIP: 通过集群的内部IP公开Service，选择该值时Service只能够在集群内部访问。这也是你没有为服务显式指定type时使用的默认值。 NodePort: 通过每个节点上的IP和静态端口NodePort公开 Service。为了让Service可通过节点端口访问，Kubernetes 会为 Service配置集群IP地址， 相当于你请求了type:ClusterIP的服务。 LoadBalancer:使用云平台的负载均衡器向外部公开Service,一般来说都用在云厂商才会使用LoadBalancer ExternalName:将服务映射到externalName字段的内容 例如，映射到主机名:api.foo.bar.example,该映射将集群的 DNS 服务器配置为返回具有该外部主机名值的CNAME记录。 常用的暴露Service的方法\nkubectl expose deploy/nginx --port=80 --type=NodePort 哦,对了,推荐一个开源的LB插件\nMetallb: Github 服务发现和流量路由 总的来说我们分为一下几点吧\nPod之间的流量通信: IP直连的方式: 不推荐这种方式,因为Pod的IP严格意义上来说对于服务版本更新生命周期相对较短。 ClusterIP： 相对于比较推荐通过指定ServiceName的方式来绑定活着监听某种服务 外部访问Pod的通信 NodePort: 通过暴露外部端口的方式来进行Pod的访问 LoadBalancer: 通过对Service绑定LB的方式进行Pod的访问 Pod访问外部通信: ExternalName: 将 Service 映射到 DNS 名称 HeadlessService: 当你不需要负载均衡，也不需要单独的 ServiceIP,你可以使用HeadlessService # 下面是ExternalName的简单实例 apiVersion: v1 kind: Service metadata: name: my-service namespace: prod spec: type: ExternalName externalName: my.database.example.com 一般来说Kubernetes的内部DNS记录有两种规范\nPodIP.Namespace.pod.cluster-domain.example --- ServiceName.Namespace.svc.cluster-domain.example ","wordCount":"542","inLanguage":"zh","image":"https://img13.360buyimg.com/ddimg/jfs/t1/164078/6/34165/22231/654ba81fFe1bf21d7/9d02bd791b795b3b.jpg","datePublished":"2023-11-07T00:00:00Z","dateModified":"2023-11-07T00:00:00Z","author":{"@type":"Person","name":"iren."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.mletter.cn/tech/kubernetes/architectural-design/"},"publisher":{"@type":"Organization","name":"太阳可以是蓝色","logo":{"@type":"ImageObject","url":"https://blog.mletter.cn/%3Clink%20/%20abs%20url%3E"}}}</script></head><body id=top><script>localStorage.getItem("pref-theme")==="dark"?document.body.classList.add("dark"):localStorage.getItem("pref-theme")==="light"?document.body.classList.remove("dark"):window.matchMedia("(prefers-color-scheme: dark)").matches&&document.body.classList.add("dark")</script><header class=header><nav class=nav><div class=logo><a href=https://blog.mletter.cn/ accesskey=h title="太阳可以是蓝色 (Alt + H)">太阳可以是蓝色</a><div class=logo-switches><button id=theme-toggle accesskey=t title="(Alt + T)"><svg id="moon" width="24" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg><svg id="sun" width="24" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button></div></div><ul id=menu><li><a href=https://blog.mletter.cn/ title=主页><span>主页</span></a></li><li><a href=https://blog.mletter.cn/posts/ title=文章><span>文章</span></a></li><li><a href=https://blog.mletter.cn/tags/ title=标签><span>标签</span></a></li><li><a href=https://blog.mletter.cn/friends/ title=友联><span>友联</span></a></li><li><a href=https://blog.mletter.cn/about title=关于><span>关于</span></a></li></ul></nav></header><main class=main><article class=post-single><header class=post-header><div class=breadcrumbs><a href=https://blog.mletter.cn/>主页</a>&nbsp;»&nbsp;<a href=https://blog.mletter.cn/posts/></a></div><h1 class="post-title entry-hint-parent">Kubernetes的架构设计和对象属性基本理解</h1><div class=post-description>主要讲解kubernetes的组成和组件的具体作用</div><div class=post-meta><span title='2023-11-07 00:00:00 +0000 UTC'>十一月 7, 2023</span>&nbsp;·&nbsp;3 分钟&nbsp;·&nbsp;iren.&nbsp;|&nbsp;<a href=https://github.com/%3cpath_to_repo%3e/content/posts/kubernetes%e7%9a%84%e6%9e%b6%e6%9e%84%e8%ae%be%e8%ae%a1.md rel="noopener noreferrer" target=_blank>Suggest Changes</a></div></header><div class=toc><details><summary accesskey=c title="(Alt + C)"><span class=details>目录</span></summary><div class=inner><nav id=TableOfContents><ul><li><a href=#为什么需要kubernetes>为什么需要kubernetes？</a></li><li><a href=#kubernes组件>kubernes组件</a></li><li><a href=#kubernetes核心概念>kubernetes核心概念</a><ul><li><a href=#kubernets的资源提交>kubernets的资源提交</a></li></ul></li><li><a href=#kubernetes设计理念>kubernetes设计理念</a></li><li><a href=#创建资源的工作流程>创建资源的工作流程</a></li><li><a href=#服务发现原理和应用>服务发现原理和应用</a><ul><li><a href=#kubernetes中pod的通信>kubernetes中Pod的通信</a></li><li><a href=#kubernetes的service通信>kubernetes的Service通信</a></li><li><a href=#service类型>Service类型</a></li><li><a href=#服务发现和流量路由>服务发现和流量路由</a></li></ul></li></ul></nav></div></details></div><div class=post-content><h2 id=为什么需要kubernetes>为什么需要kubernetes？<a hidden class=anchor aria-hidden=true href=#为什么需要kubernetes>#</a></h2><ul><li>大规模多节点容器调度</li><li>快速扩缩容</li><li>故障自愈</li><li>弹性伸缩</li><li>技术趋势</li><li>一致性、不锁定
-早期型多的一些服务都属于单体服务、单节点、单进程的一种单体服务架构，后续随着技术的发展衍生出了容器技术。容器技术其实也不能满足我们的多节点、分布式的应用架构体系，从而衍生出了<code>kubernetes</code>容器编排引擎。</li></ul><p>那么我们来看一下早期单体容器架构</p><blockquote><p>其实对于容器化技术带来了那些优势呢?</p></blockquote><ol><li>其实我觉得容器化带来的最大的优势就是交付和部署的优势</li></ol><p><!doctype html><html lang=en><head><meta name=viewport content="user-scalable=no,width=device-width,initial-scale=1,maximum-scale=1"><script src=https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/jquery/3.6.0/jquery.min.js></script><link href=https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/nanogallery2/3.0.5/css/nanogallery2.min.css rel=stylesheet><script src=https://lf9-cdn-tos.bytecdntp.com/cdn/expire-1-M/nanogallery2/3.0.5/jquery.nanogallery2.min.js></script></head><body><div data-nanogallery2='{
->>>>>>> 7231e1571b2b22531187d3efcd415c5d2ac0ff2e
     "itemsBaseURL":               "https://nanogallery2.nanostudio.org/samples",
     "thumbnailDisplayTransition":          "slideUp2",
 	"thumbnailHeight":    200,
@@ -487,160 +481,274 @@
      },
      "viewerGalleryTWidth": 40,
      "viewerGalleryTHeight": 40
-}'><a href=https://img13.360buyimg.com/ddimg/jfs/t1/164078/6/34165/22231/654ba81fFe1bf21d7/9d02bd791b795b3b.jpg data-ngthumb=https://img13.360buyimg.com/ddimg/jfs/t1/164078/6/34165/22231/654ba81fFe1bf21d7/9d02bd791b795b3b.jpg>容器单点架构流程图</a></div></body></html>那么随之而来带来的问题是:</p><blockquote><p>那么由于Docker的容器镜像可以在A、B、C任意一台机器上运行,那么是否可以当A机器所运行的镜像挂掉以后自动的帮我在B机器上进行重启呢?</p></blockquote><p>okey 带着这个问题 一起往下进行。</p><h2 id=kubernes组件>kubernes组件<a hidden class=anchor aria-hidden=true href=#kubernes组件>#</a></h2><p>先看一张官方给出的kubernetes的架构图
-图中列出了kubernetes的组成以及相对应的组件</p><ul><li>ControlPlane: 控制平面节点</li><li>Node: 工作节点</li><li>Kubelet: 用于控制<code>staticPod</code>,其主要就是用来控制静态Pod，因为静态Pod不受<code>ApiServer</code>的影响。
-<img style=max-width:100%;height:auto loading=lazy loading=lazy src=https://kubernetes.io/images/docs/components-of-kubernetes.svg></li></ul><p>Oh 不插一句嘴 学到了一个新的命令</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=c1># jq命令是一个用于处理json的命令</span>
-</span></span><span class=line><span class=cl>kubectl get deploy wecho-canary -o json <span class=p>|</span> jq .spec
-</span></span></code></pre></div><p>okey 继续&mldr;
-我们时长谈起到的<code>control-plane</code>实际上并不是一台机器他只是一个抽象出来的概念,实际上我们是在说所谓的<code>control-plane</code>层面的组件。也就是说这些组件可以运行在控制面的机器上同时也可以运行在Node机器上</p><p><img style=max-width:100%;height:auto loading=lazy alt="Pasted image 20231108213644.png" loading=lazy src=https://img14.360buyimg.com/ddimg/jfs/t1/231911/36/2404/28759/654ba847Fc032ef5e/32d3a1f4a8f2b4c4.jpg></p><h2 id=kubernetes核心概念>kubernetes核心概念<a hidden class=anchor aria-hidden=true href=#kubernetes核心概念>#</a></h2><ul><li><code>ResourceObject</code>: 是我认为相对而言kubernetes集群当中比较核心的资源对象,其实也就是我们所说的<code>Pod</code>、<code>Deployment</code>、<code>Daemonset</code>等kubernetes的资源类型
-对于一个Pod而言,kubernetes对其定义的键值无非以下的几种</li></ul><div class=highlight><pre tabindex=0 class=chroma><code class=language-json data-lang=json><span class=line><span class=cl><span class=p>[</span><span class=err>root@Online-Beijing-master</span><span class=mi>1</span> <span class=err>~</span><span class=p>]</span><span class=err>#</span> <span class=err>kubectl</span> <span class=err>get</span> <span class=err>deploy</span> <span class=err>wecho-canary</span> <span class=err>-o</span> <span class=err>json</span> <span class=err>|</span> <span class=err>jq</span> <span class=err>keys</span>
-</span></span><span class=line><span class=cl><span class=p>[</span>
-</span></span><span class=line><span class=cl>  <span class=s2>&#34;apiVersion&#34;</span><span class=p>,</span>
-</span></span><span class=line><span class=cl>  <span class=s2>&#34;kind&#34;</span><span class=p>,</span>
-</span></span><span class=line><span class=cl>  <span class=s2>&#34;metadata&#34;</span><span class=p>,</span>
-</span></span><span class=line><span class=cl>  <span class=s2>&#34;spec&#34;</span><span class=p>,</span>   <span class=c1>// spec描述的是Pod预期的状态
-</span></span></span><span class=line><span class=cl><span class=c1></span>  <span class=s2>&#34;status&#34;</span>
-</span></span><span class=line><span class=cl><span class=p>]</span>
-</span></span></code></pre></div><p>你可以通过<code>kubectl api-resource</code>来获取kubernetes相对应的资源类型。</p><h3 id=kubernets的资源提交>kubernets的资源提交<a hidden class=anchor aria-hidden=true href=#kubernets的资源提交>#</a></h3><p>我们平时使用的<code>kubectl run nginx-$RANDOM --image="nginx:alpine"</code>究竟是执行了什么样的内容？</p><p>正常来说<code>Api-Server</code>本身就是服务,那么当我把请求发送给<code>Api-Server</code>的时候,我是以什么样的请求内容进行了提交?那<code>Api-Server</code>接收了我的请求内容又对我的请求内容做出了什么样的处理呢?</p><p>首先我们来看实际作为客户端,也就是<code>client</code>端提交的请求</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=c1># 可以通过--dry-run=client来模拟客户端提交的请求内容</span>
-</span></span><span class=line><span class=cl>kubectl run nginx-<span class=nv>$RANDOM</span> --image<span class=o>=</span><span class=s2>&#34;nginx:alpine&#34;</span> --dry-run<span class=o>=</span>client -ojson -v6
-</span></span></code></pre></div><p>正常的返回响应应该如下,这是一个我们正常通过kubelet创建一个Pod所发送的请求体内容,但作为clinet只会在我们本地进行处理,所以你也可以看到返回的结构内容中带有<code>I1108 21:54:49.922270 1219589 loader.go:374] Config loaded from file: /root/.kube/config</code>,也就证明了它并没有像Api-Server发送任何请求,只是读取了相关的配置信息。</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-json data-lang=json><span class=line><span class=cl><span class=p>{</span>
-</span></span><span class=line><span class=cl>    <span class=nt>&#34;kind&#34;</span><span class=p>:</span> <span class=s2>&#34;Pod&#34;</span><span class=p>,</span>
-</span></span><span class=line><span class=cl>    <span class=nt>&#34;apiVersion&#34;</span><span class=p>:</span> <span class=s2>&#34;v1&#34;</span><span class=p>,</span>
-</span></span><span class=line><span class=cl>    <span class=nt>&#34;metadata&#34;</span><span class=p>:</span> <span class=p>{</span>
-</span></span><span class=line><span class=cl>        <span class=nt>&#34;name&#34;</span><span class=p>:</span> <span class=s2>&#34;nginx-27147&#34;</span><span class=p>,</span>
-</span></span><span class=line><span class=cl>        <span class=nt>&#34;creationTimestamp&#34;</span><span class=p>:</span> <span class=kc>null</span><span class=p>,</span>
-</span></span><span class=line><span class=cl>        <span class=nt>&#34;labels&#34;</span><span class=p>:</span> <span class=p>{</span>
-</span></span><span class=line><span class=cl>            <span class=nt>&#34;run&#34;</span><span class=p>:</span> <span class=s2>&#34;nginx-27147&#34;</span>
-</span></span><span class=line><span class=cl>        <span class=p>}</span>
-</span></span><span class=line><span class=cl>    <span class=p>},</span>
-</span></span><span class=line><span class=cl>    <span class=nt>&#34;spec&#34;</span><span class=p>:</span> <span class=p>{</span>
-</span></span><span class=line><span class=cl>        <span class=nt>&#34;containers&#34;</span><span class=p>:</span> <span class=p>[</span>
-</span></span><span class=line><span class=cl>            <span class=p>{</span>
-</span></span><span class=line><span class=cl>                <span class=nt>&#34;name&#34;</span><span class=p>:</span> <span class=s2>&#34;nginx-27147&#34;</span><span class=p>,</span>
-</span></span><span class=line><span class=cl>                <span class=nt>&#34;image&#34;</span><span class=p>:</span> <span class=s2>&#34;nginx:alpine&#34;</span><span class=p>,</span>
-</span></span><span class=line><span class=cl>                <span class=nt>&#34;resources&#34;</span><span class=p>:</span> <span class=p>{}</span>
-</span></span><span class=line><span class=cl>            <span class=p>}</span>
-</span></span><span class=line><span class=cl>        <span class=p>],</span>
-</span></span><span class=line><span class=cl>        <span class=nt>&#34;restartPolicy&#34;</span><span class=p>:</span> <span class=s2>&#34;Always&#34;</span><span class=p>,</span>
-</span></span><span class=line><span class=cl>        <span class=nt>&#34;dnsPolicy&#34;</span><span class=p>:</span> <span class=s2>&#34;ClusterFirst&#34;</span>
-</span></span><span class=line><span class=cl>    <span class=p>},</span>
-</span></span><span class=line><span class=cl>    <span class=nt>&#34;status&#34;</span><span class=p>:</span> <span class=p>{}</span>
-</span></span><span class=line><span class=cl><span class=p>}</span>
-</span></span></code></pre></div><p>很好上面我们模拟了一个<code>client</code>端所生产的内容,那么下面我们看看当实际发送给<code>Api-Server</code>的时候产生了哪些内容</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>kubectl run nginx-<span class=nv>$RANDOM</span> --image<span class=o>=</span><span class=s2>&#34;nginx:alpine&#34;</span> --dry-run<span class=o>=</span>server -ojson -v6
-</span></span></code></pre></div><p>我们可以清晰地看到日志的输出</p><ol><li>首先第一步加载了kubernetes相关的配置文件信息。</li><li>发送了相关请求(盲猜应该是验证api-server是否正常)</li><li>向<code>https://resk8s.api.beijing.io:8443/api/v1/namespaces/default/pods?dryRun=All&amp;fieldManager=kubectl-run</code>发送了POST请求用于创建Pod</li></ol><pre tabindex=0><code class=language-log data-lang=log>I1108 21:58:14.866131 1221713 loader.go:374] Config loaded from file:  /root/.kube/config
-I1108 21:58:14.884329 1221713 round_trippers.go:553] GET https://resk8s.api.beijing.io:8443/openapi/v2?timeout=32s 200 OK in 15 milliseconds
-I1108 21:58:14.946553 1221713 round_trippers.go:553] POST https://resk8s.api.beijing.io:8443/api/v1/namespaces/default/pods?dryRun=All&amp;fieldManager=kubectl-run 201 Created in 15 milliseconds
-</code></pre><p>事实上我们由此可见发送到<code>Api-Server</code>的请求内容多了很多东西</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-json data-lang=json><span class=line><span class=cl><span class=p>{</span>
-</span></span><span class=line><span class=cl>    <span class=nt>&#34;kind&#34;</span><span class=p>:</span> <span class=s2>&#34;Pod&#34;</span><span class=p>,</span>
-</span></span><span class=line><span class=cl>    <span class=nt>&#34;apiVersion&#34;</span><span class=p>:</span> <span class=s2>&#34;v1&#34;</span><span class=p>,</span>
-</span></span><span class=line><span class=cl>    <span class=nt>&#34;metadata&#34;</span><span class=p>:</span> <span class=p>{</span>
-</span></span><span class=line><span class=cl>        <span class=nt>&#34;name&#34;</span><span class=p>:</span> <span class=s2>&#34;nginx-14483&#34;</span><span class=p>,</span>
-</span></span><span class=line><span class=cl>        <span class=nt>&#34;namespace&#34;</span><span class=p>:</span> <span class=s2>&#34;default&#34;</span><span class=p>,</span>
-</span></span><span class=line><span class=cl>        <span class=nt>&#34;uid&#34;</span><span class=p>:</span> <span class=s2>&#34;d27e1836-8bac-40d4-805b-420f4bca4ee1&#34;</span><span class=p>,</span>
-</span></span><span class=line><span class=cl>        <span class=nt>&#34;creationTimestamp&#34;</span><span class=p>:</span> <span class=s2>&#34;2023-11-08T14:05:36Z&#34;</span><span class=p>,</span>
-</span></span><span class=line><span class=cl>        <span class=nt>&#34;labels&#34;</span><span class=p>:</span> <span class=p>{</span>
-</span></span><span class=line><span class=cl>            <span class=nt>&#34;run&#34;</span><span class=p>:</span> <span class=s2>&#34;nginx-14483&#34;</span>
-</span></span><span class=line><span class=cl>        <span class=p>},</span>
-</span></span><span class=line><span class=cl>        <span class=nt>&#34;annotations&#34;</span><span class=p>:</span> <span class=p>{</span>
-</span></span><span class=line><span class=cl>            <span class=nt>&#34;kubernetes.customized/fabric-networks&#34;</span><span class=p>:</span> <span class=s2>&#34;default&#34;</span>
-</span></span><span class=line><span class=cl>        <span class=p>}</span>
-</span></span><span class=line><span class=cl>    <span class=p>},</span>
-</span></span><span class=line><span class=cl>    <span class=nt>&#34;spec&#34;</span><span class=p>:</span> <span class=p>{</span>
-</span></span><span class=line><span class=cl>        <span class=nt>&#34;volumes&#34;</span><span class=p>:</span> <span class=p>[</span>
-</span></span><span class=line><span class=cl>            <span class=p>{</span>
-</span></span><span class=line><span class=cl>                <span class=nt>&#34;name&#34;</span><span class=p>:</span> <span class=s2>&#34;kube-api-access-vwtvp&#34;</span><span class=p>,</span>
-</span></span><span class=line><span class=cl>                <span class=nt>&#34;projected&#34;</span><span class=p>:</span> <span class=p>{</span>
-</span></span><span class=line><span class=cl>                    <span class=nt>&#34;sources&#34;</span><span class=p>:</span> <span class=p>[</span>
-</span></span><span class=line><span class=cl>                        <span class=p>{</span>
-</span></span><span class=line><span class=cl>                            <span class=nt>&#34;serviceAccountToken&#34;</span><span class=p>:</span> <span class=p>{</span>
-</span></span><span class=line><span class=cl>                                <span class=nt>&#34;expirationSeconds&#34;</span><span class=p>:</span> <span class=mi>3607</span><span class=p>,</span>
-</span></span><span class=line><span class=cl>                                <span class=nt>&#34;path&#34;</span><span class=p>:</span> <span class=s2>&#34;token&#34;</span>
-</span></span><span class=line><span class=cl>                            <span class=p>}</span>
-</span></span><span class=line><span class=cl>                        <span class=p>},</span>
-</span></span><span class=line><span class=cl>                        <span class=p>{</span>
-</span></span><span class=line><span class=cl>                            <span class=nt>&#34;configMap&#34;</span><span class=p>:</span> <span class=p>{</span>
-</span></span><span class=line><span class=cl>                                <span class=nt>&#34;name&#34;</span><span class=p>:</span> <span class=s2>&#34;kube-root-ca.crt&#34;</span><span class=p>,</span>
-</span></span><span class=line><span class=cl>                                <span class=nt>&#34;items&#34;</span><span class=p>:</span> <span class=p>[</span>
-</span></span><span class=line><span class=cl>                                    <span class=p>{</span>
-</span></span><span class=line><span class=cl>                                        <span class=nt>&#34;key&#34;</span><span class=p>:</span> <span class=s2>&#34;ca.crt&#34;</span><span class=p>,</span>
-</span></span><span class=line><span class=cl>                                        <span class=nt>&#34;path&#34;</span><span class=p>:</span> <span class=s2>&#34;ca.crt&#34;</span>
-</span></span><span class=line><span class=cl>                                    <span class=p>}</span>
-</span></span><span class=line><span class=cl>                                <span class=p>]</span>
-</span></span><span class=line><span class=cl>                            <span class=p>}</span>
-</span></span><span class=line><span class=cl>                        <span class=p>},</span>
-</span></span><span class=line><span class=cl>                        <span class=p>{</span>
-</span></span><span class=line><span class=cl>                            <span class=nt>&#34;downwardAPI&#34;</span><span class=p>:</span> <span class=p>{</span>
-</span></span><span class=line><span class=cl>                                <span class=nt>&#34;items&#34;</span><span class=p>:</span> <span class=p>[</span>
-</span></span><span class=line><span class=cl>                                    <span class=p>{</span>
-</span></span><span class=line><span class=cl>                                        <span class=nt>&#34;path&#34;</span><span class=p>:</span> <span class=s2>&#34;namespace&#34;</span><span class=p>,</span>
-</span></span><span class=line><span class=cl>                                        <span class=nt>&#34;fieldRef&#34;</span><span class=p>:</span> <span class=p>{</span>
-</span></span><span class=line><span class=cl>                                            <span class=nt>&#34;apiVersion&#34;</span><span class=p>:</span> <span class=s2>&#34;v1&#34;</span><span class=p>,</span>
-</span></span><span class=line><span class=cl>                                            <span class=nt>&#34;fieldPath&#34;</span><span class=p>:</span> <span class=s2>&#34;metadata.namespace&#34;</span>
-</span></span><span class=line><span class=cl>                                        <span class=p>}</span>
-</span></span><span class=line><span class=cl>                                    <span class=p>}</span>
-</span></span><span class=line><span class=cl>                                <span class=p>]</span>
-</span></span><span class=line><span class=cl>                            <span class=p>}</span>
-</span></span><span class=line><span class=cl>                        <span class=p>}</span>
-</span></span><span class=line><span class=cl>                    <span class=p>],</span>
-</span></span><span class=line><span class=cl>                    <span class=nt>&#34;defaultMode&#34;</span><span class=p>:</span> <span class=mi>420</span>
-</span></span><span class=line><span class=cl>                <span class=p>}</span>
-</span></span><span class=line><span class=cl>            <span class=p>}</span>
-</span></span><span class=line><span class=cl>        <span class=p>],</span>
-</span></span><span class=line><span class=cl>        <span class=nt>&#34;containers&#34;</span><span class=p>:</span> <span class=p>[</span>
-</span></span><span class=line><span class=cl>            <span class=p>{</span>
-</span></span><span class=line><span class=cl>                <span class=nt>&#34;name&#34;</span><span class=p>:</span> <span class=s2>&#34;nginx-14483&#34;</span><span class=p>,</span>
-</span></span><span class=line><span class=cl>                <span class=nt>&#34;image&#34;</span><span class=p>:</span> <span class=s2>&#34;nginx:alpine&#34;</span><span class=p>,</span>
-</span></span><span class=line><span class=cl>                <span class=nt>&#34;resources&#34;</span><span class=p>:</span> <span class=p>{},</span>
-</span></span><span class=line><span class=cl>                <span class=nt>&#34;volumeMounts&#34;</span><span class=p>:</span> <span class=p>[</span>
-</span></span><span class=line><span class=cl>                    <span class=p>{</span>
-</span></span><span class=line><span class=cl>                        <span class=nt>&#34;name&#34;</span><span class=p>:</span> <span class=s2>&#34;kube-api-access-vwtvp&#34;</span><span class=p>,</span>
-</span></span><span class=line><span class=cl>                        <span class=nt>&#34;readOnly&#34;</span><span class=p>:</span> <span class=kc>true</span><span class=p>,</span>
-</span></span><span class=line><span class=cl>                        <span class=nt>&#34;mountPath&#34;</span><span class=p>:</span> <span class=s2>&#34;/var/run/secrets/kubernetes.io/serviceaccount&#34;</span>
-</span></span><span class=line><span class=cl>                    <span class=p>}</span>
-</span></span><span class=line><span class=cl>                <span class=p>],</span>
-</span></span><span class=line><span class=cl>                <span class=nt>&#34;terminationMessagePath&#34;</span><span class=p>:</span> <span class=s2>&#34;/dev/termination-log&#34;</span><span class=p>,</span>
-</span></span><span class=line><span class=cl>                <span class=nt>&#34;terminationMessagePolicy&#34;</span><span class=p>:</span> <span class=s2>&#34;File&#34;</span><span class=p>,</span>
-</span></span><span class=line><span class=cl>                <span class=nt>&#34;imagePullPolicy&#34;</span><span class=p>:</span> <span class=s2>&#34;IfNotPresent&#34;</span>
-</span></span><span class=line><span class=cl>            <span class=p>}</span>
-</span></span><span class=line><span class=cl>        <span class=p>],</span>
-</span></span><span class=line><span class=cl>        <span class=nt>&#34;restartPolicy&#34;</span><span class=p>:</span> <span class=s2>&#34;Always&#34;</span><span class=p>,</span>
-</span></span><span class=line><span class=cl>        <span class=nt>&#34;terminationGracePeriodSeconds&#34;</span><span class=p>:</span> <span class=mi>30</span><span class=p>,</span>
-</span></span><span class=line><span class=cl>        <span class=nt>&#34;dnsPolicy&#34;</span><span class=p>:</span> <span class=s2>&#34;ClusterFirst&#34;</span><span class=p>,</span>
-</span></span><span class=line><span class=cl>        <span class=nt>&#34;serviceAccountName&#34;</span><span class=p>:</span> <span class=s2>&#34;default&#34;</span><span class=p>,</span>
-</span></span><span class=line><span class=cl>        <span class=nt>&#34;serviceAccount&#34;</span><span class=p>:</span> <span class=s2>&#34;default&#34;</span><span class=p>,</span>
-</span></span><span class=line><span class=cl>        <span class=nt>&#34;securityContext&#34;</span><span class=p>:</span> <span class=p>{},</span>
-</span></span><span class=line><span class=cl>        <span class=nt>&#34;schedulerName&#34;</span><span class=p>:</span> <span class=s2>&#34;default-scheduler&#34;</span><span class=p>,</span>
-</span></span><span class=line><span class=cl>        <span class=nt>&#34;tolerations&#34;</span><span class=p>:</span> <span class=p>[</span>
-</span></span><span class=line><span class=cl>            <span class=p>{</span>
-</span></span><span class=line><span class=cl>                <span class=nt>&#34;key&#34;</span><span class=p>:</span> <span class=s2>&#34;node.kubernetes.io/not-ready&#34;</span><span class=p>,</span>
-</span></span><span class=line><span class=cl>                <span class=nt>&#34;operator&#34;</span><span class=p>:</span> <span class=s2>&#34;Exists&#34;</span><span class=p>,</span>
-</span></span><span class=line><span class=cl>                <span class=nt>&#34;effect&#34;</span><span class=p>:</span> <span class=s2>&#34;NoExecute&#34;</span><span class=p>,</span>
-</span></span><span class=line><span class=cl>                <span class=nt>&#34;tolerationSeconds&#34;</span><span class=p>:</span> <span class=mi>300</span>
-</span></span><span class=line><span class=cl>            <span class=p>},</span>
-</span></span><span class=line><span class=cl>            <span class=p>{</span>
-</span></span><span class=line><span class=cl>                <span class=nt>&#34;key&#34;</span><span class=p>:</span> <span class=s2>&#34;node.kubernetes.io/unreachable&#34;</span><span class=p>,</span>
-</span></span><span class=line><span class=cl>                <span class=nt>&#34;operator&#34;</span><span class=p>:</span> <span class=s2>&#34;Exists&#34;</span><span class=p>,</span>
-</span></span><span class=line><span class=cl>                <span class=nt>&#34;effect&#34;</span><span class=p>:</span> <span class=s2>&#34;NoExecute&#34;</span><span class=p>,</span>
-</span></span><span class=line><span class=cl>                <span class=nt>&#34;tolerationSeconds&#34;</span><span class=p>:</span> <span class=mi>300</span>
-</span></span><span class=line><span class=cl>            <span class=p>}</span>
-</span></span><span class=line><span class=cl>        <span class=p>],</span>
-</span></span><span class=line><span class=cl>        <span class=nt>&#34;priority&#34;</span><span class=p>:</span> <span class=mi>0</span><span class=p>,</span>
-</span></span><span class=line><span class=cl>        <span class=nt>&#34;dnsConfig&#34;</span><span class=p>:</span> <span class=p>{</span>
-</span></span><span class=line><span class=cl>            <span class=nt>&#34;options&#34;</span><span class=p>:</span> <span class=p>[</span>
-</span></span><span class=line><span class=cl>                <span class=p>{</span>
-</span></span><span class=line><span class=cl>                    <span class=nt>&#34;name&#34;</span><span class=p>:</span> <span class=s2>&#34;single-request-reopen&#34;</span>
-</span></span><span class=line><span class=cl>                <span class=p>}</span>
-</span></span><span class=line><span class=cl>            <span class=p>]</span>
-</span></span><span class=line><span class=cl>        <span class=p>},</span>
-</span></span><span class=line><span class=cl>        <span class=nt>&#34;enableServiceLinks&#34;</span><span class=p>:</span> <span class=kc>true</span><span class=p>,</span>
-</span></span><span class=line><span class=cl>        <span class=nt>&#34;preemptionPolicy&#34;</span><span class=p>:</span> <span class=s2>&#34;PreemptLowerPriority&#34;</span>
-</span></span><span class=line><span class=cl>    <span class=p>},</span>
-</span></span><span class=line><span class=cl>    <span class=nt>&#34;status&#34;</span><span class=p>:</span> <span class=p>{</span>
-</span></span><span class=line><span class=cl>        <span class=nt>&#34;phase&#34;</span><span class=p>:</span> <span class=s2>&#34;Pending&#34;</span><span class=p>,</span> <span class=c1>// 可以看到当前处于Pending阶段
-</span></span></span><span class=line><span class=cl><span class=c1></span>        <span class=nt>&#34;qosClass&#34;</span><span class=p>:</span> <span class=s2>&#34;BestEffort&#34;</span>
-</span></span><span class=line><span class=cl>    <span class=p>}</span>
-</span></span><span class=line><span class=cl><span class=p>}</span>
-</span></span></code></pre></div><blockquote><p>另外: 当你需要创建资源类型的时候,我并不建议你从头开始去编写相关文件,可以灵活的应用<code>kubectl run</code>来进行填充相关的字段信息。</p></blockquote><h2 id=kubernetes设计理念>kubernetes设计理念<a hidden class=anchor aria-hidden=true href=#kubernetes设计理念>#</a></h2><ul><li>声明式：典型就是在资源文件中进行声明</li><li>无侵入性</li><li>可移植: 所有符合kubernetes标准的kubernetes平台都可以进行迁移</li><li>显示接口：所有的操作都是开放性的,不会存在私有接口,无论是<code>Api-Server</code>或者<code>Clinet-go</code>所操作的接口都是一模一样的。</li></ul><h2 id=创建资源的工作流程>创建资源的工作流程<a hidden class=anchor aria-hidden=true href=#创建资源的工作流程>#</a></h2><ol><li>首先当用户的请求进入到<code>Api-Server</code>后会进入到<code>Authorization</code>认证授权的处理接口实际上就是加载我们的<code>config</code>配置文件,其具体代码在<code>loader.go:372</code>进行实现<!doctype html><html lang=en><head><meta name=viewport content="user-scalable=no,width=device-width,initial-scale=1,maximum-scale=1"><script src=https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/jquery/3.6.0/jquery.min.js></script><link href=https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/nanogallery2/3.0.5/css/nanogallery2.min.css rel=stylesheet><script src=https://lf9-cdn-tos.bytecdntp.com/cdn/expire-1-M/nanogallery2/3.0.5/jquery.nanogallery2.min.js></script></head><body><div data-nanogallery2='{
+}'
+        >
+            
+
+<a href="https://img13.360buyimg.com/ddimg/jfs/t1/164078/6/34165/22231/654ba81fFe1bf21d7/9d02bd791b795b3b.jpg" data-ngThumb="https://img13.360buyimg.com/ddimg/jfs/t1/164078/6/34165/22231/654ba81fFe1bf21d7/9d02bd791b795b3b.jpg">容器单点架构流程图</a>
+
+
+
+        </div>
+    </body>
+</html>
+
+那么随之而来带来的问题是:</p>
+<blockquote>
+<p>那么由于Docker的容器镜像可以在A、B、C任意一台机器上运行,那么是否可以当A机器所运行的镜像挂掉以后自动的帮我在B机器上进行重启呢?</p>
+</blockquote>
+<p>okey 带着这个问题 一起往下进行。</p>
+<h2 id="kubernes组件"></h>kubernes组件
+</h2><p>先看一张官方给出的kubernetes的架构图
+图中列出了kubernetes的组成以及相对应的组件</p>
+<ul>
+<li>ControlPlane: 控制平面节点</li>
+<li>Node: 工作节点</li>
+<li>Kubelet: 用于控制<code>staticPod</code>,其主要就是用来控制静态Pod，因为静态Pod不受<code>ApiServer</code>的影响。
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <picture>
+  <img class="img-fluid" src="https://kubernetes.io/images/docs/components-of-kubernetes.svg" alt="" loading="lazy" />
+</picture>
+</li>
+</ul>
+<p>Oh 不插一句嘴 学到了一个新的命令</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># jq命令是一个用于处理json的命令</span>
+</span></span><span class="line"><span class="cl">kubectl get deploy wecho-canary -o json <span class="p">|</span> jq .spec
+</span></span></code></pre></div><p>okey 继续&hellip;
+我们时长谈起到的<code>control-plane</code>实际上并不是一台机器他只是一个抽象出来的概念,实际上我们是在说所谓的<code>control-plane</code>层面的组件。也就是说这些组件可以运行在控制面的机器上同时也可以运行在Node机器上</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <picture>
+  <img class="img-fluid" src="https://img14.360buyimg.com/ddimg/jfs/t1/231911/36/2404/28759/654ba847Fc032ef5e/32d3a1f4a8f2b4c4.jpg" alt="Pasted image 20231108213644.png" loading="lazy" />
+</picture>
+</p>
+<h2 id="kubernetes核心概念"></h>kubernetes核心概念
+</h2><ul>
+<li><code>ResourceObject</code>: 是我认为相对而言kubernetes集群当中比较核心的资源对象,其实也就是我们所说的<code>Pod</code>、<code>Deployment</code>、<code>Daemonset</code>等kubernetes的资源类型
+对于一个Pod而言,kubernetes对其定义的键值无非以下的几种</li>
+</ul>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-json" data-lang="json"><span class="line"><span class="cl"><span class="p">[</span><span class="err">root@Online-Beijing-master</span><span class="mi">1</span> <span class="err">~</span><span class="p">]</span><span class="err">#</span> <span class="err">kubectl</span> <span class="err">get</span> <span class="err">deploy</span> <span class="err">wecho-canary</span> <span class="err">-o</span> <span class="err">json</span> <span class="err">|</span> <span class="err">jq</span> <span class="err">keys</span>
+</span></span><span class="line"><span class="cl"><span class="p">[</span>
+</span></span><span class="line"><span class="cl">  <span class="s2">&#34;apiVersion&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="s2">&#34;kind&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="s2">&#34;metadata&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="s2">&#34;spec&#34;</span><span class="p">,</span>   <span class="c1">// spec描述的是Pod预期的状态
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="s2">&#34;status&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="p">]</span>
+</span></span></code></pre></div><p>你可以通过<code>kubectl api-resource</code>来获取kubernetes相对应的资源类型。</p>
+<h3 id="kubernets的资源提交"></h>kubernets的资源提交
+</h3><p>我们平时使用的<code>kubectl run nginx-$RANDOM --image=&quot;nginx:alpine&quot;</code>究竟是执行了什么样的内容？</p>
+<p>正常来说<code>Api-Server</code>本身就是服务,那么当我把请求发送给<code>Api-Server</code>的时候,我是以什么样的请求内容进行了提交?那<code>Api-Server</code>接收了我的请求内容又对我的请求内容做出了什么样的处理呢?</p>
+<p>首先我们来看实际作为客户端,也就是<code>client</code>端提交的请求</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 可以通过--dry-run=client来模拟客户端提交的请求内容</span>
+</span></span><span class="line"><span class="cl">kubectl run nginx-<span class="nv">$RANDOM</span> --image<span class="o">=</span><span class="s2">&#34;nginx:alpine&#34;</span> --dry-run<span class="o">=</span>client -ojson -v6
+</span></span></code></pre></div><p>正常的返回响应应该如下,这是一个我们正常通过kubelet创建一个Pod所发送的请求体内容,但作为clinet只会在我们本地进行处理,所以你也可以看到返回的结构内容中带有<code>I1108 21:54:49.922270 1219589 loader.go:374] Config loaded from file:  /root/.kube/config</code>,也就证明了它并没有像Api-Server发送任何请求,只是读取了相关的配置信息。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-json" data-lang="json"><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;kind&#34;</span><span class="p">:</span> <span class="s2">&#34;Pod&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;apiVersion&#34;</span><span class="p">:</span> <span class="s2">&#34;v1&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;metadata&#34;</span><span class="p">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nt">&#34;name&#34;</span><span class="p">:</span> <span class="s2">&#34;nginx-27147&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="nt">&#34;creationTimestamp&#34;</span><span class="p">:</span> <span class="kc">null</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="nt">&#34;labels&#34;</span><span class="p">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="nt">&#34;run&#34;</span><span class="p">:</span> <span class="s2">&#34;nginx-27147&#34;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">},</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;spec&#34;</span><span class="p">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nt">&#34;containers&#34;</span><span class="p">:</span> <span class="p">[</span>
+</span></span><span class="line"><span class="cl">            <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                <span class="nt">&#34;name&#34;</span><span class="p">:</span> <span class="s2">&#34;nginx-27147&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                <span class="nt">&#34;image&#34;</span><span class="p">:</span> <span class="s2">&#34;nginx:alpine&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                <span class="nt">&#34;resources&#34;</span><span class="p">:</span> <span class="p">{}</span>
+</span></span><span class="line"><span class="cl">            <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="p">],</span>
+</span></span><span class="line"><span class="cl">        <span class="nt">&#34;restartPolicy&#34;</span><span class="p">:</span> <span class="s2">&#34;Always&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="nt">&#34;dnsPolicy&#34;</span><span class="p">:</span> <span class="s2">&#34;ClusterFirst&#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">},</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;status&#34;</span><span class="p">:</span> <span class="p">{}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>很好上面我们模拟了一个<code>client</code>端所生产的内容,那么下面我们看看当实际发送给<code>Api-Server</code>的时候产生了哪些内容</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">kubectl run nginx-<span class="nv">$RANDOM</span> --image<span class="o">=</span><span class="s2">&#34;nginx:alpine&#34;</span> --dry-run<span class="o">=</span>server -ojson -v6
+</span></span></code></pre></div><p>我们可以清晰地看到日志的输出</p>
+<ol>
+<li>首先第一步加载了kubernetes相关的配置文件信息。</li>
+<li>发送了相关请求(盲猜应该是验证api-server是否正常)</li>
+<li>向<code>https://resk8s.api.beijing.io:8443/api/v1/namespaces/default/pods?dryRun=All&amp;fieldManager=kubectl-run</code>发送了POST请求用于创建Pod</li>
+</ol>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="cl"><span class="n">I1108</span> <span class="mi">21</span><span class="p">:</span><span class="mi">58</span><span class="p">:</span><span class="mf">14.866131</span> <span class="mi">1221713</span> <span class="n">loader</span><span class="o">.</span><span class="n">go</span><span class="p">:</span><span class="mi">374</span><span class="p">]</span> <span class="n">Config</span> <span class="n">loaded</span> <span class="n">from</span> <span class="n">file</span><span class="p">:</span>  <span class="o">/</span><span class="n">root</span><span class="o">/.</span><span class="n">kube</span><span class="o">/</span><span class="n">config</span>
+</span></span><span class="line"><span class="cl"><span class="n">I1108</span> <span class="mi">21</span><span class="p">:</span><span class="mi">58</span><span class="p">:</span><span class="mf">14.884329</span> <span class="mi">1221713</span> <span class="n">round_trippers</span><span class="o">.</span><span class="n">go</span><span class="p">:</span><span class="mi">553</span><span class="p">]</span> <span class="n">GET</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">resk8s</span><span class="o">.</span><span class="n">api</span><span class="o">.</span><span class="n">beijing</span><span class="o">.</span><span class="n">io</span><span class="p">:</span><span class="mi">8443</span><span class="o">/</span><span class="n">openapi</span><span class="o">/</span><span class="n">v2</span><span class="err">?</span><span class="n">timeout</span><span class="o">=</span><span class="mi">32</span><span class="n">s</span> <span class="mi">200</span> <span class="n">OK</span> <span class="ow">in</span> <span class="mi">15</span> <span class="n">milliseconds</span>
+</span></span><span class="line"><span class="cl"><span class="n">I1108</span> <span class="mi">21</span><span class="p">:</span><span class="mi">58</span><span class="p">:</span><span class="mf">14.946553</span> <span class="mi">1221713</span> <span class="n">round_trippers</span><span class="o">.</span><span class="n">go</span><span class="p">:</span><span class="mi">553</span><span class="p">]</span> <span class="n">POST</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">resk8s</span><span class="o">.</span><span class="n">api</span><span class="o">.</span><span class="n">beijing</span><span class="o">.</span><span class="n">io</span><span class="p">:</span><span class="mi">8443</span><span class="o">/</span><span class="n">api</span><span class="o">/</span><span class="n">v1</span><span class="o">/</span><span class="n">namespaces</span><span class="o">/</span><span class="n">default</span><span class="o">/</span><span class="n">pods</span><span class="err">?</span><span class="n">dryRun</span><span class="o">=</span><span class="n">All</span><span class="o">&amp;</span><span class="n">fieldManager</span><span class="o">=</span><span class="n">kubectl</span><span class="o">-</span><span class="n">run</span> <span class="mi">201</span> <span class="n">Created</span> <span class="ow">in</span> <span class="mi">15</span> <span class="n">milliseconds</span>
+</span></span></code></pre></div><p>事实上我们由此可见发送到<code>Api-Server</code>的请求内容多了很多东西</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-json" data-lang="json"><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;kind&#34;</span><span class="p">:</span> <span class="s2">&#34;Pod&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;apiVersion&#34;</span><span class="p">:</span> <span class="s2">&#34;v1&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;metadata&#34;</span><span class="p">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nt">&#34;name&#34;</span><span class="p">:</span> <span class="s2">&#34;nginx-14483&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="nt">&#34;namespace&#34;</span><span class="p">:</span> <span class="s2">&#34;default&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="nt">&#34;uid&#34;</span><span class="p">:</span> <span class="s2">&#34;d27e1836-8bac-40d4-805b-420f4bca4ee1&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="nt">&#34;creationTimestamp&#34;</span><span class="p">:</span> <span class="s2">&#34;2023-11-08T14:05:36Z&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="nt">&#34;labels&#34;</span><span class="p">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="nt">&#34;run&#34;</span><span class="p">:</span> <span class="s2">&#34;nginx-14483&#34;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">},</span>
+</span></span><span class="line"><span class="cl">        <span class="nt">&#34;annotations&#34;</span><span class="p">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="nt">&#34;kubernetes.customized/fabric-networks&#34;</span><span class="p">:</span> <span class="s2">&#34;default&#34;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">},</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;spec&#34;</span><span class="p">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nt">&#34;volumes&#34;</span><span class="p">:</span> <span class="p">[</span>
+</span></span><span class="line"><span class="cl">            <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                <span class="nt">&#34;name&#34;</span><span class="p">:</span> <span class="s2">&#34;kube-api-access-vwtvp&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                <span class="nt">&#34;projected&#34;</span><span class="p">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                    <span class="nt">&#34;sources&#34;</span><span class="p">:</span> <span class="p">[</span>
+</span></span><span class="line"><span class="cl">                        <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                            <span class="nt">&#34;serviceAccountToken&#34;</span><span class="p">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                                <span class="nt">&#34;expirationSeconds&#34;</span><span class="p">:</span> <span class="mi">3607</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                                <span class="nt">&#34;path&#34;</span><span class="p">:</span> <span class="s2">&#34;token&#34;</span>
+</span></span><span class="line"><span class="cl">                            <span class="p">}</span>
+</span></span><span class="line"><span class="cl">                        <span class="p">},</span>
+</span></span><span class="line"><span class="cl">                        <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                            <span class="nt">&#34;configMap&#34;</span><span class="p">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                                <span class="nt">&#34;name&#34;</span><span class="p">:</span> <span class="s2">&#34;kube-root-ca.crt&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                                <span class="nt">&#34;items&#34;</span><span class="p">:</span> <span class="p">[</span>
+</span></span><span class="line"><span class="cl">                                    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                                        <span class="nt">&#34;key&#34;</span><span class="p">:</span> <span class="s2">&#34;ca.crt&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                                        <span class="nt">&#34;path&#34;</span><span class="p">:</span> <span class="s2">&#34;ca.crt&#34;</span>
+</span></span><span class="line"><span class="cl">                                    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">                                <span class="p">]</span>
+</span></span><span class="line"><span class="cl">                            <span class="p">}</span>
+</span></span><span class="line"><span class="cl">                        <span class="p">},</span>
+</span></span><span class="line"><span class="cl">                        <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                            <span class="nt">&#34;downwardAPI&#34;</span><span class="p">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                                <span class="nt">&#34;items&#34;</span><span class="p">:</span> <span class="p">[</span>
+</span></span><span class="line"><span class="cl">                                    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                                        <span class="nt">&#34;path&#34;</span><span class="p">:</span> <span class="s2">&#34;namespace&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                                        <span class="nt">&#34;fieldRef&#34;</span><span class="p">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                                            <span class="nt">&#34;apiVersion&#34;</span><span class="p">:</span> <span class="s2">&#34;v1&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                                            <span class="nt">&#34;fieldPath&#34;</span><span class="p">:</span> <span class="s2">&#34;metadata.namespace&#34;</span>
+</span></span><span class="line"><span class="cl">                                        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">                                    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">                                <span class="p">]</span>
+</span></span><span class="line"><span class="cl">                            <span class="p">}</span>
+</span></span><span class="line"><span class="cl">                        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">                    <span class="p">],</span>
+</span></span><span class="line"><span class="cl">                    <span class="nt">&#34;defaultMode&#34;</span><span class="p">:</span> <span class="mi">420</span>
+</span></span><span class="line"><span class="cl">                <span class="p">}</span>
+</span></span><span class="line"><span class="cl">            <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="p">],</span>
+</span></span><span class="line"><span class="cl">        <span class="nt">&#34;containers&#34;</span><span class="p">:</span> <span class="p">[</span>
+</span></span><span class="line"><span class="cl">            <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                <span class="nt">&#34;name&#34;</span><span class="p">:</span> <span class="s2">&#34;nginx-14483&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                <span class="nt">&#34;image&#34;</span><span class="p">:</span> <span class="s2">&#34;nginx:alpine&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                <span class="nt">&#34;resources&#34;</span><span class="p">:</span> <span class="p">{},</span>
+</span></span><span class="line"><span class="cl">                <span class="nt">&#34;volumeMounts&#34;</span><span class="p">:</span> <span class="p">[</span>
+</span></span><span class="line"><span class="cl">                    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                        <span class="nt">&#34;name&#34;</span><span class="p">:</span> <span class="s2">&#34;kube-api-access-vwtvp&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                        <span class="nt">&#34;readOnly&#34;</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                        <span class="nt">&#34;mountPath&#34;</span><span class="p">:</span> <span class="s2">&#34;/var/run/secrets/kubernetes.io/serviceaccount&#34;</span>
+</span></span><span class="line"><span class="cl">                    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">                <span class="p">],</span>
+</span></span><span class="line"><span class="cl">                <span class="nt">&#34;terminationMessagePath&#34;</span><span class="p">:</span> <span class="s2">&#34;/dev/termination-log&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                <span class="nt">&#34;terminationMessagePolicy&#34;</span><span class="p">:</span> <span class="s2">&#34;File&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                <span class="nt">&#34;imagePullPolicy&#34;</span><span class="p">:</span> <span class="s2">&#34;IfNotPresent&#34;</span>
+</span></span><span class="line"><span class="cl">            <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="p">],</span>
+</span></span><span class="line"><span class="cl">        <span class="nt">&#34;restartPolicy&#34;</span><span class="p">:</span> <span class="s2">&#34;Always&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="nt">&#34;terminationGracePeriodSeconds&#34;</span><span class="p">:</span> <span class="mi">30</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="nt">&#34;dnsPolicy&#34;</span><span class="p">:</span> <span class="s2">&#34;ClusterFirst&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="nt">&#34;serviceAccountName&#34;</span><span class="p">:</span> <span class="s2">&#34;default&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="nt">&#34;serviceAccount&#34;</span><span class="p">:</span> <span class="s2">&#34;default&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="nt">&#34;securityContext&#34;</span><span class="p">:</span> <span class="p">{},</span>
+</span></span><span class="line"><span class="cl">        <span class="nt">&#34;schedulerName&#34;</span><span class="p">:</span> <span class="s2">&#34;default-scheduler&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="nt">&#34;tolerations&#34;</span><span class="p">:</span> <span class="p">[</span>
+</span></span><span class="line"><span class="cl">            <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                <span class="nt">&#34;key&#34;</span><span class="p">:</span> <span class="s2">&#34;node.kubernetes.io/not-ready&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                <span class="nt">&#34;operator&#34;</span><span class="p">:</span> <span class="s2">&#34;Exists&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                <span class="nt">&#34;effect&#34;</span><span class="p">:</span> <span class="s2">&#34;NoExecute&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                <span class="nt">&#34;tolerationSeconds&#34;</span><span class="p">:</span> <span class="mi">300</span>
+</span></span><span class="line"><span class="cl">            <span class="p">},</span>
+</span></span><span class="line"><span class="cl">            <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                <span class="nt">&#34;key&#34;</span><span class="p">:</span> <span class="s2">&#34;node.kubernetes.io/unreachable&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                <span class="nt">&#34;operator&#34;</span><span class="p">:</span> <span class="s2">&#34;Exists&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                <span class="nt">&#34;effect&#34;</span><span class="p">:</span> <span class="s2">&#34;NoExecute&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                <span class="nt">&#34;tolerationSeconds&#34;</span><span class="p">:</span> <span class="mi">300</span>
+</span></span><span class="line"><span class="cl">            <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="p">],</span>
+</span></span><span class="line"><span class="cl">        <span class="nt">&#34;priority&#34;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="nt">&#34;dnsConfig&#34;</span><span class="p">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="nt">&#34;options&#34;</span><span class="p">:</span> <span class="p">[</span>
+</span></span><span class="line"><span class="cl">                <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                    <span class="nt">&#34;name&#34;</span><span class="p">:</span> <span class="s2">&#34;single-request-reopen&#34;</span>
+</span></span><span class="line"><span class="cl">                <span class="p">}</span>
+</span></span><span class="line"><span class="cl">            <span class="p">]</span>
+</span></span><span class="line"><span class="cl">        <span class="p">},</span>
+</span></span><span class="line"><span class="cl">        <span class="nt">&#34;enableServiceLinks&#34;</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="nt">&#34;preemptionPolicy&#34;</span><span class="p">:</span> <span class="s2">&#34;PreemptLowerPriority&#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">},</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;status&#34;</span><span class="p">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nt">&#34;phase&#34;</span><span class="p">:</span> <span class="s2">&#34;Pending&#34;</span><span class="p">,</span> <span class="c1">// 可以看到当前处于Pending阶段
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="nt">&#34;qosClass&#34;</span><span class="p">:</span> <span class="s2">&#34;BestEffort&#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><blockquote>
+<p>另外: 当你需要创建资源类型的时候,我并不建议你从头开始去编写相关文件,可以灵活的应用<code>kubectl run</code>来进行填充相关的字段信息。</p>
+</blockquote>
+<h2 id="kubernetes设计理念"></h>kubernetes设计理念
+</h2><ul>
+<li>声明式：典型就是在资源文件中进行声明</li>
+<li>无侵入性</li>
+<li>可移植: 所有符合kubernetes标准的kubernetes平台都可以进行迁移</li>
+<li>显示接口：所有的操作都是开放性的,不会存在私有接口,无论是<code>Api-Server</code>或者<code>Clinet-go</code>所操作的接口都是一模一样的。</li>
+</ul>
+<h2 id="创建资源的工作流程"></h>创建资源的工作流程
+</h2><ol>
+<li>首先当用户的请求进入到<code>Api-Server</code>后会进入到<code>Authorization</code>认证授权的处理接口实际上就是加载我们的<code>config</code>配置文件,其具体代码在<code>loader.go:372</code>进行实现
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta
+            name="viewport"
+            content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1"
+        />
+        <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/jquery/3.6.0/jquery.min.js"></script>
+        <link
+            href="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/nanogallery2/3.0.5/css/nanogallery2.min.css"
+            rel="stylesheet"
+        />
+        <script src="https://lf9-cdn-tos.bytecdntp.com/cdn/expire-1-M/nanogallery2/3.0.5/jquery.nanogallery2.min.js"></script>
+    </head>
+    <body>
+        <div
+            data-nanogallery2='{
     "itemsBaseURL":               "https://nanogallery2.nanostudio.org/samples",
     "thumbnailDisplayTransition":          "slideUp2",
 	"thumbnailHeight":    200,
@@ -691,39 +799,421 @@ I1108 21:58:14.946553 1221713 round_trippers.go:553] POST https://resk8s.api.bei
      },
      "viewerGalleryTWidth": 40,
      "viewerGalleryTHeight": 40
-}'><a href=https://img12.360buyimg.com/ddimg/jfs/t1/228353/25/2337/91698/654ba7e1Fcf72fe29/40d7e21b0d3e5f2d.jpg data-ngthumb=https://img12.360buyimg.com/ddimg/jfs/t1/228353/25/2337/91698/654ba7e1Fcf72fe29/40d7e21b0d3e5f2d.jpg>创建资源的工作流程</a></div></body></html></li></ol><h2 id=服务发现原理和应用>服务发现原理和应用<a hidden class=anchor aria-hidden=true href=#服务发现原理和应用>#</a></h2><h3 id=kubernetes中pod的通信>kubernetes中Pod的通信<a hidden class=anchor aria-hidden=true href=#kubernetes中pod的通信>#</a></h3><ul><li>每个Pod都有自己的IP分配</li><li>Pod间的可以通过IP进行通信</li><li>Pod的IP是可变的</li><li>Pod的IP通常不能被提前获取,一般都是网络插件进行分配</li></ul><h3 id=kubernetes的service通信>kubernetes的Service通信<a hidden class=anchor aria-hidden=true href=#kubernetes的service通信>#</a></h3><p>它是一种抽象，帮助你将 Pod 集合在网络上公开出去。 每个 Service 对象定义端点的一个逻辑集合（通常这些端点就是 Pod）以及如何访问到这些 Pod 的策略。
-我们通常可以使用以下命令来简单的暴露一个<code>Service</code></p><div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>kubectl expose deploy/nginx --port<span class=o>=</span><span class=m>80</span>
-</span></span></code></pre></div><p>通常来说我们访问某个服务都是访问服务的IP地址，当然了,在kubernetes中访问<code>Service</code>对应的地址也可以访问到服务</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=o>[</span>root@Online-Beijing-master1 ~<span class=o>]</span><span class=c1># kubectl get service</span>
-</span></span><span class=line><span class=cl>NAME                        TYPE        CLUSTER-IP      EXTERNAL-IP   PORT<span class=o>(</span>S<span class=o>)</span>             AGE
-</span></span><span class=line><span class=cl>wecho-canary                ClusterIP   10.10.166.79    &lt;none&gt;        80/TCP,9113/TCP     69d
-</span></span><span class=line><span class=cl>kubernetes                  ClusterIP   10.10.0.1       &lt;none&gt;        443/TCP             279d
-</span></span></code></pre></div><p>实际上也就是说当我需要访问<code>wecho-canary</code>这个服务的时候,我无需关心他后端end如何进行变化,我只需要记住访问<code>wecho-canary</code>的<code>Service</code>所给出的<code>ClusterIP</code>即可进行访问到相应的服务。</p><p>另外的一种方式就是通过我们的<code>Service</code>名称来进行访问，下面说一下具体是如何通过<code>Service</code>名称进行访问的。</p><blockquote><p>我们假设使用上面的<code>wecho-canary</code>名称进行一次访问</p></blockquote><div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>curl -v wecho-canary <span class=c1># 假设访问正常</span>
+}'
+        >
+            
+
+<a href="https://img12.360buyimg.com/ddimg/jfs/t1/228353/25/2337/91698/654ba7e1Fcf72fe29/40d7e21b0d3e5f2d.jpg" data-ngThumb="https://img12.360buyimg.com/ddimg/jfs/t1/228353/25/2337/91698/654ba7e1Fcf72fe29/40d7e21b0d3e5f2d.jpg">创建资源的工作流程</a>
+
+
+
+        </div>
+    </body>
+</html>
+</li>
+</ol>
+<h2 id="服务发现原理和应用"></h>服务发现原理和应用
+</h2><h3 id="kubernetes中pod的通信"></h>kubernetes中Pod的通信
+</h3><ul>
+<li>每个Pod都有自己的IP分配</li>
+<li>Pod间的可以通过IP进行通信</li>
+<li>Pod的IP是可变的</li>
+<li>Pod的IP通常不能被提前获取,一般都是网络插件进行分配</li>
+</ul>
+<h3 id="kubernetes的service通信"></h>kubernetes的Service通信
+</h3><p>它是一种抽象，帮助你将 Pod 集合在网络上公开出去。 每个 Service 对象定义端点的一个逻辑集合（通常这些端点就是 Pod）以及如何访问到这些 Pod 的策略。
+我们通常可以使用以下命令来简单的暴露一个<code>Service</code></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">kubectl expose deploy/nginx --port<span class="o">=</span><span class="m">80</span>
+</span></span></code></pre></div><p>通常来说我们访问某个服务都是访问服务的IP地址，当然了,在kubernetes中访问<code>Service</code>对应的地址也可以访问到服务</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">[</span>root@Online-Beijing-master1 ~<span class="o">]</span><span class="c1"># kubectl get service</span>
+</span></span><span class="line"><span class="cl">NAME                        TYPE        CLUSTER-IP      EXTERNAL-IP   PORT<span class="o">(</span>S<span class="o">)</span>             AGE
+</span></span><span class="line"><span class="cl">wecho-canary                ClusterIP   10.10.166.79    &lt;none&gt;        80/TCP,9113/TCP     69d
+</span></span><span class="line"><span class="cl">kubernetes                  ClusterIP   10.10.0.1       &lt;none&gt;        443/TCP             279d
+</span></span></code></pre></div><p>实际上也就是说当我需要访问<code>wecho-canary</code>这个服务的时候,我无需关心他后端end如何进行变化,我只需要记住访问<code>wecho-canary</code>的<code>Service</code>所给出的<code>ClusterIP</code>即可进行访问到相应的服务。</p>
+<p>另外的一种方式就是通过我们的<code>Service</code>名称来进行访问，下面说一下具体是如何通过<code>Service</code>名称进行访问的。</p>
+<blockquote>
+<p>我们假设使用上面的<code>wecho-canary</code>名称进行一次访问</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">curl -v wecho-canary <span class="c1"># 假设访问正常</span>
 </span></span></code></pre></div><p>很简单,大家都知道当我们访问一个域名的时候背后肯定又DNS服务器来解析其所对应的IP地址,那么其实在kubernetes当中也有一个内部的DNS服务器,名字叫做<code>kube-dns</code>
-我们可以通过<code>kubectl get svc -A </code>进行查看,其中所指定的<code>10.10.0.10</code>就是我们kube-dns的IP地址.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>kube-system    kube-dns                        ClusterIP   10.10.0.10      &lt;none&gt;        53/UDP,53/TCP,9153/TCP                         279d
-</span></span></code></pre></div><p>看到我们<code>kube-dns</code>有以下端点</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=o>[</span>root@Online-Beijing-master1 ~<span class=o>]</span><span class=c1># kubectl get ep -n kube-system | grep kube-dns</span>
-</span></span><span class=line><span class=cl>kube-dns             10.10.151.159:53,10.10.4.95:53,10.10.151.159:53 + <span class=m>3</span> more...   279d
-</span></span><span class=line><span class=cl>kube-dns-upstream    10.10.151.159:53,10.10.4.95:53,10.10.151.159:53 + <span class=m>1</span> more...   81d
-</span></span></code></pre></div><p>其次可以看到我们容器内所对应的<code>resolv.conf</code>所写内容的配置文件</p><pre tabindex=0><code class=language-conf data-lang=conf>search jiashicang.svc.cluster.local svc.cluster.local cluster.local
-nameserver 169.254.20.10
-options ndots:5 single-request-reopen
-</code></pre><p>由于我使用了<code>NodeLocalDns</code>所以我这个地方的nameserver不太一样,关于<code>NodeLocalDns</code>我们后续再说。
-总结以下几点:</p><blockquote><ol><li>当我们访问<code>wecho-canary</code>的时候实际上是访问了<code>wecho-canary.default.cluster.local.svc</code>,即<code>ServiceName.Namespace.cluster.local.svc</code></li><li>所有的解析域名请求都会请求到<code>kube-dns</code>当中,当<code>kube-dns</code>无法完成解析的时候,我们会将请求<code>forward</code>到本地的解析文件当中,如果本地解析文件也无法解析则认为失败。典型的就是超时、无法解析等问题。</li><li>Service通过监视API server的数据变化来感知后端Pod的变化,并及时更新负载均衡规则。具体来说,Kubernetes ApiServer负责管理集群状态,它会记录每一个对象(包括Pod)的Spec和Status。Service对象使用ApiServer的watch接口,监视后端关联Pod对象的变化事件。比如Pod实例加入或销毁时,ApiServer会主动通知Service。一旦检测到Pod变化,Service会立即使用新的Pod列表,重新计算并更新自己负载均衡的端口转发规则。例如使用iptables规则或IPVS表更新后端目标地址。这样,无论Pod是动态伸缩还是故障转移,Service都能即时感知,保持负载均衡入口地址的高可靠性。这就是Service如何实现动态更新负载均衡规则的原理。</li></ol></blockquote><h3 id=service类型>Service类型<a hidden class=anchor aria-hidden=true href=#service类型>#</a></h3><ul><li>ClusterIP: 通过集群的内部IP公开<code>Service</code>，选择该值时<code>Service</code>只能够在集群内部访问。这也是你没有为服务显式指定<code>type</code>时使用的默认值。</li><li>NodePort: 通过每个节点上的IP和静态端口<code>NodePort</code>公开 Service。为了让Service可通过节点端口访问，Kubernetes 会为 Service配置集群IP地址， 相当于你请求了type:ClusterIP的服务。</li><li>LoadBalancer:使用云平台的负载均衡器向外部公开<code>Service</code>,一般来说都用在云厂商才会使用<code>LoadBalancer</code></li><li>ExternalName:将服务映射到<code>externalName</code>字段的内容 例如，映射到主机名:<code>api.foo.bar.example</code>,该映射将集群的 DNS 服务器配置为返回具有该外部主机名值的CNAME记录。</li></ul><p>常用的暴露Service的方法</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>kubectl expose deploy/nginx --port<span class=o>=</span><span class=m>80</span> --type<span class=o>=</span>NodePort
-</span></span></code></pre></div><p>哦,对了,推荐一个开源的LB插件</p><ul><li>Metallb: <a class=link href=https://github.com/metallb/metallb target=_blank rel=noopener>Github</a></li></ul><h3 id=服务发现和流量路由>服务发现和流量路由<a hidden class=anchor aria-hidden=true href=#服务发现和流量路由>#</a></h3><p>总的来说我们分为一下几点吧</p><ol><li>Pod之间的流量通信:<ol><li>IP直连的方式: 不推荐这种方式,因为Pod的IP严格意义上来说对于服务版本更新生命周期相对较短。</li><li>ClusterIP： 相对于比较推荐通过指定ServiceName的方式来绑定活着监听某种服务</li></ol></li><li>外部访问Pod的通信<ol><li>NodePort: 通过暴露外部端口的方式来进行Pod的访问</li><li>LoadBalancer: 通过对Service绑定LB的方式进行Pod的访问</li></ol></li><li>Pod访问外部通信:<ol><li>ExternalName: 将 Service 映射到 DNS 名称</li><li>HeadlessService: 当你不需要负载均衡，也不需要单独的 ServiceIP,你可以使用<code>HeadlessService</code></li></ol></li></ol><div class=highlight><pre tabindex=0 class=chroma><code class=language-yaml data-lang=yaml><span class=line><span class=cl><span class=c># 下面是ExternalName的简单实例</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>apiVersion</span><span class=p>:</span><span class=w> </span><span class=l>v1</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>kind</span><span class=p>:</span><span class=w> </span><span class=l>Service</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>metadata</span><span class=p>:</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>my-service</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>namespace</span><span class=p>:</span><span class=w> </span><span class=l>prod</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>spec</span><span class=p>:</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>type</span><span class=p>:</span><span class=w> </span><span class=l>ExternalName</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>externalName</span><span class=p>:</span><span class=w> </span><span class=l>my.database.example.com</span><span class=w>
-</span></span></span></code></pre></div><p>一般来说Kubernetes的内部DNS记录有两种规范</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>PodIP.Namespace.pod.cluster-domain.example
-</span></span><span class=line><span class=cl>---
-</span></span><span class=line><span class=cl>ServiceName.Namespace.svc.cluster-domain.example
-</span></span></code></pre></div></div><footer class=post-footer><ul class=post-tags><li><a href=https://blog.mletter.cn/tags/kubernetes/>Kubernetes</a></li></ul><nav class=paginav><a class=prev href=https://blog.mletter.cn/tourists/sichuan/><span class=title>« 上一页</span><br><span>旅行日记-四川·阿坝甘孜藏族自治州</span>
-</a><a class=next href=https://blog.mletter.cn/tech/api-tools/1/><span class=title>下一页 »</span><br><span>推荐几款好用的API文档管理工具</span></a></nav><ul class=share-buttons><li><a target=_blank rel="noopener noreferrer" aria-label="share Kubernetes的架构设计和对象属性基本理解 on x" href="https://x.com/intent/tweet/?text=Kubernetes%e7%9a%84%e6%9e%b6%e6%9e%84%e8%ae%be%e8%ae%a1%e5%92%8c%e5%af%b9%e8%b1%a1%e5%b1%9e%e6%80%a7%e5%9f%ba%e6%9c%ac%e7%90%86%e8%a7%a3&amp;url=https%3a%2f%2fblog.mletter.cn%2ftech%2fkubernetes%2farchitectural-design%2f&amp;hashtags=kubernetes"><svg viewBox="0 0 512 512" height="30" width="30" fill="currentcolor"><path d="M512 62.554V449.446C512 483.97 483.97 512 449.446 512H62.554C28.03 512 0 483.97.0 449.446V62.554C0 28.03 28.029.0 62.554.0H449.446C483.971.0 512 28.03 512 62.554zM269.951 190.75 182.567 75.216H56L207.216 272.95 63.9 436.783h61.366L235.9 310.383l96.667 126.4H456L298.367 228.367l134-153.151H371.033zM127.633 110h36.468l219.38 290.065H349.5z"/></svg></a></li><li><a target=_blank rel="noopener noreferrer" aria-label="share Kubernetes的架构设计和对象属性基本理解 on linkedin" href="https://www.linkedin.com/shareArticle?mini=true&amp;url=https%3a%2f%2fblog.mletter.cn%2ftech%2fkubernetes%2farchitectural-design%2f&amp;title=Kubernetes%e7%9a%84%e6%9e%b6%e6%9e%84%e8%ae%be%e8%ae%a1%e5%92%8c%e5%af%b9%e8%b1%a1%e5%b1%9e%e6%80%a7%e5%9f%ba%e6%9c%ac%e7%90%86%e8%a7%a3&amp;summary=Kubernetes%e7%9a%84%e6%9e%b6%e6%9e%84%e8%ae%be%e8%ae%a1%e5%92%8c%e5%af%b9%e8%b1%a1%e5%b1%9e%e6%80%a7%e5%9f%ba%e6%9c%ac%e7%90%86%e8%a7%a3&amp;source=https%3a%2f%2fblog.mletter.cn%2ftech%2fkubernetes%2farchitectural-design%2f"><svg viewBox="0 0 512 512" height="30" width="30" fill="currentcolor"><path d="M449.446.0C483.971.0 512 28.03 512 62.554v386.892C512 483.97 483.97 512 449.446 512H62.554c-34.524.0-62.554-28.03-62.554-62.554V62.554c0-34.524 28.029-62.554 62.554-62.554h386.892zM160.461 423.278V197.561h-75.04v225.717h75.04zm270.539.0V293.839c0-69.333-37.018-101.586-86.381-101.586-39.804.0-57.634 21.891-67.617 37.266v-31.958h-75.021c.995 21.181.0 225.717.0 225.717h75.02V297.222c0-6.748.486-13.492 2.474-18.315 5.414-13.475 17.767-27.434 38.494-27.434 27.135.0 38.007 20.707 38.007 51.037v120.768H431zM123.448 88.722C97.774 88.722 81 105.601 81 127.724c0 21.658 16.264 39.002 41.455 39.002h.484c26.165.0 42.452-17.344 42.452-39.002-.485-22.092-16.241-38.954-41.943-39.002z"/></svg></a></li><li><a target=_blank rel="noopener noreferrer" aria-label="share Kubernetes的架构设计和对象属性基本理解 on reddit" href="https://reddit.com/submit?url=https%3a%2f%2fblog.mletter.cn%2ftech%2fkubernetes%2farchitectural-design%2f&title=Kubernetes%e7%9a%84%e6%9e%b6%e6%9e%84%e8%ae%be%e8%ae%a1%e5%92%8c%e5%af%b9%e8%b1%a1%e5%b1%9e%e6%80%a7%e5%9f%ba%e6%9c%ac%e7%90%86%e8%a7%a3"><svg viewBox="0 0 512 512" height="30" width="30" fill="currentcolor"><path d="M449.446.0C483.971.0 512 28.03 512 62.554v386.892C512 483.97 483.97 512 449.446 512H62.554c-34.524.0-62.554-28.03-62.554-62.554V62.554c0-34.524 28.029-62.554 62.554-62.554h386.892zM446 265.638c0-22.964-18.616-41.58-41.58-41.58-11.211.0-21.361 4.457-28.841 11.666-28.424-20.508-67.586-33.757-111.204-35.278l18.941-89.121 61.884 13.157c.756 15.734 13.642 28.29 29.56 28.29 16.407.0 29.706-13.299 29.706-29.701.0-16.403-13.299-29.702-29.706-29.702-11.666.0-21.657 6.792-26.515 16.578l-69.105-14.69c-1.922-.418-3.939-.042-5.585 1.036-1.658 1.073-2.811 2.761-3.224 4.686l-21.152 99.438c-44.258 1.228-84.046 14.494-112.837 35.232-7.468-7.164-17.589-11.591-28.757-11.591-22.965.0-41.585 18.616-41.585 41.58.0 16.896 10.095 31.41 24.568 37.918-.639 4.135-.99 8.328-.99 12.576.0 63.977 74.469 115.836 166.33 115.836s166.334-51.859 166.334-115.836c0-4.218-.347-8.387-.977-12.493 14.564-6.47 24.735-21.034 24.735-38.001zM326.526 373.831c-20.27 20.241-59.115 21.816-70.534 21.816-11.428.0-50.277-1.575-70.522-21.82-3.007-3.008-3.007-7.882.0-10.889 3.003-2.999 7.882-3.003 10.885.0 12.777 12.781 40.11 17.317 59.637 17.317 19.522.0 46.86-4.536 59.657-17.321 3.016-2.999 7.886-2.995 10.885.008 3.008 3.011 3.003 7.882-.008 10.889zm-5.23-48.781c-16.373.0-29.701-13.324-29.701-29.698.0-16.381 13.328-29.714 29.701-29.714 16.378.0 29.706 13.333 29.706 29.714.0 16.374-13.328 29.698-29.706 29.698zM160.91 295.348c0-16.381 13.328-29.71 29.714-29.71 16.369.0 29.689 13.329 29.689 29.71.0 16.373-13.32 29.693-29.689 29.693-16.386.0-29.714-13.32-29.714-29.693z"/></svg></a></li><li><a target=_blank rel="noopener noreferrer" aria-label="share Kubernetes的架构设计和对象属性基本理解 on facebook" href="https://facebook.com/sharer/sharer.php?u=https%3a%2f%2fblog.mletter.cn%2ftech%2fkubernetes%2farchitectural-design%2f"><svg viewBox="0 0 512 512" height="30" width="30" fill="currentcolor"><path d="M449.446.0C483.971.0 512 28.03 512 62.554v386.892C512 483.97 483.97 512 449.446 512H342.978V319.085h66.6l12.672-82.621h-79.272v-53.617c0-22.603 11.073-44.636 46.58-44.636H425.6v-70.34s-32.71-5.582-63.982-5.582c-65.288.0-107.96 39.569-107.96 111.204v62.971h-72.573v82.621h72.573V512h-191.104c-34.524.0-62.554-28.03-62.554-62.554V62.554c0-34.524 28.029-62.554 62.554-62.554h386.892z"/></svg></a></li><li><a target=_blank rel="noopener noreferrer" aria-label="share Kubernetes的架构设计和对象属性基本理解 on whatsapp" href="https://api.whatsapp.com/send?text=Kubernetes%e7%9a%84%e6%9e%b6%e6%9e%84%e8%ae%be%e8%ae%a1%e5%92%8c%e5%af%b9%e8%b1%a1%e5%b1%9e%e6%80%a7%e5%9f%ba%e6%9c%ac%e7%90%86%e8%a7%a3%20-%20https%3a%2f%2fblog.mletter.cn%2ftech%2fkubernetes%2farchitectural-design%2f"><svg viewBox="0 0 512 512" height="30" width="30" fill="currentcolor"><path d="M449.446.0C483.971.0 512 28.03 512 62.554v386.892C512 483.97 483.97 512 449.446 512H62.554c-34.524.0-62.554-28.03-62.554-62.554V62.554c0-34.524 28.029-62.554 62.554-62.554h386.892zm-58.673 127.703c-33.842-33.881-78.847-52.548-126.798-52.568-98.799.0-179.21 80.405-179.249 179.234-.013 31.593 8.241 62.428 23.927 89.612l-25.429 92.884 95.021-24.925c26.181 14.28 55.659 21.807 85.658 21.816h.074c98.789.0 179.206-80.413 179.247-179.243.018-47.895-18.61-92.93-52.451-126.81zM263.976 403.485h-.06c-26.734-.01-52.954-7.193-75.828-20.767l-5.441-3.229-56.386 14.792 15.05-54.977-3.542-5.637c-14.913-23.72-22.791-51.136-22.779-79.287.033-82.142 66.867-148.971 149.046-148.971 39.793.014 77.199 15.531 105.329 43.692 28.128 28.16 43.609 65.592 43.594 105.4-.034 82.149-66.866 148.983-148.983 148.984zm81.721-111.581c-4.479-2.242-26.499-13.075-30.604-14.571-4.105-1.495-7.091-2.241-10.077 2.241-2.986 4.483-11.569 14.572-14.182 17.562-2.612 2.988-5.225 3.364-9.703 1.12-4.479-2.241-18.91-6.97-36.017-22.23C231.8 264.15 222.81 249.484 220.198 245s-.279-6.908 1.963-9.14c2.016-2.007 4.48-5.232 6.719-7.847 2.24-2.615 2.986-4.484 4.479-7.472 1.493-2.99.747-5.604-.374-7.846-1.119-2.241-10.077-24.288-13.809-33.256-3.635-8.733-7.327-7.55-10.077-7.688-2.609-.13-5.598-.158-8.583-.158-2.986.0-7.839 1.121-11.944 5.604-4.105 4.484-15.675 15.32-15.675 37.364.0 22.046 16.048 43.342 18.287 46.332 2.24 2.99 31.582 48.227 76.511 67.627 10.685 4.615 19.028 7.371 25.533 9.434 10.728 3.41 20.492 2.929 28.209 1.775 8.605-1.285 26.499-10.833 30.231-21.295 3.732-10.464 3.732-19.431 2.612-21.298-1.119-1.869-4.105-2.99-8.583-5.232z"/></svg></a></li><li><a target=_blank rel="noopener noreferrer" aria-label="share Kubernetes的架构设计和对象属性基本理解 on telegram" href="https://telegram.me/share/url?text=Kubernetes%e7%9a%84%e6%9e%b6%e6%9e%84%e8%ae%be%e8%ae%a1%e5%92%8c%e5%af%b9%e8%b1%a1%e5%b1%9e%e6%80%a7%e5%9f%ba%e6%9c%ac%e7%90%86%e8%a7%a3&amp;url=https%3a%2f%2fblog.mletter.cn%2ftech%2fkubernetes%2farchitectural-design%2f"><svg viewBox="2 2 28 28" height="30" width="30" fill="currentcolor"><path d="M26.49 29.86H5.5a3.37 3.37.0 01-2.47-1 3.35 3.35.0 01-1-2.47V5.48A3.36 3.36.0 013 3 3.37 3.37.0 015.5 2h21A3.38 3.38.0 0129 3a3.36 3.36.0 011 2.46V26.37a3.35 3.35.0 01-1 2.47 3.38 3.38.0 01-2.51 1.02zm-5.38-6.71a.79.79.0 00.85-.66L24.73 9.24a.55.55.0 00-.18-.46.62.62.0 00-.41-.17q-.08.0-16.53 6.11a.59.59.0 00-.41.59.57.57.0 00.43.52l4 1.24 1.61 4.83a.62.62.0 00.63.43.56.56.0 00.4-.17L16.54 20l4.09 3A.9.9.0 0021.11 23.15zM13.8 20.71l-1.21-4q8.72-5.55 8.78-5.55c.15.0.23.0.23.16a.18.18.0 010 .06s-2.51 2.3-7.52 6.8z"/></svg></a></li><li><a target=_blank rel="noopener noreferrer" aria-label="share Kubernetes的架构设计和对象属性基本理解 on ycombinator" href="https://news.ycombinator.com/submitlink?t=Kubernetes%e7%9a%84%e6%9e%b6%e6%9e%84%e8%ae%be%e8%ae%a1%e5%92%8c%e5%af%b9%e8%b1%a1%e5%b1%9e%e6%80%a7%e5%9f%ba%e6%9c%ac%e7%90%86%e8%a7%a3&u=https%3a%2f%2fblog.mletter.cn%2ftech%2fkubernetes%2farchitectural-design%2f"><svg width="30" height="30" viewBox="0 0 512 512" fill="currentcolor" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"><path d="M449.446.0C483.971.0 512 28.03 512 62.554V449.446C512 483.97 483.97 512 449.446 512H62.554C28.03 512 0 483.97.0 449.446V62.554C0 28.03 28.029.0 62.554.0H449.446zM183.8767 87.9921h-62.034L230.6673 292.4508V424.0079h50.6655V292.4508L390.1575 87.9921H328.1233L256 238.2489z"/></svg></a></li></ul></footer><div id=tcomment></div><script src=https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/twikoo/1.4.18/twikoo.all.min.js></script><script>twikoo.init({envId:"https://twikoo.mletter.cn/",el:"#tcomment"})</script></article></main><footer class=footer><span>&copy; 2025 <a href=https://blog.mletter.cn/>太阳可以是蓝色</a></span> ·
-<span>Powered by
-<a href=https://gohugo.io/ rel="noopener noreferrer" target=_blank>Hugo</a> &
-        <a href=https://github.com/adityatelange/hugo-PaperMod/ rel=noopener target=_blank>PaperMod</a></span><br><span id=span style=color:#101011></span>
-<script type=text/javascript>function runtime(){const a=new Date("12/07/2020 12:50:18"),r=new Date,c=r.getTime()-a.getTime(),l=24*60*60*1e3,e=c/l,t=Math.floor(e),n=(e-t)*24,s=Math.floor(n),o=(n-s)*60,i=Math.floor(o),d=Math.floor((o-i)*60);document.getElementById("span").innerHTML="已运行: "+t+"天"+s+"小时"+i+"分"+d+"秒"}runtime(),setInterval(runtime,1e3)</script><br><font color=#101011>本站由 <a href=https://www.netlify.com/ rel="noopener noreferrer nofollow" target=_blank>Netlify</a> 提供计算服务, 由 <a href=https://www.netlify.com/ rel="noopener noreferrer nofollow" target=_blank>Netlify</a> 提供全站加速服务。</font><br></footer><a href=#top aria-label="go to top" title="Go to Top (Alt + G)" class=top-link id=top-link accesskey=g><svg viewBox="0 0 12 6" fill="currentcolor"><path d="M12 6H0l6-6z"/></svg>
-</a><script>const menu=document.getElementById("menu");menu&&(menu.scrollLeft=localStorage.getItem("menu-scroll-position"),menu.onscroll=function(){localStorage.setItem("menu-scroll-position",menu.scrollLeft)}),document.querySelectorAll('a[href^="#"]').forEach(e=>{e.addEventListener("click",function(e){e.preventDefault();const t=this.getAttribute("href").substr(1),n=document.querySelector(`[id='${decodeURIComponent(t)}']`);window.matchMedia("(prefers-reduced-motion: reduce)").matches?n.scrollIntoView():n.scrollIntoView({behavior:"smooth"}),t==="top"?history.replaceState(null,null," "):history.pushState(null,null,`#${t}`)})})</script><script>const mybutton=document.getElementById("top-link");window.onscroll=function(){document.body.scrollTop>800||document.documentElement.scrollTop>800?(mybutton.style.visibility="visible",mybutton.style.opacity="1"):(mybutton.style.visibility="hidden",mybutton.style.opacity="0")}</script><script>document.getElementById("theme-toggle").addEventListener("click",()=>{document.body.classList.contains("dark")?(document.body.classList.remove("dark"),localStorage.setItem("pref-theme","light")):(document.body.classList.add("dark"),localStorage.setItem("pref-theme","dark"))})</script></body></html>
+我们可以通过<code>kubectl get svc -A </code>进行查看,其中所指定的<code>10.10.0.10</code>就是我们kube-dns的IP地址.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">kube-system    kube-dns                        ClusterIP   10.10.0.10      &lt;none&gt;        53/UDP,53/TCP,9153/TCP                         279d
+</span></span></code></pre></div><p>看到我们<code>kube-dns</code>有以下端点</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">[</span>root@Online-Beijing-master1 ~<span class="o">]</span><span class="c1"># kubectl get ep -n kube-system | grep kube-dns</span>
+</span></span><span class="line"><span class="cl">kube-dns             10.10.151.159:53,10.10.4.95:53,10.10.151.159:53 + <span class="m">3</span> more...   279d
+</span></span><span class="line"><span class="cl">kube-dns-upstream    10.10.151.159:53,10.10.4.95:53,10.10.151.159:53 + <span class="m">1</span> more...   81d
+</span></span></code></pre></div><p>其次可以看到我们容器内所对应的<code>resolv.conf</code>所写内容的配置文件</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">search jiashicang.svc.cluster.local svc.cluster.local cluster.local
+</span></span><span class="line"><span class="cl">nameserver 169.254.20.10
+</span></span><span class="line"><span class="cl">options ndots:5 single-request-reopen
+</span></span></code></pre></div><p>由于我使用了<code>NodeLocalDns</code>所以我这个地方的nameserver不太一样,关于<code>NodeLocalDns</code>我们后续再说。
+总结以下几点:</p>
+<blockquote>
+<ol>
+<li>当我们访问<code>wecho-canary</code>的时候实际上是访问了<code>wecho-canary.default.cluster.local.svc</code>,即<code>ServiceName.Namespace.cluster.local.svc</code></li>
+<li>所有的解析域名请求都会请求到<code>kube-dns</code>当中,当<code>kube-dns</code>无法完成解析的时候,我们会将请求<code>forward</code>到本地的解析文件当中,如果本地解析文件也无法解析则认为失败。典型的就是超时、无法解析等问题。</li>
+<li>Service通过监视API server的数据变化来感知后端Pod的变化,并及时更新负载均衡规则。具体来说,Kubernetes ApiServer负责管理集群状态,它会记录每一个对象(包括Pod)的Spec和Status。Service对象使用ApiServer的watch接口,监视后端关联Pod对象的变化事件。比如Pod实例加入或销毁时,ApiServer会主动通知Service。一旦检测到Pod变化,Service会立即使用新的Pod列表,重新计算并更新自己负载均衡的端口转发规则。例如使用iptables规则或IPVS表更新后端目标地址。这样,无论Pod是动态伸缩还是故障转移,Service都能即时感知,保持负载均衡入口地址的高可靠性。这就是Service如何实现动态更新负载均衡规则的原理。</li>
+</ol>
+</blockquote>
+<h3 id="service类型"></h>Service类型
+</h3><ul>
+<li>ClusterIP: 通过集群的内部IP公开<code>Service</code>，选择该值时<code>Service</code>只能够在集群内部访问。这也是你没有为服务显式指定<code>type</code>时使用的默认值。</li>
+<li>NodePort: 通过每个节点上的IP和静态端口<code>NodePort</code>公开 Service。为了让Service可通过节点端口访问，Kubernetes 会为 Service配置集群IP地址， 相当于你请求了type:ClusterIP的服务。</li>
+<li>LoadBalancer:使用云平台的负载均衡器向外部公开<code>Service</code>,一般来说都用在云厂商才会使用<code>LoadBalancer</code></li>
+<li>ExternalName:将服务映射到<code>externalName</code>字段的内容 例如，映射到主机名:<code>api.foo.bar.example</code>,该映射将集群的 DNS 服务器配置为返回具有该外部主机名值的CNAME记录。</li>
+</ul>
+<p>常用的暴露Service的方法</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">kubectl expose deploy/nginx --port<span class="o">=</span><span class="m">80</span> --type<span class="o">=</span>NodePort
+</span></span></code></pre></div><p>哦,对了,推荐一个开源的LB插件</p>
+<ul>
+<li>Metallb: <a class="link" href="https://github.com/metallb/metallb"  target="_blank" rel="noopener"
+    >Github</a></li>
+</ul>
+<h3 id="服务发现和流量路由"></h>服务发现和流量路由
+</h3><p>总的来说我们分为一下几点吧</p>
+<ol>
+<li>Pod之间的流量通信:
+<ol>
+<li>IP直连的方式: 不推荐这种方式,因为Pod的IP严格意义上来说对于服务版本更新生命周期相对较短。</li>
+<li>ClusterIP： 相对于比较推荐通过指定ServiceName的方式来绑定活着监听某种服务</li>
+</ol>
+</li>
+<li>外部访问Pod的通信
+<ol>
+<li>NodePort: 通过暴露外部端口的方式来进行Pod的访问</li>
+<li>LoadBalancer: 通过对Service绑定LB的方式进行Pod的访问</li>
+</ol>
+</li>
+<li>Pod访问外部通信:
+<ol>
+<li>ExternalName: 将 Service 映射到 DNS 名称</li>
+<li>HeadlessService: 当你不需要负载均衡，也不需要单独的 ServiceIP,你可以使用<code>HeadlessService</code></li>
+</ol>
+</li>
+</ol>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="c"># 下面是ExternalName的简单实例</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">v1</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">Service</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">metadata</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">my-service</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l">prod</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">spec</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l">ExternalName</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">externalName</span><span class="p">:</span><span class="w"> </span><span class="l">my.database.example.com</span><span class="w">
+</span></span></span></code></pre></div><p>一般来说Kubernetes的内部DNS记录有两种规范</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">PodIP.Namespace.pod.cluster-domain.example
+</span></span><span class="line"><span class="cl">---
+</span></span><span class="line"><span class="cl">ServiceName.Namespace.svc.cluster-domain.example
+</span></span></code></pre></div>
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="https://blog.mletter.cn/tags/kubernetes/">Kubernetes</a>
+        
+    </section>
+
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">相关文章</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="has-image">
+    <a href="https://blog.mletter.cn/tech/kubernetes/sealos/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://img10.360buyimg.com/ddimg/jfs/t1/244560/31/7618/14121/661de12eFfa7f6ba5/0239fa873abb0bd5.jpg" loading="lazy" data-key="" data-hash="https://img10.360buyimg.com/ddimg/jfs/t1/244560/31/7618/14121/661de12eFfa7f6ba5/0239fa873abb0bd5.jpg"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">基于SealOS部署高可用的kubernetes集群</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="https://blog.mletter.cn/tech/kubernetes/install-efk/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://img14.360buyimg.com/ddimg/jfs/t1/177175/31/35833/30306/64cb08eeF5ba90f46/1da6311bbbec8921.jpg" loading="lazy" data-key="" data-hash="https://img14.360buyimg.com/ddimg/jfs/t1/177175/31/35833/30306/64cb08eeF5ba90f46/1da6311bbbec8921.jpg"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">kubernetes基于EFK的日志落地实现</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="https://blog.mletter.cn/tech/kubernetes/openebs/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://openebs.io/docs/assets/images/control-plane-overview-93c59878e3356a11f03029dd0fc1cd6b.svg" loading="lazy" data-key="" data-hash="https://openebs.io/docs/assets/images/control-plane-overview-93c59878e3356a11f03029dd0fc1cd6b.svg"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">OpenEBS存储的使用</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="https://blog.mletter.cn/tech/kubernetes/traefik/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://doc.traefik.io/traefik/assets/img/traefik-architecture.png" loading="lazy" data-key="" data-hash="https://doc.traefik.io/traefik/assets/img/traefik-architecture.png"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Traekfik基础使用指南</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="https://blog.mletter.cn/tech/kubernetes/local-storage/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://img14.360buyimg.com/ddimg/jfs/t1/164569/9/40677/14419/65bc6e4cFa1d8c0c3/5ccf7e6caadc9b83.jpg" loading="lazy" data-key="" data-hash="https://img14.360buyimg.com/ddimg/jfs/t1/164569/9/40677/14419/65bc6e4cFa1d8c0c3/5ccf7e6caadc9b83.jpg"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Kubernetes-本地存储</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    <script src="//lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/twikoo/1.4.18/twikoo.all.min.js"></script>
+<div id="tcomment"></div>
+<style>
+    .twikoo {
+        background-color: var(--card-background);
+        border-radius: var(--card-border-radius);
+        box-shadow: var(--shadow-l1);
+        padding: var(--card-padding);
+    }
+    :root[data-scheme="dark"] {
+        --twikoo-body-text-color-main: rgba(255, 255, 255, 0.9);
+        --twikoo-body-text-color: rgba(255, 255, 255, 0.7);
+    }
+    .twikoo .el-input-group__prepend,
+    .twikoo .tk-action-icon,
+    .twikoo .tk-submit-action-icon,
+    .twikoo .tk-time,
+    .twikoo .tk-comments-no,
+    .twikoo .tk-comments-count {
+        color: var(--twikoo-body-text-color);
+    }
+    .twikoo .el-input__inner,
+    .twikoo .el-textarea__inner,
+    .twikoo .tk-preview-container,
+    .twikoo .tk-content,
+    .twikoo .tk-nick,
+    .twikoo .tk-send {
+        color: var(--twikoo-body-text-color-main);
+    }
+    .twikoo .el-button{
+        color: var(--twikoo-body-text-color)!important;
+    }
+    .twikoo .el-input__count {
+        color: var(--twikoo-body-text-color) !important;
+    }
+    .OwO .OwO-body {
+        background-color: var(--body-background) !important;
+        color: var(--body-text-color) !important;
+    }
+</style><script>
+    twikoo.init({
+        envId: 'https:\/\/twikoo.mletter.cn\/',
+        el: '#tcomment',lang: 'zh-cn',})
+</script>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2020 - 
+        
+        2025 Live and learn. 🌱
+    </section>
+    
+    <section class="powerby">
+        Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo By Netlify</a> <br />
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.21.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://lf26-cdn-tos.bytecdntp.com/cdn/expire-1-M/photoswipe/4.1.3/photoswipe.min.js"crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://lf26-cdn-tos.bytecdntp.com/cdn/expire-1-M/photoswipe/4.1.3/photoswipe-ui-default.min.js"crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/photoswipe/4.1.3/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://lf26-cdn-tos.bytecdntp.com/cdn/expire-1-M/photoswipe/4.1.3/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://lf9-cdn-tos.bytecdntp.com/cdn/expire-1-M/vibrant.js/1.0.0/Vibrant.min.js"crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="https://blog.mletter.cn/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+<script src="https://lf26-cdn-tos.bytecdntp.com/cdn/expire-1-M/nprogress/0.2.0/nprogress.min.js" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://lf26-cdn-tos.bytecdntp.com/cdn/expire-1-M/nprogress/0.2.0/nprogress.css" crossorigin="anonymous" />
+<script>
+    NProgress.start();
+    document.addEventListener("readystatechange", () => {
+        if (document.readyState === "interactive") NProgress.inc(0.8);
+        if (document.readyState === "complete") NProgress.done();
+    });
+</script>
+    </body>
+</html>

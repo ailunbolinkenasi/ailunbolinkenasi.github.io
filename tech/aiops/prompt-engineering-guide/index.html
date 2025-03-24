@@ -1,0 +1,876 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+    <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='Prompt（提示词）是用户与AI模型对话的&#34;钥匙&#34;，它决定了AI如何理解需求并生成响应。Prompt Engineering则是通过系统化设计和优化输入内容，让AI输出更符合预期的结果。就像与人类专家沟通一样，一个优质的问题往往包含答案的种子。'>
+<title>1. Prompt Engineering入门指南：如何让AI更懂你的需求</title>
+
+<link rel='canonical' href='http://localhost:1313/tech/aiops/prompt-engineering-guide/'>
+
+<link rel="stylesheet" href="http://localhost:1313/scss/style.min.e738e6f23cab51289304e49575e3f627bf3a6f32f7b82812a9ab0c552ae38a78.css"><meta property='og:title' content='1. Prompt Engineering入门指南：如何让AI更懂你的需求'>
+<meta property='og:description' content='Prompt（提示词）是用户与AI模型对话的&#34;钥匙&#34;，它决定了AI如何理解需求并生成响应。Prompt Engineering则是通过系统化设计和优化输入内容，让AI输出更符合预期的结果。就像与人类专家沟通一样，一个优质的问题往往包含答案的种子。'>
+<meta property='og:url' content='http://localhost:1313/tech/aiops/prompt-engineering-guide/'>
+<meta property='og:site_name' content='太阳可以是蓝色'>
+<meta property='og:type' content='article'><meta property='article:section' content='Posts' /><meta property='article:tag' content='AIOPS' /><meta property='article:tag' content='AI' /><meta property='article:tag' content='人工智能' /><meta property='article:tag' content='运维' /><meta property='article:tag' content='自动化' /><meta property='article:tag' content='开发' /><meta property='article:published_time' content='2025-03-24T00:00:00&#43;00:00'/><meta property='article:modified_time' content='2025-03-24T00:00:00&#43;00:00'/>
+<meta name="twitter:title" content="1. Prompt Engineering入门指南：如何让AI更懂你的需求">
+<meta name="twitter:description" content="Prompt（提示词）是用户与AI模型对话的&#34;钥匙&#34;，它决定了AI如何理解需求并生成响应。Prompt Engineering则是通过系统化设计和优化输入内容，让AI输出更符合预期的结果。就像与人类专家沟通一样，一个优质的问题往往包含答案的种子。">
+    <link rel="shortcut icon" href="wechat.svg" />
+<style>
+  :root {
+       
+      --sys-font-family: -apple-system, "PingFang SC", Georgia, 'Nimbus Roman No9 L', 'Hiragino Sans GB', 'Noto Serif SC', 'Microsoft Yahei', 'WenQuanYi Micro Hei', 'ST Heiti', sans-serif;
+      --code-font-family: "JetBrains Mono", Menlo, Monaco, Consolas, "Courier New";
+      --article-font-family: -apple-system, "PingFang SC", var(--base-font-family);
+  }
+</style>
+
+
+
+
+
+
+<script src="http://localhost:1313/view-image.min.js"></script>
+
+<script>
+  window.ViewImage && ViewImage.init('.article-content img');
+</script>
+
+
+
+<link rel="stylesheet" href="https://cdn.staticfile.net/highlight.js/11.9.0/styles/tokyo-night-dark.min.css">
+<script src="https://lf26-cdn-tos.bytecdntp.com/cdn/expire-1-M/highlight.js/11.4.0/highlight.min.js"></script>
+<script src="https://cdn.staticfile.net/highlight.js/11.9.0/es/languages/go.min.js"></script>
+
+<script>hljs.initHighlightingOnLoad();</script>
+<script>document.addEventListener('DOMContentLoaded', (event) => {document.querySelectorAll('pre code').forEach((el) => {hljs.highlightElement(el);});});</script>
+
+
+
+
+
+
+<script async src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+<script>
+    mermaid.init(undefined, '.language-mermaid');
+</script>
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="http://localhost:1313/">
+                
+                    <img src="https://img14.360buyimg.com/ddimg/jfs/t1/77628/23/27254/26944/66bc1a36Fc596606a/d912965b8bba22af.jpg" width="300" height="300" class="site-logo" loading="lazy" alt="Avatar">
+                
+                </a>
+                
+                    <span class="emoji">🍥</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="http://localhost:1313/">太阳可以是蓝色</a></h1>
+            <h2 class="site-description">Live and learn. 🌱</h2>
+        </div>
+    </header><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='http://localhost:1313/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>搜索</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='http://localhost:1313/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>首页</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='http://localhost:1313/posts' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-inbox" width="24" height="24" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 4m0 2a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2z" /><path d="M4 13h3l3 3h4l3 -3h3" /></svg>
+                
+                <span>文章</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='http://localhost:1313/archives' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>归档</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='https://mletter.cn' target="_blank">
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-health-recognition" width="24" height="24" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 8v-2a2 2 0 0 1 2 -2h2" /><path d="M4 16v2a2 2 0 0 0 2 2h2" /><path d="M16 4h2a2 2 0 0 1 2 2v2" /><path d="M16 20h2a2 2 0 0 0 2 -2v-2" /><path d="M8.603 9.61a2.04 2.04 0 0 1 2.912 0l.485 .39l.5 -.396a2.035 2.035 0 0 1 2.897 .007a2.104 2.104 0 0 1 0 2.949l-3.397 3.44l-3.397 -3.44a2.104 2.104 0 0 1 0 -2.95z" /></svg>
+                
+                <span>主页</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='https://pic.mletter.cn' target="_blank">
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-photo-cog" width="24" height="24" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M15 8h.01" /><path d="M12 21h-6a3 3 0 0 1 -3 -3v-12a3 3 0 0 1 3 -3h12a3 3 0 0 1 3 3v6" /><path d="M3 16l5 -5c.928 -.893 2.072 -.893 3 0l3 3" /><path d="M14 14l1 -1c.48 -.461 1.016 -.684 1.551 -.67" /><path d="M19.001 19m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" /><path d="M19.001 15.5v1.5" /><path d="M19.001 21v1.5" /><path d="M22.032 17.25l-1.299 .75" /><path d="M17.27 20l-1.3 .75" /><path d="M15.97 17.25l1.3 .75" /><path d="M20.733 20l1.3 .75" /></svg>
+                
+                <span>相册</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='http://localhost:1313/friends' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>友联</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='http://localhost:1313/about' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>关于</span>
+            </a>
+        </li>
+        
+
+        <div class="menu-bottom-section">
+                
+            
+            
+            
+                <li id="dark-mode-toggle">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                    <span>暗色模式</span>
+                </li>
+            
+        </div>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">目录</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ul>
+    <li><a href="#一什么是prompt-engineering">一、什么是Prompt Engineering？</a>
+      <ul>
+        <li><a href="#优质prompt公式">优质Prompt公式</a></li>
+      </ul>
+    </li>
+    <li><a href="#四大核心优化原则">四大核心优化原则</a></li>
+    <li><a href="#token">Token</a></li>
+    <li><a href="#核心影响维度">核心影响维度</a>
+      <ul>
+        <li><a href="#模型能力对比">模型能力对比</a></li>
+      </ul>
+    </li>
+    <li><a href="#思维链chain-of-thought">思维链（Chain-of-Thought）</a>
+      <ul>
+        <li><a href="#普通回答-vs-思维链回答">普通回答 vs 思维链回答</a></li>
+        <li><a href="#适用场景推荐">适用场景推荐</a></li>
+      </ul>
+    </li>
+    <li><a href="#prompt分片超过token长度限制">Prompt分片(超过Token长度限制)</a>
+      <ul>
+        <li><a href="#三大分片方法">三大分片方法</a></li>
+      </ul>
+    </li>
+    <li><a href="#常见问题解答">常见问题解答</a></li>
+    <li><a href="#结语成为prompt工程师的三大秘诀">结语：成为Prompt工程师的三大秘诀</a></li>
+  </ul>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="http://localhost:1313/categories/aiops/" >
+                AIOPS
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="http://localhost:1313/tech/aiops/prompt-engineering-guide/">1. Prompt Engineering入门指南：如何让AI更懂你的需求</a>
+        </h2>
+    
+        
+        <h3 class="article-subtitle">
+            Prompt（提示词）是用户与AI模型对话的&#34;钥匙&#34;，它决定了AI如何理解需求并生成响应。Prompt Engineering则是通过系统化设计和优化输入内容，让AI输出更符合预期的结果。就像与人类专家沟通一样，一个优质的问题往往包含答案的种子。
+        </h3>
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Mar 24, 2025</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    阅读时长: 6 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <picture>
+  <img class="img-fluid" src="https://img11.360buyimg.com/ddimg/jfs/t1/278387/8/8864/84171/67e0ffdaFc7c004b0/e828ceb487b9e3a8.jpg" alt="" loading="lazy" />
+</picture>
+</p>
+<p><em>通过优化Prompt，让AI生成更精准的响应</em></p>
+<h2 id="一什么是prompt-engineering"></h>一、什么是Prompt Engineering？
+</h2><p><strong>Prompt</strong>（提示词）是用户与AI模型对话的&quot;钥匙&quot;，它决定了AI如何理解需求并生成响应。<strong>Prompt Engineering</strong>则是通过系统化设计和优化输入内容，让AI输出更符合预期的结果。就像与人类专家沟通一样，一个优质的问题往往包含答案的种子。</p>
+<h3 id="优质prompt公式"></h>优质Prompt公式
+</h3><p>明确目标 + 结构化表达 + 具体约束 = 理想输出</p>
+<h2 id="四大核心优化原则"></h>四大核心优化原则
+</h2><ul>
+<li>明确自身定位和角色设计</li>
+</ul>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl"># 基础版（模糊）
+</span></span><span class="line"><span class="cl">&#34;帮我写Python爬虫&#34;
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"># 专家版（精确）
+</span></span><span class="line"><span class="cl">你是有10年Python爬虫经验的专家，需要完成：
+</span></span><span class="line"><span class="cl">1. 抓取京东商品页（示例URL）的价格和评论
+</span></span><span class="line"><span class="cl">2. 使用requests-html处理动态渲染
+</span></span><span class="line"><span class="cl">3. 实现异常重试机制（最大重试3次）
+</span></span><span class="line"><span class="cl">4. 数据保存为UTF-8编码的CSV
+</span></span></code></pre></div><blockquote>
+<p><strong>优化效果</strong>：成功率提升300% | 代码可读性提升50%</p>
+</blockquote>
+<ul>
+<li>对模型进行格式的约束</li>
+</ul>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl"># 通用请求
+</span></span><span class="line"><span class="cl">&#34;写斐波那契数列函数&#34;
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"># 专业级需求
+</span></span><span class="line"><span class="cl">&#34;&#34;&#34;
+</span></span><span class="line"><span class="cl">编写Python函数需满足：
+</span></span><span class="line"><span class="cl">1. 函数名：fibonacci_sequence
+</span></span><span class="line"><span class="cl">2. 参数：n（生成数列长度）
+</span></span><span class="line"><span class="cl">3. 返回：前n项的元组
+</span></span><span class="line"><span class="cl">4. 添加类型注解
+</span></span><span class="line"><span class="cl">5. 包含docstring说明时间复杂度
+</span></span><span class="line"><span class="cl">&#34;&#34;&#34;
+</span></span></code></pre></div><blockquote>
+<p><strong>关键点</strong>：明确的格式要求可降低70%的返工率</p>
+</blockquote>
+<ul>
+<li>对模型进行引导</li>
+</ul>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-json" data-lang="json"><span class="line"><span class="cl"><span class="c1">// 请求示例
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;user_query&#34;</span><span class="p">:</span> <span class="s2">&#34;天气&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;context&#34;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&#34;用户位置：北京&#34;</span><span class="p">,</span> <span class="s2">&#34;当前季节：冬季&#34;</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// 响应模板
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;response_type&#34;</span><span class="p">:</span> <span class="s2">&#34;weather_report&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;parameters&#34;</span><span class="p">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;location&#34;</span><span class="p">:</span> <span class="s2">&#34;&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;time_range&#34;</span><span class="p">:</span> <span class="s2">&#34;&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;temperature_range&#34;</span><span class="p">:</span> <span class="s2">&#34;&#34;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><blockquote>
+<p><strong>优势</strong>：结构化模板使API响应规范度提升90%</p>
+</blockquote>
+<ul>
+<li>渐进修正</li>
+</ul>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">第一轮：&#34;用React实现登录表单&#34;
+</span></span><span class="line"><span class="cl">第二轮：&#34;用React 18+TypeScript实现Material Design风格的登录表单，要求：1. 邮箱格式验证 2. 密码强度提示 3. 防重复提交 4. 使用Zustand进行状态管理&#34;
+</span></span><span class="line"><span class="cl">第三轮：&#34;在第二轮基础上增加：1. Google reCAPTCHA集成 2. 错误处理显示Snackbar组件 3. 使用react-hook-form管理表单状态&#34;
+</span></span></code></pre></div><div class="table-wrapper"><table>
+  <thead>
+      <tr>
+          <th>版本</th>
+          <th>需求演进</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>V1</td>
+          <td>用React实现登录表单</td>
+      </tr>
+      <tr>
+          <td>V2</td>
+          <td>React 18+TS实现Material Design风格表单，含邮箱验证/密码强度提示</td>
+      </tr>
+      <tr>
+          <td>V3</td>
+          <td>增加Google reCAPTCHA集成/错误提示Snackbar/react-hook-form状态管理</td>
+      </tr>
+  </tbody>
+</table></div>
+<p><strong>开发效率</strong>：分阶段需求可使开发时间缩短40%</p>
+<h2 id="token"></h>Token
+</h2><p>大模型通过<code>Token</code>来处理文本，模型理解了Token所谓之间的统计关系，并且需要基于已经输出的Token计算下一个Token的概率分布，并且选择最高的Token作为预测的结果。
+Token是模型理解和处理文本的最小单位，可能对应：</p>
+<ul>
+<li>完整单词（如&quot;Python&quot;）</li>
+<li>子词（如&quot;un&quot;+&ldquo;able&rdquo;→&ldquo;unable&rdquo;）</li>
+<li>单个字符（常见于中日韩文本）</li>
+<li>标点符号或空格</li>
+</ul>
+<blockquote>
+<p>特别注意：空格是会导致Token的耗费的!</p>
+</blockquote>
+<h2 id="核心影响维度"></h>核心影响维度
+</h2><ol>
+<li>上下文窗口
+<ul>
+<li>GPT-3：2048 Tokens</li>
+<li>GPT-4 Turbo：128,000 Tokens</li>
+<li>Claude 3：200,000 Tokens （超过限制时会出现&quot;截断遗忘&quot;现象）</li>
+</ul>
+</li>
+<li>计算资源消耗
+<ul>
+<li>内存占用：与Token数量呈线性关系</li>
+<li>计算复杂度：随Token数量呈平方级增长（注意力机制）</li>
+</ul>
+</li>
+</ol>
+<blockquote>
+<p>Token越大，可以输入的内容就越多，其实模型回答的效果不会随着Token数量线性增长。</p>
+</blockquote>
+<h3 id="模型能力对比"></h>模型能力对比
+</h3><div class="table-wrapper"><table>
+  <thead>
+      <tr>
+          <th>模型</th>
+          <th>上下文窗口</th>
+          <th>内存消耗</th>
+          <th>计算复杂度</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>GPT-3</td>
+          <td>2048 Tokens</td>
+          <td>线性增长</td>
+          <td>平方级增长</td>
+      </tr>
+      <tr>
+          <td>GPT-4 Turbo</td>
+          <td>128K Tokens</td>
+          <td>▲35%</td>
+          <td>▲200%</td>
+      </tr>
+      <tr>
+          <td>Claude 3</td>
+          <td>200K Tokens</td>
+          <td>▲50%</td>
+          <td>▲300%</td>
+      </tr>
+  </tbody>
+</table></div>
+<h2 id="思维链chain-of-thought"></h>思维链（Chain-of-Thought）
+</h2><p>思维链是模型通过 显式展示推理步骤 得出最终答案的技术。不同于直接输出结果，其核心机制是：
+输入问题 → 分解推理步骤 → 验证中间结论 → 合成最终答案</p>
+<h3 id="普通回答-vs-思维链回答"></h>普通回答 vs 思维链回答
+</h3><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl"># 直接回答
+</span></span><span class="line"><span class="cl">&#34;答案是42&#34;
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"># CoT模式
+</span></span><span class="line"><span class="cl">&#34;&#34;&#34;
+</span></span><span class="line"><span class="cl">已知：
+</span></span><span class="line"><span class="cl">A=3，B=5
+</span></span><span class="line"><span class="cl">计算步骤：
+</span></span><span class="line"><span class="cl">1. A² = 3² = 9
+</span></span><span class="line"><span class="cl">2. B² = 5² = 25
+</span></span><span class="line"><span class="cl">3. 求和：9+25=34
+</span></span><span class="line"><span class="cl">4. 开平方：√34≈5.83
+</span></span><span class="line"><span class="cl">最终答案：5.83
+</span></span><span class="line"><span class="cl">&#34;&#34;&#34;
+</span></span></code></pre></div><h3 id="适用场景推荐"></h>适用场景推荐
+</h3><ul>
+<li>数学计算</li>
+<li>法律条款解析</li>
+<li>医疗诊断建议</li>
+<li>金融风险评估</li>
+</ul>
+<p><strong>激活方式</strong>：在Prompt中添加<code>请逐步分析</code>、<code>展示推理过程</code>等指令</p>
+<blockquote>
+<p>实践建议：在需要高可靠性答案的场景（如数学计算、法律条款解析）中强制启用CoT模式，可通过在Prompt中添加`逐步分析，等结构化指令触发模型的链式思考能力。</p>
+</blockquote>
+<h2 id="prompt分片超过token长度限制"></h>Prompt分片(超过Token长度限制)
+</h2><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="c1"># 自然分界点检测函数</span>
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">detect_boundary</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;&#34;&#34;智能分片逻辑&#34;&#34;&#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">boundaries</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span> <span class="s1">&#39;。&#39;</span><span class="p">,</span> <span class="s1">&#39;;&#39;</span><span class="p">,</span> <span class="s1">&#39;段落结束&#39;</span><span class="p">,</span> <span class="s1">&#39;章节标题&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="nb">any</span><span class="p">(</span><span class="n">b</span> <span class="ow">in</span> <span class="n">text</span> <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">boundaries</span><span class="p">)</span>
+</span></span></code></pre></div><p>对于长文本的总结，首先需要分片总结然后再汇总进行总结</p>
+<div align=center>
+<div class="mermaid">
+    
+graph TD
+    A[原始输入] --> B{Token计数<br><8000?}
+    B -->|Yes| C[直接处理]
+    B -->|No| D[分片策略选择]
+    D --> E[结构分析]
+    D --> F[滑动窗口]
+    D --> G[关键提取]
+    E --> H[层次分割]
+    F --> I[重叠分块]
+    G --> J[摘要生成]
+    H --> K[分片处理]
+    I --> K
+    J --> K
+    K --> L[结果聚合]
+
+</div>
+</div>
+<p>简单的一些自然分界点是这样的,会以逗号、空格、换行等内容作为分界点。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">_is_boundary</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">token</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">	<span class="s2">&#34;&#34;&#34;检测自然分界字符&#34;&#34;&#34;</span>
+</span></span><span class="line"><span class="cl">	<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">encoder</span><span class="o">.</span><span class="n">decode</span><span class="p">([</span><span class="n">token</span><span class="p">])</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span> <span class="s1">&#39;。&#39;</span><span class="p">,</span> <span class="s1">&#39;;&#39;</span><span class="p">,</span> <span class="s1">&#39;)&#39;</span><span class="p">,</span> <span class="s1">&#39;]&#39;</span><span class="p">,</span> <span class="s1">&#39;}&#39;</span><span class="p">)</span>
+</span></span></code></pre></div><h3 id="三大分片方法"></h>三大分片方法
+</h3><ol>
+<li><strong>结构分析法</strong>：按章节/段落切割</li>
+<li><strong>滑动窗口法</strong>：保留20%重叠内容</li>
+<li><strong>关键提取法</strong>：先摘要再处理
+<strong>最佳实践</strong>：对学术论文等结构化文档，推荐组合使用结构分析+滑动窗口</li>
+</ol>
+<h2 id="常见问题解答"></h>常见问题解答
+</h2><p>❓ <strong>Prompt越长越好吗？</strong><br>
+→ 不是！实验数据显示，超过300Token后效果提升不足5%，但成本增加200%</p>
+<p>❓ <strong>中文Token更费资源吗？</strong><br>
+→ 是的！平均1个汉字=2.3个Token（相比英文1词≈1.3Token）</p>
+<p>❓ <strong>如何验证Prompt效果？</strong><br>
+→ 推荐A/B测试法：准备3组不同Prompt，各测试50次，统计成功率/响应时间/满意度</p>
+<h2 id="结语成为prompt工程师的三大秘诀"></h>结语：成为Prompt工程师的三大秘诀
+</h2><ol>
+<li><strong>场景化思考</strong>：把自己想象成目标用户</li>
+<li><strong>迭代优化</strong>：记录每次修改的效果数据</li>
+<li><strong>工具辅助</strong>：使用Prompt调试工具（如PromptPerfect）
+立即尝试优化你的第一个Prompt，评论区欢迎交流你的实践心得！🚀</li>
+</ol>
+
+</section>
+
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="http://localhost:1313/tags/aiops/">AIOPS</a>
+        
+            <a href="http://localhost:1313/tags/ai/">AI</a>
+        
+            <a href="http://localhost:1313/tags/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/">人工智能</a>
+        
+            <a href="http://localhost:1313/tags/%E8%BF%90%E7%BB%B4/">运维</a>
+        
+            <a href="http://localhost:1313/tags/%E8%87%AA%E5%8A%A8%E5%8C%96/">自动化</a>
+        
+            <a href="http://localhost:1313/tags/%E5%BC%80%E5%8F%91/">开发</a>
+        
+    </section>
+
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+     
+    
+        
+    <script src="//lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/twikoo/1.4.18/twikoo.all.min.js"></script>
+<div id="tcomment"></div>
+<style>
+    .twikoo {
+        background-color: var(--card-background);
+        border-radius: var(--card-border-radius);
+        box-shadow: var(--shadow-l1);
+        padding: var(--card-padding);
+    }
+    :root[data-scheme="dark"] {
+        --twikoo-body-text-color-main: rgba(255, 255, 255, 0.9);
+        --twikoo-body-text-color: rgba(255, 255, 255, 0.7);
+    }
+    .twikoo .el-input-group__prepend,
+    .twikoo .tk-action-icon,
+    .twikoo .tk-submit-action-icon,
+    .twikoo .tk-time,
+    .twikoo .tk-comments-no,
+    .twikoo .tk-comments-count {
+        color: var(--twikoo-body-text-color);
+    }
+    .twikoo .el-input__inner,
+    .twikoo .el-textarea__inner,
+    .twikoo .tk-preview-container,
+    .twikoo .tk-content,
+    .twikoo .tk-nick,
+    .twikoo .tk-send {
+        color: var(--twikoo-body-text-color-main);
+    }
+    .twikoo .el-button{
+        color: var(--twikoo-body-text-color)!important;
+    }
+    .twikoo .el-input__count {
+        color: var(--twikoo-body-text-color) !important;
+    }
+    .OwO .OwO-body {
+        background-color: var(--body-background) !important;
+        color: var(--body-text-color) !important;
+    }
+</style><script>
+    twikoo.init({
+        envId: 'https:\/\/twikoo.mletter.cn\/',
+        el: '#tcomment',lang: 'zh-cn',})
+</script>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2020 - 
+        
+        2025 Live and learn. 🌱
+    </section>
+    
+    <section class="powerby">
+        Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo By Netlify</a> <br />
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.21.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://lf26-cdn-tos.bytecdntp.com/cdn/expire-1-M/photoswipe/4.1.3/photoswipe.min.js"crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://lf26-cdn-tos.bytecdntp.com/cdn/expire-1-M/photoswipe/4.1.3/photoswipe-ui-default.min.js"crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/photoswipe/4.1.3/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://lf26-cdn-tos.bytecdntp.com/cdn/expire-1-M/photoswipe/4.1.3/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://lf9-cdn-tos.bytecdntp.com/cdn/expire-1-M/vibrant.js/1.0.0/Vibrant.min.js"crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="http://localhost:1313/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+<script src="https://lf26-cdn-tos.bytecdntp.com/cdn/expire-1-M/nprogress/0.2.0/nprogress.min.js" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://lf26-cdn-tos.bytecdntp.com/cdn/expire-1-M/nprogress/0.2.0/nprogress.css" crossorigin="anonymous" />
+<script>
+    NProgress.start();
+    document.addEventListener("readystatechange", () => {
+        if (document.readyState === "interactive") NProgress.inc(0.8);
+        if (document.readyState === "complete") NProgress.done();
+    });
+</script>
+    </body>
+</html>

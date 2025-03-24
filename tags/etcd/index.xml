@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
     <channel>
         <title>Etcd on 太阳可以是蓝色</title>
-        <link>https://blog.mletter.cn/tags/etcd/</link>
+        <link>http://localhost:1313/tags/etcd/</link>
         <description>Recent content in Etcd on 太阳可以是蓝色</description>
         <generator>Hugo -- gohugo.io</generator>
         <language>en-us</language>
         <copyright>Live and learn. 🌱</copyright>
-        <lastBuildDate>Sun, 26 Feb 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://blog.mletter.cn/tags/etcd/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Sun, 26 Feb 2023 00:00:00 +0000</lastBuildDate><atom:link href="http://localhost:1313/tags/etcd/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>使用Kubeadm创建一个高可用的ETCD集群</title>
-        <link>https://blog.mletter.cn/tech/kubernetes/install-etcd-ha/</link>
+        <link>http://localhost:1313/tech/kubernetes/install-etcd-ha/</link>
         <pubDate>Sun, 26 Feb 2023 00:00:00 +0000</pubDate>
         
-        <guid>https://blog.mletter.cn/tech/kubernetes/install-etcd-ha/</guid>
+        <guid>http://localhost:1313/tech/kubernetes/install-etcd-ha/</guid>
         <description>&lt;img src="https://img.linux.net.cn/data/attachment/album/201501/29/141718izklanww82qm888k.png" alt="Featured image of post 使用Kubeadm创建一个高可用的ETCD集群" /&gt;&lt;h2 id=&#34;使用kubeadm创建一个高可用的etcd集群&#34;&gt;&lt;/h&gt;使用Kubeadm创建一个高可用的Etcd集群
 &lt;/h2&gt;&lt;p&gt;默认情况下，kubeadm 在每个控制平面节点上运行一个本地 etcd 实例。也可以使用外部的 etcd 集群，并在不同的主机上提供 etcd 实例。 这两种方法的区别在 高可用拓扑的选项 页面中阐述。&lt;/p&gt;
 &lt;p&gt;这个任务将指导你创建一个由三个成员组成的高可用外部 etcd 集群，该集群在创建过程中可被 kubeadm 使用。&lt;/p&gt;

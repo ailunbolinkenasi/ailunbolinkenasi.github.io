@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
     <channel>
         <title>太阳可以是蓝色</title>
-        <link>https://blog.mletter.cn/</link>
+        <link>http://localhost:1313/</link>
         <description>Recent content on 太阳可以是蓝色</description>
         <generator>Hugo -- gohugo.io</generator>
         <language>en-us</language>
         <copyright>Live and learn. 🌱</copyright>
-        <lastBuildDate>Wed, 01 Jan 2025 00:00:00 +0000</lastBuildDate><atom:link href="https://blog.mletter.cn/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Mon, 24 Mar 2025 00:00:00 +0000</lastBuildDate><atom:link href="http://localhost:1313/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>维扣图元-专属你的拍照摄影社区</title>
-        <link>https://blog.mletter.cn/project/gin-wecho/</link>
+        <link>http://localhost:1313/project/gin-wecho/</link>
         <pubDate>Sun, 20 Oct 2024 00:00:00 +0000</pubDate>
         
-        <guid>https://blog.mletter.cn/project/gin-wecho/</guid>
+        <guid>http://localhost:1313/project/gin-wecho/</guid>
         <description>&lt;img src="https://ydschool-online.nosdn.127.net/tiku/f291c1c8d5dccacd2b95ef4fdc68d07cefd0e92562794e5bcdd21a9729b3455d.jpg" alt="Featured image of post 维扣图元-专属你的拍照摄影社区" /&gt;&lt;h2 id=&#34;项目简介&#34;&gt;&lt;/h&gt;项目简介
 &lt;/h2&gt;&lt;ul&gt;
 &lt;li&gt;“维扣图元” 是一个充满创意与活力的拍照摄影社区开源项目。旨在为摄影爱好者们提供一个展示作品、交流心得、学习成长的平台。无论你是专业摄影师还是业余爱好者，都能在这里找到属于自己的交流小世界。&lt;/li&gt;
@@ -117,11 +117,272 @@
 </description>
         </item>
         <item>
+        <title>1. Prompt Engineering入门指南：如何让AI更懂你的需求</title>
+        <link>http://localhost:1313/tech/aiops/prompt-engineering-guide/</link>
+        <pubDate>Mon, 24 Mar 2025 00:00:00 +0000</pubDate>
+        
+        <guid>http://localhost:1313/tech/aiops/prompt-engineering-guide/</guid>
+        <description>&lt;p&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  &lt;picture&gt;
+  &lt;img class=&#34;img-fluid&#34; src=&#34;https://img11.360buyimg.com/ddimg/jfs/t1/278387/8/8864/84171/67e0ffdaFc7c004b0/e828ceb487b9e3a8.jpg&#34; alt=&#34;&#34; loading=&#34;lazy&#34; /&gt;
+&lt;/picture&gt;
+&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;通过优化Prompt，让AI生成更精准的响应&lt;/em&gt;&lt;/p&gt;
+&lt;h2 id=&#34;一什么是prompt-engineering&#34;&gt;&lt;/h&gt;一、什么是Prompt Engineering？
+&lt;/h2&gt;&lt;p&gt;&lt;strong&gt;Prompt&lt;/strong&gt;（提示词）是用户与AI模型对话的&amp;quot;钥匙&amp;quot;，它决定了AI如何理解需求并生成响应。&lt;strong&gt;Prompt Engineering&lt;/strong&gt;则是通过系统化设计和优化输入内容，让AI输出更符合预期的结果。就像与人类专家沟通一样，一个优质的问题往往包含答案的种子。&lt;/p&gt;
+&lt;h3 id=&#34;优质prompt公式&#34;&gt;&lt;/h&gt;优质Prompt公式
+&lt;/h3&gt;&lt;p&gt;明确目标 + 结构化表达 + 具体约束 = 理想输出&lt;/p&gt;
+&lt;h2 id=&#34;四大核心优化原则&#34;&gt;&lt;/h&gt;四大核心优化原则
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;明确自身定位和角色设计&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-text&#34; data-lang=&#34;text&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;# 基础版（模糊）
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&amp;#34;帮我写Python爬虫&amp;#34;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;# 专家版（精确）
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;你是有10年Python爬虫经验的专家，需要完成：
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;1. 抓取京东商品页（示例URL）的价格和评论
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;2. 使用requests-html处理动态渲染
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;3. 实现异常重试机制（最大重试3次）
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;4. 数据保存为UTF-8编码的CSV
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;优化效果&lt;/strong&gt;：成功率提升300% | 代码可读性提升50%&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;对模型进行格式的约束&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-text&#34; data-lang=&#34;text&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;# 通用请求
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&amp;#34;写斐波那契数列函数&amp;#34;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;# 专业级需求
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&amp;#34;&amp;#34;&amp;#34;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;编写Python函数需满足：
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;1. 函数名：fibonacci_sequence
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;2. 参数：n（生成数列长度）
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;3. 返回：前n项的元组
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;4. 添加类型注解
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;5. 包含docstring说明时间复杂度
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&amp;#34;&amp;#34;&amp;#34;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;关键点&lt;/strong&gt;：明确的格式要求可降低70%的返工率&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;对模型进行引导&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-json&#34; data-lang=&#34;json&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;// 请求示例
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  &lt;span class=&#34;nt&#34;&gt;&amp;#34;user_query&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;天气&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  &lt;span class=&#34;nt&#34;&gt;&amp;#34;context&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;用户位置：北京&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;当前季节：冬季&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;// 响应模板
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  &lt;span class=&#34;nt&#34;&gt;&amp;#34;response_type&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;weather_report&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  &lt;span class=&#34;nt&#34;&gt;&amp;#34;parameters&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;nt&#34;&gt;&amp;#34;location&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;nt&#34;&gt;&amp;#34;time_range&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;nt&#34;&gt;&amp;#34;temperature_range&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  &lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;优势&lt;/strong&gt;：结构化模板使API响应规范度提升90%&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;渐进修正&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-text&#34; data-lang=&#34;text&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;第一轮：&amp;#34;用React实现登录表单&amp;#34;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;第二轮：&amp;#34;用React 18+TypeScript实现Material Design风格的登录表单，要求：1. 邮箱格式验证 2. 密码强度提示 3. 防重复提交 4. 使用Zustand进行状态管理&amp;#34;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;第三轮：&amp;#34;在第二轮基础上增加：1. Google reCAPTCHA集成 2. 错误处理显示Snackbar组件 3. 使用react-hook-form管理表单状态&amp;#34;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;table&gt;
+  &lt;thead&gt;
+      &lt;tr&gt;
+          &lt;th&gt;版本&lt;/th&gt;
+          &lt;th&gt;需求演进&lt;/th&gt;
+      &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+      &lt;tr&gt;
+          &lt;td&gt;V1&lt;/td&gt;
+          &lt;td&gt;用React实现登录表单&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;V2&lt;/td&gt;
+          &lt;td&gt;React 18+TS实现Material Design风格表单，含邮箱验证/密码强度提示&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;V3&lt;/td&gt;
+          &lt;td&gt;增加Google reCAPTCHA集成/错误提示Snackbar/react-hook-form状态管理&lt;/td&gt;
+      &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;&lt;strong&gt;开发效率&lt;/strong&gt;：分阶段需求可使开发时间缩短40%&lt;/p&gt;
+&lt;h2 id=&#34;token&#34;&gt;&lt;/h&gt;Token
+&lt;/h2&gt;&lt;p&gt;大模型通过&lt;code&gt;Token&lt;/code&gt;来处理文本，模型理解了Token所谓之间的统计关系，并且需要基于已经输出的Token计算下一个Token的概率分布，并且选择最高的Token作为预测的结果。
+Token是模型理解和处理文本的最小单位，可能对应：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;完整单词（如&amp;quot;Python&amp;quot;）&lt;/li&gt;
+&lt;li&gt;子词（如&amp;quot;un&amp;quot;+&amp;ldquo;able&amp;rdquo;→&amp;ldquo;unable&amp;rdquo;）&lt;/li&gt;
+&lt;li&gt;单个字符（常见于中日韩文本）&lt;/li&gt;
+&lt;li&gt;标点符号或空格&lt;/li&gt;
+&lt;/ul&gt;
+&lt;blockquote&gt;
+&lt;p&gt;特别注意：空格是会导致Token的耗费的!&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2 id=&#34;核心影响维度&#34;&gt;&lt;/h&gt;核心影响维度
+&lt;/h2&gt;&lt;ol&gt;
+&lt;li&gt;上下文窗口
+&lt;ul&gt;
+&lt;li&gt;GPT-3：2048 Tokens&lt;/li&gt;
+&lt;li&gt;GPT-4 Turbo：128,000 Tokens&lt;/li&gt;
+&lt;li&gt;Claude 3：200,000 Tokens （超过限制时会出现&amp;quot;截断遗忘&amp;quot;现象）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;计算资源消耗
+&lt;ul&gt;
+&lt;li&gt;内存占用：与Token数量呈线性关系&lt;/li&gt;
+&lt;li&gt;计算复杂度：随Token数量呈平方级增长（注意力机制）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Token越大，可以输入的内容就越多，其实模型回答的效果不会随着Token数量线性增长。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h3 id=&#34;模型能力对比&#34;&gt;&lt;/h&gt;模型能力对比
+&lt;/h3&gt;&lt;table&gt;
+  &lt;thead&gt;
+      &lt;tr&gt;
+          &lt;th&gt;模型&lt;/th&gt;
+          &lt;th&gt;上下文窗口&lt;/th&gt;
+          &lt;th&gt;内存消耗&lt;/th&gt;
+          &lt;th&gt;计算复杂度&lt;/th&gt;
+      &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+      &lt;tr&gt;
+          &lt;td&gt;GPT-3&lt;/td&gt;
+          &lt;td&gt;2048 Tokens&lt;/td&gt;
+          &lt;td&gt;线性增长&lt;/td&gt;
+          &lt;td&gt;平方级增长&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;GPT-4 Turbo&lt;/td&gt;
+          &lt;td&gt;128K Tokens&lt;/td&gt;
+          &lt;td&gt;▲35%&lt;/td&gt;
+          &lt;td&gt;▲200%&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;Claude 3&lt;/td&gt;
+          &lt;td&gt;200K Tokens&lt;/td&gt;
+          &lt;td&gt;▲50%&lt;/td&gt;
+          &lt;td&gt;▲300%&lt;/td&gt;
+      &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h2 id=&#34;思维链chain-of-thought&#34;&gt;&lt;/h&gt;思维链（Chain-of-Thought）
+&lt;/h2&gt;&lt;p&gt;思维链是模型通过 显式展示推理步骤 得出最终答案的技术。不同于直接输出结果，其核心机制是：
+输入问题 → 分解推理步骤 → 验证中间结论 → 合成最终答案&lt;/p&gt;
+&lt;h3 id=&#34;普通回答-vs-思维链回答&#34;&gt;&lt;/h&gt;普通回答 vs 思维链回答
+&lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-text&#34; data-lang=&#34;text&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;# 直接回答
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&amp;#34;答案是42&amp;#34;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;# CoT模式
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&amp;#34;&amp;#34;&amp;#34;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;已知：
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;A=3，B=5
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;计算步骤：
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;1. A² = 3² = 9
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;2. B² = 5² = 25
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;3. 求和：9+25=34
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;4. 开平方：√34≈5.83
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;最终答案：5.83
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&amp;#34;&amp;#34;&amp;#34;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;适用场景推荐&#34;&gt;&lt;/h&gt;适用场景推荐
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;数学计算&lt;/li&gt;
+&lt;li&gt;法律条款解析&lt;/li&gt;
+&lt;li&gt;医疗诊断建议&lt;/li&gt;
+&lt;li&gt;金融风险评估&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;激活方式&lt;/strong&gt;：在Prompt中添加&lt;code&gt;请逐步分析&lt;/code&gt;、&lt;code&gt;展示推理过程&lt;/code&gt;等指令&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;实践建议：在需要高可靠性答案的场景（如数学计算、法律条款解析）中强制启用CoT模式，可通过在Prompt中添加`逐步分析，等结构化指令触发模型的链式思考能力。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2 id=&#34;prompt分片超过token长度限制&#34;&gt;&lt;/h&gt;Prompt分片(超过Token长度限制)
+&lt;/h2&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 自然分界点检测函数&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;k&#34;&gt;def&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;detect_boundary&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;text&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;):&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;s2&#34;&gt;&amp;#34;&amp;#34;&amp;#34;智能分片逻辑&amp;#34;&amp;#34;&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;n&#34;&gt;boundaries&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;\n&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;s1&#34;&gt;&amp;#39;。&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;s1&#34;&gt;&amp;#39;;&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;s1&#34;&gt;&amp;#39;段落结束&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;s1&#34;&gt;&amp;#39;章节标题&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;k&#34;&gt;return&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;any&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;b&lt;/span&gt; &lt;span class=&#34;ow&#34;&gt;in&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;text&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;for&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;b&lt;/span&gt; &lt;span class=&#34;ow&#34;&gt;in&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;boundaries&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;对于长文本的总结，首先需要分片总结然后再汇总进行总结&lt;/p&gt;
+&lt;div align=center&gt;
+&lt;div class=&#34;mermaid&#34;&gt;
+    
+graph TD
+    A[原始输入] --&gt; B{Token计数&lt;br&gt;&lt;8000?}
+    B --&gt;|Yes| C[直接处理]
+    B --&gt;|No| D[分片策略选择]
+    D --&gt; E[结构分析]
+    D --&gt; F[滑动窗口]
+    D --&gt; G[关键提取]
+    E --&gt; H[层次分割]
+    F --&gt; I[重叠分块]
+    G --&gt; J[摘要生成]
+    H --&gt; K[分片处理]
+    I --&gt; K
+    J --&gt; K
+    K --&gt; L[结果聚合]
+
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;简单的一些自然分界点是这样的,会以逗号、空格、换行等内容作为分界点。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;k&#34;&gt;def&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;_is_boundary&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;bp&#34;&gt;self&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;token&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;):&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;	&lt;span class=&#34;s2&#34;&gt;&amp;#34;&amp;#34;&amp;#34;检测自然分界字符&amp;#34;&amp;#34;&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;	&lt;span class=&#34;k&#34;&gt;return&lt;/span&gt; &lt;span class=&#34;bp&#34;&gt;self&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;encoder&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;decode&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;([&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;token&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;])&lt;/span&gt; &lt;span class=&#34;ow&#34;&gt;in&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;\n&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;s1&#34;&gt;&amp;#39;。&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;s1&#34;&gt;&amp;#39;;&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;s1&#34;&gt;&amp;#39;)&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;s1&#34;&gt;&amp;#39;]&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;s1&#34;&gt;&amp;#39;}&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;三大分片方法&#34;&gt;&lt;/h&gt;三大分片方法
+&lt;/h3&gt;&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;结构分析法&lt;/strong&gt;：按章节/段落切割&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;滑动窗口法&lt;/strong&gt;：保留20%重叠内容&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;关键提取法&lt;/strong&gt;：先摘要再处理
+&lt;strong&gt;最佳实践&lt;/strong&gt;：对学术论文等结构化文档，推荐组合使用结构分析+滑动窗口&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id=&#34;常见问题解答&#34;&gt;&lt;/h&gt;常见问题解答
+&lt;/h2&gt;&lt;p&gt;❓ &lt;strong&gt;Prompt越长越好吗？&lt;/strong&gt;&lt;br&gt;
+→ 不是！实验数据显示，超过300Token后效果提升不足5%，但成本增加200%&lt;/p&gt;
+&lt;p&gt;❓ &lt;strong&gt;中文Token更费资源吗？&lt;/strong&gt;&lt;br&gt;
+→ 是的！平均1个汉字=2.3个Token（相比英文1词≈1.3Token）&lt;/p&gt;
+&lt;p&gt;❓ &lt;strong&gt;如何验证Prompt效果？&lt;/strong&gt;&lt;br&gt;
+→ 推荐A/B测试法：准备3组不同Prompt，各测试50次，统计成功率/响应时间/满意度&lt;/p&gt;
+&lt;h2 id=&#34;结语成为prompt工程师的三大秘诀&#34;&gt;&lt;/h&gt;结语：成为Prompt工程师的三大秘诀
+&lt;/h2&gt;&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;场景化思考&lt;/strong&gt;：把自己想象成目标用户&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;迭代优化&lt;/strong&gt;：记录每次修改的效果数据&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;工具辅助&lt;/strong&gt;：使用Prompt调试工具（如PromptPerfect）
+立即尝试优化你的第一个Prompt，评论区欢迎交流你的实践心得！🚀&lt;/li&gt;
+&lt;/ol&gt;
+</description>
+        </item>
+        <item>
         <title>2024年终总结</title>
-        <link>https://blog.mletter.cn/life-story/end-2024/</link>
+        <link>http://localhost:1313/life-story/end-2024/</link>
         <pubDate>Wed, 01 Jan 2025 00:00:00 +0000</pubDate>
         
-        <guid>https://blog.mletter.cn/life-story/end-2024/</guid>
+        <guid>http://localhost:1313/life-story/end-2024/</guid>
         <description>&lt;img src="https://img14.360buyimg.com/ddimg/jfs/t1/252515/19/7946/26603/6776453aF04fae342/1a2d2bdec6f84d2c.jpg" alt="Featured image of post 2024年终总结" /&gt;&lt;h1 id=&#34;2024年年终总结&#34;&gt;&lt;/h&gt;2024年：年终总结
 &lt;/h1&gt;&lt;p&gt;随着2024年的落幕，我站在这个崭新的起点上，回首过去一年的点点滴滴。有欢笑，有泪水，有收获，也亦有遗憾。&lt;/p&gt;
 &lt;h2 id=&#34;学习成长&#34;&gt;&lt;/h&gt;学习成长
@@ -261,10 +522,10 @@
         </item>
         <item>
         <title>再观纪录片-人生第一次-告别</title>
-        <link>https://blog.mletter.cn/documentary/valedictory/1/</link>
+        <link>http://localhost:1313/documentary/valedictory/1/</link>
         <pubDate>Sun, 15 Dec 2024 00:00:00 +0000</pubDate>
         
-        <guid>https://blog.mletter.cn/documentary/valedictory/1/</guid>
+        <guid>http://localhost:1313/documentary/valedictory/1/</guid>
         <description>&lt;img src="https://img12.360buyimg.com/ddimg/jfs/t1/192726/25/35567/27205/64d4df78Ff9979209/ecdcae14b5eefcd1.jpg" alt="Featured image of post 再观纪录片-人生第一次-告别" /&gt;&lt;p&gt;本主题内容题材取自bilibili-人生第一次(告别)&lt;/p&gt;
 &lt;h2 id=&#34;漫长的告别&#34;&gt;&lt;/h&gt;漫长的告别
 &lt;/h2&gt;&lt;p&gt;忘记我，也没事…
@@ -729,10 +990,10 @@
         </item>
         <item>
         <title>旅行日记-二零二四结束-秦皇岛</title>
-        <link>https://blog.mletter.cn/tourists/qinhuangdao/</link>
+        <link>http://localhost:1313/tourists/qinhuangdao/</link>
         <pubDate>Wed, 11 Dec 2024 00:00:00 +0000</pubDate>
         
-        <guid>https://blog.mletter.cn/tourists/qinhuangdao/</guid>
+        <guid>http://localhost:1313/tourists/qinhuangdao/</guid>
         <description>&lt;img src="https://img11.360buyimg.com/ddimg/jfs/t1/87693/12/51589/64714/67599800F45f08175/ccfdb94ccc33710a.jpg" alt="Featured image of post 旅行日记-二零二四结束-秦皇岛" /&gt;&lt;p&gt;本次出行丢失统计：&lt;/p&gt;
 &lt;ol&gt;
 &lt;li&gt;本次买了80块钱彩票一张没中，本人很伤心。&lt;/li&gt;
@@ -869,10 +1130,10 @@
         </item>
         <item>
         <title>小米刷入PixelExperience指南</title>
-        <link>https://blog.mletter.cn/tech/flash/xiaomi-flash/</link>
+        <link>http://localhost:1313/tech/flash/xiaomi-flash/</link>
         <pubDate>Sat, 16 Nov 2024 00:00:00 +0000</pubDate>
         
-        <guid>https://blog.mletter.cn/tech/flash/xiaomi-flash/</guid>
+        <guid>http://localhost:1313/tech/flash/xiaomi-flash/</guid>
         <description>&lt;img src="https://img10.360buyimg.com/ddimg/jfs/t1/136341/28/50928/16917/67396488Fdfa333bf/98aaaa3b10a88b53.jpg" alt="Featured image of post 小米刷入PixelExperience指南" /&gt;&lt;p&gt;最近，成功收购了一台安卓之光小米&lt;code&gt;11 Ultra&lt;/code&gt;，我的第一个计划，就是给它刷上类原生系统，开启一段全新的折腾之旅。&lt;/p&gt;
 &lt;blockquote&gt;
 &lt;p&gt;什么MIUI、HyperOS、三方改、都一边凉快去吧。&lt;/p&gt;
@@ -976,10 +1237,10 @@
         </item>
         <item>
         <title>利用CloudFlare来实现镜像加速</title>
-        <link>https://blog.mletter.cn/tech/docker/cloudflare-proxy/</link>
+        <link>http://localhost:1313/tech/docker/cloudflare-proxy/</link>
         <pubDate>Tue, 16 Jul 2024 00:00:00 +0000</pubDate>
         
-        <guid>https://blog.mletter.cn/tech/docker/cloudflare-proxy/</guid>
+        <guid>http://localhost:1313/tech/docker/cloudflare-proxy/</guid>
         <description>&lt;h2 id=&#34;目前可用加速镜像仓库&#34;&gt;&lt;/h&gt;目前可用加速镜像仓库
 &lt;/h2&gt;&lt;p&gt;DockerProxy 代理加速：&lt;code&gt;dockerproxy.com&lt;/code&gt;&lt;/p&gt;
 &lt;p&gt;百度云 Mirror: &lt;code&gt;mirror.baidubce.com&lt;/code&gt;&lt;/p&gt;
@@ -1175,10 +1436,10 @@
         </item>
         <item>
         <title>近期现状</title>
-        <link>https://blog.mletter.cn/life-story/1/</link>
+        <link>http://localhost:1313/life-story/1/</link>
         <pubDate>Mon, 15 Jul 2024 00:00:00 +0000</pubDate>
         
-        <guid>https://blog.mletter.cn/life-story/1/</guid>
+        <guid>http://localhost:1313/life-story/1/</guid>
         <description>&lt;img src="https://img12.360buyimg.com/ddimg/jfs/t1/24625/11/20192/84890/6694d09cFe61e3f00/1d82e9a5c2de4b0a.jpg&amp;100px" alt="Featured image of post 近期现状" /&gt;&lt;h2 id=&#34;近期日常&#34;&gt;&lt;/h&gt;近期日常
 &lt;/h2&gt;&lt;p&gt;最近的日子，就像一部没有剧本的电影，情节跌宕起伏，让人应接不暇。&lt;/p&gt;
 &lt;p&gt;可谓是 “匆匆忙忙”&lt;/p&gt;
@@ -1466,10 +1727,10 @@ Vivo在影像技术上的投入一直以来也很出色，它所呈现出的画�
         </item>
         <item>
         <title>手机摄影碎片 | 01</title>
-        <link>https://blog.mletter.cn/life-story/5/</link>
+        <link>http://localhost:1313/life-story/5/</link>
         <pubDate>Wed, 12 Jun 2024 00:00:00 +0000</pubDate>
         
-        <guid>https://blog.mletter.cn/life-story/5/</guid>
+        <guid>http://localhost:1313/life-story/5/</guid>
         <description>&lt;img src="https://img11.360buyimg.com/ddimg/jfs/t1/176088/29/41764/143863/6668229fF3fa2f05b/3476ea55873317a3.jpg" alt="Featured image of post 手机摄影碎片 | 01" /&gt;&lt;blockquote&gt;
     &lt;p&gt;生活的本意是开心 &lt;/br&gt;
 The original intention of life is happiness&lt;/p&gt;&lt;span class=&#34;cite&#34;&gt;&lt;span&gt;― &lt;/span&gt;&lt;span&gt;Powery By, &lt;/span&gt;&lt;a href=&#34;https://pic.mletter.cn&#34;&gt;&lt;cite&gt;春日心动日记&lt;/cite&gt;&lt;/a&gt;&lt;/span&gt;&lt;/blockquote&gt;
@@ -1577,10 +1838,10 @@ The original intention of life is happiness&lt;/p&gt;&lt;span class=&#34;cite&#3
         </item>
         <item>
         <title>南方摩托-飞戈入手记</title>
-        <link>https://blog.mletter.cn/life-story/3/</link>
+        <link>http://localhost:1313/life-story/3/</link>
         <pubDate>Wed, 29 May 2024 00:00:00 +0000</pubDate>
         
-        <guid>https://blog.mletter.cn/life-story/3/</guid>
+        <guid>http://localhost:1313/life-story/3/</guid>
         <description>&lt;img src="https://img11.360buyimg.com/ddimg/jfs/t1/230118/35/18596/65287/66588c39Ff160a58f/2d89511d823f9e5e.jpg" alt="Featured image of post 南方摩托-飞戈入手记" /&gt;&lt;h1 id=&#34;小摩托-飞戈入手记&#34;&gt;&lt;/h&gt;小摩托-飞戈入手记
 &lt;/h1&gt;&lt;p&gt;Hello 大家好，好久不见啦，最近博客没怎么更新因为工作实在是有点慢(小声嘀咕：狗屁就是不想更新)。开玩笑的啦，忙碌是事实，但一直未能有闲暇时间出游亦是实情，而其中无车亦是关键因素哈哈哈。&lt;/p&gt;
 &lt;p&gt;话说 22 年的时候我入手过一台&lt;code&gt;力刻（ARIIC）318系列 冬奥灵感版&lt;/code&gt;当时一咬牙就花&lt;code&gt;28800&lt;/code&gt;元拿下,落地&lt;code&gt;30000&lt;/code&gt;呢！&lt;/p&gt;
@@ -1949,10 +2210,10 @@ The original intention of life is happiness&lt;/p&gt;&lt;span class=&#34;cite&#3
         </item>
         <item>
         <title>优雅的多阶段构建微服务镜像</title>
-        <link>https://blog.mletter.cn/tech/docker/review-docker/</link>
+        <link>http://localhost:1313/tech/docker/review-docker/</link>
         <pubDate>Wed, 08 May 2024 00:00:00 +0000</pubDate>
         
-        <guid>https://blog.mletter.cn/tech/docker/review-docker/</guid>
+        <guid>http://localhost:1313/tech/docker/review-docker/</guid>
         <description>&lt;img src="https://img12.360buyimg.com/ddimg/jfs/t1/221585/17/40296/38910/663b8f0aF38d1916d/5d09c604af566108.jpg" alt="Featured image of post 优雅的多阶段构建微服务镜像" /&gt;&lt;h2 id=&#34;借助maven-wrapper&#34;&gt;&lt;/h&gt;借助Maven Wrapper
 &lt;/h2&gt;&lt;p&gt;首先我们说说&lt;code&gt;maven wrapper&lt;/code&gt;的使用场景&lt;/p&gt;
 &lt;p&gt;假设我们所在的团队同时维护多个项目，不同的项目使用的&lt;code&gt;JDK&lt;/code&gt;版本不同，使用的&lt;code&gt;maven&lt;/code&gt;版本也不同，那么为了支持多项目开发，为了构建运行效果一致，你可能需要在本地管理多个&lt;code&gt;maven&lt;/code&gt;版本，这会非常繁琐，从而引出了&lt;code&gt;maven wrapper&lt;/code&gt;来解决这个&lt;code&gt;maven&lt;/code&gt;版本的管理问题。&lt;/p&gt;
@@ -2105,10 +2366,10 @@ The original intention of life is happiness&lt;/p&gt;&lt;span class=&#34;cite&#3
         </item>
         <item>
         <title>旅行日记-目的地-东莞</title>
-        <link>https://blog.mletter.cn/tourists/dongguan/</link>
+        <link>http://localhost:1313/tourists/dongguan/</link>
         <pubDate>Wed, 01 May 2024 00:00:00 +0000</pubDate>
         
-        <guid>https://blog.mletter.cn/tourists/dongguan/</guid>
+        <guid>http://localhost:1313/tourists/dongguan/</guid>
         <description>&lt;img src="https://img11.360buyimg.com/ddimg/jfs/t1/244924/12/7691/82854/663216bfF4f4f3c1a/985a4b4d1b72840a.jpg" alt="Featured image of post 旅行日记-目的地-东莞" /&gt;&lt;p&gt;哎，本来30号就可以到广州的，因为广州的天气所以30号基本上所有到广州的飞机都取消了。真是没办法的，最近广州的雷雨天气太多了，也能理解吧。
 索性我就直接改签到了5月1号早上最早的一班飞机飞广州了。&lt;/p&gt;
 &lt;p&gt;来看看日出的北京国际大兴机场，被誉为“新世界七大奇迹”之首。 日出真的太美咯。
@@ -2424,10 +2685,10 @@ The original intention of life is happiness&lt;/p&gt;&lt;span class=&#34;cite&#3
         </item>
         <item>
         <title>基于SealOS部署高可用的kubernetes集群</title>
-        <link>https://blog.mletter.cn/tech/kubernetes/sealos/</link>
+        <link>http://localhost:1313/tech/kubernetes/sealos/</link>
         <pubDate>Mon, 15 Apr 2024 00:00:00 +0000</pubDate>
         
-        <guid>https://blog.mletter.cn/tech/kubernetes/sealos/</guid>
+        <guid>http://localhost:1313/tech/kubernetes/sealos/</guid>
         <description>&lt;img src="https://img10.360buyimg.com/ddimg/jfs/t1/244560/31/7618/14121/661de12eFfa7f6ba5/0239fa873abb0bd5.jpg" alt="Featured image of post 基于SealOS部署高可用的kubernetes集群" /&gt;&lt;p&gt;配套Bilibili视频已经更新：&lt;a class=&#34;link&#34; href=&#34;https://www.bilibili.com/video/BV1Pr421V7PT/?share_source=copy_web&amp;amp;vd_source=2cac9fa5f0a3fb896b7f6b1468993554&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;点我观看&lt;/a&gt;&lt;/p&gt;
 &lt;h2 id=&#34;准备sealos&#34;&gt;&lt;/h&gt;准备SealOS
@@ -2574,10 +2835,10 @@ The original intention of life is happiness&lt;/p&gt;&lt;span class=&#34;cite&#3
         </item>
         <item>
         <title>日记-又开始怀念夏天</title>
-        <link>https://blog.mletter.cn/life-story/4/</link>
+        <link>http://localhost:1313/life-story/4/</link>
         <pubDate>Sun, 17 Mar 2024 00:00:00 +0000</pubDate>
         
-        <guid>https://blog.mletter.cn/life-story/4/</guid>
+        <guid>http://localhost:1313/life-story/4/</guid>
         <description>&lt;img src="https://img13.360buyimg.com/ddimg/jfs/t1/227509/9/15108/245995/65f6f6e1F8dfc4427/2fce5d471f06a599.jpg" alt="Featured image of post 日记-又开始怀念夏天" /&gt;&lt;p&gt;那一年，午后的阳光总是那么炽热，仿佛能将一切都融化。课间的操场上，同学们的欢声笑语此起彼伏，汗水在他们的额头上闪耀着光芒。我们在这里挥洒着青春，每一次奔跑都是对生活的热爱和对未来的追逐。&lt;/p&gt;
 &lt;p&gt;放学后的路上，几个好朋友们一边走一边讨论着今天学到的新知识。我们的谈话中充满了好奇和探索，每一步都踏在充满希望的道路上。夏天的风，带着甜甜的花香，也带着哥几个对彼此的鼓励和笑声。&lt;/p&gt;
 &lt;p&gt;这让我觉得青春是一首永不褪色的歌，而夏天，正是这首歌最美的高潮。在这个季节里，我将用我的笔，记录下每一刻的感动，用心去感受生活的每一分热度。这是我曾经学生时代，是我的青春篇章。&lt;/p&gt;
@@ -2685,10 +2946,10 @@ The original intention of life is happiness&lt;/p&gt;&lt;span class=&#34;cite&#3
         </item>
         <item>
         <title>新春的序章</title>
-        <link>https://blog.mletter.cn/life-story/2/</link>
+        <link>http://localhost:1313/life-story/2/</link>
         <pubDate>Tue, 13 Feb 2024 00:00:00 +0000</pubDate>
         
-        <guid>https://blog.mletter.cn/life-story/2/</guid>
+        <guid>http://localhost:1313/life-story/2/</guid>
         <description>&lt;img src="https://img12.360buyimg.com/ddimg/jfs/t1/168052/22/37891/82207/65ccb958Fa2667100/adca896d87e12693.jpg" alt="Featured image of post 新春的序章" /&gt;&lt;h2 id=&#34;新的一年&#34;&gt;&lt;/h&gt;新的一年
 &lt;/h2&gt;&lt;p&gt;时间过得真快啊，一转眼就是2024年了，窗外的鞭炮声断断续续的传来，似乎在诉说着新春来临的喜悦。&lt;/p&gt;
 &lt;p&gt;我想这也是&amp;quot;年&amp;quot;带给人们最朴素和最深刻的记忆吧。&lt;/p&gt;
@@ -2877,10 +3138,10 @@ The original intention of life is happiness&lt;/p&gt;&lt;span class=&#34;cite&#3
         </item>
         <item>
         <title>管理好内部的代码仓库-GitLab篇</title>
-        <link>https://blog.mletter.cn/tech/gitlab/repository-management/</link>
+        <link>http://localhost:1313/tech/gitlab/repository-management/</link>
         <pubDate>Tue, 16 Jan 2024 00:00:00 +0000</pubDate>
         
-        <guid>https://blog.mletter.cn/tech/gitlab/repository-management/</guid>
+        <guid>http://localhost:1313/tech/gitlab/repository-management/</guid>
         <description>&lt;p&gt;今天聊聊如何来管理我们的&lt;code&gt;代码仓库&lt;/code&gt;
 在软件开发过程中，代码仓库是一个非常重要的组成部分。它不仅是存储代码的地方，也是团队协作和版本控制的基础。因此，管理好自己的代码仓库至关重要。&lt;/p&gt;
 &lt;p&gt;本文将介绍如何使用Git来管理自己的代码仓库。&lt;/p&gt;
@@ -3036,10 +3297,10 @@ The original intention of life is happiness&lt;/p&gt;&lt;span class=&#34;cite&#3
         </item>
         <item>
         <title>kubernetes基于EFK的日志落地实现</title>
-        <link>https://blog.mletter.cn/tech/kubernetes/install-efk/</link>
+        <link>http://localhost:1313/tech/kubernetes/install-efk/</link>
         <pubDate>Fri, 08 Dec 2023 00:00:00 +0000</pubDate>
         
-        <guid>https://blog.mletter.cn/tech/kubernetes/install-efk/</guid>
+        <guid>http://localhost:1313/tech/kubernetes/install-efk/</guid>
         <description>&lt;img src="https://img14.360buyimg.com/ddimg/jfs/t1/177175/31/35833/30306/64cb08eeF5ba90f46/1da6311bbbec8921.jpg" alt="Featured image of post kubernetes基于EFK的日志落地实现" /&gt;&lt;p&gt;Kubernetes 中比较流行的日志收集解决方案是 &lt;code&gt;Elasticsearch&lt;/code&gt;、&lt;code&gt;Fluentd&lt;/code&gt; 和 &lt;code&gt;Kibana&lt;/code&gt;（EFK）技术栈，也是官方现在比较推荐的一种方案。&lt;/p&gt;
 &lt;p&gt;&lt;code&gt;Elasticsearch&lt;/code&gt; 是一个实时的、分布式的可扩展的搜索引擎，允许进行全文、结构化搜索，它通常用于索引和搜索大量日志数据，也可用于搜索许多不同类型的文档。&lt;/p&gt;
 &lt;p&gt;&lt;code&gt;Elasticsearch&lt;/code&gt; 通常与 &lt;code&gt;Kibana&lt;/code&gt; 一起部署，&lt;code&gt;Kibana&lt;/code&gt; 是 &lt;code&gt;Elasticsearch&lt;/code&gt; 的一个功能强大的数据可视化 Dashboard，&lt;code&gt;Kibana&lt;/code&gt; 允许你通过 web 界面来浏览&lt;code&gt;Elasticsearch&lt;/code&gt; 日志数据。&lt;/p&gt;
@@ -3874,10 +4135,10 @@ The original intention of life is happiness&lt;/p&gt;&lt;span class=&#34;cite&#3
         </item>
         <item>
         <title>旅行日记-四川·阿坝甘孜藏族自治州</title>
-        <link>https://blog.mletter.cn/tourists/sichuan/</link>
+        <link>http://localhost:1313/tourists/sichuan/</link>
         <pubDate>Thu, 23 Nov 2023 00:00:00 +0000</pubDate>
         
-        <guid>https://blog.mletter.cn/tourists/sichuan/</guid>
+        <guid>http://localhost:1313/tourists/sichuan/</guid>
         <description>&lt;img src="https://img13.360buyimg.com/ddimg/jfs/t1/230405/24/4739/81218/65635877F5b2d86e7/53cc1edf42100b84.jpg?width=300px&amp;height=240px" alt="Featured image of post 旅行日记-四川·阿坝甘孜藏族自治州" /&gt;&lt;p&gt;人生总要去一趟远方吧 下一站行程 暂定西藏🚄&lt;/p&gt;
 &lt;p&gt;实在是不想上班，我承认我被我强大的意念占领了，我没忍住。请假直接从北京去了阿坝甘孜。&lt;/p&gt;
 &lt;blockquote&gt;
@@ -4340,10 +4601,10 @@ The original intention of life is happiness&lt;/p&gt;&lt;span class=&#34;cite&#3
         </item>
         <item>
         <title>Kubernetes的架构设计和对象属性基本理解</title>
-        <link>https://blog.mletter.cn/tech/kubernetes/architectural-design/</link>
+        <link>http://localhost:1313/tech/kubernetes/architectural-design/</link>
         <pubDate>Tue, 07 Nov 2023 00:00:00 +0000</pubDate>
         
-        <guid>https://blog.mletter.cn/tech/kubernetes/architectural-design/</guid>
+        <guid>http://localhost:1313/tech/kubernetes/architectural-design/</guid>
         <description>&lt;img src="https://img13.360buyimg.com/ddimg/jfs/t1/164078/6/34165/22231/654ba81fFe1bf21d7/9d02bd791b795b3b.jpg" alt="Featured image of post Kubernetes的架构设计和对象属性基本理解" /&gt;&lt;h2 id=&#34;为什么需要kubernetes&#34;&gt;&lt;/h&gt;为什么需要kubernetes？
 &lt;/h2&gt;&lt;ul&gt;
 &lt;li&gt;大规模多节点容器调度&lt;/li&gt;
@@ -4855,10 +5116,10 @@ The original intention of life is happiness&lt;/p&gt;&lt;span class=&#34;cite&#3
         </item>
         <item>
         <title>推荐几款好用的API文档管理工具</title>
-        <link>https://blog.mletter.cn/tech/api-tools/1/</link>
+        <link>http://localhost:1313/tech/api-tools/1/</link>
         <pubDate>Thu, 10 Aug 2023 00:00:00 +0000</pubDate>
         
-        <guid>https://blog.mletter.cn/tech/api-tools/1/</guid>
+        <guid>http://localhost:1313/tech/api-tools/1/</guid>
         <description>&lt;img src="https://img11.360buyimg.com/ddimg/jfs/t1/120366/32/35885/27184/64a24181F7497ff67/58deb560821eb1b2.jpg" alt="Featured image of post 推荐几款好用的API文档管理工具" /&gt;&lt;p&gt;互联网服务发展至今，作为开发者阵营的我们，已经用实践证明了&lt;strong&gt;前后端分离&lt;/strong&gt;开发模式正在逐渐成为越来越多互联网公司构建服务和应用的方式。&lt;/p&gt;
 &lt;p&gt;前后端分离优势多多，其中一个很重要的优势是：对于后台服务（系统）来讲，&lt;strong&gt;只需提供一套统一的API接口&lt;/strong&gt;，可被多个客户端所&lt;strong&gt;复用&lt;/strong&gt;，分工和协作被细化，大大提高了效率。&lt;/p&gt;
 &lt;p&gt;与此同时带来的一些副作用便是：&lt;/p&gt;
@@ -4981,10 +5242,10 @@ The original intention of life is happiness&lt;/p&gt;&lt;span class=&#34;cite&#3
         </item>
         <item>
         <title>OpenEBS存储的使用</title>
-        <link>https://blog.mletter.cn/tech/kubernetes/openebs/</link>
+        <link>http://localhost:1313/tech/kubernetes/openebs/</link>
         <pubDate>Sun, 14 May 2023 00:00:00 +0000</pubDate>
         
-        <guid>https://blog.mletter.cn/tech/kubernetes/openebs/</guid>
+        <guid>http://localhost:1313/tech/kubernetes/openebs/</guid>
         <description>&lt;img src="https://openebs.io/docs/assets/images/control-plane-overview-93c59878e3356a11f03029dd0fc1cd6b.svg" alt="Featured image of post OpenEBS存储的使用" /&gt;&lt;h1 id=&#34;openebs存储使用&#34;&gt;&lt;/h&gt;OpenEBS存储使用
 &lt;/h1&gt;&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://openebs.io/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;OpenEBS&lt;/a&gt; 是一种模拟了 AWS 的 EBS、阿里云的云盘等块存储实现的基于容器的存储开源软件。OpenEBS 是一种基于 CAS(Container Attached Storage) 理念的容器解决方案，其核心理念是存储和应用一样采用微服务架构，并通过 Kubernetes 来做资源编排。其架构实现上，每个卷的 Controller 都是一个单独的 Pod，且与应用 Pod 在同一个节点，卷的数据使用多个 Pod 进行管理。&lt;/p&gt;
@@ -5248,10 +5509,10 @@ The original intention of life is happiness&lt;/p&gt;&lt;span class=&#34;cite&#3
         </item>
         <item>
         <title>Traekfik基础使用指南</title>
-        <link>https://blog.mletter.cn/tech/kubernetes/traefik/</link>
+        <link>http://localhost:1313/tech/kubernetes/traefik/</link>
         <pubDate>Fri, 07 Apr 2023 00:00:00 +0000</pubDate>
         
-        <guid>https://blog.mletter.cn/tech/kubernetes/traefik/</guid>
+        <guid>http://localhost:1313/tech/kubernetes/traefik/</guid>
         <description>&lt;img src="https://doc.traefik.io/traefik/assets/img/traefik-architecture.png" alt="Featured image of post Traekfik基础使用指南" /&gt;&lt;h2 id=&#34;traekfik是什么&#34;&gt;&lt;/h&gt;Traekfik是什么
 &lt;/h2&gt;&lt;p&gt;Traefik 是一种&lt;a class=&#34;link&#34; href=&#34;https://github.com/traefik/traefik&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;开源&lt;/a&gt; &lt;em&gt;边缘路由器&lt;/em&gt;，它使您发布服务成为一种有趣而轻松的体验。它代表您的系统接收请求并找出哪些组件负责处理它们。&lt;/p&gt;
@@ -5922,10 +6183,10 @@ The original intention of life is happiness&lt;/p&gt;&lt;span class=&#34;cite&#3
         </item>
         <item>
         <title>Kubernetes-本地存储</title>
-        <link>https://blog.mletter.cn/tech/kubernetes/local-storage/</link>
+        <link>http://localhost:1313/tech/kubernetes/local-storage/</link>
         <pubDate>Wed, 22 Mar 2023 00:00:00 +0000</pubDate>
         
-        <guid>https://blog.mletter.cn/tech/kubernetes/local-storage/</guid>
+        <guid>http://localhost:1313/tech/kubernetes/local-storage/</guid>
         <description>&lt;img src="https://img14.360buyimg.com/ddimg/jfs/t1/164569/9/40677/14419/65bc6e4cFa1d8c0c3/5ccf7e6caadc9b83.jpg" alt="Featured image of post Kubernetes-本地存储" /&gt;&lt;h1 id=&#34;本地存储&#34;&gt;&lt;/h&gt;本地存储
 &lt;/h1&gt;&lt;p&gt;前面我们有通过 &lt;code&gt;hostPath&lt;/code&gt; 或者 &lt;code&gt;emptyDir&lt;/code&gt; 的方式来持久化我们的数据，但是显然我们还需要更加可靠的存储来保存应用的持久化数据，这样容器在重建后，依然可以使用之前的数据。但是存储资源和 CPU 资源以及内存资源有很大不同，为了屏蔽底层的技术实现细节，让用户更加方便的使用，Kubernetes 便引入了 &lt;code&gt;PV&lt;/code&gt; 和 &lt;code&gt;PVC&lt;/code&gt; 两个重要的资源对象来实现对存储的管理。&lt;/p&gt;
 &lt;h2 id=&#34;persistentvolume&#34;&gt;&lt;/h&gt;PersistentVolume
@@ -6219,10 +6480,10 @@ The original intention of life is happiness&lt;/p&gt;&lt;span class=&#34;cite&#3
         </item>
         <item>
         <title>摄影日记-颐和园</title>
-        <link>https://blog.mletter.cn/life-story/6/</link>
+        <link>http://localhost:1313/life-story/6/</link>
         <pubDate>Fri, 10 Mar 2023 00:00:00 +0000</pubDate>
         
-        <guid>https://blog.mletter.cn/life-story/6/</guid>
+        <guid>http://localhost:1313/life-story/6/</guid>
         <description>&lt;img src="https://img11.360buyimg.com/ddimg/jfs/t1/170852/25/36092/117643/640ad741Fe576192d/3f596893cbcf93a4.jpg" alt="Featured image of post 摄影日记-颐和园" /&gt;&lt;!doctype html&gt;
 &lt;html lang=&#34;en&#34;&gt;
     &lt;head&gt;
@@ -6311,10 +6572,10 @@ The original intention of life is happiness&lt;/p&gt;&lt;span class=&#34;cite&#3
         </item>
         <item>
         <title>Ingress的简单使用</title>
-        <link>https://blog.mletter.cn/tech/kubernetes/nginx-ingress/</link>
+        <link>http://localhost:1313/tech/kubernetes/nginx-ingress/</link>
         <pubDate>Wed, 08 Mar 2023 00:00:00 +0000</pubDate>
         
-        <guid>https://blog.mletter.cn/tech/kubernetes/nginx-ingress/</guid>
+        <guid>http://localhost:1313/tech/kubernetes/nginx-ingress/</guid>
         <description>&lt;img src="https://d33wubrfki0l68.cloudfront.net/4f01eaec32889ff16ee255e97822b6d165b633f0/a54b4/zh-cn/docs/images/ingress.svg" alt="Featured image of post Ingress的简单使用" /&gt;&lt;h1 id=&#34;什么是ingress&#34;&gt;&lt;/h&gt;什么是Ingress
 &lt;/h1&gt;&lt;p&gt;Ingress 是对集群中服务的外部访问进行管理的 API 对象，典型的访问方式是 HTTP。&lt;/p&gt;
 &lt;p&gt;Ingress 可以提供负载均衡、SSL 终结和基于名称的虚拟托管。&lt;/p&gt;
@@ -7391,10 +7652,10 @@ The original intention of life is happiness&lt;/p&gt;&lt;span class=&#34;cite&#3
         </item>
         <item>
         <title>CacheDNS和DNS缓存</title>
-        <link>https://blog.mletter.cn/tech/kubernetes/nodelocaldns/</link>
+        <link>http://localhost:1313/tech/kubernetes/nodelocaldns/</link>
         <pubDate>Sun, 26 Feb 2023 00:00:00 +0000</pubDate>
         
-        <guid>https://blog.mletter.cn/tech/kubernetes/nodelocaldns/</guid>
+        <guid>http://localhost:1313/tech/kubernetes/nodelocaldns/</guid>
         <description>&lt;img src="https://d33wubrfki0l68.cloudfront.net/bf8e5eaac697bac89c5b36a0edb8855c860bfb45/6944f/images/docs/nodelocaldns.svg" alt="Featured image of post CacheDNS和DNS缓存" /&gt;&lt;p&gt;如果在集群规模较大并发较高的情况下我们仍然需要对 DNS 进行优化，典型的就是大家比较熟悉的 CoreDNS 会出现超时5s的情况。&lt;/p&gt;
 &lt;h2 id=&#34;超时原因&#34;&gt;&lt;/h&gt;超时原因
 &lt;/h2&gt;&lt;p&gt;在 iptables 模式下（默认情况下），每个服务的 kube-proxy 在主机网络名称空间的 nat 表中创建一些 iptables 规则。 比如在集群中具有两个 DNS 服务器实例的 kube-dns 服务，其相关规则大致如下所示：&lt;/p&gt;
@@ -7680,10 +7941,10 @@ The original intention of life is happiness&lt;/p&gt;&lt;span class=&#34;cite&#3
         </item>
         <item>
         <title>使用Kubeadm创建一个高可用的ETCD集群</title>
-        <link>https://blog.mletter.cn/tech/kubernetes/install-etcd-ha/</link>
+        <link>http://localhost:1313/tech/kubernetes/install-etcd-ha/</link>
         <pubDate>Sun, 26 Feb 2023 00:00:00 +0000</pubDate>
         
-        <guid>https://blog.mletter.cn/tech/kubernetes/install-etcd-ha/</guid>
+        <guid>http://localhost:1313/tech/kubernetes/install-etcd-ha/</guid>
         <description>&lt;img src="https://img.linux.net.cn/data/attachment/album/201501/29/141718izklanww82qm888k.png" alt="Featured image of post 使用Kubeadm创建一个高可用的ETCD集群" /&gt;&lt;h2 id=&#34;使用kubeadm创建一个高可用的etcd集群&#34;&gt;&lt;/h&gt;使用Kubeadm创建一个高可用的Etcd集群
 &lt;/h2&gt;&lt;p&gt;默认情况下，kubeadm 在每个控制平面节点上运行一个本地 etcd 实例。也可以使用外部的 etcd 集群，并在不同的主机上提供 etcd 实例。 这两种方法的区别在 高可用拓扑的选项 页面中阐述。&lt;/p&gt;
 &lt;p&gt;这个任务将指导你创建一个由三个成员组成的高可用外部 etcd 集群，该集群在创建过程中可被 kubeadm 使用。&lt;/p&gt;
@@ -7864,10 +8125,10 @@ The original intention of life is happiness&lt;/p&gt;&lt;span class=&#34;cite&#3
         </item>
         <item>
         <title>ConfigMap和Secret的使用</title>
-        <link>https://blog.mletter.cn/tech/kubernetes/configmap-or-service/</link>
+        <link>http://localhost:1313/tech/kubernetes/configmap-or-service/</link>
         <pubDate>Tue, 14 Feb 2023 00:00:00 +0000</pubDate>
         
-        <guid>https://blog.mletter.cn/tech/kubernetes/configmap-or-service/</guid>
+        <guid>http://localhost:1313/tech/kubernetes/configmap-or-service/</guid>
         <description>&lt;img src="https://img14.360buyimg.com/ddimg/jfs/t1/164569/9/40677/14419/65bc6e4cFa1d8c0c3/5ccf7e6caadc9b83.jpg" alt="Featured image of post ConfigMap和Secret的使用" /&gt;&lt;h2 id=&#34;configmap&#34;&gt;&lt;/h&gt;ConfigMap
 &lt;/h2&gt;&lt;p&gt;ConfigMap 是一种 API 对象，用来将非机密性的数据保存到键值对中。使用时， &lt;a class=&#34;link&#34; href=&#34;https://kubernetes.io/zh-cn/docs/concepts/workloads/pods/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;Pods&lt;/a&gt; 可以将其用作环境变量、命令行参数或者存储卷中的配置文件。&lt;/p&gt;
@@ -8170,10 +8431,10 @@ ConfigMap 在设计上不是用来保存大量数据的。在 ConfigMap 中保�
         </item>
         <item>
         <title>HorizontalPodAutoscaler</title>
-        <link>https://blog.mletter.cn/tech/kubernetes/horizontal-pod-autoscaler/</link>
+        <link>http://localhost:1313/tech/kubernetes/horizontal-pod-autoscaler/</link>
         <pubDate>Tue, 14 Feb 2023 00:00:00 +0000</pubDate>
         
-        <guid>https://blog.mletter.cn/tech/kubernetes/horizontal-pod-autoscaler/</guid>
+        <guid>http://localhost:1313/tech/kubernetes/horizontal-pod-autoscaler/</guid>
         <description>&lt;img src="https://img14.360buyimg.com/ddimg/jfs/t1/164569/9/40677/14419/65bc6e4cFa1d8c0c3/5ccf7e6caadc9b83.jpg" alt="Featured image of post HorizontalPodAutoscaler" /&gt;&lt;h2 id=&#34;horizontalpodautoscaler&#34;&gt;&lt;/h&gt;HorizontalPodAutoscaler
 &lt;/h2&gt;&lt;ul&gt;
 &lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://kubernetes.io/zh-cn/docs/tasks/run-application/horizontal-pod-autoscale/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
@@ -8373,10 +8634,10 @@ ConfigMap 在设计上不是用来保存大量数据的。在 ConfigMap 中保�
         </item>
         <item>
         <title>Kubernetes中Api-Server简单解读</title>
-        <link>https://blog.mletter.cn/tech/kubernetes/apiserver-read/</link>
+        <link>http://localhost:1313/tech/kubernetes/apiserver-read/</link>
         <pubDate>Tue, 07 Feb 2023 00:00:00 +0000</pubDate>
         
-        <guid>https://blog.mletter.cn/tech/kubernetes/apiserver-read/</guid>
+        <guid>http://localhost:1313/tech/kubernetes/apiserver-read/</guid>
         <description>&lt;img src="https://bj.bcebos.com/baidu-rmb-video-cover-1/2b6495c8749e3f4e4369e28cb50eeb87.png" alt="Featured image of post Kubernetes中Api-Server简单解读" /&gt;&lt;p&gt;&lt;strong&gt;访问控制概览&lt;/strong&gt;
 Kubernetes API的每个请求都会经过多阶段的访问控制之后才会被接受,这一阶段包括认证、授权、以及准入控制(Admission Control)等&lt;/p&gt;
 &lt;p&gt;
@@ -8873,10 +9134,10 @@ SystemAccount&lt;/li&gt;
         </item>
         <item>
         <title>kubernetes-dashboard</title>
-        <link>https://blog.mletter.cn/tech/kubernetes/kube-dashboard/</link>
+        <link>http://localhost:1313/tech/kubernetes/kube-dashboard/</link>
         <pubDate>Fri, 03 Feb 2023 00:00:00 +0000</pubDate>
         
-        <guid>https://blog.mletter.cn/tech/kubernetes/kube-dashboard/</guid>
+        <guid>http://localhost:1313/tech/kubernetes/kube-dashboard/</guid>
         <description>&lt;img src="https://img14.360buyimg.com/ddimg/jfs/t1/164569/9/40677/14419/65bc6e4cFa1d8c0c3/5ccf7e6caadc9b83.jpg" alt="Featured image of post kubernetes-dashboard" /&gt;&lt;h2 id=&#34;官方webui部署&#34;&gt;&lt;/h&gt;官方WebUI部署
 &lt;/h2&gt;&lt;ul&gt;
 &lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://github.com/kubernetes/dashboard&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
@@ -9312,10 +9573,10 @@ SystemAccount&lt;/li&gt;
         </item>
         <item>
         <title>旅行日记-跨年•天津</title>
-        <link>https://blog.mletter.cn/tourists/tianjin/</link>
+        <link>http://localhost:1313/tourists/tianjin/</link>
         <pubDate>Sun, 01 Jan 2023 00:00:00 +0000</pubDate>
         
-        <guid>https://blog.mletter.cn/tourists/tianjin/</guid>
+        <guid>http://localhost:1313/tourists/tianjin/</guid>
         <description>&lt;img src="https://img12.360buyimg.com/ddimg/jfs/t1/52521/8/22190/1015219/63b4f0deFd2378228/7dd2825c978f8f8c.jpg" alt="Featured image of post 旅行日记-跨年•天津" /&gt;&lt;h2 id=&#34;2022终将逝去&#34;&gt;&lt;/h&gt;2022终将逝去
 &lt;/h2&gt;&lt;p&gt;2022的最后一天,和朋友一起坐车去了天津。
 早上五点起床开始收拾东西了,忙前忙后的发现坐公交已经赶不上了,算了还是打车吧。上高铁的时候真的是太困了…以至于一路上没拍到什么风景。&lt;/p&gt;
@@ -9448,10 +9709,10 @@ SystemAccount&lt;/li&gt;
         </item>
         <item>
         <title>kubernetes1.22.0单节点集群部署</title>
-        <link>https://blog.mletter.cn/tech/kubernetes/install-kubernetes-1220/</link>
+        <link>http://localhost:1313/tech/kubernetes/install-kubernetes-1220/</link>
         <pubDate>Thu, 29 Dec 2022 00:00:00 +0000</pubDate>
         
-        <guid>https://blog.mletter.cn/tech/kubernetes/install-kubernetes-1220/</guid>
+        <guid>http://localhost:1313/tech/kubernetes/install-kubernetes-1220/</guid>
         <description>&lt;img src="https://img14.360buyimg.com/ddimg/jfs/t1/164569/9/40677/14419/65bc6e4cFa1d8c0c3/5ccf7e6caadc9b83.jpg" alt="Featured image of post kubernetes1.22.0单节点集群部署" /&gt;&lt;h2 id=&#34;kubernetes12210部署&#34;&gt;&lt;/h&gt;kubernetes1.22.10部署
 &lt;/h2&gt;&lt;h2 id=&#34;准备工作&#34;&gt;&lt;/h&gt;准备工作
 &lt;/h2&gt;&lt;ul&gt;
@@ -9789,10 +10050,10 @@ SystemAccount&lt;/li&gt;
         </item>
         <item>
         <title>利用Kubeadm进行多Master高可用部署</title>
-        <link>https://blog.mletter.cn/tech/kubernetes/install-kubernetes-ha/</link>
+        <link>http://localhost:1313/tech/kubernetes/install-kubernetes-ha/</link>
         <pubDate>Thu, 29 Dec 2022 00:00:00 +0000</pubDate>
         
-        <guid>https://blog.mletter.cn/tech/kubernetes/install-kubernetes-ha/</guid>
+        <guid>http://localhost:1313/tech/kubernetes/install-kubernetes-ha/</guid>
         <description>&lt;img src="https://img14.360buyimg.com/ddimg/jfs/t1/164569/9/40677/14419/65bc6e4cFa1d8c0c3/5ccf7e6caadc9b83.jpg" alt="Featured image of post 利用Kubeadm进行多Master高可用部署" /&gt;&lt;h1 id=&#34;利用kubeadm创建高可用集群&#34;&gt;&lt;/h&gt;利用Kubeadm创建高可用集群
 &lt;/h1&gt;&lt;ul&gt;
 &lt;li&gt;使用具有堆叠的控制平面节点。这种方法所需基础设施较少。etcd 成员和控制平面节点位于同一位置。&lt;/li&gt;
@@ -10180,10 +10441,10 @@ TODO: 删除前请注意备份您的数据。&lt;/p&gt;
         </item>
         <item>
         <title>Kubernetes低版本中内存泄漏问题</title>
-        <link>https://blog.mletter.cn/tech/kubernetes/memory-leakage-analysis/</link>
+        <link>http://localhost:1313/tech/kubernetes/memory-leakage-analysis/</link>
         <pubDate>Sat, 08 Oct 2022 00:00:00 +0000</pubDate>
         
-        <guid>https://blog.mletter.cn/tech/kubernetes/memory-leakage-analysis/</guid>
+        <guid>http://localhost:1313/tech/kubernetes/memory-leakage-analysis/</guid>
         <description>&lt;img src="https://img14.360buyimg.com/ddimg/jfs/t1/164569/9/40677/14419/65bc6e4cFa1d8c0c3/5ccf7e6caadc9b83.jpg" alt="Featured image of post Kubernetes低版本中内存泄漏问题" /&gt;&lt;h2 id=&#34;kubernetes中cgroup泄漏问题&#34;&gt;&lt;/h&gt;Kubernetes中Cgroup泄漏问题
 &lt;/h2&gt;&lt;p&gt;Cgorup文档: &lt;a class=&#34;link&#34; href=&#34;https://www.kernel.org/doc/Documentation/cgroup-v1/memory.txt&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;https://www.kernel.org/doc/Documentation/cgroup-v1/memory.txt&lt;/a&gt;&lt;/p&gt;
@@ -10312,10 +10573,10 @@ cgroup的kmem account特性在3.x 内核上有内存泄露问题，如果开启�
         </item>
         <item>
         <title>Ansible-任务控制</title>
-        <link>https://blog.mletter.cn/tech/ansible/ansible-task-controller/</link>
+        <link>http://localhost:1313/tech/ansible/ansible-task-controller/</link>
         <pubDate>Mon, 29 Aug 2022 00:00:00 +0000</pubDate>
         
-        <guid>https://blog.mletter.cn/tech/ansible/ansible-task-controller/</guid>
+        <guid>http://localhost:1313/tech/ansible/ansible-task-controller/</guid>
         <description>&lt;h2 id=&#34;ansible-with_items&#34;&gt;&lt;/h&gt;Ansible-with_items
 &lt;/h2&gt;&lt;ul&gt;
 &lt;li&gt;通过&lt;code&gt;with_items&lt;/code&gt;进行循环&lt;/li&gt;
@@ -10579,10 +10840,10 @@ cgroup的kmem account特性在3.x 内核上有内存泄露问题，如果开启�
         </item>
         <item>
         <title>Ansible变量相关内容</title>
-        <link>https://blog.mletter.cn/tech/ansible/ansible-varbles/</link>
+        <link>http://localhost:1313/tech/ansible/ansible-varbles/</link>
         <pubDate>Mon, 15 Aug 2022 00:00:00 +0000</pubDate>
         
-        <guid>https://blog.mletter.cn/tech/ansible/ansible-varbles/</guid>
+        <guid>http://localhost:1313/tech/ansible/ansible-varbles/</guid>
         <description>&lt;h2 id=&#34;ansible怎么定义变量&#34;&gt;&lt;/h&gt;Ansible怎么定义变量
 &lt;/h2&gt;&lt;ul&gt;
 &lt;li&gt;通过&lt;code&gt;playbook&lt;/code&gt;中的&lt;code&gt;play&lt;/code&gt;进行变量的定义&lt;/li&gt;
@@ -10653,10 +10914,10 @@ cgroup的kmem account特性在3.x 内核上有内存泄露问题，如果开启�
         </item>
         <item>
         <title>MySQL小小优化思路简单版本</title>
-        <link>https://blog.mletter.cn/tech/mysql/mysql-optimization/</link>
+        <link>http://localhost:1313/tech/mysql/mysql-optimization/</link>
         <pubDate>Wed, 20 Jul 2022 00:00:00 +0000</pubDate>
         
-        <guid>https://blog.mletter.cn/tech/mysql/mysql-optimization/</guid>
+        <guid>http://localhost:1313/tech/mysql/mysql-optimization/</guid>
         <description>&lt;h2 id=&#34;mysql性能优化-优化思路&#34;&gt;&lt;/h&gt;MySQL性能优化-优化思路
 &lt;/h2&gt;&lt;blockquote&gt;
 &lt;p&gt;大概的优化思路分为以下几个内容&lt;/p&gt;
@@ -10909,10 +11170,10 @@ cgroup的kmem account特性在3.x 内核上有内存泄露问题，如果开启�
         </item>
         <item>
         <title>Docker常见的几个问题处理</title>
-        <link>https://blog.mletter.cn/tech/docker/docker-frequently-asked-questions/</link>
+        <link>http://localhost:1313/tech/docker/docker-frequently-asked-questions/</link>
         <pubDate>Thu, 14 Jul 2022 00:00:00 +0000</pubDate>
         
-        <guid>https://blog.mletter.cn/tech/docker/docker-frequently-asked-questions/</guid>
+        <guid>http://localhost:1313/tech/docker/docker-frequently-asked-questions/</guid>
         <description>&lt;h2 id=&#34;docker迁移存储目录&#34;&gt;&lt;/h&gt;Docker迁移存储目录
 &lt;/h2&gt;&lt;p&gt;&lt;strong&gt;问题起因&lt;/strong&gt; 由于公司最开始的服务器在&lt;code&gt;/var/lib/docker&lt;/code&gt;没有挂载存储,容量只有40G,导致服务器磁盘用满。现将原有的Docker目录数据进行迁移。&lt;/p&gt;
 &lt;blockquote&gt;
@@ -11057,10 +11318,10 @@ Live Restore只是独立Docker引擎的特性，而Swarm的服务是由Swarm管�
         </item>
         <item>
         <title>Playbook的一些简单使用</title>
-        <link>https://blog.mletter.cn/tech/ansible/playbook/</link>
+        <link>http://localhost:1313/tech/ansible/playbook/</link>
         <pubDate>Fri, 01 Apr 2022 00:00:00 +0000</pubDate>
         
-        <guid>https://blog.mletter.cn/tech/ansible/playbook/</guid>
+        <guid>http://localhost:1313/tech/ansible/playbook/</guid>
         <description>&lt;ul&gt;
 &lt;li&gt;&lt;code&gt;playbook&lt;/code&gt;是由一个或多个&lt;code&gt;&amp;quot;play&amp;quot;&lt;/code&gt;组成的列表&lt;/li&gt;
 &lt;li&gt;&lt;code&gt;playbook&lt;/code&gt;的主要功能在于将预定义的一组主机，装扮成事先通过ansible中的task定义好的角色。&lt;/li&gt;
@@ -11127,7 +11388,7 @@ Live Restore只是独立Docker引擎的特性，而Swarm的服务是由Swarm管�
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;      &lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;yum&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;   &lt;/span&gt;&lt;span class=&#34;l&#34;&gt;name=httpd state=installed&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;      &lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;notify&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;l&#34;&gt;restart service &lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;c&#34;&gt;# 表示执行完yum操作以后需要执行handlers的操作&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;    &lt;/span&gt;- &lt;span class=&#34;nt&#34;&gt;name&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;copy log&amp;#34;&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;      &lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;copy&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;l&#34;&gt;src=https://blog.mletter.cn/var/log/httpd/error_log   dest=/data&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;      &lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;copy&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;l&#34;&gt;src=http://localhost:1313/var/log/httpd/error_log   dest=/data&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;  &lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;handlers&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;    &lt;/span&gt;- &lt;span class=&#34;nt&#34;&gt;name&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;l&#34;&gt;restart service &lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;      &lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;service&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;l&#34;&gt;name=httpd state=restarted&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
@@ -11149,7 +11410,7 @@ Live Restore只是独立Docker引擎的特性，而Swarm的服务是由Swarm管�
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;      &lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;yum&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;   &lt;/span&gt;&lt;span class=&#34;l&#34;&gt;name=httpd state=installed&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;      &lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;notify&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;l&#34;&gt;restart service &lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;c&#34;&gt;# 表示执行完yum操作以后需要执行handlers的操作&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;    &lt;/span&gt;- &lt;span class=&#34;nt&#34;&gt;name&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;copy log&amp;#34;&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;      &lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;copy&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;l&#34;&gt;src=https://blog.mletter.cn/var/log/httpd/error_log   dest=/data&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;      &lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;copy&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;l&#34;&gt;src=http://localhost:1313/var/log/httpd/error_log   dest=/data&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;  &lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;handlers&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;    &lt;/span&gt;- &lt;span class=&#34;nt&#34;&gt;name&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;l&#34;&gt;restart service &lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;      &lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;service&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;l&#34;&gt;name=httpd state=restarted&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
@@ -11271,7 +11532,7 @@ Live Restore只是独立Docker引擎的特性，而Swarm的服务是由Swarm管�
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;    &lt;/span&gt;- &lt;span class=&#34;nt&#34;&gt;name&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;Install Nginx&amp;#34;&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;      &lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;yum&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;l&#34;&gt;name=nginx &lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;    &lt;/span&gt;- &lt;span class=&#34;nt&#34;&gt;name&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;l&#34;&gt;Config conf&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;      &lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;template&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;l&#34;&gt;src=https://blog.mletter.cn/templates/nginx.conf.j2 dest=/etc/nginx/nginx.conf&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;      &lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;template&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;l&#34;&gt;src=http://localhost:1313/templates/nginx.conf.j2 dest=/etc/nginx/nginx.conf&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;      &lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;when&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;l&#34;&gt;ansible_distribution == &amp;#34;CentOS&amp;#34;&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;    &lt;/span&gt;- &lt;span class=&#34;nt&#34;&gt;name&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;l&#34;&gt;start nginx&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;      &lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;service&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;l&#34;&gt;name=nginx state=started enabled=yes&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
@@ -11310,7 +11571,7 @@ Live Restore只是独立Docker引擎的特性，而Swarm的服务是由Swarm管�
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;      &lt;/span&gt;- &lt;span class=&#34;m&#34;&gt;83&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;  &lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;tasks&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;    &lt;/span&gt;- &lt;span class=&#34;nt&#34;&gt;name&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;l&#34;&gt;copy template&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;      &lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;template&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;l&#34;&gt;src=https://blog.mletter.cn/root/templates/for.j2 dest=/data/for.conf&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;      &lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;template&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;l&#34;&gt;src=http://localhost:1313/root/templates/for.j2 dest=/data/for.conf&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;&lt;/span&gt;&lt;span class=&#34;c&#34;&gt;# 或者&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;&lt;/span&gt;&lt;span class=&#34;nn&#34;&gt;---&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;&lt;/span&gt;- &lt;span class=&#34;nt&#34;&gt;hosts&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;l&#34;&gt;test&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
@@ -11322,7 +11583,7 @@ Live Restore只是独立Docker引擎的特性，而Swarm的服务是由Swarm管�
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;      &lt;/span&gt;- &lt;span class=&#34;l&#34;&gt;listen:83&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;  &lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;tasks&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;    &lt;/span&gt;- &lt;span class=&#34;nt&#34;&gt;name&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;l&#34;&gt;copy template&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;      &lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;template&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;l&#34;&gt;src=https://blog.mletter.cn/root/templates/for.j2 dest=/data/for.conf&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;      &lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;template&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;l&#34;&gt;src=http://localhost:1313/root/templates/for.j2 dest=/data/for.conf&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;&lt;/span&gt;&lt;span class=&#34;c&#34;&gt;# 或者&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;&lt;/span&gt;&lt;span class=&#34;nn&#34;&gt;---&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;&lt;/span&gt;- &lt;span class=&#34;nt&#34;&gt;hosts&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;l&#34;&gt;test&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
@@ -11335,7 +11596,7 @@ Live Restore只是独立Docker引擎的特性，而Swarm的服务是由Swarm管�
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;        &lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;rootdir&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;l&#34;&gt;/root/     &lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;  &lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;tasks&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;    &lt;/span&gt;- &lt;span class=&#34;nt&#34;&gt;name&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;l&#34;&gt;copy template&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;      &lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;template&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;l&#34;&gt;src=https://blog.mletter.cn/root/templates/for.j2 desc=/data/for.conf&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;      &lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;template&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;l&#34;&gt;src=http://localhost:1313/root/templates/for.j2 desc=/data/for.conf&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;blockquote&gt;
 &lt;p&gt;创建一个模板文件&lt;/p&gt;
 &lt;/blockquote&gt;
@@ -11370,10 +11631,10 @@ Live Restore只是独立Docker引擎的特性，而Swarm的服务是由Swarm管�
         </item>
         <item>
         <title>Nginx简单的常规优化</title>
-        <link>https://blog.mletter.cn/tech/nginx/nginx-optimization/</link>
+        <link>http://localhost:1313/tech/nginx/nginx-optimization/</link>
         <pubDate>Sun, 20 Mar 2022 00:00:00 +0000</pubDate>
         
-        <guid>https://blog.mletter.cn/tech/nginx/nginx-optimization/</guid>
+        <guid>http://localhost:1313/tech/nginx/nginx-optimization/</guid>
         <description>&lt;h2 id=&#34;配置nginx的work_process&#34;&gt;&lt;/h&gt;配置nginx的work_process
 &lt;/h2&gt;&lt;p&gt;查看当前服务的CPU核心数量&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;root@containerd-master1 ~&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;# grep processor /proc/cpuinfo | wc -l&lt;/span&gt;
@@ -11455,10 +11716,10 @@ Live Restore只是独立Docker引擎的特性，而Swarm的服务是由Swarm管�
         </item>
         <item>
         <title>什么是dockershim</title>
-        <link>https://blog.mletter.cn/tech/docker/docker-shim/</link>
+        <link>http://localhost:1313/tech/docker/docker-shim/</link>
         <pubDate>Sun, 13 Feb 2022 00:00:00 +0000</pubDate>
         
-        <guid>https://blog.mletter.cn/tech/docker/docker-shim/</guid>
+        <guid>http://localhost:1313/tech/docker/docker-shim/</guid>
         <description>&lt;h2 id=&#34;先前了解&#34;&gt;&lt;/h&gt;先前了解
 &lt;/h2&gt;&lt;ul&gt;
 &lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.20.md#dockershim-deprecation&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
@@ -11568,10 +11829,10 @@ Live Restore只是独立Docker引擎的特性，而Swarm的服务是由Swarm管�
         </item>
         <item>
         <title>有关于Kubernetes中影响Pod调度的问题</title>
-        <link>https://blog.mletter.cn/tech/kubernetes/pod-scheduling-issues/</link>
+        <link>http://localhost:1313/tech/kubernetes/pod-scheduling-issues/</link>
         <pubDate>Tue, 21 Dec 2021 00:00:00 +0000</pubDate>
         
-        <guid>https://blog.mletter.cn/tech/kubernetes/pod-scheduling-issues/</guid>
+        <guid>http://localhost:1313/tech/kubernetes/pod-scheduling-issues/</guid>
         <description>&lt;img src="https://bj.bcebos.com/baidu-rmb-video-cover-1/2b6495c8749e3f4e4369e28cb50eeb87.png" alt="Featured image of post 有关于Kubernetes中影响Pod调度的问题" /&gt;&lt;blockquote&gt;
 &lt;p&gt;此问题引出的是生产环境中所有的资源完全充足,但是会出现更新Pod、删除Pod、新建Pod无法调度的情况。&lt;/p&gt;
 &lt;/blockquote&gt;
@@ -11656,10 +11917,10 @@ Live Restore只是独立Docker引擎的特性，而Swarm的服务是由Swarm管�
         </item>
         <item>
         <title>kubernetes-离线部署Skywallking</title>
-        <link>https://blog.mletter.cn/tech/kubernetes/skywallking/</link>
+        <link>http://localhost:1313/tech/kubernetes/skywallking/</link>
         <pubDate>Wed, 07 Apr 2021 00:00:00 +0000</pubDate>
         
-        <guid>https://blog.mletter.cn/tech/kubernetes/skywallking/</guid>
+        <guid>http://localhost:1313/tech/kubernetes/skywallking/</guid>
         <description>&lt;img src="https://img14.360buyimg.com/ddimg/jfs/t1/164569/9/40677/14419/65bc6e4cFa1d8c0c3/5ccf7e6caadc9b83.jpg" alt="Featured image of post kubernetes-离线部署Skywallking" /&gt;&lt;blockquote&gt;
 &lt;p&gt;注意：请各位记住把所有离线包全拿到本地…&lt;/p&gt;
 &lt;/blockquote&gt;
@@ -11906,10 +12167,10 @@ Live Restore只是独立Docker引擎的特性，而Swarm的服务是由Swarm管�
         </item>
         <item>
         <title>Redis集群搭建</title>
-        <link>https://blog.mletter.cn/tech/redis/install-redis-cluster/</link>
+        <link>http://localhost:1313/tech/redis/install-redis-cluster/</link>
         <pubDate>Fri, 19 Feb 2021 00:00:00 +0000</pubDate>
         
-        <guid>https://blog.mletter.cn/tech/redis/install-redis-cluster/</guid>
+        <guid>http://localhost:1313/tech/redis/install-redis-cluster/</guid>
         <description>&lt;h2 id=&#34;redis-clusterredis集群简介&#34;&gt;&lt;/h&gt;Redis Cluster（Redis集群）简介
 &lt;/h2&gt;&lt;ul&gt;
 &lt;li&gt;redis是一个开源的key value存储系统，受到了广大互联网公司的青睐。redis3.0版本之前只支持单例模式，在3.0版本及以后才支持集群，我这里用的是redis3.0.0版本；&lt;/li&gt;
@@ -12054,10 +12315,10 @@ Live Restore只是独立Docker引擎的特性，而Swarm的服务是由Swarm管�
         </item>
         <item>
         <title>kubernetes-Service解读</title>
-        <link>https://blog.mletter.cn/tech/kubernetes/kube-service-read/</link>
+        <link>http://localhost:1313/tech/kubernetes/kube-service-read/</link>
         <pubDate>Mon, 13 Apr 2020 00:00:00 +0000</pubDate>
         
-        <guid>https://blog.mletter.cn/tech/kubernetes/kube-service-read/</guid>
+        <guid>http://localhost:1313/tech/kubernetes/kube-service-read/</guid>
         <description>&lt;img src="https://img14.360buyimg.com/ddimg/jfs/t1/164569/9/40677/14419/65bc6e4cFa1d8c0c3/5ccf7e6caadc9b83.jpg" alt="Featured image of post kubernetes-Service解读" /&gt;&lt;h1 id=&#34;service的简单理解&#34;&gt;&lt;/h&gt;Service的简单理解
 &lt;/h1&gt;&lt;p&gt;Service 是一种抽象的对象，它定义了一组 Pod 的逻辑集合和一个用于访问它们的策略，其实这个概念和微服务非常类似。一个 Serivce 下面包含的 Pod 集合是由 Label Selector 来决定的。&lt;/p&gt;
 &lt;p&gt;假如我们后端运行了3个副本，这些副本都是可以替代的，因为前端并不关心它们使用的是哪一个后端服务。尽管由于各种原因后端的 Pod 集合会发送变化，但是前端却不需要知道这些变化，也不需要自己用一个列表来记录这些后端的服务，Service 的这种抽象就可以帮我们达到这种解耦的目的。&lt;/p&gt;
@@ -12326,10 +12587,10 @@ Live Restore只是独立Docker引擎的特性，而Swarm的服务是由Swarm管�
         </item>
         <item>
         <title>基于kubernetes部署nacos集群</title>
-        <link>https://blog.mletter.cn/tech/kubernetes/install-nacos-cluster/</link>
+        <link>http://localhost:1313/tech/kubernetes/install-nacos-cluster/</link>
         <pubDate>Tue, 07 Apr 2020 00:00:00 +0000</pubDate>
         
-        <guid>https://blog.mletter.cn/tech/kubernetes/install-nacos-cluster/</guid>
+        <guid>http://localhost:1313/tech/kubernetes/install-nacos-cluster/</guid>
         <description>&lt;img src="https://img14.360buyimg.com/ddimg/jfs/t1/164569/9/40677/14419/65bc6e4cFa1d8c0c3/5ccf7e6caadc9b83.jpg" alt="Featured image of post 基于kubernetes部署nacos集群" /&gt;&lt;h2 id=&#34;简单安装使用&#34;&gt;&lt;/h&gt;简单安装使用
 &lt;/h2&gt;&lt;blockquote&gt;
 &lt;p&gt;最新版本应该是1.4.1&lt;/p&gt;
@@ -12449,10 +12710,10 @@ Live Restore只是独立Docker引擎的特性，而Swarm的服务是由Swarm管�
         </item>
         <item>
         <title>kubernetes-Scheduler简单详解</title>
-        <link>https://blog.mletter.cn/tech/kubernetes/kube-schdeduler/</link>
+        <link>http://localhost:1313/tech/kubernetes/kube-schdeduler/</link>
         <pubDate>Sat, 14 Mar 2020 00:00:00 +0000</pubDate>
         
-        <guid>https://blog.mletter.cn/tech/kubernetes/kube-schdeduler/</guid>
+        <guid>http://localhost:1313/tech/kubernetes/kube-schdeduler/</guid>
         <description>&lt;img src="https://img14.360buyimg.com/ddimg/jfs/t1/164569/9/40677/14419/65bc6e4cFa1d8c0c3/5ccf7e6caadc9b83.jpg" alt="Featured image of post kubernetes-Scheduler简单详解" /&gt;&lt;p&gt;&lt;code&gt;kube-scheduler&lt;/code&gt; 是 kubernetes 的核心组件之一，主要负责整个集群资源的调度功能，根据特定的调度算法和策略，将 Pod 调度到最优的工作节点上面去，从而更加合理、更加充分的利用集群的资源，这也是我们选择使用 kubernetes 一个非常重要的理由。如果一门新的技术不能帮助企业节约成本、提供效率，我相信是很难推进的。&lt;/p&gt;
 &lt;h2 id=&#34;调度流程&#34;&gt;&lt;/h&gt;调度流程
 &lt;/h2&gt;&lt;p&gt;&lt;code&gt;kube-scheduler&lt;/code&gt; 提供的默认调度器能够满足我们绝大多数的要求，我们前面和大家接触的示例也基本上用的默认的策略，都可以保证我们的 Pod 可以被分配到资源充足的节点上运行。但是在实际的线上项目中，可能我们自己会比 kubernetes 更加了解我们自己的应用，比如我们希望一个 Pod 只能运行在特定的几个节点上，或者这几个节点只能用来运行特定类型的应用，这就需要我们的调度器能够可控。&lt;/p&gt;
@@ -12603,26 +12864,26 @@ Live Restore只是独立Docker引擎的特性，而Swarm的服务是由Swarm管�
         </item>
         <item>
         <title>Archives</title>
-        <link>https://blog.mletter.cn/archives/</link>
+        <link>http://localhost:1313/archives/</link>
         <pubDate>Tue, 28 May 2019 00:00:00 +0000</pubDate>
         
-        <guid>https://blog.mletter.cn/archives/</guid>
+        <guid>http://localhost:1313/archives/</guid>
         <description></description>
         </item>
         <item>
         <title>Categories</title>
-        <link>https://blog.mletter.cn/categories/</link>
+        <link>http://localhost:1313/categories/</link>
         <pubDate>Tue, 28 May 2019 00:00:00 +0000</pubDate>
         
-        <guid>https://blog.mletter.cn/categories/</guid>
+        <guid>http://localhost:1313/categories/</guid>
         <description></description>
         </item>
         <item>
         <title>Hi 关于小站</title>
-        <link>https://blog.mletter.cn/about/</link>
+        <link>http://localhost:1313/about/</link>
         <pubDate>Thu, 28 Feb 2019 00:00:00 +0000</pubDate>
         
-        <guid>https://blog.mletter.cn/about/</guid>
+        <guid>http://localhost:1313/about/</guid>
         <description>&lt;div align=&#34;center&#34;&gt;
 &lt;img src=&#34;https://oss.suning.com/mbap/mbapbk/d8283bfe6fad9e0befd61f6037046a70.gif?SDOSSAccessKeyId=42IA0GY51YZ1397N&amp;Expires=1721188435&amp;Signature=iJziwOkGV2MlrJJI81fh51kyg5Q%3D&#34; href=&#34;https://github.com/sp-xd&#34; alt=&#34;CoDiNg RocKs&#34;  width=&#34;60%&#34;/&gt;&lt;br&gt; 
 &lt;/div&gt;
@@ -12656,18 +12917,18 @@ Live Restore只是独立Docker引擎的特性，而Swarm的服务是由Swarm管�
         </item>
         <item>
         <title>搜索</title>
-        <link>https://blog.mletter.cn/search/</link>
+        <link>http://localhost:1313/search/</link>
         <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
         
-        <guid>https://blog.mletter.cn/search/</guid>
+        <guid>http://localhost:1313/search/</guid>
         <description></description>
         </item>
         <item>
         <title>友情链接</title>
-        <link>https://blog.mletter.cn/friends/</link>
+        <link>http://localhost:1313/friends/</link>
         <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
         
-        <guid>https://blog.mletter.cn/friends/</guid>
+        <guid>http://localhost:1313/friends/</guid>
         <description></description>
         </item>
         

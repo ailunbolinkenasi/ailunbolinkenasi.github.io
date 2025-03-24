@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
     <channel>
         <title>Tech on 太阳可以是蓝色</title>
-        <link>https://blog.mletter.cn/categories/tech/</link>
+        <link>http://localhost:1313/categories/tech/</link>
         <description>Recent content in Tech on 太阳可以是蓝色</description>
         <generator>Hugo -- gohugo.io</generator>
         <language>en-us</language>
         <copyright>Live and learn. 🌱</copyright>
-        <lastBuildDate>Tue, 16 Jan 2024 00:00:00 +0000</lastBuildDate><atom:link href="https://blog.mletter.cn/categories/tech/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Tue, 16 Jan 2024 00:00:00 +0000</lastBuildDate><atom:link href="http://localhost:1313/categories/tech/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>管理好内部的代码仓库-GitLab篇</title>
-        <link>https://blog.mletter.cn/tech/gitlab/repository-management/</link>
+        <link>http://localhost:1313/tech/gitlab/repository-management/</link>
         <pubDate>Tue, 16 Jan 2024 00:00:00 +0000</pubDate>
         
-        <guid>https://blog.mletter.cn/tech/gitlab/repository-management/</guid>
+        <guid>http://localhost:1313/tech/gitlab/repository-management/</guid>
         <description>&lt;p&gt;今天聊聊如何来管理我们的&lt;code&gt;代码仓库&lt;/code&gt;
 在软件开发过程中，代码仓库是一个非常重要的组成部分。它不仅是存储代码的地方，也是团队协作和版本控制的基础。因此，管理好自己的代码仓库至关重要。&lt;/p&gt;
 &lt;p&gt;本文将介绍如何使用Git来管理自己的代码仓库。&lt;/p&gt;

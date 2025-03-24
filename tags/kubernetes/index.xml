@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
     <channel>
         <title>Kubernetes on 太阳可以是蓝色</title>
-        <link>https://blog.mletter.cn/tags/kubernetes/</link>
+        <link>http://localhost:1313/tags/kubernetes/</link>
         <description>Recent content in Kubernetes on 太阳可以是蓝色</description>
         <generator>Hugo -- gohugo.io</generator>
         <language>en-us</language>
         <copyright>Live and learn. 🌱</copyright>
-        <lastBuildDate>Mon, 15 Apr 2024 00:00:00 +0000</lastBuildDate><atom:link href="https://blog.mletter.cn/tags/kubernetes/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Mon, 15 Apr 2024 00:00:00 +0000</lastBuildDate><atom:link href="http://localhost:1313/tags/kubernetes/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>基于SealOS部署高可用的kubernetes集群</title>
-        <link>https://blog.mletter.cn/tech/kubernetes/sealos/</link>
+        <link>http://localhost:1313/tech/kubernetes/sealos/</link>
         <pubDate>Mon, 15 Apr 2024 00:00:00 +0000</pubDate>
         
-        <guid>https://blog.mletter.cn/tech/kubernetes/sealos/</guid>
+        <guid>http://localhost:1313/tech/kubernetes/sealos/</guid>
         <description>&lt;img src="https://img10.360buyimg.com/ddimg/jfs/t1/244560/31/7618/14121/661de12eFfa7f6ba5/0239fa873abb0bd5.jpg" alt="Featured image of post 基于SealOS部署高可用的kubernetes集群" /&gt;&lt;p&gt;配套Bilibili视频已经更新：&lt;a class=&#34;link&#34; href=&#34;https://www.bilibili.com/video/BV1Pr421V7PT/?share_source=copy_web&amp;amp;vd_source=2cac9fa5f0a3fb896b7f6b1468993554&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;点我观看&lt;/a&gt;&lt;/p&gt;
 &lt;h2 id=&#34;准备sealos&#34;&gt;&lt;/h&gt;准备SealOS
@@ -159,10 +159,10 @@
         </item>
         <item>
         <title>kubernetes基于EFK的日志落地实现</title>
-        <link>https://blog.mletter.cn/tech/kubernetes/install-efk/</link>
+        <link>http://localhost:1313/tech/kubernetes/install-efk/</link>
         <pubDate>Fri, 08 Dec 2023 00:00:00 +0000</pubDate>
         
-        <guid>https://blog.mletter.cn/tech/kubernetes/install-efk/</guid>
+        <guid>http://localhost:1313/tech/kubernetes/install-efk/</guid>
         <description>&lt;img src="https://img14.360buyimg.com/ddimg/jfs/t1/177175/31/35833/30306/64cb08eeF5ba90f46/1da6311bbbec8921.jpg" alt="Featured image of post kubernetes基于EFK的日志落地实现" /&gt;&lt;p&gt;Kubernetes 中比较流行的日志收集解决方案是 &lt;code&gt;Elasticsearch&lt;/code&gt;、&lt;code&gt;Fluentd&lt;/code&gt; 和 &lt;code&gt;Kibana&lt;/code&gt;（EFK）技术栈，也是官方现在比较推荐的一种方案。&lt;/p&gt;
 &lt;p&gt;&lt;code&gt;Elasticsearch&lt;/code&gt; 是一个实时的、分布式的可扩展的搜索引擎，允许进行全文、结构化搜索，它通常用于索引和搜索大量日志数据，也可用于搜索许多不同类型的文档。&lt;/p&gt;
 &lt;p&gt;&lt;code&gt;Elasticsearch&lt;/code&gt; 通常与 &lt;code&gt;Kibana&lt;/code&gt; 一起部署，&lt;code&gt;Kibana&lt;/code&gt; 是 &lt;code&gt;Elasticsearch&lt;/code&gt; 的一个功能强大的数据可视化 Dashboard，&lt;code&gt;Kibana&lt;/code&gt; 允许你通过 web 界面来浏览&lt;code&gt;Elasticsearch&lt;/code&gt; 日志数据。&lt;/p&gt;
@@ -997,10 +997,10 @@
         </item>
         <item>
         <title>Kubernetes的架构设计和对象属性基本理解</title>
-        <link>https://blog.mletter.cn/tech/kubernetes/architectural-design/</link>
+        <link>http://localhost:1313/tech/kubernetes/architectural-design/</link>
         <pubDate>Tue, 07 Nov 2023 00:00:00 +0000</pubDate>
         
-        <guid>https://blog.mletter.cn/tech/kubernetes/architectural-design/</guid>
+        <guid>http://localhost:1313/tech/kubernetes/architectural-design/</guid>
         <description>&lt;img src="https://img13.360buyimg.com/ddimg/jfs/t1/164078/6/34165/22231/654ba81fFe1bf21d7/9d02bd791b795b3b.jpg" alt="Featured image of post Kubernetes的架构设计和对象属性基本理解" /&gt;&lt;h2 id=&#34;为什么需要kubernetes&#34;&gt;&lt;/h&gt;为什么需要kubernetes？
 &lt;/h2&gt;&lt;ul&gt;
 &lt;li&gt;大规模多节点容器调度&lt;/li&gt;
@@ -1512,10 +1512,10 @@
         </item>
         <item>
         <title>OpenEBS存储的使用</title>
-        <link>https://blog.mletter.cn/tech/kubernetes/openebs/</link>
+        <link>http://localhost:1313/tech/kubernetes/openebs/</link>
         <pubDate>Sun, 14 May 2023 00:00:00 +0000</pubDate>
         
-        <guid>https://blog.mletter.cn/tech/kubernetes/openebs/</guid>
+        <guid>http://localhost:1313/tech/kubernetes/openebs/</guid>
         <description>&lt;img src="https://openebs.io/docs/assets/images/control-plane-overview-93c59878e3356a11f03029dd0fc1cd6b.svg" alt="Featured image of post OpenEBS存储的使用" /&gt;&lt;h1 id=&#34;openebs存储使用&#34;&gt;&lt;/h&gt;OpenEBS存储使用
 &lt;/h1&gt;&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://openebs.io/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;OpenEBS&lt;/a&gt; 是一种模拟了 AWS 的 EBS、阿里云的云盘等块存储实现的基于容器的存储开源软件。OpenEBS 是一种基于 CAS(Container Attached Storage) 理念的容器解决方案，其核心理念是存储和应用一样采用微服务架构，并通过 Kubernetes 来做资源编排。其架构实现上，每个卷的 Controller 都是一个单独的 Pod，且与应用 Pod 在同一个节点，卷的数据使用多个 Pod 进行管理。&lt;/p&gt;
@@ -1779,10 +1779,10 @@
         </item>
         <item>
         <title>Traekfik基础使用指南</title>
-        <link>https://blog.mletter.cn/tech/kubernetes/traefik/</link>
+        <link>http://localhost:1313/tech/kubernetes/traefik/</link>
         <pubDate>Fri, 07 Apr 2023 00:00:00 +0000</pubDate>
         
-        <guid>https://blog.mletter.cn/tech/kubernetes/traefik/</guid>
+        <guid>http://localhost:1313/tech/kubernetes/traefik/</guid>
         <description>&lt;img src="https://doc.traefik.io/traefik/assets/img/traefik-architecture.png" alt="Featured image of post Traekfik基础使用指南" /&gt;&lt;h2 id=&#34;traekfik是什么&#34;&gt;&lt;/h&gt;Traekfik是什么
 &lt;/h2&gt;&lt;p&gt;Traefik 是一种&lt;a class=&#34;link&#34; href=&#34;https://github.com/traefik/traefik&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;开源&lt;/a&gt; &lt;em&gt;边缘路由器&lt;/em&gt;，它使您发布服务成为一种有趣而轻松的体验。它代表您的系统接收请求并找出哪些组件负责处理它们。&lt;/p&gt;
@@ -2453,10 +2453,10 @@
         </item>
         <item>
         <title>Kubernetes-本地存储</title>
-        <link>https://blog.mletter.cn/tech/kubernetes/local-storage/</link>
+        <link>http://localhost:1313/tech/kubernetes/local-storage/</link>
         <pubDate>Wed, 22 Mar 2023 00:00:00 +0000</pubDate>
         
-        <guid>https://blog.mletter.cn/tech/kubernetes/local-storage/</guid>
+        <guid>http://localhost:1313/tech/kubernetes/local-storage/</guid>
         <description>&lt;img src="https://img14.360buyimg.com/ddimg/jfs/t1/164569/9/40677/14419/65bc6e4cFa1d8c0c3/5ccf7e6caadc9b83.jpg" alt="Featured image of post Kubernetes-本地存储" /&gt;&lt;h1 id=&#34;本地存储&#34;&gt;&lt;/h&gt;本地存储
 &lt;/h1&gt;&lt;p&gt;前面我们有通过 &lt;code&gt;hostPath&lt;/code&gt; 或者 &lt;code&gt;emptyDir&lt;/code&gt; 的方式来持久化我们的数据，但是显然我们还需要更加可靠的存储来保存应用的持久化数据，这样容器在重建后，依然可以使用之前的数据。但是存储资源和 CPU 资源以及内存资源有很大不同，为了屏蔽底层的技术实现细节，让用户更加方便的使用，Kubernetes 便引入了 &lt;code&gt;PV&lt;/code&gt; 和 &lt;code&gt;PVC&lt;/code&gt; 两个重要的资源对象来实现对存储的管理。&lt;/p&gt;
 &lt;h2 id=&#34;persistentvolume&#34;&gt;&lt;/h&gt;PersistentVolume
@@ -2750,10 +2750,10 @@
         </item>
         <item>
         <title>Ingress的简单使用</title>
-        <link>https://blog.mletter.cn/tech/kubernetes/nginx-ingress/</link>
+        <link>http://localhost:1313/tech/kubernetes/nginx-ingress/</link>
         <pubDate>Wed, 08 Mar 2023 00:00:00 +0000</pubDate>
         
-        <guid>https://blog.mletter.cn/tech/kubernetes/nginx-ingress/</guid>
+        <guid>http://localhost:1313/tech/kubernetes/nginx-ingress/</guid>
         <description>&lt;img src="https://d33wubrfki0l68.cloudfront.net/4f01eaec32889ff16ee255e97822b6d165b633f0/a54b4/zh-cn/docs/images/ingress.svg" alt="Featured image of post Ingress的简单使用" /&gt;&lt;h1 id=&#34;什么是ingress&#34;&gt;&lt;/h&gt;什么是Ingress
 &lt;/h1&gt;&lt;p&gt;Ingress 是对集群中服务的外部访问进行管理的 API 对象，典型的访问方式是 HTTP。&lt;/p&gt;
 &lt;p&gt;Ingress 可以提供负载均衡、SSL 终结和基于名称的虚拟托管。&lt;/p&gt;
@@ -3830,10 +3830,10 @@
         </item>
         <item>
         <title>CacheDNS和DNS缓存</title>
-        <link>https://blog.mletter.cn/tech/kubernetes/nodelocaldns/</link>
+        <link>http://localhost:1313/tech/kubernetes/nodelocaldns/</link>
         <pubDate>Sun, 26 Feb 2023 00:00:00 +0000</pubDate>
         
-        <guid>https://blog.mletter.cn/tech/kubernetes/nodelocaldns/</guid>
+        <guid>http://localhost:1313/tech/kubernetes/nodelocaldns/</guid>
         <description>&lt;img src="https://d33wubrfki0l68.cloudfront.net/bf8e5eaac697bac89c5b36a0edb8855c860bfb45/6944f/images/docs/nodelocaldns.svg" alt="Featured image of post CacheDNS和DNS缓存" /&gt;&lt;p&gt;如果在集群规模较大并发较高的情况下我们仍然需要对 DNS 进行优化，典型的就是大家比较熟悉的 CoreDNS 会出现超时5s的情况。&lt;/p&gt;
 &lt;h2 id=&#34;超时原因&#34;&gt;&lt;/h&gt;超时原因
 &lt;/h2&gt;&lt;p&gt;在 iptables 模式下（默认情况下），每个服务的 kube-proxy 在主机网络名称空间的 nat 表中创建一些 iptables 规则。 比如在集群中具有两个 DNS 服务器实例的 kube-dns 服务，其相关规则大致如下所示：&lt;/p&gt;
@@ -4119,10 +4119,10 @@
         </item>
         <item>
         <title>使用Kubeadm创建一个高可用的ETCD集群</title>
-        <link>https://blog.mletter.cn/tech/kubernetes/install-etcd-ha/</link>
+        <link>http://localhost:1313/tech/kubernetes/install-etcd-ha/</link>
         <pubDate>Sun, 26 Feb 2023 00:00:00 +0000</pubDate>
         
-        <guid>https://blog.mletter.cn/tech/kubernetes/install-etcd-ha/</guid>
+        <guid>http://localhost:1313/tech/kubernetes/install-etcd-ha/</guid>
         <description>&lt;img src="https://img.linux.net.cn/data/attachment/album/201501/29/141718izklanww82qm888k.png" alt="Featured image of post 使用Kubeadm创建一个高可用的ETCD集群" /&gt;&lt;h2 id=&#34;使用kubeadm创建一个高可用的etcd集群&#34;&gt;&lt;/h&gt;使用Kubeadm创建一个高可用的Etcd集群
 &lt;/h2&gt;&lt;p&gt;默认情况下，kubeadm 在每个控制平面节点上运行一个本地 etcd 实例。也可以使用外部的 etcd 集群，并在不同的主机上提供 etcd 实例。 这两种方法的区别在 高可用拓扑的选项 页面中阐述。&lt;/p&gt;
 &lt;p&gt;这个任务将指导你创建一个由三个成员组成的高可用外部 etcd 集群，该集群在创建过程中可被 kubeadm 使用。&lt;/p&gt;
@@ -4303,10 +4303,10 @@
         </item>
         <item>
         <title>ConfigMap和Secret的使用</title>
-        <link>https://blog.mletter.cn/tech/kubernetes/configmap-or-service/</link>
+        <link>http://localhost:1313/tech/kubernetes/configmap-or-service/</link>
         <pubDate>Tue, 14 Feb 2023 00:00:00 +0000</pubDate>
         
-        <guid>https://blog.mletter.cn/tech/kubernetes/configmap-or-service/</guid>
+        <guid>http://localhost:1313/tech/kubernetes/configmap-or-service/</guid>
         <description>&lt;img src="https://img14.360buyimg.com/ddimg/jfs/t1/164569/9/40677/14419/65bc6e4cFa1d8c0c3/5ccf7e6caadc9b83.jpg" alt="Featured image of post ConfigMap和Secret的使用" /&gt;&lt;h2 id=&#34;configmap&#34;&gt;&lt;/h&gt;ConfigMap
 &lt;/h2&gt;&lt;p&gt;ConfigMap 是一种 API 对象，用来将非机密性的数据保存到键值对中。使用时， &lt;a class=&#34;link&#34; href=&#34;https://kubernetes.io/zh-cn/docs/concepts/workloads/pods/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;Pods&lt;/a&gt; 可以将其用作环境变量、命令行参数或者存储卷中的配置文件。&lt;/p&gt;
@@ -4609,10 +4609,10 @@ ConfigMap 在设计上不是用来保存大量数据的。在 ConfigMap 中保�
         </item>
         <item>
         <title>HorizontalPodAutoscaler</title>
-        <link>https://blog.mletter.cn/tech/kubernetes/horizontal-pod-autoscaler/</link>
+        <link>http://localhost:1313/tech/kubernetes/horizontal-pod-autoscaler/</link>
         <pubDate>Tue, 14 Feb 2023 00:00:00 +0000</pubDate>
         
-        <guid>https://blog.mletter.cn/tech/kubernetes/horizontal-pod-autoscaler/</guid>
+        <guid>http://localhost:1313/tech/kubernetes/horizontal-pod-autoscaler/</guid>
         <description>&lt;img src="https://img14.360buyimg.com/ddimg/jfs/t1/164569/9/40677/14419/65bc6e4cFa1d8c0c3/5ccf7e6caadc9b83.jpg" alt="Featured image of post HorizontalPodAutoscaler" /&gt;&lt;h2 id=&#34;horizontalpodautoscaler&#34;&gt;&lt;/h&gt;HorizontalPodAutoscaler
 &lt;/h2&gt;&lt;ul&gt;
 &lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://kubernetes.io/zh-cn/docs/tasks/run-application/horizontal-pod-autoscale/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
@@ -4812,10 +4812,10 @@ ConfigMap 在设计上不是用来保存大量数据的。在 ConfigMap 中保�
         </item>
         <item>
         <title>Kubernetes中Api-Server简单解读</title>
-        <link>https://blog.mletter.cn/tech/kubernetes/apiserver-read/</link>
+        <link>http://localhost:1313/tech/kubernetes/apiserver-read/</link>
         <pubDate>Tue, 07 Feb 2023 00:00:00 +0000</pubDate>
         
-        <guid>https://blog.mletter.cn/tech/kubernetes/apiserver-read/</guid>
+        <guid>http://localhost:1313/tech/kubernetes/apiserver-read/</guid>
         <description>&lt;img src="https://bj.bcebos.com/baidu-rmb-video-cover-1/2b6495c8749e3f4e4369e28cb50eeb87.png" alt="Featured image of post Kubernetes中Api-Server简单解读" /&gt;&lt;p&gt;&lt;strong&gt;访问控制概览&lt;/strong&gt;
 Kubernetes API的每个请求都会经过多阶段的访问控制之后才会被接受,这一阶段包括认证、授权、以及准入控制(Admission Control)等&lt;/p&gt;
 &lt;p&gt;
@@ -5312,10 +5312,10 @@ SystemAccount&lt;/li&gt;
         </item>
         <item>
         <title>kubernetes-dashboard</title>
-        <link>https://blog.mletter.cn/tech/kubernetes/kube-dashboard/</link>
+        <link>http://localhost:1313/tech/kubernetes/kube-dashboard/</link>
         <pubDate>Fri, 03 Feb 2023 00:00:00 +0000</pubDate>
         
-        <guid>https://blog.mletter.cn/tech/kubernetes/kube-dashboard/</guid>
+        <guid>http://localhost:1313/tech/kubernetes/kube-dashboard/</guid>
         <description>&lt;img src="https://img14.360buyimg.com/ddimg/jfs/t1/164569/9/40677/14419/65bc6e4cFa1d8c0c3/5ccf7e6caadc9b83.jpg" alt="Featured image of post kubernetes-dashboard" /&gt;&lt;h2 id=&#34;官方webui部署&#34;&gt;&lt;/h&gt;官方WebUI部署
 &lt;/h2&gt;&lt;ul&gt;
 &lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://github.com/kubernetes/dashboard&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
@@ -5751,10 +5751,10 @@ SystemAccount&lt;/li&gt;
         </item>
         <item>
         <title>kubernetes1.22.0单节点集群部署</title>
-        <link>https://blog.mletter.cn/tech/kubernetes/install-kubernetes-1220/</link>
+        <link>http://localhost:1313/tech/kubernetes/install-kubernetes-1220/</link>
         <pubDate>Thu, 29 Dec 2022 00:00:00 +0000</pubDate>
         
-        <guid>https://blog.mletter.cn/tech/kubernetes/install-kubernetes-1220/</guid>
+        <guid>http://localhost:1313/tech/kubernetes/install-kubernetes-1220/</guid>
         <description>&lt;img src="https://img14.360buyimg.com/ddimg/jfs/t1/164569/9/40677/14419/65bc6e4cFa1d8c0c3/5ccf7e6caadc9b83.jpg" alt="Featured image of post kubernetes1.22.0单节点集群部署" /&gt;&lt;h2 id=&#34;kubernetes12210部署&#34;&gt;&lt;/h&gt;kubernetes1.22.10部署
 &lt;/h2&gt;&lt;h2 id=&#34;准备工作&#34;&gt;&lt;/h&gt;准备工作
 &lt;/h2&gt;&lt;ul&gt;
@@ -6092,10 +6092,10 @@ SystemAccount&lt;/li&gt;
         </item>
         <item>
         <title>利用Kubeadm进行多Master高可用部署</title>
-        <link>https://blog.mletter.cn/tech/kubernetes/install-kubernetes-ha/</link>
+        <link>http://localhost:1313/tech/kubernetes/install-kubernetes-ha/</link>
         <pubDate>Thu, 29 Dec 2022 00:00:00 +0000</pubDate>
         
-        <guid>https://blog.mletter.cn/tech/kubernetes/install-kubernetes-ha/</guid>
+        <guid>http://localhost:1313/tech/kubernetes/install-kubernetes-ha/</guid>
         <description>&lt;img src="https://img14.360buyimg.com/ddimg/jfs/t1/164569/9/40677/14419/65bc6e4cFa1d8c0c3/5ccf7e6caadc9b83.jpg" alt="Featured image of post 利用Kubeadm进行多Master高可用部署" /&gt;&lt;h1 id=&#34;利用kubeadm创建高可用集群&#34;&gt;&lt;/h&gt;利用Kubeadm创建高可用集群
 &lt;/h1&gt;&lt;ul&gt;
 &lt;li&gt;使用具有堆叠的控制平面节点。这种方法所需基础设施较少。etcd 成员和控制平面节点位于同一位置。&lt;/li&gt;
@@ -6483,10 +6483,10 @@ TODO: 删除前请注意备份您的数据。&lt;/p&gt;
         </item>
         <item>
         <title>Kubernetes低版本中内存泄漏问题</title>
-        <link>https://blog.mletter.cn/tech/kubernetes/memory-leakage-analysis/</link>
+        <link>http://localhost:1313/tech/kubernetes/memory-leakage-analysis/</link>
         <pubDate>Sat, 08 Oct 2022 00:00:00 +0000</pubDate>
         
-        <guid>https://blog.mletter.cn/tech/kubernetes/memory-leakage-analysis/</guid>
+        <guid>http://localhost:1313/tech/kubernetes/memory-leakage-analysis/</guid>
         <description>&lt;img src="https://img14.360buyimg.com/ddimg/jfs/t1/164569/9/40677/14419/65bc6e4cFa1d8c0c3/5ccf7e6caadc9b83.jpg" alt="Featured image of post Kubernetes低版本中内存泄漏问题" /&gt;&lt;h2 id=&#34;kubernetes中cgroup泄漏问题&#34;&gt;&lt;/h&gt;Kubernetes中Cgroup泄漏问题
 &lt;/h2&gt;&lt;p&gt;Cgorup文档: &lt;a class=&#34;link&#34; href=&#34;https://www.kernel.org/doc/Documentation/cgroup-v1/memory.txt&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;https://www.kernel.org/doc/Documentation/cgroup-v1/memory.txt&lt;/a&gt;&lt;/p&gt;
@@ -6615,10 +6615,10 @@ cgroup的kmem account特性在3.x 内核上有内存泄露问题，如果开启�
         </item>
         <item>
         <title>有关于Kubernetes中影响Pod调度的问题</title>
-        <link>https://blog.mletter.cn/tech/kubernetes/pod-scheduling-issues/</link>
+        <link>http://localhost:1313/tech/kubernetes/pod-scheduling-issues/</link>
         <pubDate>Tue, 21 Dec 2021 00:00:00 +0000</pubDate>
         
-        <guid>https://blog.mletter.cn/tech/kubernetes/pod-scheduling-issues/</guid>
+        <guid>http://localhost:1313/tech/kubernetes/pod-scheduling-issues/</guid>
         <description>&lt;img src="https://bj.bcebos.com/baidu-rmb-video-cover-1/2b6495c8749e3f4e4369e28cb50eeb87.png" alt="Featured image of post 有关于Kubernetes中影响Pod调度的问题" /&gt;&lt;blockquote&gt;
 &lt;p&gt;此问题引出的是生产环境中所有的资源完全充足,但是会出现更新Pod、删除Pod、新建Pod无法调度的情况。&lt;/p&gt;
 &lt;/blockquote&gt;
@@ -6703,10 +6703,10 @@ cgroup的kmem account特性在3.x 内核上有内存泄露问题，如果开启�
         </item>
         <item>
         <title>kubernetes-离线部署Skywallking</title>
-        <link>https://blog.mletter.cn/tech/kubernetes/skywallking/</link>
+        <link>http://localhost:1313/tech/kubernetes/skywallking/</link>
         <pubDate>Wed, 07 Apr 2021 00:00:00 +0000</pubDate>
         
-        <guid>https://blog.mletter.cn/tech/kubernetes/skywallking/</guid>
+        <guid>http://localhost:1313/tech/kubernetes/skywallking/</guid>
         <description>&lt;img src="https://img14.360buyimg.com/ddimg/jfs/t1/164569/9/40677/14419/65bc6e4cFa1d8c0c3/5ccf7e6caadc9b83.jpg" alt="Featured image of post kubernetes-离线部署Skywallking" /&gt;&lt;blockquote&gt;
 &lt;p&gt;注意：请各位记住把所有离线包全拿到本地…&lt;/p&gt;
 &lt;/blockquote&gt;
@@ -6953,10 +6953,10 @@ cgroup的kmem account特性在3.x 内核上有内存泄露问题，如果开启�
         </item>
         <item>
         <title>kubernetes-Service解读</title>
-        <link>https://blog.mletter.cn/tech/kubernetes/kube-service-read/</link>
+        <link>http://localhost:1313/tech/kubernetes/kube-service-read/</link>
         <pubDate>Mon, 13 Apr 2020 00:00:00 +0000</pubDate>
         
-        <guid>https://blog.mletter.cn/tech/kubernetes/kube-service-read/</guid>
+        <guid>http://localhost:1313/tech/kubernetes/kube-service-read/</guid>
         <description>&lt;img src="https://img14.360buyimg.com/ddimg/jfs/t1/164569/9/40677/14419/65bc6e4cFa1d8c0c3/5ccf7e6caadc9b83.jpg" alt="Featured image of post kubernetes-Service解读" /&gt;&lt;h1 id=&#34;service的简单理解&#34;&gt;&lt;/h&gt;Service的简单理解
 &lt;/h1&gt;&lt;p&gt;Service 是一种抽象的对象，它定义了一组 Pod 的逻辑集合和一个用于访问它们的策略，其实这个概念和微服务非常类似。一个 Serivce 下面包含的 Pod 集合是由 Label Selector 来决定的。&lt;/p&gt;
 &lt;p&gt;假如我们后端运行了3个副本，这些副本都是可以替代的，因为前端并不关心它们使用的是哪一个后端服务。尽管由于各种原因后端的 Pod 集合会发送变化，但是前端却不需要知道这些变化，也不需要自己用一个列表来记录这些后端的服务，Service 的这种抽象就可以帮我们达到这种解耦的目的。&lt;/p&gt;
@@ -7225,10 +7225,10 @@ cgroup的kmem account特性在3.x 内核上有内存泄露问题，如果开启�
         </item>
         <item>
         <title>基于kubernetes部署nacos集群</title>
-        <link>https://blog.mletter.cn/tech/kubernetes/install-nacos-cluster/</link>
+        <link>http://localhost:1313/tech/kubernetes/install-nacos-cluster/</link>
         <pubDate>Tue, 07 Apr 2020 00:00:00 +0000</pubDate>
         
-        <guid>https://blog.mletter.cn/tech/kubernetes/install-nacos-cluster/</guid>
+        <guid>http://localhost:1313/tech/kubernetes/install-nacos-cluster/</guid>
         <description>&lt;img src="https://img14.360buyimg.com/ddimg/jfs/t1/164569/9/40677/14419/65bc6e4cFa1d8c0c3/5ccf7e6caadc9b83.jpg" alt="Featured image of post 基于kubernetes部署nacos集群" /&gt;&lt;h2 id=&#34;简单安装使用&#34;&gt;&lt;/h&gt;简单安装使用
 &lt;/h2&gt;&lt;blockquote&gt;
 &lt;p&gt;最新版本应该是1.4.1&lt;/p&gt;
@@ -7348,10 +7348,10 @@ cgroup的kmem account特性在3.x 内核上有内存泄露问题，如果开启�
         </item>
         <item>
         <title>kubernetes-Scheduler简单详解</title>
-        <link>https://blog.mletter.cn/tech/kubernetes/kube-schdeduler/</link>
+        <link>http://localhost:1313/tech/kubernetes/kube-schdeduler/</link>
         <pubDate>Sat, 14 Mar 2020 00:00:00 +0000</pubDate>
         
-        <guid>https://blog.mletter.cn/tech/kubernetes/kube-schdeduler/</guid>
+        <guid>http://localhost:1313/tech/kubernetes/kube-schdeduler/</guid>
         <description>&lt;img src="https://img14.360buyimg.com/ddimg/jfs/t1/164569/9/40677/14419/65bc6e4cFa1d8c0c3/5ccf7e6caadc9b83.jpg" alt="Featured image of post kubernetes-Scheduler简单详解" /&gt;&lt;p&gt;&lt;code&gt;kube-scheduler&lt;/code&gt; 是 kubernetes 的核心组件之一，主要负责整个集群资源的调度功能，根据特定的调度算法和策略，将 Pod 调度到最优的工作节点上面去，从而更加合理、更加充分的利用集群的资源，这也是我们选择使用 kubernetes 一个非常重要的理由。如果一门新的技术不能帮助企业节约成本、提供效率，我相信是很难推进的。&lt;/p&gt;
 &lt;h2 id=&#34;调度流程&#34;&gt;&lt;/h&gt;调度流程
 &lt;/h2&gt;&lt;p&gt;&lt;code&gt;kube-scheduler&lt;/code&gt; 提供的默认调度器能够满足我们绝大多数的要求，我们前面和大家接触的示例也基本上用的默认的策略，都可以保证我们的 Pod 可以被分配到资源充足的节点上运行。但是在实际的线上项目中，可能我们自己会比 kubernetes 更加了解我们自己的应用，比如我们希望一个 Pod 只能运行在特定的几个节点上，或者这几个节点只能用来运行特定类型的应用，这就需要我们的调度器能够可控。&lt;/p&gt;

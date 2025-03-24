@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
     <channel>
         <title>Nginx on 太阳可以是蓝色</title>
-        <link>https://blog.mletter.cn/categories/nginx/</link>
+        <link>http://localhost:1313/categories/nginx/</link>
         <description>Recent content in Nginx on 太阳可以是蓝色</description>
         <generator>Hugo -- gohugo.io</generator>
         <language>en-us</language>
         <copyright>Live and learn. 🌱</copyright>
-        <lastBuildDate>Sun, 20 Mar 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://blog.mletter.cn/categories/nginx/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Sun, 20 Mar 2022 00:00:00 +0000</lastBuildDate><atom:link href="http://localhost:1313/categories/nginx/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>Nginx简单的常规优化</title>
-        <link>https://blog.mletter.cn/tech/nginx/nginx-optimization/</link>
+        <link>http://localhost:1313/tech/nginx/nginx-optimization/</link>
         <pubDate>Sun, 20 Mar 2022 00:00:00 +0000</pubDate>
         
-        <guid>https://blog.mletter.cn/tech/nginx/nginx-optimization/</guid>
+        <guid>http://localhost:1313/tech/nginx/nginx-optimization/</guid>
         <description>&lt;h2 id=&#34;配置nginx的work_process&#34;&gt;&lt;/h&gt;配置nginx的work_process
 &lt;/h2&gt;&lt;p&gt;查看当前服务的CPU核心数量&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;root@containerd-master1 ~&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;# grep processor /proc/cpuinfo | wc -l&lt;/span&gt;

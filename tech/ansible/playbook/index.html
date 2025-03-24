@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html lang="en-us" dir="ltr">
-    <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset='utf-8'>
+    <head><meta charset='utf-8'>
 <meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='主要讲解一些Playbook的简单用法'>
 <title>Playbook的一些简单使用</title>
 
-<link rel='canonical' href='http://localhost:1313/tech/ansible/playbook/'>
+<link rel='canonical' href='https://blog.mletter.cn/tech/ansible/playbook/'>
 
-<link rel="stylesheet" href="http://localhost:1313/scss/style.min.e738e6f23cab51289304e49575e3f627bf3a6f32f7b82812a9ab0c552ae38a78.css"><meta property='og:title' content='Playbook的一些简单使用'>
+<link rel="stylesheet" href="https://blog.mletter.cn/scss/style.min.e738e6f23cab51289304e49575e3f627bf3a6f32f7b82812a9ab0c552ae38a78.css"><meta property='og:title' content='Playbook的一些简单使用'>
 <meta property='og:description' content='主要讲解一些Playbook的简单用法'>
-<meta property='og:url' content='http://localhost:1313/tech/ansible/playbook/'>
+<meta property='og:url' content='https://blog.mletter.cn/tech/ansible/playbook/'>
 <meta property='og:site_name' content='太阳可以是蓝色'>
 <meta property='og:type' content='article'><meta property='article:section' content='Posts' /><meta property='article:tag' content='ansible' /><meta property='article:published_time' content='2022-04-01T00:00:00&#43;00:00'/><meta property='article:modified_time' content='2022-04-01T00:00:00&#43;00:00'/>
 <meta name="twitter:title" content="Playbook的一些简单使用">
@@ -28,7 +28,7 @@
 
 
 
-<script src="http://localhost:1313/view-image.min.js"></script>
+<script src="https://blog.mletter.cn/view-image.min.js"></script>
 
 <script>
   window.ViewImage && ViewImage.init('.article-content img');
@@ -47,6 +47,11 @@
 
 
 
+
+<script async src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+<script>
+    mermaid.init(undefined, '.language-mermaid');
+</script>
     </head>
     <body class="
     article-page
@@ -84,7 +89,7 @@
         
             
             <figure class="site-avatar">
-                <a href="http://localhost:1313/">
+                <a href="https://blog.mletter.cn/">
                 
                     <img src="https://img14.360buyimg.com/ddimg/jfs/t1/77628/23/27254/26944/66bc1a36Fc596606a/d912965b8bba22af.jpg" width="300" height="300" class="site-logo" loading="lazy" alt="Avatar">
                 
@@ -97,7 +102,7 @@
         
         
         <div class="site-meta">
-            <h1 class="site-name"><a href="http://localhost:1313/">太阳可以是蓝色</a></h1>
+            <h1 class="site-name"><a href="https://blog.mletter.cn/">太阳可以是蓝色</a></h1>
             <h2 class="site-description">Live and learn. 🌱</h2>
         </div>
     </header><ol class="menu" id="main-menu">
@@ -105,7 +110,7 @@
         
         
         <li >
-            <a href='http://localhost:1313/search/' >
+            <a href='https://blog.mletter.cn/search/' >
                 
                 
                 
@@ -124,7 +129,7 @@
         
         
         <li >
-            <a href='http://localhost:1313/' >
+            <a href='https://blog.mletter.cn/' >
                 
                 
                 
@@ -144,7 +149,7 @@
         
         
         <li >
-            <a href='http://localhost:1313/posts' >
+            <a href='https://blog.mletter.cn/posts' >
                 
                 
                 
@@ -156,7 +161,7 @@
         
         
         <li >
-            <a href='http://localhost:1313/archives' >
+            <a href='https://blog.mletter.cn/archives' >
                 
                 
                 
@@ -200,7 +205,7 @@
         
         
         <li >
-            <a href='http://localhost:1313/friends' >
+            <a href='https://blog.mletter.cn/friends' >
                 
                 
                 
@@ -219,7 +224,7 @@
         
         
         <li >
-            <a href='http://localhost:1313/about' >
+            <a href='https://blog.mletter.cn/about' >
                 
                 
                 
@@ -331,7 +336,7 @@
     
     <header class="article-category">
         
-            <a href="http://localhost:1313/categories/ansible/" >
+            <a href="https://blog.mletter.cn/categories/ansible/" >
                 Ansible
             </a>
         
@@ -340,7 +345,7 @@
 
     <div class="article-title-wrapper">
         <h2 class="article-title">
-            <a href="http://localhost:1313/tech/ansible/playbook/">Playbook的一些简单使用</a>
+            <a href="https://blog.mletter.cn/tech/ansible/playbook/">Playbook的一些简单使用</a>
         </h2>
     
         
@@ -462,7 +467,7 @@
 </span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">yum</span><span class="p">:</span><span class="w">   </span><span class="l">name=httpd state=installed</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">notify</span><span class="p">:</span><span class="w"> </span><span class="l">restart service </span><span class="w"> </span><span class="c"># 表示执行完yum操作以后需要执行handlers的操作</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;copy log&#34;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">copy</span><span class="p">:</span><span class="w"> </span><span class="l">src=http://localhost:1313/var/log/httpd/error_log   dest=/data</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">copy</span><span class="p">:</span><span class="w"> </span><span class="l">src=https://blog.mletter.cn/var/log/httpd/error_log   dest=/data</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">handlers</span><span class="p">:</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">restart service </span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">service</span><span class="p">:</span><span class="w"> </span><span class="l">name=httpd state=restarted</span><span class="w">
@@ -484,7 +489,7 @@
 </span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">yum</span><span class="p">:</span><span class="w">   </span><span class="l">name=httpd state=installed</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">notify</span><span class="p">:</span><span class="w"> </span><span class="l">restart service </span><span class="w"> </span><span class="c"># 表示执行完yum操作以后需要执行handlers的操作</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;copy log&#34;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">copy</span><span class="p">:</span><span class="w"> </span><span class="l">src=http://localhost:1313/var/log/httpd/error_log   dest=/data</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">copy</span><span class="p">:</span><span class="w"> </span><span class="l">src=https://blog.mletter.cn/var/log/httpd/error_log   dest=/data</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">handlers</span><span class="p">:</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">restart service </span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">service</span><span class="p">:</span><span class="w"> </span><span class="l">name=httpd state=restarted</span><span class="w">
@@ -606,7 +611,7 @@
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;Install Nginx&#34;</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">yum</span><span class="p">:</span><span class="w"> </span><span class="l">name=nginx </span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">Config conf</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">template</span><span class="p">:</span><span class="w"> </span><span class="l">src=http://localhost:1313/templates/nginx.conf.j2 dest=/etc/nginx/nginx.conf</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">template</span><span class="p">:</span><span class="w"> </span><span class="l">src=https://blog.mletter.cn/templates/nginx.conf.j2 dest=/etc/nginx/nginx.conf</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">when</span><span class="p">:</span><span class="w"> </span><span class="l">ansible_distribution == &#34;CentOS&#34;</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">start nginx</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">service</span><span class="p">:</span><span class="w"> </span><span class="l">name=nginx state=started enabled=yes</span><span class="w">
@@ -645,7 +650,7 @@
 </span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="m">83</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">tasks</span><span class="p">:</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">copy template</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">template</span><span class="p">:</span><span class="w"> </span><span class="l">src=http://localhost:1313/root/templates/for.j2 dest=/data/for.conf</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">template</span><span class="p">:</span><span class="w"> </span><span class="l">src=https://blog.mletter.cn/root/templates/for.j2 dest=/data/for.conf</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c"># 或者</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nn">---</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span>- <span class="nt">hosts</span><span class="p">:</span><span class="w"> </span><span class="l">test</span><span class="w">
@@ -657,7 +662,7 @@
 </span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="l">listen:83</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">tasks</span><span class="p">:</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">copy template</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">template</span><span class="p">:</span><span class="w"> </span><span class="l">src=http://localhost:1313/root/templates/for.j2 dest=/data/for.conf</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">template</span><span class="p">:</span><span class="w"> </span><span class="l">src=https://blog.mletter.cn/root/templates/for.j2 dest=/data/for.conf</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c"># 或者</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nn">---</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span>- <span class="nt">hosts</span><span class="p">:</span><span class="w"> </span><span class="l">test</span><span class="w">
@@ -670,7 +675,7 @@
 </span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">rootdir</span><span class="p">:</span><span class="w"> </span><span class="l">/root/     </span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">tasks</span><span class="p">:</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">copy template</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">template</span><span class="p">:</span><span class="w"> </span><span class="l">src=http://localhost:1313/root/templates/for.j2 desc=/data/for.conf</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">template</span><span class="p">:</span><span class="w"> </span><span class="l">src=https://blog.mletter.cn/root/templates/for.j2 desc=/data/for.conf</span><span class="w">
 </span></span></span></code></pre></div><blockquote>
 <p>创建一个模板文件</p>
 </blockquote>
@@ -705,11 +710,12 @@
 </section>
 
 
+
     <footer class="article-footer">
     
     <section class="article-tags">
         
-            <a href="http://localhost:1313/tags/ansible/">Ansible</a>
+            <a href="https://blog.mletter.cn/tags/ansible/">Ansible</a>
         
     </section>
 
@@ -743,7 +749,7 @@
             
                 
 <article class="">
-    <a href="http://localhost:1313/tech/ansible/ansible-task-controller/">
+    <a href="https://blog.mletter.cn/tech/ansible/ansible-task-controller/">
         
         
 
@@ -756,7 +762,7 @@
             
                 
 <article class="">
-    <a href="http://localhost:1313/tech/ansible/ansible-varbles/">
+    <a href="https://blog.mletter.cn/tech/ansible/ansible-varbles/">
         
         
 
@@ -921,7 +927,7 @@
                 src="https://lf9-cdn-tos.bytecdntp.com/cdn/expire-1-M/vibrant.js/1.0.0/Vibrant.min.js"crossorigin="anonymous"
                 
                 >
-            </script><script type="text/javascript" src="http://localhost:1313/ts/main.js" defer></script>
+            </script><script type="text/javascript" src="https://blog.mletter.cn/ts/main.js" defer></script>
 <script>
     (function () {
         const customFont = document.createElement('link');

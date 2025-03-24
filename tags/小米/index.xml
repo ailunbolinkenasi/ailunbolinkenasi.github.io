@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
     <channel>
         <title>小米 on 太阳可以是蓝色</title>
-        <link>http://localhost:1313/tags/%E5%B0%8F%E7%B1%B3/</link>
+        <link>https://blog.mletter.cn/tags/%E5%B0%8F%E7%B1%B3/</link>
         <description>Recent content in 小米 on 太阳可以是蓝色</description>
         <generator>Hugo -- gohugo.io</generator>
         <language>en-us</language>
         <copyright>Live and learn. 🌱</copyright>
-        <lastBuildDate>Sat, 16 Nov 2024 00:00:00 +0000</lastBuildDate><atom:link href="http://localhost:1313/tags/%E5%B0%8F%E7%B1%B3/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Sat, 16 Nov 2024 00:00:00 +0000</lastBuildDate><atom:link href="https://blog.mletter.cn/tags/%E5%B0%8F%E7%B1%B3/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>小米刷入PixelExperience指南</title>
-        <link>http://localhost:1313/tech/flash/xiaomi-flash/</link>
+        <link>https://blog.mletter.cn/tech/flash/xiaomi-flash/</link>
         <pubDate>Sat, 16 Nov 2024 00:00:00 +0000</pubDate>
         
-        <guid>http://localhost:1313/tech/flash/xiaomi-flash/</guid>
+        <guid>https://blog.mletter.cn/tech/flash/xiaomi-flash/</guid>
         <description>&lt;img src="https://img10.360buyimg.com/ddimg/jfs/t1/136341/28/50928/16917/67396488Fdfa333bf/98aaaa3b10a88b53.jpg" alt="Featured image of post 小米刷入PixelExperience指南" /&gt;&lt;p&gt;最近，成功收购了一台安卓之光小米&lt;code&gt;11 Ultra&lt;/code&gt;，我的第一个计划，就是给它刷上类原生系统，开启一段全新的折腾之旅。&lt;/p&gt;
 &lt;blockquote&gt;
 &lt;p&gt;什么MIUI、HyperOS、三方改、都一边凉快去吧。&lt;/p&gt;

@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
     <channel>
         <title>Go on 太阳可以是蓝色</title>
-        <link>http://localhost:1313/tags/go/</link>
+        <link>https://blog.mletter.cn/tags/go/</link>
         <description>Recent content in Go on 太阳可以是蓝色</description>
         <generator>Hugo -- gohugo.io</generator>
         <language>en-us</language>
         <copyright>Live and learn. 🌱</copyright>
-        <lastBuildDate>Sun, 20 Oct 2024 00:00:00 +0000</lastBuildDate><atom:link href="http://localhost:1313/tags/go/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Sun, 20 Oct 2024 00:00:00 +0000</lastBuildDate><atom:link href="https://blog.mletter.cn/tags/go/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>维扣图元-专属你的拍照摄影社区</title>
-        <link>http://localhost:1313/project/gin-wecho/</link>
+        <link>https://blog.mletter.cn/project/gin-wecho/</link>
         <pubDate>Sun, 20 Oct 2024 00:00:00 +0000</pubDate>
         
-        <guid>http://localhost:1313/project/gin-wecho/</guid>
+        <guid>https://blog.mletter.cn/project/gin-wecho/</guid>
         <description>&lt;img src="https://ydschool-online.nosdn.127.net/tiku/f291c1c8d5dccacd2b95ef4fdc68d07cefd0e92562794e5bcdd21a9729b3455d.jpg" alt="Featured image of post 维扣图元-专属你的拍照摄影社区" /&gt;&lt;h2 id=&#34;项目简介&#34;&gt;&lt;/h&gt;项目简介
 &lt;/h2&gt;&lt;ul&gt;
 &lt;li&gt;“维扣图元” 是一个充满创意与活力的拍照摄影社区开源项目。旨在为摄影爱好者们提供一个展示作品、交流心得、学习成长的平台。无论你是专业摄影师还是业余爱好者，都能在这里找到属于自己的交流小世界。&lt;/li&gt;

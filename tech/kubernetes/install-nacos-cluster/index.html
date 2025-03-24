@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html lang="en-us" dir="ltr">
-    <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset='utf-8'>
+    <head><meta charset='utf-8'>
 <meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='kubernetes持久化部署nacos集群演示'>
 <title>基于kubernetes部署nacos集群</title>
 
-<link rel='canonical' href='http://localhost:1313/tech/kubernetes/install-nacos-cluster/'>
+<link rel='canonical' href='https://blog.mletter.cn/tech/kubernetes/install-nacos-cluster/'>
 
-<link rel="stylesheet" href="http://localhost:1313/scss/style.min.e738e6f23cab51289304e49575e3f627bf3a6f32f7b82812a9ab0c552ae38a78.css"><meta property='og:title' content='基于kubernetes部署nacos集群'>
+<link rel="stylesheet" href="https://blog.mletter.cn/scss/style.min.e738e6f23cab51289304e49575e3f627bf3a6f32f7b82812a9ab0c552ae38a78.css"><meta property='og:title' content='基于kubernetes部署nacos集群'>
 <meta property='og:description' content='kubernetes持久化部署nacos集群演示'>
-<meta property='og:url' content='http://localhost:1313/tech/kubernetes/install-nacos-cluster/'>
+<meta property='og:url' content='https://blog.mletter.cn/tech/kubernetes/install-nacos-cluster/'>
 <meta property='og:site_name' content='太阳可以是蓝色'>
 <meta property='og:type' content='article'><meta property='article:section' content='Posts' /><meta property='article:tag' content='kubernetes' /><meta property='article:published_time' content='2020-04-07T00:00:00&#43;00:00'/><meta property='article:modified_time' content='2020-04-07T00:00:00&#43;00:00'/><meta property='og:image' content='https://img14.360buyimg.com/ddimg/jfs/t1/164569/9/40677/14419/65bc6e4cFa1d8c0c3/5ccf7e6caadc9b83.jpg' />
 <meta name="twitter:title" content="基于kubernetes部署nacos集群">
@@ -29,7 +29,7 @@
 
 
 
-<script src="http://localhost:1313/view-image.min.js"></script>
+<script src="https://blog.mletter.cn/view-image.min.js"></script>
 
 <script>
   window.ViewImage && ViewImage.init('.article-content img');
@@ -48,6 +48,11 @@
 
 
 
+
+<script async src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+<script>
+    mermaid.init(undefined, '.language-mermaid');
+</script>
     </head>
     <body class="
     article-page
@@ -85,7 +90,7 @@
         
             
             <figure class="site-avatar">
-                <a href="http://localhost:1313/">
+                <a href="https://blog.mletter.cn/">
                 
                     <img src="https://img14.360buyimg.com/ddimg/jfs/t1/77628/23/27254/26944/66bc1a36Fc596606a/d912965b8bba22af.jpg" width="300" height="300" class="site-logo" loading="lazy" alt="Avatar">
                 
@@ -98,7 +103,7 @@
         
         
         <div class="site-meta">
-            <h1 class="site-name"><a href="http://localhost:1313/">太阳可以是蓝色</a></h1>
+            <h1 class="site-name"><a href="https://blog.mletter.cn/">太阳可以是蓝色</a></h1>
             <h2 class="site-description">Live and learn. 🌱</h2>
         </div>
     </header><ol class="menu" id="main-menu">
@@ -106,7 +111,7 @@
         
         
         <li >
-            <a href='http://localhost:1313/search/' >
+            <a href='https://blog.mletter.cn/search/' >
                 
                 
                 
@@ -125,7 +130,7 @@
         
         
         <li >
-            <a href='http://localhost:1313/' >
+            <a href='https://blog.mletter.cn/' >
                 
                 
                 
@@ -145,7 +150,7 @@
         
         
         <li >
-            <a href='http://localhost:1313/posts' >
+            <a href='https://blog.mletter.cn/posts' >
                 
                 
                 
@@ -157,7 +162,7 @@
         
         
         <li >
-            <a href='http://localhost:1313/archives' >
+            <a href='https://blog.mletter.cn/archives' >
                 
                 
                 
@@ -201,7 +206,7 @@
         
         
         <li >
-            <a href='http://localhost:1313/friends' >
+            <a href='https://blog.mletter.cn/friends' >
                 
                 
                 
@@ -220,7 +225,7 @@
         
         
         <li >
-            <a href='http://localhost:1313/about' >
+            <a href='https://blog.mletter.cn/about' >
                 
                 
                 
@@ -312,7 +317,7 @@
     <article class="has-image main-article">
     <header class="article-header">
         <div class="article-image">
-            <a href="http://localhost:1313/tech/kubernetes/install-nacos-cluster/">
+            <a href="https://blog.mletter.cn/tech/kubernetes/install-nacos-cluster/">
                 
                     <img src="https://img14.360buyimg.com/ddimg/jfs/t1/164569/9/40677/14419/65bc6e4cFa1d8c0c3/5ccf7e6caadc9b83.jpg" loading="lazy" alt="Featured image of post 基于kubernetes部署nacos集群" />
                 
@@ -324,7 +329,7 @@
     
     <header class="article-category">
         
-            <a href="http://localhost:1313/categories/kubernetes/" >
+            <a href="https://blog.mletter.cn/categories/kubernetes/" >
                 Kubernetes
             </a>
         
@@ -333,7 +338,7 @@
 
     <div class="article-title-wrapper">
         <h2 class="article-title">
-            <a href="http://localhost:1313/tech/kubernetes/install-nacos-cluster/">基于kubernetes部署nacos集群</a>
+            <a href="https://blog.mletter.cn/tech/kubernetes/install-nacos-cluster/">基于kubernetes部署nacos集群</a>
         </h2>
     
         
@@ -508,11 +513,12 @@
 </section>
 
 
+
     <footer class="article-footer">
     
     <section class="article-tags">
         
-            <a href="http://localhost:1313/tags/kubernetes/">Kubernetes</a>
+            <a href="https://blog.mletter.cn/tags/kubernetes/">Kubernetes</a>
         
     </section>
 
@@ -546,7 +552,7 @@
             
                 
 <article class="has-image">
-    <a href="http://localhost:1313/tech/kubernetes/sealos/">
+    <a href="https://blog.mletter.cn/tech/kubernetes/sealos/">
         
         
             <div class="article-image">
@@ -565,7 +571,7 @@
             
                 
 <article class="has-image">
-    <a href="http://localhost:1313/tech/kubernetes/install-efk/">
+    <a href="https://blog.mletter.cn/tech/kubernetes/install-efk/">
         
         
             <div class="article-image">
@@ -584,7 +590,7 @@
             
                 
 <article class="has-image">
-    <a href="http://localhost:1313/tech/kubernetes/architectural-design/">
+    <a href="https://blog.mletter.cn/tech/kubernetes/architectural-design/">
         
         
             <div class="article-image">
@@ -603,7 +609,7 @@
             
                 
 <article class="has-image">
-    <a href="http://localhost:1313/tech/kubernetes/openebs/">
+    <a href="https://blog.mletter.cn/tech/kubernetes/openebs/">
         
         
             <div class="article-image">
@@ -622,7 +628,7 @@
             
                 
 <article class="has-image">
-    <a href="http://localhost:1313/tech/kubernetes/traefik/">
+    <a href="https://blog.mletter.cn/tech/kubernetes/traefik/">
         
         
             <div class="article-image">
@@ -793,7 +799,7 @@
                 src="https://lf9-cdn-tos.bytecdntp.com/cdn/expire-1-M/vibrant.js/1.0.0/Vibrant.min.js"crossorigin="anonymous"
                 
                 >
-            </script><script type="text/javascript" src="http://localhost:1313/ts/main.js" defer></script>
+            </script><script type="text/javascript" src="https://blog.mletter.cn/ts/main.js" defer></script>
 <script>
     (function () {
         const customFont = document.createElement('link');

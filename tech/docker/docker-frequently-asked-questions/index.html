@@ -6,7 +6,7 @@
 
 <link rel='canonical' href='https://blog.mletter.cn/tech/docker/docker-frequently-asked-questions/'>
 
-<link rel="stylesheet" href="https://blog.mletter.cn/scss/style.min.e738e6f23cab51289304e49575e3f627bf3a6f32f7b82812a9ab0c552ae38a78.css"><meta property='og:title' content='Docker常见的几个问题处理'>
+<link rel="stylesheet" href="https://blog.mletter.cn/scss/style.min.2cbc22726b422f9f13736f86d63fc4586e66e6cd6e9d7213ab3ccaeb176299b7.css"><meta property='og:title' content='Docker常见的几个问题处理'>
 <meta property='og:description' content='说几个docker常见的解决方法和思路'>
 <meta property='og:url' content='https://blog.mletter.cn/tech/docker/docker-frequently-asked-questions/'>
 <meta property='og:site_name' content='太阳可以是蓝色'>
@@ -396,8 +396,7 @@
     <h2 id="docker迁移存储目录"></h>Docker迁移存储目录
 </h2><p><strong>问题起因</strong> 由于公司最开始的服务器在<code>/var/lib/docker</code>没有挂载存储,容量只有40G,导致服务器磁盘用满。现将原有的Docker目录数据进行迁移。</p>
 <blockquote>
-<p>请各位Kubernetes用户不要操作,因为容器编排不支持!</p>
-</blockquote>
+<p>请各位Kubernetes用户不要操作,因为容器编排不支持!</p></blockquote>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 启动容器发现如下报错</span>
 </span></span><span class="line"><span class="cl">ERROR：cannot  create temporary directory!
 </span></span></code></pre></div><h3 id="方法一-软连接方式"></h>方法一: 软连接方式
@@ -417,8 +416,7 @@
 </span></span><span class="line"><span class="cl">systemctl start docker
 </span></span></code></pre></div><h3 id="方法二-修改docker配置文件"></h>方法二: 修改docker配置文件
 </h3><blockquote>
-<p>注意: 这是一个旧版本<code>docker</code>修改存储目录的方式.</p>
-</blockquote>
+<p>注意: 这是一个旧版本<code>docker</code>修改存储目录的方式.</p></blockquote>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-json" data-lang="json"><span class="line"><span class="cl"><span class="err">vim</span> <span class="err">/etc/docker/daemon.json</span>
 </span></span><span class="line"><span class="cl"><span class="p">{</span>
 </span></span><span class="line"><span class="cl">    <span class="nt">&#34;graph&#34;</span><span class="p">:</span> <span class="p">[</span> <span class="s2">&#34;/data/docker/&#34;</span> <span class="p">]</span>  <span class="err">#</span> <span class="err">更改docker镜像的存储目录</span>
@@ -473,13 +471,11 @@
 </span></span><span class="line"><span class="cl">/dev/sda1       <span class="m">51200</span>    <span class="m">39</span>  <span class="m">51161</span>    1% /boot
 </span></span><span class="line"><span class="cl">/tmp/1m           <span class="m">128</span>   <span class="m">128</span>      <span class="m">0</span>  100% /app/logs
 </span></span></code></pre></div><blockquote>
-<p>如果不知道小文件如何查找</p>
-</blockquote>
+<p>如果不知道小文件如何查找</p></blockquote>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 查找系统中 目录大小大于1M（目录一般大小为4K，所以目录要是大了那么文件必然很多）</span>
 </span></span><span class="line"><span class="cl">find / -size +4k -type d <span class="p">|</span>xargs ls -ldhi
 </span></span></code></pre></div><blockquote>
-<p>如果是硬盘空间满了的话</p>
-</blockquote>
+<p>如果是硬盘空间满了的话</p></blockquote>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 查看磁盘使用容量</span>
 </span></span><span class="line"><span class="cl">df -h   
 </span></span><span class="line"><span class="cl"><span class="c1"># 查看到具体哪个目录满了,然后配合 du -sh命令解决即可</span>
@@ -489,8 +485,7 @@
 </span></span><span class="line"><span class="cl">/dev/sda1       190M   40M  141M  22% /boot
 </span></span></code></pre></div><h2 id="优雅地重启docker"></h>优雅地重启Docker
 </h2><blockquote>
-<p>不停止重启,重启docker是一件多么美妙的事情!</p>
-</blockquote>
+<p>不停止重启,重启docker是一件多么美妙的事情!</p></blockquote>
 <p>当 <code>Docker</code> 守护程序终止时，它会关闭正在运行的容器。从 <code>Docker-ce 1.12</code> 开始，可以在配置文件中添加 <code>live-restore</code> 参数，以便在守护程序变得不可用时容器保持运行。需要注意的是 <code>Windows</code> 平台暂时还是不支持该参数的配置。</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-json" data-lang="json"><span class="line"><span class="cl"><span class="err">vim</span> <span class="err">/etc/docker/daemon.json</span>
 </span></span><span class="line"><span class="cl"><span class="p">{</span>
@@ -509,8 +504,7 @@
 </span></span><span class="line"><span class="cl">e58a220f03c3   nginx     <span class="s2">&#34;/docker-entrypoint.…&#34;</span>   <span class="m">7</span> minutes ago   Up About a minute   80/tcp    web
 </span></span></code></pre></div><h3 id="live-restore的限制"></h>live-restore的限制
 </h3><blockquote>
-<p>当前的Live Restore特性可以在进行Daemon维护，或者在Daemon发生问题导致不可用的情况，减少容器的停机时间，不过其也有一定的限制。</p>
-</blockquote>
+<p>当前的Live Restore特性可以在进行Daemon维护，或者在Daemon发生问题导致不可用的情况，减少容器的停机时间，不过其也有一定的限制。</p></blockquote>
 <ol>
 <li>Docker版本升级限制
 Live Restore仅支持Docker补丁版本升级时可用，也就是 YY.MM.x 最后一位发生变化的升级，而不支持大版本的升级。在进行大版本升级后，可能会导致Daemon无法重新连接到运行中容器的问题，这时候需要手动停止运行的容器。</li>

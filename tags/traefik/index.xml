@@ -101,8 +101,7 @@
 &lt;/ul&gt;
 &lt;h2 id=&#34;部署traefik&#34;&gt;&lt;/h&gt;部署Traefik
 &lt;/h2&gt;&lt;blockquote&gt;
-&lt;p&gt;Traefik的配置可以使用两种方式：&lt;code&gt;静态配置&lt;/code&gt;和&lt;code&gt;动态配置&lt;/code&gt;&lt;/p&gt;
-&lt;/blockquote&gt;
+&lt;p&gt;Traefik的配置可以使用两种方式：&lt;code&gt;静态配置&lt;/code&gt;和&lt;code&gt;动态配置&lt;/code&gt;&lt;/p&gt;&lt;/blockquote&gt;
 &lt;ul&gt;
 &lt;li&gt;静态配置：在 Traefik 中定义静态配置选项有三种不同的、互斥的即你只能同时使用一种）方式。
 &lt;ul&gt;
@@ -427,8 +426,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;    &lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;middlewares&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;    &lt;/span&gt;- &lt;span class=&#34;nt&#34;&gt;name&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;l&#34;&gt;test-redirectscheme&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;c&#34;&gt;# 指定添加中间件的名称&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;blockquote&gt;
-&lt;p&gt;如果你有具体需求的话请前往官网文档查看更多中间件的适用方法。&lt;/p&gt;
-&lt;/blockquote&gt;
+&lt;p&gt;如果你有具体需求的话请前往官网文档查看更多中间件的适用方法。&lt;/p&gt;&lt;/blockquote&gt;
 &lt;h2 id=&#34;traefik-pilot&#34;&gt;&lt;/h&gt;Traefik Pilot
 &lt;/h2&gt;&lt;p&gt;虽然 Traefik 已经默认实现了很多中间件，可以满足大部分我们日常的需求，但是在实际工作中，用户仍然还是有自定义中间件的需求，这就 &lt;a class=&#34;link&#34; href=&#34;https://pilot.traefik.io/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;Traefik Pilot&lt;/a&gt; 的功能了。&lt;/p&gt;
@@ -440,8 +438,7 @@
 &lt;/ul&gt;
 &lt;p&gt;在 Traefik 可以使用 &lt;code&gt;Traefik Pilot&lt;/code&gt; 的功能之前，必须先连接它们，我们只需要对 Traefik 的静态配置进行少量更改即可。&lt;/p&gt;
 &lt;blockquote&gt;
-&lt;p&gt;注意: Traefik 代理必须要能访问互联网才能连接到 &lt;code&gt;Traefik Pilot&lt;/code&gt;，通过 HTTPS 在 443 端口上建立连接。 这个我就不演示了，我的虚拟机木有外网。&lt;/p&gt;
-&lt;/blockquote&gt;
+&lt;p&gt;注意: Traefik 代理必须要能访问互联网才能连接到 &lt;code&gt;Traefik Pilot&lt;/code&gt;，通过 HTTPS 在 443 端口上建立连接。 这个我就不演示了，我的虚拟机木有外网。&lt;/p&gt;&lt;/blockquote&gt;
 &lt;h2 id=&#34;灰度发布&#34;&gt;&lt;/h&gt;灰度发布
 &lt;/h2&gt;&lt;p&gt;跟Ingress-nginx是一样的就不多介绍灰度发布是啥了&lt;/p&gt;
 &lt;h3 id=&#34;基于权重的轮询&#34;&gt;&lt;/h&gt;基于权重的轮询

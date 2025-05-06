@@ -215,8 +215,7 @@
         <description>&lt;h2 id=&#34;docker迁移存储目录&#34;&gt;&lt;/h&gt;Docker迁移存储目录
 &lt;/h2&gt;&lt;p&gt;&lt;strong&gt;问题起因&lt;/strong&gt; 由于公司最开始的服务器在&lt;code&gt;/var/lib/docker&lt;/code&gt;没有挂载存储,容量只有40G,导致服务器磁盘用满。现将原有的Docker目录数据进行迁移。&lt;/p&gt;
 &lt;blockquote&gt;
-&lt;p&gt;请各位Kubernetes用户不要操作,因为容器编排不支持!&lt;/p&gt;
-&lt;/blockquote&gt;
+&lt;p&gt;请各位Kubernetes用户不要操作,因为容器编排不支持!&lt;/p&gt;&lt;/blockquote&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 启动容器发现如下报错&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;ERROR：cannot  create temporary directory!
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;方法一-软连接方式&#34;&gt;&lt;/h&gt;方法一: 软连接方式
@@ -236,8 +235,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;systemctl start docker
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;方法二-修改docker配置文件&#34;&gt;&lt;/h&gt;方法二: 修改docker配置文件
 &lt;/h3&gt;&lt;blockquote&gt;
-&lt;p&gt;注意: 这是一个旧版本&lt;code&gt;docker&lt;/code&gt;修改存储目录的方式.&lt;/p&gt;
-&lt;/blockquote&gt;
+&lt;p&gt;注意: 这是一个旧版本&lt;code&gt;docker&lt;/code&gt;修改存储目录的方式.&lt;/p&gt;&lt;/blockquote&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-json&#34; data-lang=&#34;json&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;err&#34;&gt;vim&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;/etc/docker/daemon.json&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;nt&#34;&gt;&amp;#34;graph&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;[&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;/data/docker/&amp;#34;&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;]&lt;/span&gt;  &lt;span class=&#34;err&#34;&gt;#&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;更改docker镜像的存储目录&lt;/span&gt;
@@ -292,13 +290,11 @@
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;/dev/sda1       &lt;span class=&#34;m&#34;&gt;51200&lt;/span&gt;    &lt;span class=&#34;m&#34;&gt;39&lt;/span&gt;  &lt;span class=&#34;m&#34;&gt;51161&lt;/span&gt;    1% /boot
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;/tmp/1m           &lt;span class=&#34;m&#34;&gt;128&lt;/span&gt;   &lt;span class=&#34;m&#34;&gt;128&lt;/span&gt;      &lt;span class=&#34;m&#34;&gt;0&lt;/span&gt;  100% /app/logs
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;blockquote&gt;
-&lt;p&gt;如果不知道小文件如何查找&lt;/p&gt;
-&lt;/blockquote&gt;
+&lt;p&gt;如果不知道小文件如何查找&lt;/p&gt;&lt;/blockquote&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 查找系统中 目录大小大于1M（目录一般大小为4K，所以目录要是大了那么文件必然很多）&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;find / -size +4k -type d &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;xargs ls -ldhi
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;blockquote&gt;
-&lt;p&gt;如果是硬盘空间满了的话&lt;/p&gt;
-&lt;/blockquote&gt;
+&lt;p&gt;如果是硬盘空间满了的话&lt;/p&gt;&lt;/blockquote&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 查看磁盘使用容量&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;df -h   
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 查看到具体哪个目录满了,然后配合 du -sh命令解决即可&lt;/span&gt;
@@ -308,8 +304,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;/dev/sda1       190M   40M  141M  22% /boot
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;优雅地重启docker&#34;&gt;&lt;/h&gt;优雅地重启Docker
 &lt;/h2&gt;&lt;blockquote&gt;
-&lt;p&gt;不停止重启,重启docker是一件多么美妙的事情!&lt;/p&gt;
-&lt;/blockquote&gt;
+&lt;p&gt;不停止重启,重启docker是一件多么美妙的事情!&lt;/p&gt;&lt;/blockquote&gt;
 &lt;p&gt;当 &lt;code&gt;Docker&lt;/code&gt; 守护程序终止时，它会关闭正在运行的容器。从 &lt;code&gt;Docker-ce 1.12&lt;/code&gt; 开始，可以在配置文件中添加 &lt;code&gt;live-restore&lt;/code&gt; 参数，以便在守护程序变得不可用时容器保持运行。需要注意的是 &lt;code&gt;Windows&lt;/code&gt; 平台暂时还是不支持该参数的配置。&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-json&#34; data-lang=&#34;json&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;err&#34;&gt;vim&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;/etc/docker/daemon.json&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
@@ -328,8 +323,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;e58a220f03c3   nginx     &lt;span class=&#34;s2&#34;&gt;&amp;#34;/docker-entrypoint.…&amp;#34;&lt;/span&gt;   &lt;span class=&#34;m&#34;&gt;7&lt;/span&gt; minutes ago   Up About a minute   80/tcp    web
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;live-restore的限制&#34;&gt;&lt;/h&gt;live-restore的限制
 &lt;/h3&gt;&lt;blockquote&gt;
-&lt;p&gt;当前的Live Restore特性可以在进行Daemon维护，或者在Daemon发生问题导致不可用的情况，减少容器的停机时间，不过其也有一定的限制。&lt;/p&gt;
-&lt;/blockquote&gt;
+&lt;p&gt;当前的Live Restore特性可以在进行Daemon维护，或者在Daemon发生问题导致不可用的情况，减少容器的停机时间，不过其也有一定的限制。&lt;/p&gt;&lt;/blockquote&gt;
 &lt;ol&gt;
 &lt;li&gt;Docker版本升级限制
 Live Restore仅支持Docker补丁版本升级时可用，也就是 YY.MM.x 最后一位发生变化的升级，而不支持大版本的升级。在进行大版本升级后，可能会导致Daemon无法重新连接到运行中容器的问题，这时候需要手动停止运行的容器。&lt;/li&gt;
@@ -450,8 +444,7 @@ Live Restore只是独立Docker引擎的特性，而Swarm的服务是由Swarm管�
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;dockershim&#34;&gt;&lt;/h&gt;Dockershim
 &lt;/h2&gt;&lt;p&gt;&lt;code&gt;Dockershim&lt;/code&gt; 作用：把外部收到的请求转化成 &lt;code&gt;docker daemon&lt;/code&gt; 能听懂的请求，让 Docker Daemon 执行创建、删除等容器操作。&lt;/p&gt;
 &lt;blockquote&gt;
-&lt;p&gt;具体看一下&lt;code&gt;kubelet&lt;/code&gt;是怎样创建容器的&lt;/p&gt;
-&lt;/blockquote&gt;
+&lt;p&gt;具体看一下&lt;code&gt;kubelet&lt;/code&gt;是怎样创建容器的&lt;/p&gt;&lt;/blockquote&gt;
 &lt;ol&gt;
 &lt;li&gt;Kubelet 通过 CRI 接口（gRPC）调用&lt;code&gt;dockershim&lt;/code&gt;,请求创建一个容器。CRI 即容器运行时接口，这一步中，Kubelet 可以视作一个简单的&lt;code&gt;CRI Client&lt;/code&gt;，而 dockershim 就是接收请求的 Server。目前&lt;code&gt;dockershim&lt;/code&gt;是内嵌在 Kubelet 中的，所以接收调用就是 Kubelet 进程。&lt;/li&gt;
 &lt;li&gt;&lt;code&gt;dockershim&lt;/code&gt;收到请求后，转化成 docker daemon的请求，发到docker daemon 上请求创建一个容器。&lt;/li&gt;

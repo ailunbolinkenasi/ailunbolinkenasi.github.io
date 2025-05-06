@@ -6,7 +6,7 @@
 
 <link rel='canonical' href='https://blog.mletter.cn/tech/redis/install-redis-cluster/'>
 
-<link rel="stylesheet" href="https://blog.mletter.cn/scss/style.min.e738e6f23cab51289304e49575e3f627bf3a6f32f7b82812a9ab0c552ae38a78.css"><meta property='og:title' content='Redis集群搭建'>
+<link rel="stylesheet" href="https://blog.mletter.cn/scss/style.min.2cbc22726b422f9f13736f86d63fc4586e66e6cd6e9d7213ab3ccaeb176299b7.css"><meta property='og:title' content='Redis集群搭建'>
 <meta property='og:description' content='Redis集群搭建方案'>
 <meta property='og:url' content='https://blog.mletter.cn/tech/redis/install-redis-cluster/'>
 <meta property='og:site_name' content='太阳可以是蓝色'>
@@ -421,8 +421,7 @@
 </ul>
 <h3 id="编辑配置文件"></h>编辑配置文件
 </h3><blockquote>
-<p>此文件内容为集群模式最小配置文件内容.</p>
-</blockquote>
+<p>此文件内容为集群模式最小配置文件内容.</p></blockquote>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">vim 7001/redis.conf <span class="c1"># 以此类推,记得更改端口号和日志文件</span>
 </span></span><span class="line"><span class="cl"><span class="nb">bind</span> 127.0.0.1 <span class="c1"># IP可更换为内网IP</span>
 </span></span><span class="line"><span class="cl">port <span class="m">7001</span>
@@ -449,8 +448,7 @@
 </ul>
 <h3 id="启动集群"></h>启动集群
 </h3><blockquote>
-<p>自己建一个启动脚本,要不然手动启动太麻烦了</p>
-</blockquote>
+<p>自己建一个启动脚本,要不然手动启动太麻烦了</p></blockquote>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="cp">#!/bin/bash
 </span></span></span><span class="line"><span class="cl"><span class="cp"></span>redis-server /usr/local/redis-cluster/7001/redis.conf
 </span></span><span class="line"><span class="cl">redis-server /usr/local/redis-cluster/7002/redis.conf
@@ -473,8 +471,7 @@
 <p>对于Redis版本3或4，有一个称为的旧工具<code>redis-trib.rb</code>，它非常相似。您可以<code>src</code>在Redis源代码分发的目录中找到它。您需要安装<code>redis</code>gem才能运行<code>redis-trib</code>。</p>
 <blockquote>
 <p>如果你是用的是Redis3.x或者4.x 请前往官网链接 <a class="link" href="https://redis.io/topics/cluster-tutorial"  target="_blank" rel="noopener"
-    >点我进入</a></p>
-</blockquote>
+    >点我进入</a></p></blockquote>
 <ul>
 <li>此方法为<code>Redis5</code>或者更高版本</li>
 </ul>

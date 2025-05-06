@@ -6,7 +6,7 @@
 
 <link rel='canonical' href='https://blog.mletter.cn/tech/kubernetes/nodelocaldns/'>
 
-<link rel="stylesheet" href="https://blog.mletter.cn/scss/style.min.e738e6f23cab51289304e49575e3f627bf3a6f32f7b82812a9ab0c552ae38a78.css"><meta property='og:title' content='CacheDNS和DNS缓存'>
+<link rel="stylesheet" href="https://blog.mletter.cn/scss/style.min.2cbc22726b422f9f13736f86d63fc4586e66e6cd6e9d7213ab3ccaeb176299b7.css"><meta property='og:title' content='CacheDNS和DNS缓存'>
 <meta property='og:description' content='如果在集群规模较大并发较高的情况下我们仍然需要对 DNS 进行优化，典型的就是大家比较熟悉的 CoreDNS 会出现超时5s的情况。'>
 <meta property='og:url' content='https://blog.mletter.cn/tech/kubernetes/nodelocaldns/'>
 <meta property='og:site_name' content='太阳可以是蓝色'>
@@ -421,8 +421,7 @@
 </span></span></code></pre></div><p>通过这些条目内核可以相应地修改任何相关数据包的目的地和源地址，而无需再次遍历 DNAT 规则，此外，它将知道如何修改回复以及应将回复发送给谁。创建 <code>conntrack</code> 条目后，将首先对其进行确认，然后如果没有已确认的 <code>conntrack</code> 条目具有相同的原始元组或回复元组，则内核将尝试确认该条目。</p>
 <blockquote>
 <p>具体原因可以参考 weave works 总结的文章 <a class="link" href="https://www.weave.works/blog/racy-conntrack-and-dns-lookup-timeouts"  target="_blank" rel="noopener"
-    >Racy conntrack and DNS lookup timeouts</a></p>
-</blockquote>
+    >Racy conntrack and DNS lookup timeouts</a></p></blockquote>
 <ul>
 <li>只有多个线程或进程，并发从同一个 socket 发送相同五元组的 UDP 报文时，才有一定概率会发生</li>
 <li>glibc、musl（alpine linux 的 libc 库）都使用 <code>parallel query</code>, 就是并发发出多个查询请求，因此很容易碰到这样的冲突，造成查询请求被丢弃</li>
@@ -462,7 +461,7 @@
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">resolv.conf</span><span class="p">:</span><span class="w"> </span><span class="p">|</span><span class="sd">
 </span></span></span><span class="line"><span class="cl"><span class="sd">    nameserver 1.2.3.4
 </span></span></span><span class="line"><span class="cl"><span class="sd">    search default.svc.cluster.local svc.cluster.local cluster.local
-</span></span></span><span class="line"><span class="cl"><span class="sd">    options ndots:5 single-request-reopen timeout:1</span><span class="w">    
+</span></span></span><span class="line"><span class="cl"><span class="sd">    options ndots:5 single-request-reopen timeout:1</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">ConfigMap</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">metadata</span><span class="p">:</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">resolvconf</span><span class="w">
@@ -553,8 +552,7 @@
 </span></span><span class="line"><span class="cl">node-local-dns-t92ww                             1/1     Running   <span class="m">0</span>             5m23s
 </span></span></code></pre></div><p>如果 kube-proxy 组件使用的是 ipvs 模式的话我们还需要修改 kubelet 的 <code>--cluster-dns</code> 参数，将其指向 <code>169.254.20.10</code>，Daemonset 会在每个节点创建一个网卡来绑这个 IP，Pod 向本节点这个 IP 发 DNS 请求，缓存没有命中的时候才会再代理到上游集群 DNS 进行查询。</p>
 <blockquote>
-<p>如果担心线上环境修改 <code>--cluster-dns</code> 参数会产生影响，我们也可以直接在新部署的 Pod 中通过 dnsConfig 配置使用新的 localdns 的地址来进行解析。</p>
-</blockquote>
+<p>如果担心线上环境修改 <code>--cluster-dns</code> 参数会产生影响，我们也可以直接在新部署的 Pod 中通过 dnsConfig 配置使用新的 localdns 的地址来进行解析。</p></blockquote>
 <ol>
 <li>通过修改<code>--cluster-dns</code>实现</li>
 </ol>
@@ -578,8 +576,7 @@
 </span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="s1">&#39;3&#39;</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">dnsPolicy</span><span class="p">:</span><span class="w"> </span><span class="l">None</span><span class="w">
 </span></span></span></code></pre></div><blockquote>
-<p>由于指定<code>nameservers</code>属于<code>append</code>操作，如果需要忽略原来的dns地址请使用<code>dnsPolicy: None</code></p>
-</blockquote>
+<p>由于指定<code>nameservers</code>属于<code>append</code>操作，如果需要忽略原来的dns地址请使用<code>dnsPolicy: None</code></p></blockquote>
 <h2 id="coredns的性能优化"></h>CoreDns的性能优化
 </h2><ol>
 <li>合理控制CoreDNS的副本数量</li>
@@ -606,7 +603,7 @@
 </span></span></span><span class="line"><span class="cl"><span class="sd">        template ANY AAAA {
 </span></span></span><span class="line"><span class="cl"><span class="sd">           rcode NXDOMAIN
 </span></span></span><span class="line"><span class="cl"><span class="sd">        }
-</span></span></span><span class="line"><span class="cl"><span class="sd">        ...</span><span class="w">    
+</span></span></span><span class="line"><span class="cl"><span class="sd">        ...</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span>}<span class="w">
 </span></span></span></code></pre></div><ol>
 <li>优化ndots</li>

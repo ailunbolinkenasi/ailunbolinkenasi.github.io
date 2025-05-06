@@ -100,8 +100,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  goVersion: go1.20.10
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  platform: linux/amd64
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;blockquote&gt;
-&lt;p&gt;正常能显示出来版本号信息就表示安装正常。&lt;/p&gt;
-&lt;/blockquote&gt;
+&lt;p&gt;正常能显示出来版本号信息就表示安装正常。&lt;/p&gt;&lt;/blockquote&gt;
 &lt;h2 id=&#34;快速部署高可用集群&#34;&gt;&lt;/h&gt;快速部署高可用集群
 &lt;/h2&gt;&lt;ul&gt;
 &lt;li&gt;默认使用的容器运行时为&lt;code&gt;Containerd&lt;/code&gt;&lt;/li&gt;
@@ -239,13 +238,11 @@
   &lt;/tbody&gt;
 &lt;/table&gt;
 &lt;blockquote&gt;
-&lt;p&gt;建议使用 &lt;code&gt;StorageClass&lt;/code&gt; 来做持久化存储，当然如果你是线上环境建议使用 Local PV 或者 Ceph RBD 之类的存储来持久化 Elasticsearch 的数据。&lt;/p&gt;
-&lt;/blockquote&gt;
+&lt;p&gt;建议使用 &lt;code&gt;StorageClass&lt;/code&gt; 来做持久化存储，当然如果你是线上环境建议使用 Local PV 或者 Ceph RBD 之类的存储来持久化 Elasticsearch 的数据。&lt;/p&gt;&lt;/blockquote&gt;
 &lt;p&gt;由于 ElasticSearch 7.x 版本默认安装了 X-Pack 插件，并且部分功能免费，需要我们配置一些安全证书文件。&lt;/p&gt;
 &lt;h3 id=&#34;准备生成证书文件&#34;&gt;&lt;/h&gt;准备生成证书文件
 &lt;/h3&gt;&lt;blockquote&gt;
-&lt;p&gt;注意：由于我们采用的是&lt;code&gt;containerd&lt;/code&gt;所以使用&lt;code&gt;nerdctl&lt;/code&gt;来运行一个容器&lt;/p&gt;
-&lt;/blockquote&gt;
+&lt;p&gt;注意：由于我们采用的是&lt;code&gt;containerd&lt;/code&gt;所以使用&lt;code&gt;nerdctl&lt;/code&gt;来运行一个容器&lt;/p&gt;&lt;/blockquote&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;mkdir -p elastic-certs
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;nerdctl run --name elastic-certs -v elastic-certs:/app -it -w /app elasticsearch:7.17.3 /bin/sh -c  &lt;span class=&#34;se&#34;&gt;\
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;  &lt;span class=&#34;s2&#34;&gt;&amp;#34;elasticsearch-certutil ca --out /app/elastic-stack-ca.p12 --pass &amp;#39;&amp;#39; &amp;amp;&amp;amp; \
@@ -333,7 +330,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;sd&#34;&gt;    xpack.security.transport.ssl.truststore.path: /usr/share/elasticsearch/config/certs/elastic-certificates.p12
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;sd&#34;&gt;    # xpack.security.http.ssl.enabled: true
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;sd&#34;&gt;    # xpack.security.http.ssl.truststore.path: /usr/share/elasticsearch/config/certs/elastic-certificates.p12
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;sd&#34;&gt;    # xpack.security.http.ssl.keystore.path: /usr/share/elasticsearch/config/certs/elastic-certificates.p12&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;    
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;sd&#34;&gt;    # xpack.security.http.ssl.keystore.path: /usr/share/elasticsearch/config/certs/elastic-certificates.p12&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;&lt;/span&gt;&lt;span class=&#34;c&#34;&gt;# 环境变量配置，这里引入上面设置的用户名、密码 secret 文件&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;extraEnvs&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;  &lt;/span&gt;- &lt;span class=&#34;nt&#34;&gt;name&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;l&#34;&gt;ELASTIC_USERNAME&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
@@ -414,7 +411,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;sd&#34;&gt;    xpack.security.transport.ssl.truststore.path: /usr/share/elasticsearch/config/certs/elastic-certificates.p12
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;sd&#34;&gt;    # xpack.security.http.ssl.enabled: true
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;sd&#34;&gt;    # xpack.security.http.ssl.truststore.path: /usr/share/elasticsearch/config/certs/elastic-certificates.p12
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;sd&#34;&gt;    # xpack.security.http.ssl.keystore.path: /usr/share/elasticsearch/config/certs/elastic-certificates.p12&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;    
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;sd&#34;&gt;    # xpack.security.http.ssl.keystore.path: /usr/share/elasticsearch/config/certs/elastic-certificates.p12&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;&lt;/span&gt;&lt;span class=&#34;c&#34;&gt;# 环境变量配置，这里引入上面设置的用户名、密码 secret 文件&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;extraEnvs&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;  &lt;/span&gt;- &lt;span class=&#34;nt&#34;&gt;name&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;l&#34;&gt;ELASTIC_USERNAME&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
@@ -479,7 +476,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;sd&#34;&gt;    xpack.security.transport.ssl.truststore.path: /usr/share/elasticsearch/config/certs/elastic-certificates.p12
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;sd&#34;&gt;    # xpack.security.http.ssl.enabled: true
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;sd&#34;&gt;    # xpack.security.http.ssl.truststore.path: /usr/share/elasticsearch/config/certs/elastic-certificates.p12
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;sd&#34;&gt;    # xpack.security.http.ssl.keystore.path: /usr/share/elasticsearch/config/certs/elastic-certificates.p12&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;    
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;sd&#34;&gt;    # xpack.security.http.ssl.keystore.path: /usr/share/elasticsearch/config/certs/elastic-certificates.p12&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;&lt;/span&gt;&lt;span class=&#34;c&#34;&gt;# 环境变量配置，这里引入上面设置的用户名、密码 secret 文件&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;extraEnvs&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;  &lt;/span&gt;- &lt;span class=&#34;nt&#34;&gt;name&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;l&#34;&gt;ELASTIC_USERNAME&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
@@ -552,7 +549,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;&lt;/span&gt;&lt;span class=&#34;c&#34;&gt;# kibana 配置中添加语言配置，设置 kibana 为中文&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;kibanaConfig&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;  &lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;kibana.yml&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;&lt;span class=&#34;sd&#34;&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;sd&#34;&gt;    i18n.locale: &amp;#34;zh-CN&amp;#34;&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;    
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;sd&#34;&gt;    i18n.locale: &amp;#34;zh-CN&amp;#34;&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;service&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;  &lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;type&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;l&#34;&gt;NodePort&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;  &lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;nodePort&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;30601&amp;#39;&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
@@ -767,7 +764,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;sd&#34;&gt;        key $.kubernetes.labels.kubernetes.log/fluentd
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;sd&#34;&gt;        pattern ^true$
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;sd&#34;&gt;      &amp;lt;/regexp&amp;gt;
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;sd&#34;&gt;    &amp;lt;/filter&amp;gt;&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;    
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;sd&#34;&gt;    &amp;lt;/filter&amp;gt;&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;  &lt;/span&gt;&lt;span class=&#34;c&#34;&gt;###### 监听配置，一般用于日志聚合用 ######&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;  &lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;forward.input.conf&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;p&#34;&gt;|-&lt;/span&gt;&lt;span class=&#34;sd&#34;&gt;
@@ -775,7 +772,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;sd&#34;&gt;    &amp;lt;source&amp;gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;sd&#34;&gt;      @id forward
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;sd&#34;&gt;      @type forward
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;sd&#34;&gt;    &amp;lt;/source&amp;gt;&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;    
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;sd&#34;&gt;    &amp;lt;/source&amp;gt;&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;  &lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;output.conf&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;p&#34;&gt;|-&lt;/span&gt;&lt;span class=&#34;sd&#34;&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;sd&#34;&gt;    &amp;lt;match **&amp;gt;
@@ -803,7 +800,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;sd&#34;&gt;        queue_limit_length 8
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;sd&#34;&gt;        overflow_action block
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;sd&#34;&gt;      &amp;lt;/buffer&amp;gt;
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;sd&#34;&gt;    &amp;lt;/match&amp;gt;&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;    
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;sd&#34;&gt;    &amp;lt;/match&amp;gt;&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;ol start=&#34;2&#34;&gt;
 &lt;li&gt;创建相关的Rbac权限&lt;/li&gt;
 &lt;/ol&gt;
@@ -847,8 +844,7 @@
 &lt;li&gt;创建&lt;code&gt;fluentd&lt;/code&gt;的&lt;code&gt;daemonset&lt;/code&gt;&lt;/li&gt;
 &lt;/ol&gt;
 &lt;blockquote&gt;
-&lt;p&gt;这个是最新的版本还在研究中,用下面的版本。&lt;/p&gt;
-&lt;/blockquote&gt;
+&lt;p&gt;这个是最新的版本还在研究中,用下面的版本。&lt;/p&gt;&lt;/blockquote&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-yaml&#34; data-lang=&#34;yaml&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nt&#34;&gt;apiVersion&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;l&#34;&gt;apps/v1&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;kind&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;l&#34;&gt;DaemonSet&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;metadata&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
@@ -1013,8 +1009,7 @@
 &lt;/ul&gt;
 &lt;p&gt;那么我们来看一下早期单体容器架构&lt;/p&gt;
 &lt;blockquote&gt;
-&lt;p&gt;其实对于容器化技术带来了那些优势呢?&lt;/p&gt;
-&lt;/blockquote&gt;
+&lt;p&gt;其实对于容器化技术带来了那些优势呢?&lt;/p&gt;&lt;/blockquote&gt;
 &lt;ol&gt;
 &lt;li&gt;其实我觉得容器化带来的最大的优势就是交付和部署的优势&lt;/li&gt;
 &lt;/ol&gt;
@@ -1099,8 +1094,7 @@
 
 那么随之而来带来的问题是:&lt;/p&gt;
 &lt;blockquote&gt;
-&lt;p&gt;那么由于Docker的容器镜像可以在A、B、C任意一台机器上运行,那么是否可以当A机器所运行的镜像挂掉以后自动的帮我在B机器上进行重启呢?&lt;/p&gt;
-&lt;/blockquote&gt;
+&lt;p&gt;那么由于Docker的容器镜像可以在A、B、C任意一台机器上运行,那么是否可以当A机器所运行的镜像挂掉以后自动的帮我在B机器上进行重启呢?&lt;/p&gt;&lt;/blockquote&gt;
 &lt;p&gt;okey 带着这个问题 一起往下进行。&lt;/p&gt;
 &lt;h2 id=&#34;kubernes组件&#34;&gt;&lt;/h&gt;kubernes组件
 &lt;/h2&gt;&lt;p&gt;先看一张官方给出的kubernetes的架构图
@@ -1324,8 +1318,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;blockquote&gt;
-&lt;p&gt;另外: 当你需要创建资源类型的时候,我并不建议你从头开始去编写相关文件,可以灵活的应用&lt;code&gt;kubectl run&lt;/code&gt;来进行填充相关的字段信息。&lt;/p&gt;
-&lt;/blockquote&gt;
+&lt;p&gt;另外: 当你需要创建资源类型的时候,我并不建议你从头开始去编写相关文件,可以灵活的应用&lt;code&gt;kubectl run&lt;/code&gt;来进行填充相关的字段信息。&lt;/p&gt;&lt;/blockquote&gt;
 &lt;h2 id=&#34;kubernetes设计理念&#34;&gt;&lt;/h&gt;kubernetes设计理念
 &lt;/h2&gt;&lt;ul&gt;
 &lt;li&gt;声明式：典型就是在资源文件中进行声明&lt;/li&gt;
@@ -1436,8 +1429,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;实际上也就是说当我需要访问&lt;code&gt;wecho-canary&lt;/code&gt;这个服务的时候,我无需关心他后端end如何进行变化,我只需要记住访问&lt;code&gt;wecho-canary&lt;/code&gt;的&lt;code&gt;Service&lt;/code&gt;所给出的&lt;code&gt;ClusterIP&lt;/code&gt;即可进行访问到相应的服务。&lt;/p&gt;
 &lt;p&gt;另外的一种方式就是通过我们的&lt;code&gt;Service&lt;/code&gt;名称来进行访问，下面说一下具体是如何通过&lt;code&gt;Service&lt;/code&gt;名称进行访问的。&lt;/p&gt;
 &lt;blockquote&gt;
-&lt;p&gt;我们假设使用上面的&lt;code&gt;wecho-canary&lt;/code&gt;名称进行一次访问&lt;/p&gt;
-&lt;/blockquote&gt;
+&lt;p&gt;我们假设使用上面的&lt;code&gt;wecho-canary&lt;/code&gt;名称进行一次访问&lt;/p&gt;&lt;/blockquote&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;curl -v wecho-canary &lt;span class=&#34;c1&#34;&gt;# 假设访问正常&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;很简单,大家都知道当我们访问一个域名的时候背后肯定又DNS服务器来解析其所对应的IP地址,那么其实在kubernetes当中也有一个内部的DNS服务器,名字叫做&lt;code&gt;kube-dns&lt;/code&gt;
 我们可以通过&lt;code&gt;kubectl get svc -A &lt;/code&gt;进行查看,其中所指定的&lt;code&gt;10.10.0.10&lt;/code&gt;就是我们kube-dns的IP地址.&lt;/p&gt;
@@ -1457,8 +1449,7 @@
 &lt;li&gt;当我们访问&lt;code&gt;wecho-canary&lt;/code&gt;的时候实际上是访问了&lt;code&gt;wecho-canary.default.cluster.local.svc&lt;/code&gt;,即&lt;code&gt;ServiceName.Namespace.cluster.local.svc&lt;/code&gt;&lt;/li&gt;
 &lt;li&gt;所有的解析域名请求都会请求到&lt;code&gt;kube-dns&lt;/code&gt;当中,当&lt;code&gt;kube-dns&lt;/code&gt;无法完成解析的时候,我们会将请求&lt;code&gt;forward&lt;/code&gt;到本地的解析文件当中,如果本地解析文件也无法解析则认为失败。典型的就是超时、无法解析等问题。&lt;/li&gt;
 &lt;li&gt;Service通过监视API server的数据变化来感知后端Pod的变化,并及时更新负载均衡规则。具体来说,Kubernetes ApiServer负责管理集群状态,它会记录每一个对象(包括Pod)的Spec和Status。Service对象使用ApiServer的watch接口,监视后端关联Pod对象的变化事件。比如Pod实例加入或销毁时,ApiServer会主动通知Service。一旦检测到Pod变化,Service会立即使用新的Pod列表,重新计算并更新自己负载均衡的端口转发规则。例如使用iptables规则或IPVS表更新后端目标地址。这样,无论Pod是动态伸缩还是故障转移,Service都能即时感知,保持负载均衡入口地址的高可靠性。这就是Service如何实现动态更新负载均衡规则的原理。&lt;/li&gt;
-&lt;/ol&gt;
-&lt;/blockquote&gt;
+&lt;/ol&gt;&lt;/blockquote&gt;
 &lt;h3 id=&#34;service类型&#34;&gt;&lt;/h&gt;Service类型
 &lt;/h3&gt;&lt;ul&gt;
 &lt;li&gt;ClusterIP: 通过集群的内部IP公开&lt;code&gt;Service&lt;/code&gt;，选择该值时&lt;code&gt;Service&lt;/code&gt;只能够在集群内部访问。这也是你没有为服务显式指定&lt;code&gt;type&lt;/code&gt;时使用的默认值。&lt;/li&gt;
@@ -1639,8 +1630,7 @@
 &lt;/picture&gt;
 &lt;/p&gt;
 &lt;blockquote&gt;
-&lt;p&gt;NDM 在安装 OpenEBS 期间部署为守护进程。NDM daemonset 发现每个节点上的磁盘并创建称为块设备或 BD 的自定义资源。&lt;/p&gt;
-&lt;/blockquote&gt;
+&lt;p&gt;NDM 在安装 OpenEBS 期间部署为守护进程。NDM daemonset 发现每个节点上的磁盘并创建称为块设备或 BD 的自定义资源。&lt;/p&gt;&lt;/blockquote&gt;
 &lt;h2 id=&#34;启用openebs&#34;&gt;&lt;/h&gt;启用OpenEBS
 &lt;/h2&gt;&lt;p&gt;由于 OpenEBS 通过 iSCSI 协议提供存储支持，因此，需要在所有 Kubernetes 节点上都安装 iSCSI 客户端（启动器）。&lt;/p&gt;
 &lt;p&gt;比如我们这里使用的是Rocky的系统，执行下面的命令安装启动 iSCSI 启动器：&lt;/p&gt;
@@ -1714,8 +1704,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;    &lt;/span&gt;- &lt;span class=&#34;nt&#34;&gt;mountPath&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;l&#34;&gt;/data&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;      &lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;name&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;l&#34;&gt;local-storage&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;blockquote&gt;
-&lt;p&gt;注意：如果你想知道这个Pvc具体挂载位置可以使用&lt;code&gt;kubectl describe pv pv名称&lt;/code&gt;,其中的&lt;code&gt;Ptah: /var/openebs/local/pvc-e011f2a1-27dc-46d0-ba34-9ad44ba03188&lt;/code&gt;就是我们所在节点的路径&lt;/p&gt;
-&lt;/blockquote&gt;
+&lt;p&gt;注意：如果你想知道这个Pvc具体挂载位置可以使用&lt;code&gt;kubectl describe pv pv名称&lt;/code&gt;,其中的&lt;code&gt;Ptah: /var/openebs/local/pvc-e011f2a1-27dc-46d0-ba34-9ad44ba03188&lt;/code&gt;就是我们所在节点的路径&lt;/p&gt;&lt;/blockquote&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;root@Online-Beijing-master1 ~&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;# kubectl get pv&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;NAME                                       CAPACITY   ACCESS MODES   RECLAIM POLICY   STATUS   CLAIM                        STORAGECLASS       REASON   AGE
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;example-local                              20Gi       RWO            Delete           Bound    default/bound-tasknginx      local-storage               26d
@@ -1774,7 +1763,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;sd&#34;&gt;      # the PV sub-directory will be deleted.
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;sd&#34;&gt;      #Default value is /var/openebs/local
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;sd&#34;&gt;      - name: BasePath
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;sd&#34;&gt;        value: &amp;#34;/var/openebs/local/&amp;#34;&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;      
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;sd&#34;&gt;        value: &amp;#34;/var/openebs/local/&amp;#34;&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description>
         </item>
         <item>
@@ -1871,8 +1860,7 @@
 &lt;/ul&gt;
 &lt;h2 id=&#34;部署traefik&#34;&gt;&lt;/h&gt;部署Traefik
 &lt;/h2&gt;&lt;blockquote&gt;
-&lt;p&gt;Traefik的配置可以使用两种方式：&lt;code&gt;静态配置&lt;/code&gt;和&lt;code&gt;动态配置&lt;/code&gt;&lt;/p&gt;
-&lt;/blockquote&gt;
+&lt;p&gt;Traefik的配置可以使用两种方式：&lt;code&gt;静态配置&lt;/code&gt;和&lt;code&gt;动态配置&lt;/code&gt;&lt;/p&gt;&lt;/blockquote&gt;
 &lt;ul&gt;
 &lt;li&gt;静态配置：在 Traefik 中定义静态配置选项有三种不同的、互斥的即你只能同时使用一种）方式。
 &lt;ul&gt;
@@ -2197,8 +2185,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;    &lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;middlewares&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;    &lt;/span&gt;- &lt;span class=&#34;nt&#34;&gt;name&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;l&#34;&gt;test-redirectscheme&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;c&#34;&gt;# 指定添加中间件的名称&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;blockquote&gt;
-&lt;p&gt;如果你有具体需求的话请前往官网文档查看更多中间件的适用方法。&lt;/p&gt;
-&lt;/blockquote&gt;
+&lt;p&gt;如果你有具体需求的话请前往官网文档查看更多中间件的适用方法。&lt;/p&gt;&lt;/blockquote&gt;
 &lt;h2 id=&#34;traefik-pilot&#34;&gt;&lt;/h&gt;Traefik Pilot
 &lt;/h2&gt;&lt;p&gt;虽然 Traefik 已经默认实现了很多中间件，可以满足大部分我们日常的需求，但是在实际工作中，用户仍然还是有自定义中间件的需求，这就 &lt;a class=&#34;link&#34; href=&#34;https://pilot.traefik.io/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;Traefik Pilot&lt;/a&gt; 的功能了。&lt;/p&gt;
@@ -2210,8 +2197,7 @@
 &lt;/ul&gt;
 &lt;p&gt;在 Traefik 可以使用 &lt;code&gt;Traefik Pilot&lt;/code&gt; 的功能之前，必须先连接它们，我们只需要对 Traefik 的静态配置进行少量更改即可。&lt;/p&gt;
 &lt;blockquote&gt;
-&lt;p&gt;注意: Traefik 代理必须要能访问互联网才能连接到 &lt;code&gt;Traefik Pilot&lt;/code&gt;，通过 HTTPS 在 443 端口上建立连接。 这个我就不演示了，我的虚拟机木有外网。&lt;/p&gt;
-&lt;/blockquote&gt;
+&lt;p&gt;注意: Traefik 代理必须要能访问互联网才能连接到 &lt;code&gt;Traefik Pilot&lt;/code&gt;，通过 HTTPS 在 443 端口上建立连接。 这个我就不演示了，我的虚拟机木有外网。&lt;/p&gt;&lt;/blockquote&gt;
 &lt;h2 id=&#34;灰度发布&#34;&gt;&lt;/h&gt;灰度发布
 &lt;/h2&gt;&lt;p&gt;跟Ingress-nginx是一样的就不多介绍灰度发布是啥了&lt;/p&gt;
 &lt;h3 id=&#34;基于权重的轮询&#34;&gt;&lt;/h&gt;基于权重的轮询
@@ -2467,8 +2453,7 @@
 &lt;h2 id=&#34;hostpath&#34;&gt;&lt;/h&gt;HostPath
 &lt;/h2&gt;&lt;p&gt;我们上面提到了 PV 是对底层存储技术的一种抽象，PV 一般都是由管理员来创建和配置的，我们首先来创建一个 &lt;code&gt;hostPath&lt;/code&gt; 类型的 &lt;code&gt;PersistentVolume&lt;/code&gt;。Kubernetes 支持 &lt;code&gt;hostPath&lt;/code&gt; 类型的 &lt;code&gt;PersistentVolume&lt;/code&gt; 使用节点上的文件或目录来模拟附带网络的存储，但是需要注意的是在生产集群中，我们不会使用 &lt;code&gt;hostPath&lt;/code&gt;，集群管理员会提供网络存储资源，比如 &lt;code&gt;NFS&lt;/code&gt; 共享卷或 &lt;code&gt;Ceph&lt;/code&gt; 存储卷，集群管理员还可以使用 &lt;code&gt;StorageClasses&lt;/code&gt; 来设置动态提供存储。因为 Pod 并不是始终固定在某个节点上面的，所以要使用 hostPath 的话我们就需要将 Pod 固定在某个节点上，这样显然就大大降低了应用的容错性。&lt;/p&gt;
 &lt;blockquote&gt;
-&lt;p&gt;当然了，生产环境中用的还是相对较少因为有较少的需求需要将Pod来固定到某些节点上。&lt;/p&gt;
-&lt;/blockquote&gt;
+&lt;p&gt;当然了，生产环境中用的还是相对较少因为有较少的需求需要将Pod来固定到某些节点上。&lt;/p&gt;&lt;/blockquote&gt;
 &lt;h3 id=&#34;创建persistentvolume&#34;&gt;&lt;/h&gt;创建PersistentVolume
 &lt;/h3&gt;&lt;ol&gt;
 &lt;li&gt;假设我们现在在节点1上新建一个&lt;code&gt;/data/hostPath/index.html&lt;/code&gt;&lt;/li&gt;
@@ -2519,8 +2504,7 @@
 &lt;/ul&gt;
 &lt;p&gt;目前，仅 NFS 和 HostPath 支持回收（Recycle）。 AWS EBS、GCE PD、Azure Disk 和 Cinder 卷都支持删除（Delete）。&lt;/p&gt;
 &lt;blockquote&gt;
-&lt;p&gt;不过需要注意的是，目前只有 &lt;code&gt;NFS&lt;/code&gt; 和 &lt;code&gt;HostPath&lt;/code&gt; 两种类型支持回收策略，当然一般来说还是设置为 &lt;code&gt;Retain&lt;/code&gt; 这种策略保险一点。&lt;/p&gt;
-&lt;/blockquote&gt;
+&lt;p&gt;不过需要注意的是，目前只有 &lt;code&gt;NFS&lt;/code&gt; 和 &lt;code&gt;HostPath&lt;/code&gt; 两种类型支持回收策略，当然一般来说还是设置为 &lt;code&gt;Retain&lt;/code&gt; 这种策略保险一点。&lt;/p&gt;&lt;/blockquote&gt;
 &lt;p&gt;关于 PV 的状态，实际上描述的是 PV 的生命周期的某个阶段，一个 PV 的生命周期中，可能会处于4种不同的阶段：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;Available（可用）：表示可用状态，还未被任何 PVC 绑定&lt;/li&gt;
@@ -2552,8 +2536,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;task-pv-claim   Bound    demo-hostpath   10Gi       RWO            type-ssd-sc    18m
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;可以看到已经绑定到了一个&lt;code&gt;Volume&lt;/code&gt;叫做&lt;code&gt;demo-hostpath&lt;/code&gt;的&lt;code&gt;PersistentVolume&lt;/code&gt;&lt;/p&gt;
 &lt;blockquote&gt;
-&lt;p&gt;需要注意的是目前&lt;code&gt;PersistentVolume&lt;/code&gt;和&lt;code&gt;PersistentVolumeClaim&lt;/code&gt;之间是一对一绑定的关系，也就是说一个&lt;code&gt;PersistentVolume&lt;/code&gt;只能被一个&lt;code&gt;PersistentVolumeClaim&lt;/code&gt;绑定。&lt;/p&gt;
-&lt;/blockquote&gt;
+&lt;p&gt;需要注意的是目前&lt;code&gt;PersistentVolume&lt;/code&gt;和&lt;code&gt;PersistentVolumeClaim&lt;/code&gt;之间是一对一绑定的关系，也就是说一个&lt;code&gt;PersistentVolume&lt;/code&gt;只能被一个&lt;code&gt;PersistentVolumeClaim&lt;/code&gt;绑定。&lt;/p&gt;&lt;/blockquote&gt;
 &lt;h3 id=&#34;创建一个deployment&#34;&gt;&lt;/h&gt;创建一个Deployment
 &lt;/h3&gt;&lt;p&gt;创建一个&lt;code&gt;deployment&lt;/code&gt;然后绑定&lt;code&gt;PersistentVolumeClaim&lt;/code&gt;紧接着固定节点到&lt;code&gt;online-beijing-node1&lt;/code&gt;&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;---
@@ -2653,8 +2636,7 @@
 &lt;p&gt;最大的区别是 Kubernetes 调度程序了解本地持久卷属于哪个节点。对于 HostPath 卷，引用 HostPath 卷的 pod 可能会被调度程序移动到不同的节点，从而导致数据丢失。但是对于 &lt;code&gt;Local Persistent Volumes&lt;/code&gt;，Kubernetes 调度器确保使用 &lt;code&gt;Local Persistent Volume&lt;/code&gt; 的 pod 总是被调度到同一个节点。&lt;/p&gt;
 &lt;p&gt;虽然 HostPath 卷可以通过 &lt;code&gt;Persistent Volume Claim (PVC)&lt;/code&gt; 引用或直接内嵌在 pod 定义中，但 &lt;code&gt;Local Persistent Volumes&lt;/code&gt; 只能通过 PVC 引用。这提供了额外的安全优势，因为 &lt;code&gt;Persistent Volume&lt;/code&gt; 对象由管理员管理，防止 Pod 能够访问主机上的任何路径。&lt;/p&gt;
 &lt;blockquote&gt;
-&lt;p&gt;所以，一般来说 &lt;code&gt;Local PV&lt;/code&gt; 对应的存储介质是一块额外挂载在宿主机的磁盘或者块设备。&lt;/p&gt;
-&lt;/blockquote&gt;
+&lt;p&gt;所以，一般来说 &lt;code&gt;Local PV&lt;/code&gt; 对应的存储介质是一块额外挂载在宿主机的磁盘或者块设备。&lt;/p&gt;&lt;/blockquote&gt;
 &lt;h3 id=&#34;创建一个local持久卷实例&#34;&gt;&lt;/h&gt;创建一个Local持久卷实例
 &lt;/h3&gt;&lt;p&gt;下面是一个使用 &lt;code&gt;local&lt;/code&gt; 卷和 &lt;code&gt;nodeAffinity&lt;/code&gt; 的持久卷示例：&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-yaml&#34; data-lang=&#34;yaml&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nt&#34;&gt;apiVersion&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;l&#34;&gt;v1&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
@@ -2785,8 +2767,7 @@
 &lt;p&gt;Ingress 其实就是从 Kuberenets 集群外部访问集群的一个入口，将外部的请求转发到集群内不同的 Service 上，其实就相当于 nginx、haproxy 等负载均衡代理服务器，可能你会觉得我们直接使用 nginx 就实现了，但是只使用 nginx 这种方式有很大缺陷，每次有新服务加入的时候怎么改 Nginx 配置？不可能让我们去手动更改或者滚动更新前端的 Nginx Pod 吧？那我们再加上一个服务发现的工具比如 consul 如何？貌似是可以，对吧？Ingress 实际上就是这样实现的，只是服务发现的功能自己实现了，不需要使用第三方的服务了，然后再加上一个域名规则定义，路由信息的刷新依靠 Ingress Controller 来提供。&lt;/p&gt;
 &lt;p&gt;Ingress Controller 可以理解为一个监听器，通过不断地监听 kube-apiserver，实时的感知后端 Service、Pod 的变化，当得到这些信息变化后，Ingress Controller 再结合 Ingress 的配置，更新反向代理负载均衡器，达到服务发现的作用。其实这点和服务发现工具 consul、 consul-template 非常类似。&lt;/p&gt;
 &lt;blockquote&gt;
-&lt;p&gt;现在可以供大家使用的 Ingress Controller 有很多，比如 &lt;code&gt;traefik&lt;/code&gt;、&lt;code&gt;nginx-controller&lt;/code&gt;、&lt;code&gt;Kubernetes Ingress Controller&lt;/code&gt; for Kong、&lt;code&gt;HAProxy Ingress controller&lt;/code&gt;，当然你也可以自己实现一个 Ingress Controller，现在普遍用得较多的是 traefik 和 nginx-controller，traefik 的性能较 nginx-controller 差，但是配置使用要简单许多，我们这里会重点给大家介绍 nginx-controller 以及 traefik 的使用。&lt;/p&gt;
-&lt;/blockquote&gt;
+&lt;p&gt;现在可以供大家使用的 Ingress Controller 有很多，比如 &lt;code&gt;traefik&lt;/code&gt;、&lt;code&gt;nginx-controller&lt;/code&gt;、&lt;code&gt;Kubernetes Ingress Controller&lt;/code&gt; for Kong、&lt;code&gt;HAProxy Ingress controller&lt;/code&gt;，当然你也可以自己实现一个 Ingress Controller，现在普遍用得较多的是 traefik 和 nginx-controller，traefik 的性能较 nginx-controller 差，但是配置使用要简单许多，我们这里会重点给大家介绍 nginx-controller 以及 traefik 的使用。&lt;/p&gt;&lt;/blockquote&gt;
 &lt;h2 id=&#34;安装nginx-ingress-controller&#34;&gt;&lt;/h&gt;安装NGINX Ingress Controller
 &lt;/h2&gt;&lt;ul&gt;
 &lt;li&gt;官方文档：&lt;a class=&#34;link&#34; href=&#34;https://kubernetes.github.io/ingress-nginx/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
@@ -2996,8 +2977,7 @@
     &gt;重写目标注解&lt;/a&gt;。 不同的 &lt;a class=&#34;link&#34; href=&#34;https://kubernetes.io/zh-cn/docs/concepts/services-networking/ingress-controllers&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;Ingress 控制器&lt;/a&gt;支持不同的注解。 查看你所选的 Ingress 控制器的文档，以了解其支持哪些注解。&lt;/p&gt;
 &lt;blockquote&gt;
-&lt;p&gt;如果 &lt;code&gt;ingressClassName&lt;/code&gt; 被省略，那么你应该定义一个默认 &lt;code&gt;Ingress 类&lt;/code&gt;,否则无法转发服务&lt;/p&gt;
-&lt;/blockquote&gt;
+&lt;p&gt;如果 &lt;code&gt;ingressClassName&lt;/code&gt; 被省略，那么你应该定义一个默认 &lt;code&gt;Ingress 类&lt;/code&gt;,否则无法转发服务&lt;/p&gt;&lt;/blockquote&gt;
 &lt;p&gt;创建一个默认的&lt;code&gt;ingressClass&lt;/code&gt;&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-yaml&#34; data-lang=&#34;yaml&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nt&#34;&gt;apiVersion&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;l&#34;&gt;networking.k8s.io/v1&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;kind&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;l&#34;&gt;IngressClass&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
@@ -3012,8 +2992,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;有一些 Ingress 控制器不需要定义默认的 &lt;code&gt;IngressClass&lt;/code&gt;。比如：Ingress-NGINX 控制器可以通过&lt;a class=&#34;link&#34; href=&#34;https://kubernetes.github.io/ingress-nginx/#what-is-the-flag-watch-ingress-without-class&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;参数&lt;/a&gt; &lt;code&gt;--watch-ingress-without-class&lt;/code&gt; 来配置。 不过仍然推荐创建默认的&lt;code&gt;ingressClass&lt;/code&gt;&lt;/p&gt;
 &lt;blockquote&gt;
-&lt;p&gt;可以看一下简单地ingress-controller请求流程&lt;/p&gt;
-&lt;/blockquote&gt;
+&lt;p&gt;可以看一下简单地ingress-controller请求流程&lt;/p&gt;&lt;/blockquote&gt;
 &lt;ol&gt;
 &lt;li&gt;客户端首先对 &lt;code&gt;ngdemo.qikqiak.com&lt;/code&gt; 执行 DNS 解析，得到 Ingress Controller 所在节点的 IP&lt;/li&gt;
 &lt;li&gt;后客户端向 Ingress Controller 发送 HTTP 请求&lt;/li&gt;
@@ -3195,8 +3174,7 @@
 &lt;li&gt;&lt;code&gt;nginx.qingyang.com/something/new&lt;/code&gt;改写为&lt;code&gt;nginx.qingyang.com/new&lt;/code&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;blockquote&gt;
-&lt;p&gt;使用此方法可能会导致部分&lt;code&gt;css、js&lt;/code&gt;等内容无法找到,可以使用以下方法实现&lt;/p&gt;
-&lt;/blockquote&gt;
+&lt;p&gt;使用此方法可能会导致部分&lt;code&gt;css、js&lt;/code&gt;等内容无法找到,可以使用以下方法实现&lt;/p&gt;&lt;/blockquote&gt;
 &lt;ol&gt;
 &lt;li&gt;通过&lt;code&gt;configuration-snippet&lt;/code&gt;注解&lt;/li&gt;
 &lt;/ol&gt;
@@ -3208,7 +3186,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;      &lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;nginx.ingress.kubernetes.io/rewrite-target&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;l&#34;&gt;/$2&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;      &lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;nginx.ingress.kubernetes.io/configuration-snippet&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;&lt;span class=&#34;sd&#34;&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;sd&#34;&gt;        rewrite ^/css/(.*)$ /something/css/$1  redirect; # 为css样式添加/something前缀
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;sd&#34;&gt;        rewrite ^/js/(.*)$ /something/js/$1&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;        
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;sd&#34;&gt;        rewrite ^/js/(.*)$ /something/js/$1&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;basic-auth&#34;&gt;&lt;/h&gt;Basic Auth
 &lt;/h2&gt;&lt;p&gt;们还可以在 Ingress Controller 上面配置一些基本的 Auth 认证，比如 Basic Auth，可以用 htpasswd 生成一个密码文件来验证身份验证。&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;[root@Online-Beijing-master1 ~]# htpasswd -c auth admin
@@ -3249,8 +3227,7 @@
 &lt;li&gt;&lt;code&gt;nginx.ingress.kubernetes.io/canary-by-cookie&lt;/code&gt;: 基于 cookie 的流量切分，适用于灰度发布与 A/B 测试。用于通知 Ingress 将请求路由到 Canary Ingress 中指定的服务的cookie。当 cookie 值设置为 always 时，它将被路由到 Canary 入口；当 cookie 值设置为 never 时，请求不会被发送到 Canary 入口；对于任何其他值，将忽略 cookie 并将请求与其他金丝雀规则进行优先级的比较。&lt;/li&gt;
 &lt;/ul&gt;
 &lt;blockquote&gt;
-&lt;p&gt;Canary 规则按优先顺序进行评估。优先级如下：&lt;code&gt;canary-by-header -&amp;gt; canary-by-cookie -&amp;gt; canary-weight&lt;/code&gt;&lt;/p&gt;
-&lt;/blockquote&gt;
+&lt;p&gt;Canary 规则按优先顺序进行评估。优先级如下：&lt;code&gt;canary-by-header -&amp;gt; canary-by-cookie -&amp;gt; canary-weight&lt;/code&gt;&lt;/p&gt;&lt;/blockquote&gt;
 &lt;p&gt;把以上的四个 annotation 规则可以总体划分为以下两类：&lt;/p&gt;
 &lt;h3 id=&#34;基于权重的的canary规则&#34;&gt;&lt;/h&gt;基于权重的的Canary规则
 &lt;/h3&gt;&lt;p&gt;
@@ -3433,8 +3410,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h4 id=&#34;基于权重的canary规则&#34;&gt;&lt;/h&gt;基于权重的Canary规则
 &lt;/h4&gt;&lt;p&gt;基于权重的流量切分的典型应用场景就是&lt;code&gt;蓝绿部署&lt;/code&gt;，可通过将权重设置为 0 或 100 来实现。例如，可将 Green 版本设置为主要部分，并将 Blue 版本的入口配置为 Canary。最初，将权重设置为 0，因此不会将流量代理到 Blue 版本。一旦新版本测试和验证都成功后，即可将 Blue 版本的权重设置为 100，即所有流量从 Green 版本转向 Blue。&lt;/p&gt;
 &lt;blockquote&gt;
-&lt;p&gt;以下 Ingress 示例的 Canary 版本使用了&lt;strong&gt;基于权重进行流量切分&lt;/strong&gt;的 annotation 规则，将分配 &lt;strong&gt;30%&lt;/strong&gt; 的流量请求发送至 Canary 版本。&lt;/p&gt;
-&lt;/blockquote&gt;
+&lt;p&gt;以下 Ingress 示例的 Canary 版本使用了&lt;strong&gt;基于权重进行流量切分&lt;/strong&gt;的 annotation 规则，将分配 &lt;strong&gt;30%&lt;/strong&gt; 的流量请求发送至 Canary 版本。&lt;/p&gt;&lt;/blockquote&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-yaml&#34; data-lang=&#34;yaml&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nt&#34;&gt;apiVersion&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;l&#34;&gt;networking.k8s.io/v1&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;kind&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;l&#34;&gt;Ingress&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;metadata&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
@@ -3456,13 +3432,11 @@
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;            &lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;port&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; 
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;              &lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;number&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;m&#34;&gt;80&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;blockquote&gt;
-&lt;p&gt;应用的 Canary 版本基于权重 (30%) 进行流量切分后，访问到 Canary 版本的概率接近 30%，流量比例可能会有小范围的浮动。&lt;/p&gt;
-&lt;/blockquote&gt;
+&lt;p&gt;应用的 Canary 版本基于权重 (30%) 进行流量切分后，访问到 Canary 版本的概率接近 30%，流量比例可能会有小范围的浮动。&lt;/p&gt;&lt;/blockquote&gt;
 &lt;h4 id=&#34;基于-request-header&#34;&gt;&lt;/h&gt;基于 Request Header
 &lt;/h4&gt;&lt;p&gt;基于 Request Header 进行流量切分的典型应用场景即&lt;code&gt;灰度发布或 A/B 测试场景&lt;/code&gt;。参考以下截图，在 KubeSphere 给 Canary 版本的应用路由 (Ingress) 新增一条 annotation &lt;code&gt;nginx.ingress.kubernetes.io/canary-by-header: canary&lt;/code&gt;(这里的 annotation 的 value 可以是任意值)，使当前的 Ingress 实现基于 Request Header 进行流量切分。&lt;/p&gt;
 &lt;blockquote&gt;
-&lt;p&gt;金丝雀规则按优先顺序 &lt;code&gt;canary-by-header - &amp;gt; canary-by-cookie - &amp;gt; canary-weight&lt;/code&gt;进行如下排序，因此以下情况将忽略原有 canary-weight 的规则。&lt;/p&gt;
-&lt;/blockquote&gt;
+&lt;p&gt;金丝雀规则按优先顺序 &lt;code&gt;canary-by-header - &amp;gt; canary-by-cookie - &amp;gt; canary-weight&lt;/code&gt;进行如下排序，因此以下情况将忽略原有 canary-weight 的规则。&lt;/p&gt;&lt;/blockquote&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-yaml&#34; data-lang=&#34;yaml&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nt&#34;&gt;apiVersion&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;l&#34;&gt;networking.k8s.io/v1&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;kind&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;l&#34;&gt;Ingress&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;metadata&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
@@ -3745,8 +3719,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  Normal  Sync    7m46s &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;x2 over 8m13s&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;  nginx-ingress-controller  Scheduled &lt;span class=&#34;k&#34;&gt;for&lt;/span&gt; sync
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;你可以尝试访问&lt;code&gt;https://demo.qingyang.com/.well-known/acme-challenge/pVY-ihomZPdlWDMt44cV9qZUwMQScjHvd3Zkf_FDLRI&lt;/code&gt;。正常会出现具体的&lt;code&gt;验证密钥&lt;/code&gt;即成功.&lt;/p&gt;
 &lt;blockquote&gt;
-&lt;p&gt;由于我的是本地自己搭建的kubernetes集群,没有外部解析的访问权限所以这个地方就没办法给大家演示了。&lt;/p&gt;
-&lt;/blockquote&gt;
+&lt;p&gt;由于我的是本地自己搭建的kubernetes集群,没有外部解析的访问权限所以这个地方就没办法给大家演示了。&lt;/p&gt;&lt;/blockquote&gt;
 &lt;h4 id=&#34;dns-01-校验&#34;&gt;&lt;/h&gt;DNS-01 校验
 &lt;/h4&gt;&lt;p&gt;&lt;code&gt;NS-01&lt;/code&gt; 的校验是通过 DNS 提供商的 API 拿到你的 DNS 控制权限， 在 &lt;code&gt;Let&#39;s Encrypt&lt;/code&gt; 为 cert-manager 提供 TOKEN 后，cert-manager 将创建从该 TOKEN 和你的帐户密钥派生的 &lt;code&gt;TXT&lt;/code&gt; 记录，并将该记录放在 &lt;code&gt;_acme-challenge.&amp;lt;YOUR_DOMAIN&amp;gt;&lt;/code&gt;。然后 &lt;code&gt;Let&#39;s Encrypt&lt;/code&gt; 将向 DNS 系统查询该记录，如果找到匹配项，就可以颁发证书，这种方法是支持泛域名证书的。&lt;/p&gt;
 &lt;p&gt;DNS-01 支持多种不同的服务提供商，直接在 Issuer 或者 ClusterIssuer 中可以直接配置，对于一些不支持的 DNS 服务提供商可以使用外部 webhook 来提供支持，比如阿里云的 DNS 解析默认情况下是不支持的，我们可以使用阿里云这个 webhook 来提供支持。&lt;/p&gt;
@@ -3857,8 +3830,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;通过这些条目内核可以相应地修改任何相关数据包的目的地和源地址，而无需再次遍历 DNAT 规则，此外，它将知道如何修改回复以及应将回复发送给谁。创建 &lt;code&gt;conntrack&lt;/code&gt; 条目后，将首先对其进行确认，然后如果没有已确认的 &lt;code&gt;conntrack&lt;/code&gt; 条目具有相同的原始元组或回复元组，则内核将尝试确认该条目。&lt;/p&gt;
 &lt;blockquote&gt;
 &lt;p&gt;具体原因可以参考 weave works 总结的文章 &lt;a class=&#34;link&#34; href=&#34;https://www.weave.works/blog/racy-conntrack-and-dns-lookup-timeouts&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
-    &gt;Racy conntrack and DNS lookup timeouts&lt;/a&gt;&lt;/p&gt;
-&lt;/blockquote&gt;
+    &gt;Racy conntrack and DNS lookup timeouts&lt;/a&gt;&lt;/p&gt;&lt;/blockquote&gt;
 &lt;ul&gt;
 &lt;li&gt;只有多个线程或进程，并发从同一个 socket 发送相同五元组的 UDP 报文时，才有一定概率会发生&lt;/li&gt;
 &lt;li&gt;glibc、musl（alpine linux 的 libc 库）都使用 &lt;code&gt;parallel query&lt;/code&gt;, 就是并发发出多个查询请求，因此很容易碰到这样的冲突，造成查询请求被丢弃&lt;/li&gt;
@@ -3898,7 +3870,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;  &lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;resolv.conf&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;&lt;span class=&#34;sd&#34;&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;sd&#34;&gt;    nameserver 1.2.3.4
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;sd&#34;&gt;    search default.svc.cluster.local svc.cluster.local cluster.local
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;sd&#34;&gt;    options ndots:5 single-request-reopen timeout:1&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;    
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;sd&#34;&gt;    options ndots:5 single-request-reopen timeout:1&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;kind&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;l&#34;&gt;ConfigMap&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;metadata&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;  &lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;name&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;l&#34;&gt;resolvconf&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
@@ -3989,8 +3961,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;node-local-dns-t92ww                             1/1     Running   &lt;span class=&#34;m&#34;&gt;0&lt;/span&gt;             5m23s
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;如果 kube-proxy 组件使用的是 ipvs 模式的话我们还需要修改 kubelet 的 &lt;code&gt;--cluster-dns&lt;/code&gt; 参数，将其指向 &lt;code&gt;169.254.20.10&lt;/code&gt;，Daemonset 会在每个节点创建一个网卡来绑这个 IP，Pod 向本节点这个 IP 发 DNS 请求，缓存没有命中的时候才会再代理到上游集群 DNS 进行查询。&lt;/p&gt;
 &lt;blockquote&gt;
-&lt;p&gt;如果担心线上环境修改 &lt;code&gt;--cluster-dns&lt;/code&gt; 参数会产生影响，我们也可以直接在新部署的 Pod 中通过 dnsConfig 配置使用新的 localdns 的地址来进行解析。&lt;/p&gt;
-&lt;/blockquote&gt;
+&lt;p&gt;如果担心线上环境修改 &lt;code&gt;--cluster-dns&lt;/code&gt; 参数会产生影响，我们也可以直接在新部署的 Pod 中通过 dnsConfig 配置使用新的 localdns 的地址来进行解析。&lt;/p&gt;&lt;/blockquote&gt;
 &lt;ol&gt;
 &lt;li&gt;通过修改&lt;code&gt;--cluster-dns&lt;/code&gt;实现&lt;/li&gt;
 &lt;/ol&gt;
@@ -4014,8 +3985,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;      &lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;value&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;3&amp;#39;&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;dnsPolicy&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;l&#34;&gt;None&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;blockquote&gt;
-&lt;p&gt;由于指定&lt;code&gt;nameservers&lt;/code&gt;属于&lt;code&gt;append&lt;/code&gt;操作，如果需要忽略原来的dns地址请使用&lt;code&gt;dnsPolicy: None&lt;/code&gt;&lt;/p&gt;
-&lt;/blockquote&gt;
+&lt;p&gt;由于指定&lt;code&gt;nameservers&lt;/code&gt;属于&lt;code&gt;append&lt;/code&gt;操作，如果需要忽略原来的dns地址请使用&lt;code&gt;dnsPolicy: None&lt;/code&gt;&lt;/p&gt;&lt;/blockquote&gt;
 &lt;h2 id=&#34;coredns的性能优化&#34;&gt;&lt;/h&gt;CoreDns的性能优化
 &lt;/h2&gt;&lt;ol&gt;
 &lt;li&gt;合理控制CoreDNS的副本数量&lt;/li&gt;
@@ -4042,7 +4012,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;sd&#34;&gt;        template ANY AAAA {
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;sd&#34;&gt;           rcode NXDOMAIN
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;sd&#34;&gt;        }
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;sd&#34;&gt;        ...&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;    
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;sd&#34;&gt;        ...&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;&lt;/span&gt;}&lt;span class=&#34;w&#34;&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;ol&gt;
 &lt;li&gt;优化ndots&lt;/li&gt;
@@ -4136,12 +4106,10 @@
 &lt;li&gt;一些可以用来在主机间复制文件的基础设施。例如 ssh 和 scp 就可以满足需求。&lt;/li&gt;
 &lt;/ul&gt;
 &lt;blockquote&gt;
-&lt;p&gt;本次容器运行时采用&lt;code&gt;Containerd&lt;/code&gt;作为Runtime&lt;/p&gt;
-&lt;/blockquote&gt;
+&lt;p&gt;本次容器运行时采用&lt;code&gt;Containerd&lt;/code&gt;作为Runtime&lt;/p&gt;&lt;/blockquote&gt;
 &lt;h3 id=&#34;将kubelet配置为etcd的服务启动管理器&#34;&gt;&lt;/h&gt;将Kubelet配置为Etcd的服务启动管理器
 &lt;/h3&gt;&lt;blockquote&gt;
-&lt;p&gt;你必须在要运行 etcd 的所有主机上执行此操作。&lt;/p&gt;
-&lt;/blockquote&gt;
+&lt;p&gt;你必须在要运行 etcd 的所有主机上执行此操作。&lt;/p&gt;&lt;/blockquote&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;cat &lt;span class=&#34;s&#34;&gt;&amp;lt;&amp;lt; EOF &amp;gt; /usr/lib/systemd/system/kubelet.service.d/20-etcd-service-manager.conf 
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s&#34;&gt;[Service]
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s&#34;&gt;ExecStart=
@@ -4152,8 +4120,7 @@
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;systemctl daemon-reload
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;systemctl restart kubelet
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;blockquote&gt;
-&lt;p&gt;注意: 请执行完毕后务必确保&lt;code&gt;kubelet&lt;/code&gt;处于&lt;code&gt;running&lt;/code&gt;状态。&lt;/p&gt;
-&lt;/blockquote&gt;
+&lt;p&gt;注意: 请执行完毕后务必确保&lt;code&gt;kubelet&lt;/code&gt;处于&lt;code&gt;running&lt;/code&gt;状态。&lt;/p&gt;&lt;/blockquote&gt;
 &lt;h3 id=&#34;为kubeadm创建配置文件&#34;&gt;&lt;/h&gt;为Kubeadm创建配置文件
 &lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 使用你的主机 IP 替换 HOST0、HOST1 和 HOST2 的 IP 地址&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nb&#34;&gt;export&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;HOST0&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;10.1.6.48
@@ -4328,11 +4295,11 @@ ConfigMap 在设计上不是用来保存大量数据的。在 ConfigMap 中保�
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;  &lt;/span&gt;&lt;span class=&#34;c&#34;&gt;# 类文件键,一般用来保存一个文件到指定目录&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;  &lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;game.properties&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;&lt;span class=&#34;sd&#34;&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;sd&#34;&gt;    enemy.types=aliens,monsters
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;sd&#34;&gt;    player.maximum-lives=5    &lt;/span&gt;&lt;span class=&#34;w&#34;&gt;    
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;sd&#34;&gt;    player.maximum-lives=5    &lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;  &lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;user-interface.properties&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;&lt;span class=&#34;sd&#34;&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;sd&#34;&gt;    color.good=purple
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;sd&#34;&gt;    color.bad=yellow
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;sd&#34;&gt;    allow.textmode=true&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;    
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;sd&#34;&gt;    allow.textmode=true&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;你可以使用四种方式来使用 ConfigMap 配置 Pod 中的容器：&lt;/p&gt;
 &lt;ol&gt;
 &lt;li&gt;在容器命令和参数内&lt;/li&gt;
@@ -4431,8 +4398,7 @@ ConfigMap 在设计上不是用来保存大量数据的。在 ConfigMap 中保�
     &gt;KubeletConfiguration 结构&lt;/a&gt;. 的 &lt;code&gt;ConfigMapAndSecretChangeDetectionStrategy&lt;/code&gt; 字段来配置。&lt;/p&gt;
 &lt;p&gt;ConfigMap 既可以通过 watch 操作实现内容传播（默认形式），也可实现基于 TTL 的缓存，还可以直接经过所有请求重定向到 API 服务器。 因此，从 ConfigMap 被更新的那一刻算起，到新的主键被投射到 Pod 中去， 这一时间跨度可能与 kubelet 的同步周期加上高速缓存的传播延迟相等。 这里的传播延迟取决于所选的高速缓存类型 （分别对应 watch 操作的传播延迟、高速缓存的 TTL 时长或者 0）。&lt;/p&gt;
 &lt;blockquote&gt;
-&lt;p&gt;以环境变量方式使用的 ConfigMap 数据不会被自动更新。 更新这些数据需要重新启动 Pod。&lt;/p&gt;
-&lt;/blockquote&gt;
+&lt;p&gt;以环境变量方式使用的 ConfigMap 数据不会被自动更新。 更新这些数据需要重新启动 Pod。&lt;/p&gt;&lt;/blockquote&gt;
 &lt;h2 id=&#34;secret&#34;&gt;&lt;/h&gt;Secret
 &lt;/h2&gt;&lt;p&gt;Secret 是一种包含少量敏感信息例如密码、令牌或密钥的对象。 这样的信息可能会被放在 &lt;a class=&#34;link&#34; href=&#34;https://kubernetes.io/zh-cn/docs/concepts/workloads/pods/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;Pod&lt;/a&gt; 规约中或者镜像中。 使用 Secret 意味着你不需要在应用程序代码中包含机密数据。&lt;/p&gt;
@@ -4440,8 +4406,7 @@ ConfigMap 在设计上不是用来保存大量数据的。在 ConfigMap 中保�
 &lt;p&gt;Secret 类似于 &lt;a class=&#34;link&#34; href=&#34;https://kubernetes.io/zh-cn/docs/tasks/configure-pod-container/configure-pod-configmap/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;ConfigMap&lt;/a&gt; 但专门用于保存机密数据。&lt;/p&gt;
 &lt;blockquote&gt;
-&lt;p&gt;&lt;strong&gt;注意&lt;/strong&gt;: 默认情况下，Kubernetes Secret 未加密地存储在 API 服务器的底层数据存储（etcd）中。 任何拥有 API 访问权限的人都可以检索或修改 Secret，任何有权访问 etcd 的人也可以。 此外，任何有权限在命名空间中创建 Pod 的人都可以使用该访问权限读取该命名空间中的任何 Secret； 这包括间接访问，例如创建 Deployment 的能力。&lt;/p&gt;
-&lt;/blockquote&gt;
+&lt;p&gt;&lt;strong&gt;注意&lt;/strong&gt;: 默认情况下，Kubernetes Secret 未加密地存储在 API 服务器的底层数据存储（etcd）中。 任何拥有 API 访问权限的人都可以检索或修改 Secret，任何有权访问 etcd 的人也可以。 此外，任何有权限在命名空间中创建 Pod 的人都可以使用该访问权限读取该命名空间中的任何 Secret； 这包括间接访问，例如创建 Deployment 的能力。&lt;/p&gt;&lt;/blockquote&gt;
 &lt;p&gt;为了安全地使用 Secret，请至少执行以下步骤：&lt;/p&gt;
 &lt;ol&gt;
 &lt;li&gt;为 Secret &lt;a class=&#34;link&#34; href=&#34;https://kubernetes.io/zh-cn/docs/tasks/administer-cluster/encrypt-data/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
@@ -4549,7 +4514,7 @@ ConfigMap 在设计上不是用来保存大量数据的。在 ConfigMap 中保�
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;一般来说Pod默认的访问&lt;code&gt;API Server&lt;/code&gt;的Token都会挂载到&lt;code&gt;/var/run/secrets/kubernetes.io/serviceaccount&lt;/code&gt;当中,利用自带的&lt;code&gt;token&lt;/code&gt;和&lt;code&gt;ca.crt&lt;/code&gt;，默认情况下所有的Pod都会被注入当前&lt;code&gt;namespace&lt;/code&gt;下的&lt;code&gt;token&lt;/code&gt;和&lt;code&gt;ca.crt&lt;/code&gt;这样以来就可以去访问APIServer了&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;root@nginx-web-beijing-87c9f478f-knrfp:/var/run/secrets/kubernetes.io/serviceaccount# ls
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;ca.crt  namespace  token
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;kubernetesiodockerconfigjsonhttpkubernetesiodockerconfigjson&#34;&gt;&lt;/h&gt;&lt;a class=&#34;link&#34; href=&#34;http://kubernetes.io/dockerconfigjson&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;kubernetesiodockerconfigjson&#34;&gt;&lt;/h&gt;&lt;a class=&#34;link&#34; href=&#34;http://kubernetes.io/dockerconfigjson&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;kubernetes.io/dockerconfigjson&lt;/a&gt;
 &lt;/h3&gt;&lt;p&gt;除了上面的 &lt;code&gt;Opaque&lt;/code&gt; 这种类型外，我们还可以来创建用户 &lt;code&gt;docker registry&lt;/code&gt; 认证的 &lt;code&gt;Secret&lt;/code&gt;，直接使用&lt;code&gt;kubectl create&lt;/code&gt; 命令创建即可，如下：&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;kubectl create secret docker-registry beijing-harbor --docker-server&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;DOCKER_SERVER --docker-username&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;DOCKER_USER --docker-password&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;DOCKER_PASSWORD --docker-email&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;DOCKER_EMAIL
@@ -4603,8 +4568,7 @@ ConfigMap 在设计上不是用来保存大量数据的。在 ConfigMap 中保�
 &lt;p&gt;前面我们也提到了默认情况下当前 namespace 下面的 Pod 会默认使用 &lt;code&gt;default&lt;/code&gt; 这个 ServiceAccount，对应的 &lt;code&gt;Secret&lt;/code&gt; 会自动挂载到 Pod 的 &lt;code&gt;/var/run/secrets/kubernetes.io/serviceaccount/&lt;/code&gt; 目录中，这样我们就可以在 Pod 里面获取到用于身份认证的信息了。&lt;/p&gt;
 &lt;p&gt;实际上这个自动挂载过程是在 Pod 创建的时候通过 &lt;code&gt;Admisson Controller（准入控制器）&lt;/code&gt; 来实现的，关于准入控制器的详细信息我们会在后面的安全章节中和大家继续学习。&lt;/p&gt;
 &lt;blockquote&gt;
-&lt;p&gt;&lt;code&gt;Admission Controller（准入控制）&lt;/code&gt;是 Kubernetes API Server 用于拦截请求的一种手段。&lt;code&gt;Admission&lt;/code&gt; 可以做到对请求的资源对象进行校验，修改，Pod 创建时 &lt;code&gt;Admission Controller&lt;/code&gt; 会根据指定的的 &lt;code&gt;ServiceAccount&lt;/code&gt;（默认的 default）把对应的 &lt;code&gt;Secret&lt;/code&gt; 挂载到容器中的固定目录下 &lt;code&gt;/var/run/secrets/kubernetes.io/serviceaccount/&lt;/code&gt;。&lt;/p&gt;
-&lt;/blockquote&gt;
+&lt;p&gt;&lt;code&gt;Admission Controller（准入控制）&lt;/code&gt;是 Kubernetes API Server 用于拦截请求的一种手段。&lt;code&gt;Admission&lt;/code&gt; 可以做到对请求的资源对象进行校验，修改，Pod 创建时 &lt;code&gt;Admission Controller&lt;/code&gt; 会根据指定的的 &lt;code&gt;ServiceAccount&lt;/code&gt;（默认的 default）把对应的 &lt;code&gt;Secret&lt;/code&gt; 挂载到容器中的固定目录下 &lt;code&gt;/var/run/secrets/kubernetes.io/serviceaccount/&lt;/code&gt;。&lt;/p&gt;&lt;/blockquote&gt;
 </description>
         </item>
         <item>
@@ -4625,8 +4589,7 @@ ConfigMap 在设计上不是用来保存大量数据的。在 ConfigMap 中保�
     &gt;Pod&lt;/a&gt;。 这与垂直(Vertical)扩缩不同，对于 Kubernetes， 垂直扩缩意味着将更多资源（例如：内存或 CPU）分配给已经为工作负载运行的 Pod。&lt;/p&gt;
 &lt;p&gt;如果负载减少，并且Pod的数量高于配置的最小值，&lt;code&gt;HorizontalPodAutoscaler&lt;/code&gt; 会指示工作负载资源（Deployment、StatefulSet 或其他类似资源）缩减。&lt;/p&gt;
 &lt;blockquote&gt;
-&lt;p&gt;水平Pod自动扩缩不适用于无法扩缩的对象: 例如DemonSet这种&lt;/p&gt;
-&lt;/blockquote&gt;
+&lt;p&gt;水平Pod自动扩缩不适用于无法扩缩的对象: 例如DemonSet这种&lt;/p&gt;&lt;/blockquote&gt;
 &lt;p&gt;我们可以简单的通过 &lt;code&gt;kubectl autoscale&lt;/code&gt; 命令来创建一个 HPA 资源对象，&lt;code&gt;HPA Controller&lt;/code&gt;默认&lt;code&gt;30s&lt;/code&gt;轮询一次（可通过 &lt;code&gt;kube-controller-manager&lt;/code&gt; 的&lt;code&gt;--horizontal-pod-autoscaler-sync-period&lt;/code&gt; 参数进行设置），查询指定的资源中的 Pod 资源使用率，并且与创建时设定的值和指标做对比，从而实现自动伸缩的功能。&lt;/p&gt;
 &lt;h3 id=&#34;horizontalpodautoscaler-是如何工作的&#34;&gt;&lt;/h&gt;HorizontalPodAutoscaler 是如何工作的
 &lt;/h3&gt;&lt;p&gt;
@@ -4738,8 +4701,7 @@ ConfigMap 在设计上不是用来保存大量数据的。在 ConfigMap 中保�
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;            &lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;privileged&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;kc&#34;&gt;false&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;创建基于cpu的自动扩容&#34;&gt;&lt;/h&gt;创建基于CPU的自动扩容
 &lt;/h3&gt;&lt;blockquote&gt;
-&lt;p&gt;我们这次只针对CPU进行操作,后续我们会根据更多的自定义资源来进行扩缩容。&lt;/p&gt;
-&lt;/blockquote&gt;
+&lt;p&gt;我们这次只针对CPU进行操作,后续我们会根据更多的自定义资源来进行扩缩容。&lt;/p&gt;&lt;/blockquote&gt;
 &lt;p&gt;现在我们来创建一个&lt;code&gt;HPA&lt;/code&gt;，可以使用&lt;code&gt;kubectl autoscale&lt;/code&gt;命令来创建：&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;kubectl autoscale deployment hpa-demo-nginx --cpu-percent&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;10&lt;/span&gt; --min&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;1&lt;/span&gt; --max&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;6&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;此命令创建了一个关联资源&lt;code&gt;hpa-demo-nginx&lt;/code&gt; 的&lt;code&gt;HPA&lt;/code&gt;，最小的 pod 副本数为3，最大为6。&lt;code&gt;HPA&lt;/code&gt;会根据设定的 cpu使用率（10%）动态的增加或者减少pod数量。&lt;/p&gt;
@@ -4804,7 +4766,7 @@ ConfigMap 在设计上不是用来保存大量数据的。在 ConfigMap 中保�
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;sd&#34;&gt;    sleep 60 
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;sd&#34;&gt;    rm /tmp/memory/block  
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;sd&#34;&gt;    umount /tmp/memory  
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;sd&#34;&gt;    rmdir /tmp/memory&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;    
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;sd&#34;&gt;    rmdir /tmp/memory&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;由于这里增加内存的脚本需要使用到 &lt;code&gt;mount&lt;/code&gt; 命令，这需要声明为特权模式，所以我们添加了 &lt;code&gt;securityContext.privileged=true&lt;/code&gt; 这个配置。现在我们直接创建上面的资源对象即可&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;kubectl apply -f hpa-demo-mem.yaml
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;kubectl apply -f increase-mem-config.yaml 
@@ -4868,8 +4830,7 @@ Kubernetes API的每个请求都会经过多阶段的访问控制之后才会被
 &lt;li&gt;将Token内容写入到文件当中&lt;/li&gt;
 &lt;/ol&gt;
 &lt;blockquote&gt;
-&lt;p&gt;注意：该文件格式为CSV格式，其实你也可以随便写:happy:&lt;/p&gt;
-&lt;/blockquote&gt;
+&lt;p&gt;注意：该文件格式为CSV格式，其实你也可以随便写:happy:&lt;/p&gt;&lt;/blockquote&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;描述： Token值  用户名称  用户ID 可选组名
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;kube-token,kubeadminer,1000,&lt;span class=&#34;s2&#34;&gt;&amp;#34;group1,group2,group3&amp;#34;&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;假设这是我们请求名称空间的请求: &lt;code&gt;curl -k -v -XGET -H &amp;quot;Authrization: Bearer kube-token&amp;quot; https://api.k8s.version.cn:6443/api/v1/namespaces/default&lt;/code&gt;&lt;/p&gt;
@@ -4892,8 +4853,7 @@ Kubernetes API的每个请求都会经过多阶段的访问控制之后才会被
 &lt;li&gt;设置&lt;code&gt;API Server&lt;/code&gt;&lt;/li&gt;
 &lt;/ol&gt;
 &lt;blockquote&gt;
-&lt;p&gt;注意： 操作的时候请备份你的API Server文件，这是一个好习惯.&lt;/p&gt;
-&lt;/blockquote&gt;
+&lt;p&gt;注意： 操作的时候请备份你的API Server文件，这是一个好习惯.&lt;/p&gt;&lt;/blockquote&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-yaml&#34; data-lang=&#34;yaml&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c&#34;&gt;#  vim /etc/kubernetes/manifests/kube-apiserver.yaml &lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;&lt;/span&gt;&lt;span class=&#34;c&#34;&gt;# 挂载本地的/etc/basic-auth路径&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;volumeMounts&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
@@ -4908,8 +4868,7 @@ Kubernetes API的每个请求都会经过多阶段的访问控制之后才会被
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;&lt;/span&gt;&lt;span class=&#34;c&#34;&gt;# 修改API Server启动参数&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;&lt;/span&gt;- --&lt;span class=&#34;l&#34;&gt;token-auth-file=/etc/basic-auth/kube-token.csv&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;blockquote&gt;
-&lt;p&gt;请您等待APIServer重启完成&lt;/p&gt;
-&lt;/blockquote&gt;
+&lt;p&gt;请您等待APIServer重启完成&lt;/p&gt;&lt;/blockquote&gt;
 &lt;p&gt;当我们再次通过&lt;code&gt;kube-token&lt;/code&gt;进行请求API Server 如果能成功识别到我们的用户即可，也就知道我们当前的用户为&lt;code&gt;kubeadminer&lt;/code&gt;&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-json&#34; data-lang=&#34;json&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  &lt;span class=&#34;nt&#34;&gt;&amp;#34;kind&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;Status&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
@@ -4996,8 +4955,7 @@ Kubernetes API的每个请求都会经过多阶段的访问控制之后才会被
 &lt;/h3&gt;&lt;p&gt;Role(角色)是一系列特定角色权限的集合，例如一个角色可以包含读取Pod的权限和列出Pod的权限。&lt;/p&gt;
 &lt;p&gt;Role只能用来给某个特定的namespace中的资源作鉴权，对多namespace和集群级的资源活着是非资源类的API(如/healthz)使用ClusterRole&lt;/p&gt;
 &lt;blockquote&gt;
-&lt;p&gt;下面是一个简单的Role配置&lt;/p&gt;
-&lt;/blockquote&gt;
+&lt;p&gt;下面是一个简单的Role配置&lt;/p&gt;&lt;/blockquote&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-yaml&#34; data-lang=&#34;yaml&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nt&#34;&gt;kind&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;l&#34;&gt;Role&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;apiVersion&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;l&#34;&gt;rbac.authorization.k8s.io/v1&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;metadata&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
@@ -5008,8 +4966,7 @@ Kubernetes API的每个请求都会经过多阶段的访问控制之后才会被
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;  &lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;resources&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;pods&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;  &lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;verbs&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;get&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;watch&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;list&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;blockquote&gt;
-&lt;p&gt;下面是一个简单地ClusterRole配置&lt;/p&gt;
-&lt;/blockquote&gt;
+&lt;p&gt;下面是一个简单地ClusterRole配置&lt;/p&gt;&lt;/blockquote&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-yaml&#34; data-lang=&#34;yaml&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nt&#34;&gt;kind&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;l&#34;&gt;ClusterRole&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;apiVersion&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;l&#34;&gt;rbac.authorization.k8s.io/v1&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;metadata&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
@@ -5089,8 +5046,7 @@ SystemAccount&lt;/li&gt;
 通常需要创建一个管理员角色，并且绑定给开发运营团队的成员
 &lt;code&gt;ThirdPartyResource&lt;/code&gt;和&lt;code&gt;CustomResourceDefinition&lt;/code&gt;是全局资源，普通用户创建以后需要管理员授权才能真正操作该对象。&lt;/p&gt;
 &lt;blockquote&gt;
-&lt;p&gt;ssh到master节点通过&lt;code&gt;insecure port&lt;/code&gt;访问apiserver可以绕过鉴权,当需要做管理操作又没有权限的时候可以使用(不推荐)&lt;/p&gt;
-&lt;/blockquote&gt;
+&lt;p&gt;ssh到master节点通过&lt;code&gt;insecure port&lt;/code&gt;访问apiserver可以绕过鉴权,当需要做管理操作又没有权限的时候可以使用(不推荐)&lt;/p&gt;&lt;/blockquote&gt;
 &lt;h2 id=&#34;准入&#34;&gt;&lt;/h&gt;准入
 &lt;/h2&gt;&lt;h3 id=&#34;准入控制&#34;&gt;&lt;/h&gt;准入控制
 &lt;/h3&gt;&lt;p&gt;准入控制(Admission Control)在授权后对请求做进一步的验证或添加默认参数。不同于授权和认证只关心请求的用户和操作，准入控制还处理请求的内容，并且仅对创建、更新、删除或连接等有效，而对读操作无效。
@@ -5130,8 +5086,7 @@ SystemAccount&lt;/li&gt;
 &lt;li&gt;ValidatingWebhoookConfiguration: 校验插件，只能对准入对象合法性进行校验&lt;/li&gt;
 &lt;/ul&gt;
 &lt;blockquote&gt;
-&lt;p&gt;太多了 我就不一个一个写了…除了默认的准入控制插件以外，kubernetes预留了准入控制插件的扩展点，用户可以自定义准入控制插件&lt;/p&gt;
-&lt;/blockquote&gt;
+&lt;p&gt;太多了 我就不一个一个写了…除了默认的准入控制插件以外，kubernetes预留了准入控制插件的扩展点，用户可以自定义准入控制插件&lt;/p&gt;&lt;/blockquote&gt;
 &lt;h3 id=&#34;准入控制插件的演示&#34;&gt;&lt;/h&gt;准入控制插件的演示
 &lt;/h3&gt;&lt;ul&gt;
 &lt;li&gt;MutatingWebhookConfiguration: 说白了就是对准入控制的对象内容进行修改&lt;/li&gt;
@@ -5141,8 +5096,7 @@ SystemAccount&lt;/li&gt;
 &lt;/ul&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;git clone https://github.com/cncamp/admission-controller-webhook-demo.git
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;blockquote&gt;
-&lt;p&gt;这个暂且先不演示了…我也在研究哈哈&lt;/p&gt;
-&lt;/blockquote&gt;
+&lt;p&gt;这个暂且先不演示了…我也在研究哈哈&lt;/p&gt;&lt;/blockquote&gt;
 &lt;h2 id=&#34;限流&#34;&gt;&lt;/h&gt;限流
 &lt;/h2&gt;&lt;h3 id=&#34;漏斗算法&#34;&gt;&lt;/h&gt;漏斗算法
 &lt;/h3&gt;&lt;p&gt;漏洞算法也很容易理解，请求进来以后首先进入漏斗里面，然后漏斗以恒定的速率将请求流出进行处理，从而起到平滑流量的作用。
@@ -5238,8 +5192,7 @@ SystemAccount&lt;/li&gt;
 &lt;/h3&gt;&lt;p&gt;一个&lt;code&gt;PriorityLevelConfiguration&lt;/code&gt;表示单个隔离类型。
 每个&lt;code&gt;PriorityLevelConfiguration&lt;/code&gt;对未完成的请求数有各自的限制,对排队中的请求数也有限制。&lt;/p&gt;
 &lt;blockquote&gt;
-&lt;p&gt;PriorityLevelConfiguration是可以被多个FlowSchema进行复用的&lt;/p&gt;
-&lt;/blockquote&gt;
+&lt;p&gt;PriorityLevelConfiguration是可以被多个FlowSchema进行复用的&lt;/p&gt;&lt;/blockquote&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-yaml&#34; data-lang=&#34;yaml&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nt&#34;&gt;apiVersion&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;l&#34;&gt;flowcontrol.apiserver.k8s.io/v1beta1&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;kind&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;l&#34;&gt;PriorityLevelConfiguration&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;metadata&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
@@ -5649,7 +5602,7 @@ SystemAccount&lt;/li&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;metadata&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;  &lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;annotations&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;    &lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;kubectl.kubernetes.io/last-applied-configuration&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;&lt;span class=&#34;sd&#34;&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;sd&#34;&gt;      {&amp;#34;apiVersion&amp;#34;:&amp;#34;v1&amp;#34;,&amp;#34;kind&amp;#34;:&amp;#34;Service&amp;#34;,&amp;#34;metadata&amp;#34;:{&amp;#34;annotations&amp;#34;:{},&amp;#34;labels&amp;#34;:{&amp;#34;k8s-app&amp;#34;:&amp;#34;kubernetes-dashboard&amp;#34;},&amp;#34;name&amp;#34;:&amp;#34;kubernetes-dashboard&amp;#34;,&amp;#34;namespace&amp;#34;:&amp;#34;kubernetes-dashboard&amp;#34;},&amp;#34;spec&amp;#34;:{&amp;#34;ports&amp;#34;:[{&amp;#34;port&amp;#34;:443,&amp;#34;targetPort&amp;#34;:8443}],&amp;#34;selector&amp;#34;:{&amp;#34;k8s-app&amp;#34;:&amp;#34;kubernetes-dashboard&amp;#34;}}}&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;      
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;sd&#34;&gt;      {&amp;#34;apiVersion&amp;#34;:&amp;#34;v1&amp;#34;,&amp;#34;kind&amp;#34;:&amp;#34;Service&amp;#34;,&amp;#34;metadata&amp;#34;:{&amp;#34;annotations&amp;#34;:{},&amp;#34;labels&amp;#34;:{&amp;#34;k8s-app&amp;#34;:&amp;#34;kubernetes-dashboard&amp;#34;},&amp;#34;name&amp;#34;:&amp;#34;kubernetes-dashboard&amp;#34;,&amp;#34;namespace&amp;#34;:&amp;#34;kubernetes-dashboard&amp;#34;},&amp;#34;spec&amp;#34;:{&amp;#34;ports&amp;#34;:[{&amp;#34;port&amp;#34;:443,&amp;#34;targetPort&amp;#34;:8443}],&amp;#34;selector&amp;#34;:{&amp;#34;k8s-app&amp;#34;:&amp;#34;kubernetes-dashboard&amp;#34;}}}&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;  &lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;creationTimestamp&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;2022-09-06T02:58:06Z&amp;#34;&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;  &lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;labels&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;    &lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;k8s-app&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;l&#34;&gt;kubernetes-dashboard&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
@@ -6050,8 +6003,7 @@ SystemAccount&lt;/li&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;root@containerd-kube-master ~&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;# crictl image&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;WARN&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;0000&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; image connect using default endpoints: &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;unix:///var/run/dockershim.sock unix:///run/containerd/containerd.sock unix:///run/crio/crio.sock unix:///var/run/cri-dockerd.sock&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;. As the default settings are now deprecated, you should &lt;span class=&#34;nb&#34;&gt;set&lt;/span&gt; the endpoint instead.
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;blockquote&gt;
-&lt;p&gt;解决方法如下&lt;/p&gt;
-&lt;/blockquote&gt;
+&lt;p&gt;解决方法如下&lt;/p&gt;&lt;/blockquote&gt;
 &lt;ul&gt;
 &lt;li&gt;默认情况下&lt;code&gt;containerd&lt;/code&gt;的&lt;code&gt;sock&lt;/code&gt;存放于&lt;code&gt;/run/containerd/containerd.sock&lt;/code&gt;&lt;/li&gt;
 &lt;/ul&gt;
@@ -6248,8 +6200,7 @@ SystemAccount&lt;/li&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;n&#34;&gt;server&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;kube&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;-&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;apiserver&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;-&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;3&lt;/span&gt; &lt;span class=&#34;mf&#34;&gt;10.1&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;mf&#34;&gt;6.45&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;6443&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;check&lt;/span&gt; &lt;span class=&#34;c1&#34;&gt;# Replace the IP address with your own.&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;启动Haproxy&lt;/p&gt;
 &lt;blockquote&gt;
-&lt;p&gt;请确保你的LB2也已经进行如上配置&lt;/p&gt;
-&lt;/blockquote&gt;
+&lt;p&gt;请确保你的LB2也已经进行如上配置&lt;/p&gt;&lt;/blockquote&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;systemctl restart haproxy
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;systemctl &lt;span class=&#34;nb&#34;&gt;enable&lt;/span&gt; haproxy
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;配置Keepalived
@@ -6386,8 +6337,7 @@ SystemAccount&lt;/li&gt;
 &lt;p&gt;在节点上运行如下命令&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;kubeadm init --config kubeadm-config.yaml --upload-certs --v&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;5&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;blockquote&gt;
-&lt;p&gt;注意：如果你的集群初始化成功你将会看到如下信息.&lt;/p&gt;
-&lt;/blockquote&gt;
+&lt;p&gt;注意：如果你的集群初始化成功你将会看到如下信息.&lt;/p&gt;&lt;/blockquote&gt;
 &lt;ul&gt;
 &lt;li&gt;请保存好&lt;code&gt;kubeadm join&lt;/code&gt;的内容,默认2小时后过期,过期后重新生成即可&lt;/li&gt;
 &lt;/ul&gt;
@@ -6426,8 +6376,7 @@ SystemAccount&lt;/li&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;sudo chown &lt;span class=&#34;k&#34;&gt;$(&lt;/span&gt;id -u&lt;span class=&#34;k&#34;&gt;)&lt;/span&gt;:&lt;span class=&#34;k&#34;&gt;$(&lt;/span&gt;id -g&lt;span class=&#34;k&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;$HOME&lt;/span&gt;/.kube/config
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;运行网络cni插件calico&#34;&gt;&lt;/h&gt;运行网络CNI插件(Calico)
 &lt;/h2&gt;&lt;blockquote&gt;
-&lt;p&gt;注意：此时你应当有一个CNI插件来提供网络服务,如果不安装CNI插件,那么集群将会处于&lt;code&gt;不可用&lt;/code&gt;状态.&lt;/p&gt;
-&lt;/blockquote&gt;
+&lt;p&gt;注意：此时你应当有一个CNI插件来提供网络服务,如果不安装CNI插件,那么集群将会处于&lt;code&gt;不可用&lt;/code&gt;状态.&lt;/p&gt;&lt;/blockquote&gt;
 &lt;p&gt;如果你可以正常访问github&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;root@containerd-kube-master .kube&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;# curl https://raw.githubusercontent.com/projectcalico/calico/v3.24.1/manifests/calico.yaml -O&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;国内用户&lt;/p&gt;
@@ -6477,8 +6426,7 @@ SystemAccount&lt;/li&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;kubectl delete node online-beijing-master1
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;blockquote&gt;
 &lt;p&gt;这里提一个小问题: 当你使用&lt;code&gt;kubectl drain&lt;/code&gt;的时候,如果你当前的Master已经有挂载的&lt;code&gt;emptyDir&lt;/code&gt;需要使用&lt;code&gt;--delete-emptydir-data &lt;/code&gt;进行删除。
-TODO: 删除前请注意备份您的数据。&lt;/p&gt;
-&lt;/blockquote&gt;
+TODO: 删除前请注意备份您的数据。&lt;/p&gt;&lt;/blockquote&gt;
 </description>
         </item>
         <item>
@@ -6620,8 +6568,7 @@ cgroup的kmem account特性在3.x 内核上有内存泄露问题，如果开启�
         
         <guid>https://blog.mletter.cn/tech/kubernetes/pod-scheduling-issues/</guid>
         <description>&lt;img src="https://bj.bcebos.com/baidu-rmb-video-cover-1/2b6495c8749e3f4e4369e28cb50eeb87.png" alt="Featured image of post 有关于Kubernetes中影响Pod调度的问题" /&gt;&lt;blockquote&gt;
-&lt;p&gt;此问题引出的是生产环境中所有的资源完全充足,但是会出现更新Pod、删除Pod、新建Pod无法调度的情况。&lt;/p&gt;
-&lt;/blockquote&gt;
+&lt;p&gt;此问题引出的是生产环境中所有的资源完全充足,但是会出现更新Pod、删除Pod、新建Pod无法调度的情况。&lt;/p&gt;&lt;/blockquote&gt;
 &lt;h2 id=&#34;生产环境解决问题办法&#34;&gt;&lt;/h&gt;生产环境解决问题办法
 &lt;/h2&gt;&lt;p&gt;找到问题跟原所在,默认的&lt;code&gt;maxPods: 110&lt;/code&gt;,K8S默认一个节点上的pod调度数是110，当前有限制pod数的需求。
 &lt;code&gt;vim /var/lib/kubelet/config.yaml&lt;/code&gt;&lt;/p&gt;
@@ -6697,8 +6644,7 @@ cgroup的kmem account特性在3.x 内核上有内存泄露问题，如果开启�
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;    &lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;effect&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;NoSchedule&amp;#34;&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;blockquote&gt;
 &lt;p&gt;使用&lt;code&gt;kubectl describe node kubernetes-master1 | grep Taints&lt;/code&gt;进行查看是否为污点。
-使用&lt;code&gt;kubectl taint node 节点名称 key=value:污点值&lt;/code&gt;&lt;/p&gt;
-&lt;/blockquote&gt;
+使用&lt;code&gt;kubectl taint node 节点名称 key=value:污点值&lt;/code&gt;&lt;/p&gt;&lt;/blockquote&gt;
 </description>
         </item>
         <item>
@@ -6708,8 +6654,7 @@ cgroup的kmem account特性在3.x 内核上有内存泄露问题，如果开启�
         
         <guid>https://blog.mletter.cn/tech/kubernetes/skywallking/</guid>
         <description>&lt;img src="https://img14.360buyimg.com/ddimg/jfs/t1/164569/9/40677/14419/65bc6e4cFa1d8c0c3/5ccf7e6caadc9b83.jpg" alt="Featured image of post kubernetes-离线部署Skywallking" /&gt;&lt;blockquote&gt;
-&lt;p&gt;注意：请各位记住把所有离线包全拿到本地…&lt;/p&gt;
-&lt;/blockquote&gt;
+&lt;p&gt;注意：请各位记住把所有离线包全拿到本地…&lt;/p&gt;&lt;/blockquote&gt;
 &lt;h2 id=&#34;在线部署chartmuseum&#34;&gt;&lt;/h&gt;在线部署chartmuseum
 &lt;/h2&gt;&lt;p&gt;直接使用最简单的 docker run 方式，使用local 本地存储方式，通过 -v 映射到宿主机 /opt/charts
 更多支持安装方式见官网&lt;/p&gt;
@@ -6738,16 +6683,14 @@ cgroup的kmem account特性在3.x 内核上有内存泄露问题，如果开启�
 &lt;/h2&gt;&lt;blockquote&gt;
 &lt;p&gt;以防万一请先安装helmpush插件&lt;/p&gt;
 &lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://github.com/chartmuseum/helm-push&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
-    &gt;https://github.com/chartmuseum/helm-push&lt;/a&gt;&lt;/p&gt;
-&lt;/blockquote&gt;
+    &gt;https://github.com/chartmuseum/helm-push&lt;/a&gt;&lt;/p&gt;&lt;/blockquote&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;helm repo add chartmuseum http://localhost:8080
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;curl --data-binary &lt;span class=&#34;s2&#34;&gt;&amp;#34;@elasticsearch-7.12.1.tgz&amp;#34;&lt;/span&gt; http://localhost:8080/api/charts
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;helm push /root/skywalking-kubernetes-master/chart/skywalking/ chartmuseum
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;helm repo update &lt;span class=&#34;c1&#34;&gt;# 更新仓库&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;strong&gt;你可以尝试搜索一下&lt;/strong&gt;&lt;/p&gt;
 &lt;blockquote&gt;
-&lt;p&gt;保证仓库中存在elasticsarch和skywalking&lt;/p&gt;
-&lt;/blockquote&gt;
+&lt;p&gt;保证仓库中存在elasticsarch和skywalking&lt;/p&gt;&lt;/blockquote&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;root@k-master1 ~&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;# helm search repo&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;NAME                            CHART VERSION   APP VERSION     DESCRIPTION                                       
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;chartmuseum/elasticsearch       7.12.1          7.12.1          Official Elastic helm chart &lt;span class=&#34;k&#34;&gt;for&lt;/span&gt; Elasticsearch     
@@ -6773,8 +6716,7 @@ cgroup的kmem account特性在3.x 内核上有内存泄露问题，如果开启�
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;chartmuseum/chartmuseum:latest
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;helm中的elasticsearch可能会存在问题&#34;&gt;&lt;/h&gt;Helm中的Elasticsearch可能会存在问题
 &lt;/h2&gt;&lt;blockquote&gt;
-&lt;p&gt;你们也可以用我的这个elasticsearch配置 注意修改PVC&lt;/p&gt;
-&lt;/blockquote&gt;
+&lt;p&gt;你们也可以用我的这个elasticsearch配置 注意修改PVC&lt;/p&gt;&lt;/blockquote&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-yaml&#34; data-lang=&#34;yaml&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nt&#34;&gt;kind&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;l&#34;&gt;StatefulSet&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;apiVersion&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;l&#34;&gt;apps/v1&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;metadata&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
@@ -6840,7 +6782,7 @@ cgroup的kmem account特性在3.x 内核上有内存泄露问题，如果开启�
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;                  &lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;fieldPath&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;l&#34;&gt;metadata.name&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;            &lt;/span&gt;- &lt;span class=&#34;nt&#34;&gt;name&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;l&#34;&gt;cluster.initial_master_nodes&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;              &lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;value&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;p&#34;&gt;&amp;gt;-&lt;/span&gt;&lt;span class=&#34;sd&#34;&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;sd&#34;&gt;                elasticsearch-master-0,elasticsearch-master-1,elasticsearch-master-2,&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;                
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;sd&#34;&gt;                elasticsearch-master-0,elasticsearch-master-1,elasticsearch-master-2,&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;            &lt;/span&gt;- &lt;span class=&#34;nt&#34;&gt;name&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;l&#34;&gt;discovery.seed_hosts&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;              &lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;value&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;l&#34;&gt;elasticsearch-master-headless&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;            &lt;/span&gt;- &lt;span class=&#34;nt&#34;&gt;name&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;l&#34;&gt;cluster.name&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
@@ -6902,7 +6844,7 @@ cgroup的kmem account特性在3.x 内核上有内存泄露问题，如果开启�
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;sd&#34;&gt;                          echo &amp;#39;Cluster is not yet ready (request params: &amp;#34;wait_for_status=green&amp;amp;timeout=1s&amp;#34; )&amp;#39;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;sd&#34;&gt;                          exit 1
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;sd&#34;&gt;                      fi
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;sd&#34;&gt;                  fi&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;                  
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;sd&#34;&gt;                  fi&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;            &lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;initialDelaySeconds&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;m&#34;&gt;10&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;            &lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;timeoutSeconds&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;m&#34;&gt;5&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;            &lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;periodSeconds&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;m&#34;&gt;10&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
@@ -7023,8 +6965,7 @@ cgroup的kmem account特性在3.x 内核上有内存泄露问题，如果开启�
 &lt;li&gt;minSyncPeriod: 参数设置尝试同步 iptables 规则与内核之间的最短时长。如果是 &lt;code&gt;0s&lt;/code&gt;，那么每次有任一 Service 或 Endpoint 发生变更时，kube-proxy 都会立即同步这些规则。 这种方式在较小的集群中可以工作得很好，但如果在很短的时间内很多东西发生变更时，它会导致大量冗余工作。 例如，如果你有一个由 Deployment 支持的 Service，共有 100 个 Pod，你删除了这个 Deployment， 且设置了 &lt;code&gt;minSyncPeriod: 0s&lt;/code&gt;，kube-proxy 最终会从 iptables 规则中逐个删除 Service 的 Endpoint， 总共更新 100 次。使用较大的 &lt;code&gt;minSyncPeriod&lt;/code&gt; 值时，多个 Pod 删除事件将被聚合在一起， 因此 kube-proxy 最终可能会进行例如 5 次更新，每次移除 20 个端点， 这样在 CPU 利用率方面更有效率，能够更快地同步所有变更。&lt;/li&gt;
 &lt;/ul&gt;
 &lt;blockquote&gt;
-&lt;p&gt;默认值 &lt;code&gt;1s&lt;/code&gt; 对于中小型集群是一个很好的折衷方案。 在大型集群中，可能需要将其设置为更大的值。 （特别是，如果 kube-proxy 的 &lt;code&gt;sync_proxy_rules_duration_seconds&lt;/code&gt; 指标表明平均时间远大于 1 秒， 那么提高 &lt;code&gt;minSyncPeriod&lt;/code&gt; 可能会使更新更有效率。）&lt;/p&gt;
-&lt;/blockquote&gt;
+&lt;p&gt;默认值 &lt;code&gt;1s&lt;/code&gt; 对于中小型集群是一个很好的折衷方案。 在大型集群中，可能需要将其设置为更大的值。 （特别是，如果 kube-proxy 的 &lt;code&gt;sync_proxy_rules_duration_seconds&lt;/code&gt; 指标表明平均时间远大于 1 秒， 那么提高 &lt;code&gt;minSyncPeriod&lt;/code&gt; 可能会使更新更有效率。）&lt;/p&gt;&lt;/blockquote&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;code&gt;syncPeriod&lt;/code&gt;: 参数控制与单次 Service 和 Endpoint 的变更没有直接关系的少数同步操作。 特别是，它控制 kube-proxy 在外部组件已干涉 kube-proxy 的 iptables 规则时通知的速度。 在大型集群中，kube-proxy 也仅在每隔 &lt;code&gt;syncPeriod&lt;/code&gt; 时长执行某些清理操作，以避免不必要的工作。&lt;/li&gt;
 &lt;/ul&gt;
@@ -7080,8 +7021,7 @@ cgroup的kmem account特性在3.x 内核上有内存泄露问题，如果开启�
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    mode: &lt;span class=&#34;s2&#34;&gt;&amp;#34;ipvs&amp;#34;&lt;/span&gt;                          &lt;span class=&#34;c1&#34;&gt;# 修改此处&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    nodePortAddresses: null
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;blockquote&gt;
-&lt;p&gt;修改完成后记得重启&lt;code&gt;kube-proxy&lt;/code&gt;，然后使用&lt;code&gt;ipvsadm -ln&lt;/code&gt;校验。正常可以出现很多的规则链条。&lt;/p&gt;
-&lt;/blockquote&gt;
+&lt;p&gt;修改完成后记得重启&lt;code&gt;kube-proxy&lt;/code&gt;，然后使用&lt;code&gt;ipvsadm -ln&lt;/code&gt;校验。正常可以出现很多的规则链条。&lt;/p&gt;&lt;/blockquote&gt;
 &lt;h4 id=&#34;会话亲和性&#34;&gt;&lt;/h&gt;会话亲和性
 &lt;/h4&gt;&lt;p&gt;在这些代理模型中，绑定到 &lt;code&gt;Service IP:Port&lt;/code&gt; 的流量被代理到合适的后端， 客户端不需要知道任何关于 Kubernetes、Service 或 Pod 的信息。&lt;/p&gt;
 &lt;p&gt;如果要确保来自特定客户端的连接每次都传递给同一个 Pod， 你可以通过设置 Service 的 &lt;code&gt;.spec.sessionAffinity&lt;/code&gt; 为 &lt;code&gt;ClientIP&lt;/code&gt; 来设置基于客户端 IP 地址的会话亲和性（默认为 &lt;code&gt;None&lt;/code&gt;）。&lt;/p&gt;
@@ -7231,8 +7171,7 @@ cgroup的kmem account特性在3.x 内核上有内存泄露问题，如果开启�
         <guid>https://blog.mletter.cn/tech/kubernetes/install-nacos-cluster/</guid>
         <description>&lt;img src="https://img14.360buyimg.com/ddimg/jfs/t1/164569/9/40677/14419/65bc6e4cFa1d8c0c3/5ccf7e6caadc9b83.jpg" alt="Featured image of post 基于kubernetes部署nacos集群" /&gt;&lt;h2 id=&#34;简单安装使用&#34;&gt;&lt;/h&gt;简单安装使用
 &lt;/h2&gt;&lt;blockquote&gt;
-&lt;p&gt;最新版本应该是1.4.1&lt;/p&gt;
-&lt;/blockquote&gt;
+&lt;p&gt;最新版本应该是1.4.1&lt;/p&gt;&lt;/blockquote&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;git clone https://github.com/nacos-group/nacos-k8s.git
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;ul&gt;
 &lt;li&gt;简单使用&lt;/li&gt;
@@ -7260,8 +7199,7 @@ cgroup的kmem account特性在3.x 内核上有内存泄露问题，如果开启�
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;curl -X GET &lt;span class=&#34;s2&#34;&gt;&amp;#34;http://cluster-ip:8848/nacos/v1/cs/configs?dataId=nacos.cfg.dataId&amp;amp;group=test&amp;#34;&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;高级用法&#34;&gt;&lt;/h&gt;高级用法
 &lt;/h2&gt;&lt;blockquote&gt;
-&lt;p&gt;在高级使用中,Nacos在K8S拥有自动扩容缩容和数据持久特性,请注意如果需要使用这部分功能请使用PVC持久卷,Nacos的自动扩容缩容需要依赖持久卷,以及数据持久化也是一样,本例中使用的是NFS来使用PVC.&lt;/p&gt;
-&lt;/blockquote&gt;
+&lt;p&gt;在高级使用中,Nacos在K8S拥有自动扩容缩容和数据持久特性,请注意如果需要使用这部分功能请使用PVC持久卷,Nacos的自动扩容缩容需要依赖持久卷,以及数据持久化也是一样,本例中使用的是NFS来使用PVC.&lt;/p&gt;&lt;/blockquote&gt;
 &lt;h3 id=&#34;部署nfs&#34;&gt;&lt;/h&gt;部署NFS
 &lt;/h3&gt;&lt;p&gt;nfs-client-provisioner 可动态为kubernetes提供pv卷，是Kubernetes的简易NFS的外部provisioner，本身不提供NFS，需要现有的NFS服务器提供存储。持久卷目录的命名规则为: &lt;code&gt;${namespace}-${pvcName}-${pvName}&lt;/code&gt;&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;创建角色&lt;/strong&gt;&lt;/p&gt;
@@ -7321,8 +7259,7 @@ cgroup的kmem account特性在3.x 内核上有内存泄露问题，如果开启�
 &lt;li&gt;修改 &lt;strong&gt;deploy/nacos/nacos-pvc-nfs.yaml&lt;/strong&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;blockquote&gt;
-&lt;p&gt;可以自行选择更改&lt;/p&gt;
-&lt;/blockquote&gt;
+&lt;p&gt;可以自行选择更改&lt;/p&gt;&lt;/blockquote&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-yaml&#34; data-lang=&#34;yaml&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nt&#34;&gt;data&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;  &lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;mysql.master.db.name&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;主库名称&amp;#34;&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;  &lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;mysql.master.port&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;主库端口&amp;#34;&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
@@ -7363,8 +7300,7 @@ cgroup的kmem account特性在3.x 内核上有内存泄露问题，如果开启�
 &lt;li&gt;然后该节点的kubelet会进行一系列的判断,然后进入Create Pod的流程,然后进行一系列的&lt;code&gt;CNI&lt;/code&gt;和&lt;code&gt;CSI&lt;/code&gt;的过程。&lt;/li&gt;
 &lt;/ol&gt;
 &lt;blockquote&gt;
-&lt;p&gt;这也就是我们常说的往往越简单的东西,背后实现的越复杂。&lt;/p&gt;
-&lt;/blockquote&gt;
+&lt;p&gt;这也就是我们常说的往往越简单的东西,背后实现的越复杂。&lt;/p&gt;&lt;/blockquote&gt;
 &lt;h3 id=&#34;调度阶段&#34;&gt;&lt;/h&gt;调度阶段
 &lt;/h3&gt;&lt;p&gt;&lt;code&gt;kube-scheduler&lt;/code&gt;调度分为两个阶段&lt;/p&gt;
 &lt;ol&gt;
@@ -7389,8 +7325,7 @@ cgroup的kmem account特性在3.x 内核上有内存泄露问题，如果开启�
 &lt;li&gt;&lt;code&gt;NodePreferAvoidPodsPriority&lt;/code&gt;:权重判断&lt;/li&gt;
 &lt;/ol&gt;
 &lt;blockquote&gt;
-&lt;p&gt;太多了可以自己去官网了解一下，这些策略都可以通过&lt;code&gt;scheduler&lt;/code&gt;配置文件去配置，其实一般来说我们不太需要，我觉得kubernetes的调度是最让我们省心的。&lt;/p&gt;
-&lt;/blockquote&gt;
+&lt;p&gt;太多了可以自己去官网了解一下，这些策略都可以通过&lt;code&gt;scheduler&lt;/code&gt;配置文件去配置，其实一般来说我们不太需要，我觉得kubernetes的调度是最让我们省心的。&lt;/p&gt;&lt;/blockquote&gt;
 &lt;h2 id=&#34;资源需求&#34;&gt;&lt;/h&gt;资源需求
 &lt;/h2&gt;&lt;ul&gt;
 &lt;li&gt;&lt;code&gt;requests&lt;/code&gt;:属于调度器调度的时候所参考的指标，也就是说我这个应用最少需要&lt;code&gt;250m&lt;/code&gt;的cpu和&lt;code&gt;256m&lt;/code&gt;的内存才能运行。&lt;/li&gt;
@@ -7458,8 +7393,7 @@ cgroup的kmem account特性在3.x 内核上有内存泄露问题，如果开启�
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;root@node1 pod1ceee26d-2ec2-43a8-96ef-5aa9ac99779b&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;# cat cpu.shares &lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;m&#34;&gt;358&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;blockquote&gt;
-&lt;p&gt;kubernetes对于不同的QOS的处理方式是不一样的。&lt;/p&gt;
-&lt;/blockquote&gt;
+&lt;p&gt;kubernetes对于不同的QOS的处理方式是不一样的。&lt;/p&gt;&lt;/blockquote&gt;
 &lt;h3 id=&#34;limit-range&#34;&gt;&lt;/h&gt;Limit-range
 &lt;/h3&gt;&lt;p&gt;一个 &lt;strong&gt;LimitRange（限制范围）&lt;/strong&gt; 对象提供的限制能够做到：&lt;/p&gt;
 &lt;ul&gt;
@@ -7486,8 +7420,7 @@ cgroup的kmem account特性在3.x 内核上有内存泄露问题，如果开启�
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;      &lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;cpu&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;l&#34;&gt;100m&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;    &lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;type&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;l&#34;&gt;Container&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;blockquote&gt;
-&lt;p&gt;这东西其实是不太常用的&lt;/p&gt;
-&lt;/blockquote&gt;
+&lt;p&gt;这东西其实是不太常用的&lt;/p&gt;&lt;/blockquote&gt;
 &lt;h2 id=&#34;生产环境需要考虑的问题&#34;&gt;&lt;/h&gt;生产环境需要考虑的问题
 &lt;/h2&gt;&lt;ul&gt;
 &lt;li&gt;是否公平调度&lt;/li&gt;

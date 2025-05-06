@@ -6,7 +6,7 @@
 
 <link rel='canonical' href='https://blog.mletter.cn/tech/aiops/prompt-engineering-guide/'>
 
-<link rel="stylesheet" href="https://blog.mletter.cn/scss/style.min.e738e6f23cab51289304e49575e3f627bf3a6f32f7b82812a9ab0c552ae38a78.css"><meta property='og:title' content='1. Prompt Engineering入门指南：如何让AI更懂你的需求'>
+<link rel="stylesheet" href="https://blog.mletter.cn/scss/style.min.2cbc22726b422f9f13736f86d63fc4586e66e6cd6e9d7213ab3ccaeb176299b7.css"><meta property='og:title' content='1. Prompt Engineering入门指南：如何让AI更懂你的需求'>
 <meta property='og:description' content='Prompt（提示词）是用户与AI模型对话的&#34;钥匙&#34;，它决定了AI如何理解需求并生成响应。Prompt Engineering则是通过系统化设计和优化输入内容，让AI输出更符合预期的结果。就像与人类专家沟通一样，一个优质的问题往往包含答案的种子。'>
 <meta property='og:url' content='https://blog.mletter.cn/tech/aiops/prompt-engineering-guide/'>
 <meta property='og:site_name' content='太阳可以是蓝色'>
@@ -441,8 +441,7 @@
 </span></span><span class="line"><span class="cl">3. 实现异常重试机制（最大重试3次）
 </span></span><span class="line"><span class="cl">4. 数据保存为UTF-8编码的CSV
 </span></span></code></pre></div><blockquote>
-<p><strong>优化效果</strong>：成功率提升300% | 代码可读性提升50%</p>
-</blockquote>
+<p><strong>优化效果</strong>：成功率提升300% | 代码可读性提升50%</p></blockquote>
 <ul>
 <li>对模型进行格式的约束</li>
 </ul>
@@ -459,8 +458,7 @@
 </span></span><span class="line"><span class="cl">5. 包含docstring说明时间复杂度
 </span></span><span class="line"><span class="cl">&#34;&#34;&#34;
 </span></span></code></pre></div><blockquote>
-<p><strong>关键点</strong>：明确的格式要求可降低70%的返工率</p>
-</blockquote>
+<p><strong>关键点</strong>：明确的格式要求可降低70%的返工率</p></blockquote>
 <ul>
 <li>对模型进行引导</li>
 </ul>
@@ -480,8 +478,7 @@
 </span></span><span class="line"><span class="cl">  <span class="p">}</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></div><blockquote>
-<p><strong>优势</strong>：结构化模板使API响应规范度提升90%</p>
-</blockquote>
+<p><strong>优势</strong>：结构化模板使API响应规范度提升90%</p></blockquote>
 <ul>
 <li>渐进修正</li>
 </ul>
@@ -521,8 +518,7 @@ Token是模型理解和处理文本的最小单位，可能对应：</p>
 <li>标点符号或空格</li>
 </ul>
 <blockquote>
-<p>特别注意：空格是会导致Token的耗费的!</p>
-</blockquote>
+<p>特别注意：空格是会导致Token的耗费的!</p></blockquote>
 <h2 id="核心影响维度"></h>核心影响维度
 </h2><ol>
 <li>上下文窗口
@@ -540,8 +536,7 @@ Token是模型理解和处理文本的最小单位，可能对应：</p>
 </li>
 </ol>
 <blockquote>
-<p>Token越大，可以输入的内容就越多，其实模型回答的效果不会随着Token数量线性增长。</p>
-</blockquote>
+<p>Token越大，可以输入的内容就越多，其实模型回答的效果不会随着Token数量线性增长。</p></blockquote>
 <h3 id="模型能力对比"></h>模型能力对比
 </h3><div class="table-wrapper"><table>
   <thead>
@@ -600,8 +595,7 @@ Token是模型理解和处理文本的最小单位，可能对应：</p>
 </ul>
 <p><strong>激活方式</strong>：在Prompt中添加<code>请逐步分析</code>、<code>展示推理过程</code>等指令</p>
 <blockquote>
-<p>实践建议：在需要高可靠性答案的场景（如数学计算、法律条款解析）中强制启用CoT模式，可通过在Prompt中添加`逐步分析，等结构化指令触发模型的链式思考能力。</p>
-</blockquote>
+<p>实践建议：在需要高可靠性答案的场景（如数学计算、法律条款解析）中强制启用CoT模式，可通过在Prompt中添加`逐步分析，等结构化指令触发模型的链式思考能力。</p></blockquote>
 <h2 id="prompt分片超过token长度限制"></h>Prompt分片(超过Token长度限制)
 </h2><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="c1"># 自然分界点检测函数</span>
 </span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">detect_boundary</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>

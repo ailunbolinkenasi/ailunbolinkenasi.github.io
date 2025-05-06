@@ -6,7 +6,7 @@
 
 <link rel='canonical' href='https://blog.mletter.cn/tech/kubernetes/pod-scheduling-issues/'>
 
-<link rel="stylesheet" href="https://blog.mletter.cn/scss/style.min.e738e6f23cab51289304e49575e3f627bf3a6f32f7b82812a9ab0c552ae38a78.css"><meta property='og:title' content='有关于Kubernetes中影响Pod调度的问题'>
+<link rel="stylesheet" href="https://blog.mletter.cn/scss/style.min.2cbc22726b422f9f13736f86d63fc4586e66e6cd6e9d7213ab3ccaeb176299b7.css"><meta property='og:title' content='有关于Kubernetes中影响Pod调度的问题'>
 <meta property='og:description' content='此问题引出的是生产环境中所有的资源完全充足,但是会出现更新Pod、删除Pod、新建Pod无法调度的情况。'>
 <meta property='og:url' content='https://blog.mletter.cn/tech/kubernetes/pod-scheduling-issues/'>
 <meta property='og:site_name' content='太阳可以是蓝色'>
@@ -395,8 +395,7 @@
     
     
     <blockquote>
-<p>此问题引出的是生产环境中所有的资源完全充足,但是会出现更新Pod、删除Pod、新建Pod无法调度的情况。</p>
-</blockquote>
+<p>此问题引出的是生产环境中所有的资源完全充足,但是会出现更新Pod、删除Pod、新建Pod无法调度的情况。</p></blockquote>
 <h2 id="生产环境解决问题办法"></h>生产环境解决问题办法
 </h2><p>找到问题跟原所在,默认的<code>maxPods: 110</code>,K8S默认一个节点上的pod调度数是110，当前有限制pod数的需求。
 <code>vim /var/lib/kubelet/config.yaml</code></p>
@@ -472,8 +471,7 @@
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">effect</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;NoSchedule&#34;</span><span class="w">
 </span></span></span></code></pre></div><blockquote>
 <p>使用<code>kubectl describe node kubernetes-master1 | grep Taints</code>进行查看是否为污点。
-使用<code>kubectl taint node 节点名称 key=value:污点值</code></p>
-</blockquote>
+使用<code>kubectl taint node 节点名称 key=value:污点值</code></p></blockquote>
 
 </section>
 

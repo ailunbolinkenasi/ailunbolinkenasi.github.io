@@ -6,7 +6,7 @@
 
 <link rel='canonical' href='https://blog.mletter.cn/tech/ansible/ansible-task-controller/'>
 
-<link rel="stylesheet" href="https://blog.mletter.cn/scss/style.min.e738e6f23cab51289304e49575e3f627bf3a6f32f7b82812a9ab0c552ae38a78.css"><meta property='og:title' content='Ansible-任务控制'>
+<link rel="stylesheet" href="https://blog.mletter.cn/scss/style.min.2cbc22726b422f9f13736f86d63fc4586e66e6cd6e9d7213ab3ccaeb176299b7.css"><meta property='og:title' content='Ansible-任务控制'>
 <meta property='og:description' content='主要讲一下ansible当中的几种task方法'>
 <meta property='og:url' content='https://blog.mletter.cn/tech/ansible/ansible-task-controller/'>
 <meta property='og:site_name' content='太阳可以是蓝色'>
@@ -516,8 +516,7 @@
 </span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">msg</span><span class="p">:</span><span class="w"> </span><span class="s1">&#39;{{install_info}}&#39;</span><span class="w">
 </span></span></span></code></pre></div><h2 id="ansible-tags"></h>Ansible-Tags
 </h2><blockquote>
-<p>根据<code>playbook</code>中的指定标签的内容进行执行、调试等操作.</p>
-</blockquote>
+<p>根据<code>playbook</code>中的指定标签的内容进行执行、调试等操作.</p></blockquote>
 <ul>
 <li>对一个tasks指定一个tags标签</li>
 <li>对一个tasks指定多个tags标签(真没啥意义,感觉不实用。)</li>
@@ -549,8 +548,7 @@
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">ansible-playbook 1.yaml --skip-tags <span class="s2">&#34;authorized_key_hosts&#34;</span> -i hosts
 </span></span></code></pre></div><h2 id="ansible-include"></h>Ansible-Include
 </h2><blockquote>
-<p>一个可以将<code>playbook</code>简单的进行复用的一个功能!</p>
-</blockquote>
+<p>一个可以将<code>playbook</code>简单的进行复用的一个功能!</p></blockquote>
 <h3 id="简单应用"></h>简单应用
 </h3><p><strong>编写一个重启http服务的配置</strong></p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">- name: Start HTTP
@@ -576,8 +574,7 @@
 </span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="c">#  include_tasks: starthttpd.yaml  # 两种写法都可以</span><span class="w">
 </span></span></span></code></pre></div><h3 id="多个playbook合成"></h>多个playbook合成
 </h3><blockquote>
-<p>如果你写的playbook存在多个文件,你只想执行一个playbook,那么可以使用<code>import_playbook</code>。</p>
-</blockquote>
+<p>如果你写的playbook存在多个文件,你只想执行一个playbook,那么可以使用<code>import_playbook</code>。</p></blockquote>
 <ul>
 <li><code>import_playbook</code>: 引入你需要的playbook文件,必须是一个完整的<code>playbook</code>文件</li>
 </ul>
@@ -585,8 +582,7 @@
 </span></span></span><span class="line"><span class="cl"><span class="w"></span>- <span class="nt">import_playbook</span><span class="p">:</span><span class="w"> </span><span class="l">./tasks2.yaml</span><span class="w">
 </span></span></span></code></pre></div><h2 id="ansible-ignore_errors"></h>Ansible-ignore_errors
 </h2><blockquote>
-<p>在Ansible中进行错误的忽略</p>
-</blockquote>
+<p>在Ansible中进行错误的忽略</p></blockquote>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl">- <span class="nt">hosts</span><span class="p">:</span><span class="w"> </span><span class="l">test</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">remote_user</span><span class="p">:</span><span class="w"> </span><span class="l">root</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">gather_facts</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
@@ -609,8 +605,7 @@
 </span></span></code></pre></div><h2 id="ansible-changed_when"></h>Ansible-changed_when
 </h2><blockquote>
 <p>通常用于失败后所执行一些操作: 例如失败后强制调用<code>handlers</code>、失败后强制删除等.</p>
-<p>通常而言，如果任务失败并且play在该主机上中止，则收到play中早前任务通知的处理程序将不会运行。如果在play中设置<code>force_handlers: yes</code>关键字，则即使play因为后续任务失败而中止也会调用被通知的处理程序。</p>
-</blockquote>
+<p>通常而言，如果任务失败并且play在该主机上中止，则收到play中早前任务通知的处理程序将不会运行。如果在play中设置<code>force_handlers: yes</code>关键字，则即使play因为后续任务失败而中止也会调用被通知的处理程序。</p></blockquote>
 <h3 id="force_handlers"></h>force_handlers
 </h3><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl">- <span class="nt">hosts</span><span class="p">:</span><span class="w"> </span><span class="l">test</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">remote_user</span><span class="p">:</span><span class="w"> </span><span class="l">root</span><span class="w">
@@ -638,8 +633,7 @@
 </span></span><span class="line"><span class="cl">RUNNING HANDLER <span class="o">[</span>Restart HTTP service<span class="o">]</span> ****************************************************************************************************************************************************************************************************changed: <span class="o">[</span>10.1.6.57<span class="o">]</span>
 </span></span></code></pre></div><h3 id="changed_when"></h>changed_when
 </h3><blockquote>
-<p>当前命令确保不会对被控端主机进行变更的时候,可以使用<code>changer_when</code>来进行忽略提示中的<code>changed</code></p>
-</blockquote>
+<p>当前命令确保不会对被控端主机进行变更的时候,可以使用<code>changer_when</code>来进行忽略提示中的<code>changed</code></p></blockquote>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl">- <span class="nt">hosts</span><span class="p">:</span><span class="w"> </span><span class="l">test</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">remote_user</span><span class="p">:</span><span class="w"> </span><span class="l">root</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">gather_facts</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
@@ -658,8 +652,7 @@
 </span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">debug</span><span class="p">:</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">msg</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;{{ ansible_distribution }}&#34;</span><span class="w">
 </span></span></span></code></pre></div><blockquote>
-<p><code>changed_when</code>还可以检查<code>tasks</code>任务返回的结果</p>
-</blockquote>
+<p><code>changed_when</code>还可以检查<code>tasks</code>任务返回的结果</p></blockquote>
 <ul>
 <li>查找输出当中是否存在<code>successfuly</code>如果没有则不执行</li>
 </ul>

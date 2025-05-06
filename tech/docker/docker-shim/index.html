@@ -6,7 +6,7 @@
 
 <link rel='canonical' href='https://blog.mletter.cn/tech/docker/docker-shim/'>
 
-<link rel="stylesheet" href="https://blog.mletter.cn/scss/style.min.e738e6f23cab51289304e49575e3f627bf3a6f32f7b82812a9ab0c552ae38a78.css"><meta property='og:title' content='什么是dockershim'>
+<link rel="stylesheet" href="https://blog.mletter.cn/scss/style.min.2cbc22726b422f9f13736f86d63fc4586e66e6cd6e9d7213ab3ccaeb176299b7.css"><meta property='og:title' content='什么是dockershim'>
 <meta property='og:description' content='kubelet中的Docker支持现在已弃用，并将在未来的版本中删除。kubelet使用了一个名为`dockershim`的模块，该模块实现了对Docker的CRI支持，并在Kubernetes社区中发现了维护问题。我们鼓励您评估迁移到一个容器运行时的情况，该容器运行时是CRI（v1alpha1或v1兼容）的完整实现。'>
 <meta property='og:url' content='https://blog.mletter.cn/tech/docker/docker-shim/'>
 <meta property='og:site_name' content='太阳可以是蓝色'>
@@ -471,8 +471,7 @@
 </span></span></code></pre></div><h2 id="dockershim"></h>Dockershim
 </h2><p><code>Dockershim</code> 作用：把外部收到的请求转化成 <code>docker daemon</code> 能听懂的请求，让 Docker Daemon 执行创建、删除等容器操作。</p>
 <blockquote>
-<p>具体看一下<code>kubelet</code>是怎样创建容器的</p>
-</blockquote>
+<p>具体看一下<code>kubelet</code>是怎样创建容器的</p></blockquote>
 <ol>
 <li>Kubelet 通过 CRI 接口（gRPC）调用<code>dockershim</code>,请求创建一个容器。CRI 即容器运行时接口，这一步中，Kubelet 可以视作一个简单的<code>CRI Client</code>，而 dockershim 就是接收请求的 Server。目前<code>dockershim</code>是内嵌在 Kubelet 中的，所以接收调用就是 Kubelet 进程。</li>
 <li><code>dockershim</code>收到请求后，转化成 docker daemon的请求，发到docker daemon 上请求创建一个容器。</li>

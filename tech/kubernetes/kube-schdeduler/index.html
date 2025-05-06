@@ -6,7 +6,7 @@
 
 <link rel='canonical' href='https://blog.mletter.cn/tech/kubernetes/kube-schdeduler/'>
 
-<link rel="stylesheet" href="https://blog.mletter.cn/scss/style.min.e738e6f23cab51289304e49575e3f627bf3a6f32f7b82812a9ab0c552ae38a78.css"><meta property='og:title' content='kubernetes-Scheduler简单详解'>
+<link rel="stylesheet" href="https://blog.mletter.cn/scss/style.min.2cbc22726b422f9f13736f86d63fc4586e66e6cd6e9d7213ab3ccaeb176299b7.css"><meta property='og:title' content='kubernetes-Scheduler简单详解'>
 <meta property='og:description' content='kube-scheduler 是 kubernetes 的核心组件之一'>
 <meta property='og:url' content='https://blog.mletter.cn/tech/kubernetes/kube-schdeduler/'>
 <meta property='og:site_name' content='太阳可以是蓝色'>
@@ -409,8 +409,7 @@
 <li>然后该节点的kubelet会进行一系列的判断,然后进入Create Pod的流程,然后进行一系列的<code>CNI</code>和<code>CSI</code>的过程。</li>
 </ol>
 <blockquote>
-<p>这也就是我们常说的往往越简单的东西,背后实现的越复杂。</p>
-</blockquote>
+<p>这也就是我们常说的往往越简单的东西,背后实现的越复杂。</p></blockquote>
 <h3 id="调度阶段"></h>调度阶段
 </h3><p><code>kube-scheduler</code>调度分为两个阶段</p>
 <ol>
@@ -435,8 +434,7 @@
 <li><code>NodePreferAvoidPodsPriority</code>:权重判断</li>
 </ol>
 <blockquote>
-<p>太多了可以自己去官网了解一下，这些策略都可以通过<code>scheduler</code>配置文件去配置，其实一般来说我们不太需要，我觉得kubernetes的调度是最让我们省心的。</p>
-</blockquote>
+<p>太多了可以自己去官网了解一下，这些策略都可以通过<code>scheduler</code>配置文件去配置，其实一般来说我们不太需要，我觉得kubernetes的调度是最让我们省心的。</p></blockquote>
 <h2 id="资源需求"></h>资源需求
 </h2><ul>
 <li><code>requests</code>:属于调度器调度的时候所参考的指标，也就是说我这个应用最少需要<code>250m</code>的cpu和<code>256m</code>的内存才能运行。</li>
@@ -504,8 +502,7 @@
 </span></span><span class="line"><span class="cl"><span class="o">[</span>root@node1 pod1ceee26d-2ec2-43a8-96ef-5aa9ac99779b<span class="o">]</span><span class="c1"># cat cpu.shares </span>
 </span></span><span class="line"><span class="cl"><span class="m">358</span>
 </span></span></code></pre></div><blockquote>
-<p>kubernetes对于不同的QOS的处理方式是不一样的。</p>
-</blockquote>
+<p>kubernetes对于不同的QOS的处理方式是不一样的。</p></blockquote>
 <h3 id="limit-range"></h>Limit-range
 </h3><p>一个 <strong>LimitRange（限制范围）</strong> 对象提供的限制能够做到：</p>
 <ul>
@@ -532,8 +529,7 @@
 </span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">cpu</span><span class="p">:</span><span class="w"> </span><span class="l">100m</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l">Container</span><span class="w">
 </span></span></span></code></pre></div><blockquote>
-<p>这东西其实是不太常用的</p>
-</blockquote>
+<p>这东西其实是不太常用的</p></blockquote>
 <h2 id="生产环境需要考虑的问题"></h>生产环境需要考虑的问题
 </h2><ul>
 <li>是否公平调度</li>

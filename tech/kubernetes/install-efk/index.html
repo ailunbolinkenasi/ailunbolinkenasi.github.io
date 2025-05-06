@@ -8,7 +8,7 @@ Elasticsearch 是一个实时的、分布式的可扩展的搜索引擎，允许
 
 <link rel='canonical' href='https://blog.mletter.cn/tech/kubernetes/install-efk/'>
 
-<link rel="stylesheet" href="https://blog.mletter.cn/scss/style.min.e738e6f23cab51289304e49575e3f627bf3a6f32f7b82812a9ab0c552ae38a78.css"><meta property='og:title' content='kubernetes基于EFK的日志落地实现'>
+<link rel="stylesheet" href="https://blog.mletter.cn/scss/style.min.2cbc22726b422f9f13736f86d63fc4586e66e6cd6e9d7213ab3ccaeb176299b7.css"><meta property='og:title' content='kubernetes基于EFK的日志落地实现'>
 <meta property='og:description' content='Kubernetes 中比较流行的日志收集解决方案是 Elasticsearch、Fluentd 和 Kibana（EFK）技术栈，也是官方现在比较推荐的一种方案。
 Elasticsearch 是一个实时的、分布式的可扩展的搜索引擎，允许进行全文、结构化搜索，它通常用于索引和搜索大量日志数据，也可用于搜索许多不同类型的文档。
 '>
@@ -481,13 +481,11 @@ Elasticsearch 是一个实时的、分布式的可扩展的搜索引擎，允许
   </tbody>
 </table></div>
 <blockquote>
-<p>建议使用 <code>StorageClass</code> 来做持久化存储，当然如果你是线上环境建议使用 Local PV 或者 Ceph RBD 之类的存储来持久化 Elasticsearch 的数据。</p>
-</blockquote>
+<p>建议使用 <code>StorageClass</code> 来做持久化存储，当然如果你是线上环境建议使用 Local PV 或者 Ceph RBD 之类的存储来持久化 Elasticsearch 的数据。</p></blockquote>
 <p>由于 ElasticSearch 7.x 版本默认安装了 X-Pack 插件，并且部分功能免费，需要我们配置一些安全证书文件。</p>
 <h3 id="准备生成证书文件"></h>准备生成证书文件
 </h3><blockquote>
-<p>注意：由于我们采用的是<code>containerd</code>所以使用<code>nerdctl</code>来运行一个容器</p>
-</blockquote>
+<p>注意：由于我们采用的是<code>containerd</code>所以使用<code>nerdctl</code>来运行一个容器</p></blockquote>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">mkdir -p elastic-certs
 </span></span><span class="line"><span class="cl">nerdctl run --name elastic-certs -v elastic-certs:/app -it -w /app elasticsearch:7.17.3 /bin/sh -c  <span class="se">\
 </span></span></span><span class="line"><span class="cl"><span class="se"></span>  <span class="s2">&#34;elasticsearch-certutil ca --out /app/elastic-stack-ca.p12 --pass &#39;&#39; &amp;&amp; \
@@ -575,7 +573,7 @@ Elasticsearch 是一个实时的、分布式的可扩展的搜索引擎，允许
 </span></span></span><span class="line"><span class="cl"><span class="sd">    xpack.security.transport.ssl.truststore.path: /usr/share/elasticsearch/config/certs/elastic-certificates.p12
 </span></span></span><span class="line"><span class="cl"><span class="sd">    # xpack.security.http.ssl.enabled: true
 </span></span></span><span class="line"><span class="cl"><span class="sd">    # xpack.security.http.ssl.truststore.path: /usr/share/elasticsearch/config/certs/elastic-certificates.p12
-</span></span></span><span class="line"><span class="cl"><span class="sd">    # xpack.security.http.ssl.keystore.path: /usr/share/elasticsearch/config/certs/elastic-certificates.p12</span><span class="w">    
+</span></span></span><span class="line"><span class="cl"><span class="sd">    # xpack.security.http.ssl.keystore.path: /usr/share/elasticsearch/config/certs/elastic-certificates.p12</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c"># 环境变量配置，这里引入上面设置的用户名、密码 secret 文件</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">extraEnvs</span><span class="p">:</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">ELASTIC_USERNAME</span><span class="w">
@@ -656,7 +654,7 @@ Elasticsearch 是一个实时的、分布式的可扩展的搜索引擎，允许
 </span></span></span><span class="line"><span class="cl"><span class="sd">    xpack.security.transport.ssl.truststore.path: /usr/share/elasticsearch/config/certs/elastic-certificates.p12
 </span></span></span><span class="line"><span class="cl"><span class="sd">    # xpack.security.http.ssl.enabled: true
 </span></span></span><span class="line"><span class="cl"><span class="sd">    # xpack.security.http.ssl.truststore.path: /usr/share/elasticsearch/config/certs/elastic-certificates.p12
-</span></span></span><span class="line"><span class="cl"><span class="sd">    # xpack.security.http.ssl.keystore.path: /usr/share/elasticsearch/config/certs/elastic-certificates.p12</span><span class="w">    
+</span></span></span><span class="line"><span class="cl"><span class="sd">    # xpack.security.http.ssl.keystore.path: /usr/share/elasticsearch/config/certs/elastic-certificates.p12</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c"># 环境变量配置，这里引入上面设置的用户名、密码 secret 文件</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">extraEnvs</span><span class="p">:</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">ELASTIC_USERNAME</span><span class="w">
@@ -721,7 +719,7 @@ Elasticsearch 是一个实时的、分布式的可扩展的搜索引擎，允许
 </span></span></span><span class="line"><span class="cl"><span class="sd">    xpack.security.transport.ssl.truststore.path: /usr/share/elasticsearch/config/certs/elastic-certificates.p12
 </span></span></span><span class="line"><span class="cl"><span class="sd">    # xpack.security.http.ssl.enabled: true
 </span></span></span><span class="line"><span class="cl"><span class="sd">    # xpack.security.http.ssl.truststore.path: /usr/share/elasticsearch/config/certs/elastic-certificates.p12
-</span></span></span><span class="line"><span class="cl"><span class="sd">    # xpack.security.http.ssl.keystore.path: /usr/share/elasticsearch/config/certs/elastic-certificates.p12</span><span class="w">    
+</span></span></span><span class="line"><span class="cl"><span class="sd">    # xpack.security.http.ssl.keystore.path: /usr/share/elasticsearch/config/certs/elastic-certificates.p12</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c"># 环境变量配置，这里引入上面设置的用户名、密码 secret 文件</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">extraEnvs</span><span class="p">:</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">ELASTIC_USERNAME</span><span class="w">
@@ -794,7 +792,7 @@ Elasticsearch 是一个实时的、分布式的可扩展的搜索引擎，允许
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c"># kibana 配置中添加语言配置，设置 kibana 为中文</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">kibanaConfig</span><span class="p">:</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">kibana.yml</span><span class="p">:</span><span class="w"> </span><span class="p">|</span><span class="sd">
-</span></span></span><span class="line"><span class="cl"><span class="sd">    i18n.locale: &#34;zh-CN&#34;</span><span class="w">    
+</span></span></span><span class="line"><span class="cl"><span class="sd">    i18n.locale: &#34;zh-CN&#34;</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">service</span><span class="p">:</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l">NodePort</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">nodePort</span><span class="p">:</span><span class="w"> </span><span class="s1">&#39;30601&#39;</span><span class="w">
@@ -1009,7 +1007,7 @@ Elasticsearch 是一个实时的、分布式的可扩展的搜索引擎，允许
 </span></span></span><span class="line"><span class="cl"><span class="sd">        key $.kubernetes.labels.kubernetes.log/fluentd
 </span></span></span><span class="line"><span class="cl"><span class="sd">        pattern ^true$
 </span></span></span><span class="line"><span class="cl"><span class="sd">      &lt;/regexp&gt;
-</span></span></span><span class="line"><span class="cl"><span class="sd">    &lt;/filter&gt;</span><span class="w">    
+</span></span></span><span class="line"><span class="cl"><span class="sd">    &lt;/filter&gt;</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c">###### 监听配置，一般用于日志聚合用 ######</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">forward.input.conf</span><span class="p">:</span><span class="w"> </span><span class="p">|-</span><span class="sd">
@@ -1017,7 +1015,7 @@ Elasticsearch 是一个实时的、分布式的可扩展的搜索引擎，允许
 </span></span></span><span class="line"><span class="cl"><span class="sd">    &lt;source&gt;
 </span></span></span><span class="line"><span class="cl"><span class="sd">      @id forward
 </span></span></span><span class="line"><span class="cl"><span class="sd">      @type forward
-</span></span></span><span class="line"><span class="cl"><span class="sd">    &lt;/source&gt;</span><span class="w">    
+</span></span></span><span class="line"><span class="cl"><span class="sd">    &lt;/source&gt;</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">output.conf</span><span class="p">:</span><span class="w"> </span><span class="p">|-</span><span class="sd">
 </span></span></span><span class="line"><span class="cl"><span class="sd">    &lt;match **&gt;
@@ -1045,7 +1043,7 @@ Elasticsearch 是一个实时的、分布式的可扩展的搜索引擎，允许
 </span></span></span><span class="line"><span class="cl"><span class="sd">        queue_limit_length 8
 </span></span></span><span class="line"><span class="cl"><span class="sd">        overflow_action block
 </span></span></span><span class="line"><span class="cl"><span class="sd">      &lt;/buffer&gt;
-</span></span></span><span class="line"><span class="cl"><span class="sd">    &lt;/match&gt;</span><span class="w">    
+</span></span></span><span class="line"><span class="cl"><span class="sd">    &lt;/match&gt;</span><span class="w">
 </span></span></span></code></pre></div><ol start="2">
 <li>创建相关的Rbac权限</li>
 </ol>
@@ -1089,8 +1087,7 @@ Elasticsearch 是一个实时的、分布式的可扩展的搜索引擎，允许
 <li>创建<code>fluentd</code>的<code>daemonset</code></li>
 </ol>
 <blockquote>
-<p>这个是最新的版本还在研究中,用下面的版本。</p>
-</blockquote>
+<p>这个是最新的版本还在研究中,用下面的版本。</p></blockquote>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">apps/v1</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">DaemonSet</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">metadata</span><span class="p">:</span><span class="w">

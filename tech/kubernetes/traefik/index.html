@@ -8,7 +8,7 @@ Traefik 的与众不同之处在于，除了它的许多功能之外，它还可
 
 <link rel='canonical' href='https://blog.mletter.cn/tech/kubernetes/traefik/'>
 
-<link rel="stylesheet" href="https://blog.mletter.cn/scss/style.min.e738e6f23cab51289304e49575e3f627bf3a6f32f7b82812a9ab0c552ae38a78.css"><meta property='og:title' content='Traekfik基础使用指南'>
+<link rel="stylesheet" href="https://blog.mletter.cn/scss/style.min.2cbc22726b422f9f13736f86d63fc4586e66e6cd6e9d7213ab3ccaeb176299b7.css"><meta property='og:title' content='Traekfik基础使用指南'>
 <meta property='og:description' content='Traekfik是什么 Traefik 是一种开源 边缘路由器，它使您发布服务成为一种有趣而轻松的体验。它代表您的系统接收请求并找出哪些组件负责处理它们。
 Traefik 的与众不同之处在于，除了它的许多功能之外，它还可以自动为您的服务发现正确的配置。当 Traefik 检查您的基础架构时，奇迹就会发生，它会在其中找到相关信息并发现哪个服务服务于哪个请求。
 '>
@@ -510,8 +510,7 @@ Traefik 的与众不同之处在于，除了它的许多功能之外，它还可
 </ul>
 <h2 id="部署traefik"></h>部署Traefik
 </h2><blockquote>
-<p>Traefik的配置可以使用两种方式：<code>静态配置</code>和<code>动态配置</code></p>
-</blockquote>
+<p>Traefik的配置可以使用两种方式：<code>静态配置</code>和<code>动态配置</code></p></blockquote>
 <ul>
 <li>静态配置：在 Traefik 中定义静态配置选项有三种不同的、互斥的即你只能同时使用一种）方式。
 <ul>
@@ -836,8 +835,7 @@ Traefik 的与众不同之处在于，除了它的许多功能之外，它还可
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">middlewares</span><span class="p">:</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">test-redirectscheme</span><span class="w"> </span><span class="c"># 指定添加中间件的名称</span><span class="w">
 </span></span></span></code></pre></div><blockquote>
-<p>如果你有具体需求的话请前往官网文档查看更多中间件的适用方法。</p>
-</blockquote>
+<p>如果你有具体需求的话请前往官网文档查看更多中间件的适用方法。</p></blockquote>
 <h2 id="traefik-pilot"></h>Traefik Pilot
 </h2><p>虽然 Traefik 已经默认实现了很多中间件，可以满足大部分我们日常的需求，但是在实际工作中，用户仍然还是有自定义中间件的需求，这就 <a class="link" href="https://pilot.traefik.io/"  target="_blank" rel="noopener"
     >Traefik Pilot</a> 的功能了。</p>
@@ -849,8 +847,7 @@ Traefik 的与众不同之处在于，除了它的许多功能之外，它还可
 </ul>
 <p>在 Traefik 可以使用 <code>Traefik Pilot</code> 的功能之前，必须先连接它们，我们只需要对 Traefik 的静态配置进行少量更改即可。</p>
 <blockquote>
-<p>注意: Traefik 代理必须要能访问互联网才能连接到 <code>Traefik Pilot</code>，通过 HTTPS 在 443 端口上建立连接。 这个我就不演示了，我的虚拟机木有外网。</p>
-</blockquote>
+<p>注意: Traefik 代理必须要能访问互联网才能连接到 <code>Traefik Pilot</code>，通过 HTTPS 在 443 端口上建立连接。 这个我就不演示了，我的虚拟机木有外网。</p></blockquote>
 <h2 id="灰度发布"></h>灰度发布
 </h2><p>跟Ingress-nginx是一样的就不多介绍灰度发布是啥了</p>
 <h3 id="基于权重的轮询"></h>基于权重的轮询

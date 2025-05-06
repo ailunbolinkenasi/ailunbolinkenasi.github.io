@@ -53,8 +53,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;3. 实现异常重试机制（最大重试3次）
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;4. 数据保存为UTF-8编码的CSV
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;blockquote&gt;
-&lt;p&gt;&lt;strong&gt;优化效果&lt;/strong&gt;：成功率提升300% | 代码可读性提升50%&lt;/p&gt;
-&lt;/blockquote&gt;
+&lt;p&gt;&lt;strong&gt;优化效果&lt;/strong&gt;：成功率提升300% | 代码可读性提升50%&lt;/p&gt;&lt;/blockquote&gt;
 &lt;ul&gt;
 &lt;li&gt;对模型进行格式的约束&lt;/li&gt;
 &lt;/ul&gt;
@@ -71,8 +70,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;5. 包含docstring说明时间复杂度
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&amp;#34;&amp;#34;&amp;#34;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;blockquote&gt;
-&lt;p&gt;&lt;strong&gt;关键点&lt;/strong&gt;：明确的格式要求可降低70%的返工率&lt;/p&gt;
-&lt;/blockquote&gt;
+&lt;p&gt;&lt;strong&gt;关键点&lt;/strong&gt;：明确的格式要求可降低70%的返工率&lt;/p&gt;&lt;/blockquote&gt;
 &lt;ul&gt;
 &lt;li&gt;对模型进行引导&lt;/li&gt;
 &lt;/ul&gt;
@@ -92,8 +90,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  &lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;blockquote&gt;
-&lt;p&gt;&lt;strong&gt;优势&lt;/strong&gt;：结构化模板使API响应规范度提升90%&lt;/p&gt;
-&lt;/blockquote&gt;
+&lt;p&gt;&lt;strong&gt;优势&lt;/strong&gt;：结构化模板使API响应规范度提升90%&lt;/p&gt;&lt;/blockquote&gt;
 &lt;ul&gt;
 &lt;li&gt;渐进修正&lt;/li&gt;
 &lt;/ul&gt;
@@ -133,8 +130,7 @@ Token是模型理解和处理文本的最小单位，可能对应：&lt;/p&gt;
 &lt;li&gt;标点符号或空格&lt;/li&gt;
 &lt;/ul&gt;
 &lt;blockquote&gt;
-&lt;p&gt;特别注意：空格是会导致Token的耗费的!&lt;/p&gt;
-&lt;/blockquote&gt;
+&lt;p&gt;特别注意：空格是会导致Token的耗费的!&lt;/p&gt;&lt;/blockquote&gt;
 &lt;h2 id=&#34;核心影响维度&#34;&gt;&lt;/h&gt;核心影响维度
 &lt;/h2&gt;&lt;ol&gt;
 &lt;li&gt;上下文窗口
@@ -152,8 +148,7 @@ Token是模型理解和处理文本的最小单位，可能对应：&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ol&gt;
 &lt;blockquote&gt;
-&lt;p&gt;Token越大，可以输入的内容就越多，其实模型回答的效果不会随着Token数量线性增长。&lt;/p&gt;
-&lt;/blockquote&gt;
+&lt;p&gt;Token越大，可以输入的内容就越多，其实模型回答的效果不会随着Token数量线性增长。&lt;/p&gt;&lt;/blockquote&gt;
 &lt;h3 id=&#34;模型能力对比&#34;&gt;&lt;/h&gt;模型能力对比
 &lt;/h3&gt;&lt;table&gt;
   &lt;thead&gt;
@@ -212,8 +207,7 @@ Token是模型理解和处理文本的最小单位，可能对应：&lt;/p&gt;
 &lt;/ul&gt;
 &lt;p&gt;&lt;strong&gt;激活方式&lt;/strong&gt;：在Prompt中添加&lt;code&gt;请逐步分析&lt;/code&gt;、&lt;code&gt;展示推理过程&lt;/code&gt;等指令&lt;/p&gt;
 &lt;blockquote&gt;
-&lt;p&gt;实践建议：在需要高可靠性答案的场景（如数学计算、法律条款解析）中强制启用CoT模式，可通过在Prompt中添加`逐步分析，等结构化指令触发模型的链式思考能力。&lt;/p&gt;
-&lt;/blockquote&gt;
+&lt;p&gt;实践建议：在需要高可靠性答案的场景（如数学计算、法律条款解析）中强制启用CoT模式，可通过在Prompt中添加`逐步分析，等结构化指令触发模型的链式思考能力。&lt;/p&gt;&lt;/blockquote&gt;
 &lt;h2 id=&#34;prompt分片超过token长度限制&#34;&gt;&lt;/h&gt;Prompt分片(超过Token长度限制)
 &lt;/h2&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 自然分界点检测函数&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;k&#34;&gt;def&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;detect_boundary&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;text&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;):&lt;/span&gt;

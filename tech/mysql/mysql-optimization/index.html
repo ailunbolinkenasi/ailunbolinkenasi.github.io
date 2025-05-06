@@ -6,7 +6,7 @@
 
 <link rel='canonical' href='https://blog.mletter.cn/tech/mysql/mysql-optimization/'>
 
-<link rel="stylesheet" href="https://blog.mletter.cn/scss/style.min.e738e6f23cab51289304e49575e3f627bf3a6f32f7b82812a9ab0c552ae38a78.css"><meta property='og:title' content='MySQL小小优化思路简单版本'>
+<link rel="stylesheet" href="https://blog.mletter.cn/scss/style.min.2cbc22726b422f9f13736f86d63fc4586e66e6cd6e9d7213ab3ccaeb176299b7.css"><meta property='og:title' content='MySQL小小优化思路简单版本'>
 <meta property='og:description' content='大概的优化思路分为以下几个内容'>
 <meta property='og:url' content='https://blog.mletter.cn/tech/mysql/mysql-optimization/'>
 <meta property='og:site_name' content='太阳可以是蓝色'>
@@ -417,8 +417,7 @@
     
     <h2 id="mysql性能优化-优化思路"></h>MySQL性能优化-优化思路
 </h2><blockquote>
-<p>大概的优化思路分为以下几个内容</p>
-</blockquote>
+<p>大概的优化思路分为以下几个内容</p></blockquote>
 <ul>
 <li>硬件层面优化</li>
 <li>系统层面优化</li>
@@ -433,8 +432,7 @@
 <p>PS: 优化是有风险的,如果你要优化就要变更。</p>
 <h2 id="硬件层面优化"></h>硬件层面优化
 </h2><blockquote>
-<p>这个地方就略过了就是一些加大硬件配置的需求.</p>
-</blockquote>
+<p>这个地方就略过了就是一些加大硬件配置的需求.</p></blockquote>
 <h2 id="系统层面优化"></h>系统层面优化
 </h2><ul>
 <li>id: 空闲状态,如果数值越大,表示空闲状态越多。如果可能达到0的情况下,表示当前CPU的核心处于满负荷状态。</li>
@@ -458,8 +456,7 @@
 </span></span></code></pre></div><p>通过 <code>top -Hp 10380</code> 指定占用高的进程,可以看到具体是那些线程占用过高</p>
 <p>假设 <code>1893</code>线程占用过高,可以从数据库中查看<code>performance_schema</code>库中具体的信息</p>
 <blockquote>
-<p>定位操作系统线程-&gt;从系统线程中定位数据库线程</p>
-</blockquote>
+<p>定位操作系统线程-&gt;从系统线程中定位数据库线程</p></blockquote>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="o">***************************</span><span class="w"> </span><span class="mi">38</span><span class="p">.</span><span class="w"> </span><span class="k">row</span><span class="w"> </span><span class="o">***************************</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="n">THREAD_ID</span><span class="p">:</span><span class="w"> </span><span class="mi">128014</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">               </span><span class="n">NAME</span><span class="p">:</span><span class="w"> </span><span class="n">thread</span><span class="o">/</span><span class="k">sql</span><span class="o">/</span><span class="n">one_connection</span><span class="w">
@@ -484,8 +481,7 @@
 <li>查询<code>MySQL</code>中的<code>sys</code>库中存在记录<code>IO</code>的表</li>
 </ul>
 <blockquote>
-<p>如果存在IO问题： 可以选择用内存换取时间的方法…</p>
-</blockquote>
+<p>如果存在IO问题： 可以选择用内存换取时间的方法…</p></blockquote>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="n">mysql</span><span class="o">&gt;</span><span class="w"> </span><span class="n">use</span><span class="w"> </span><span class="n">sys</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="n">mysql</span><span class="o">&gt;</span><span class="w"> </span><span class="k">show</span><span class="w"> </span><span class="n">tables</span><span class="p">;</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="o">|</span><span class="w"> </span><span class="n">x$io_by_thread_by_latency</span><span class="w">                     </span><span class="o">|</span><span class="w">
@@ -495,8 +491,7 @@
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="o">|</span><span class="w"> </span><span class="n">x$io_global_by_wait_by_latency</span><span class="w">                </span><span class="o">|</span><span class="w"> 
 </span></span></span></code></pre></div><h2 id="mysql版本选择优化"></h>MySQL版本选择优化
 </h2><blockquote>
-<p>在这里…笔者非常推荐MySQL8.0x!!! 同样的机器,8.0比5.7快2.5倍左右吧</p>
-</blockquote>
+<p>在这里…笔者非常推荐MySQL8.0x!!! 同样的机器,8.0比5.7快2.5倍左右吧</p></blockquote>
 <ol>
 <li>选择稳定版,选择开源社区的稳定版和GA版本</li>
 <li>选择MySQL数据库GA版本发布后6-12个月的GA双数版本</li>
@@ -505,8 +500,7 @@
 <h2 id="mysql三层结构及参数优化"></h>MySQL三层结构及参数优化
 </h2><h3 id="连接层优化"></h>连接层优化
 </h3><blockquote>
-<p>一切根据自己或者项目需要自由设置吧!</p>
-</blockquote>
+<p>一切根据自己或者项目需要自由设置吧!</p></blockquote>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">max_connections = 1000
 </span></span><span class="line"><span class="cl">max_connect_errors = 999999
 </span></span><span class="line"><span class="cl">wait_timeout = 600
@@ -516,8 +510,7 @@
 </span></span><span class="line"><span class="cl">max_allowed_packet = 500M
 </span></span></code></pre></div><h3 id="server层优化"></h>Server层优化
 </h3><blockquote>
-<p>一切根据自己或者项目需要自由设置吧!</p>
-</blockquote>
+<p>一切根据自己或者项目需要自由设置吧!</p></blockquote>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">sort_buffer_size = 8M
 </span></span><span class="line"><span class="cl">sql_safe_updates = 1
 </span></span><span class="line"><span class="cl">slow_query_log = 1
@@ -539,8 +532,7 @@
 </span></span><span class="line"><span class="cl">sync_binlog = 1
 </span></span></code></pre></div><h3 id="engine层优化"></h>Engine层优化
 </h3><blockquote>
-<p>一切根据自己或者项目需要自由设置吧!</p>
-</blockquote>
+<p>一切根据自己或者项目需要自由设置吧!</p></blockquote>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">transaction-isolation = &#34;READ-COMMITIED&#34;
 </span></span><span class="line"><span class="cl">innodb_data_home_dir = /xxx
 </span></span><span class="line"><span class="cl">innodb_log_group_home_dir = /xxx
@@ -571,8 +563,7 @@
 </ul>
 <p>属于类型: MDL(matedatalock)层面锁</p>
 <blockquote>
-<p>影响情况: 加锁的期间,阻塞所有事务的写入,阻塞所有事务的commit,时间受到<code>lock_wait_timeout=315336000</code></p>
-</blockquote>
+<p>影响情况: 加锁的期间,阻塞所有事务的写入,阻塞所有事务的commit,时间受到<code>lock_wait_timeout=315336000</code></p></blockquote>
 <h3 id="全局读锁的排查方法"></h>全局读锁的排查方法
 </h3><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="n">MySQL</span><span class="w"> </span><span class="p">[(</span><span class="k">none</span><span class="p">)]</span><span class="o">&gt;</span><span class="w"> </span><span class="n">USE</span><span class="w"> </span><span class="n">performance_schema</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="n">MySQL</span><span class="w"> </span><span class="p">[</span><span class="n">performance_schema</span><span class="p">]</span><span class="o">&gt;</span><span class="w"> 
@@ -591,8 +582,7 @@
 <li>发起正常查询请求,发现查询被阻塞</li>
 </ul>
 <blockquote>
-<p>5.7版本的Xbackup/mysqldump备份数据库出现锁表状态,所有的查询不能正常进行.</p>
-</blockquote>
+<p>5.7版本的Xbackup/mysqldump备份数据库出现锁表状态,所有的查询不能正常进行.</p></blockquote>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="p">,</span><span class="n">SLEEP</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span><span class="w"> </span><span class="n">FORM</span><span class="w"> </span><span class="o">`</span><span class="k">user</span><span class="o">`</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">username</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;test1&#39;</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="k">update</span><span class="p">;</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="n">flush</span><span class="w"> </span><span class="n">tables</span><span class="w"> </span><span class="k">with</span><span class="w"> </span><span class="k">read</span><span class="w"> </span><span class="k">lock</span><span class="p">;</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">icours</span><span class="p">.</span><span class="k">user</span><span class="w"> </span><span class="k">where</span><span class="w"> </span><span class="n">username</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;test&#39;</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="k">update</span><span class="w">
@@ -659,8 +649,7 @@
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="k">update</span><span class="w"> </span><span class="n">t1</span><span class="w"> </span><span class="k">set</span><span class="w"> </span><span class="n">num</span><span class="o">=</span><span class="n">num</span><span class="o">+</span><span class="mi">10</span><span class="w"> </span><span class="k">where</span><span class="w"> </span><span class="n">id</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="p">(</span><span class="mi">20</span><span class="p">,</span><span class="mi">30</span><span class="p">,</span><span class="mi">50</span><span class="p">)</span><span class="w">
 </span></span></span></code></pre></div><h2 id="dead-lock死锁"></h>Dead Lock死锁
 </h2><blockquote>
-<p>dead lock 多个并发事务之间发生交叉依赖的时候,会出现死锁.</p>
-</blockquote>
+<p>dead lock 多个并发事务之间发生交叉依赖的时候,会出现死锁.</p></blockquote>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="k">SHOW</span><span class="w"> </span><span class="n">ENGINE</span><span class="w"> </span><span class="n">innodb</span><span class="w"> </span><span class="n">STATUS</span><span class="err">\</span><span class="k">G</span><span class="p">;</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="n">innodb_print</span><span class="err">——</span><span class="n">all_deadlocks</span><span class="w"> </span><span class="o">=</span><span class="mi">1</span><span class="w"> </span><span class="o">//</span><span class="w"> </span><span class="err">开启记录死锁日志</span><span class="w">
 </span></span></span></code></pre></div>

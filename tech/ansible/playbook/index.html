@@ -6,7 +6,7 @@
 
 <link rel='canonical' href='https://blog.mletter.cn/tech/ansible/playbook/'>
 
-<link rel="stylesheet" href="https://blog.mletter.cn/scss/style.min.e738e6f23cab51289304e49575e3f627bf3a6f32f7b82812a9ab0c552ae38a78.css"><meta property='og:title' content='Playbook的一些简单使用'>
+<link rel="stylesheet" href="https://blog.mletter.cn/scss/style.min.2cbc22726b422f9f13736f86d63fc4586e66e6cd6e9d7213ab3ccaeb176299b7.css"><meta property='og:title' content='Playbook的一些简单使用'>
 <meta property='og:description' content='主要讲解一些Playbook的简单用法'>
 <meta property='og:url' content='https://blog.mletter.cn/tech/ansible/playbook/'>
 <meta property='og:site_name' content='太阳可以是蓝色'>
@@ -446,15 +446,13 @@
 </span></span><span class="line"><span class="cl">ansible-playbook hello.yaml  --limit 10.1.6.111
 </span></span></code></pre></div><h2 id="20-handlers和notify"></h>2.0 Handlers和notify
 </h2><blockquote>
-<p>由于playbook执行会有次序问题,所以当出现次序问题的时候,可以使用handlers结合notify</p>
-</blockquote>
+<p>由于playbook执行会有次序问题,所以当出现次序问题的时候,可以使用handlers结合notify</p></blockquote>
 <ul>
 <li><code>Handlers</code>: 是<code>task</code>列表,这些task与前述的task没有本质的区别,用于当不同的资源发生变化的时候,才会采取一定的操作.</li>
 <li><code>Notify</code>: 此action可以用在每个play的最后被触发,这样可以避免多次有改变的发生时每次都执行指定的操作,仅仅在所有变化发生完后,一次性执行制定操作,在notify中列出的操作称为<code>hendler</code>，也就是notify中定义的操作.</li>
 </ul>
 <blockquote>
-<p><code>Handlers</code>和<code>notify</code>可以写多个</p>
-</blockquote>
+<p><code>Handlers</code>和<code>notify</code>可以写多个</p></blockquote>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nn">---</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span>- <span class="nt">hosts</span><span class="p">:</span><span class="w"> </span><span class="l">test</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">remote_user</span><span class="p">:</span><span class="w"> </span><span class="l">root</span><span class="w">
@@ -510,8 +508,7 @@
 <li>普通变量：主机组中的主机单独定义,优先级高于公共变量</li>
 <li>公共变量：针对主机组所有主机定义统一变量</li>
 <li>通过命令行指定变量： 优先级最高</li>
-</ol>
-</blockquote>
+</ol></blockquote>
 <h3 id="401-通过命令行指定变量"></h>4.0.1 通过命令行指定变量
 </h3><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nn">---</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span>- <span class="nt">hosts</span><span class="p">:</span><span class="w"> </span><span class="l">test</span><span class="w">
@@ -602,8 +599,7 @@
 <li>在task后添加when子句即可使用条件测试；when语句支持Jinja2表达式语法</li>
 </ul>
 <blockquote>
-<p>当<code>ansible_distribution</code>=CentOS的时候才会去执行template</p>
-</blockquote>
+<p>当<code>ansible_distribution</code>=CentOS的时候才会去执行template</p></blockquote>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nn">---</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span>- <span class="nt">hosts</span><span class="p">:</span><span class="w"> </span><span class="l">test</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">remote_user</span><span class="p">:</span><span class="w"> </span><span class="l">root</span><span class="w">
@@ -677,8 +673,7 @@
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">copy template</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">template</span><span class="p">:</span><span class="w"> </span><span class="l">src=https://blog.mletter.cn/root/templates/for.j2 desc=/data/for.conf</span><span class="w">
 </span></span></span></code></pre></div><blockquote>
-<p>创建一个模板文件</p>
-</blockquote>
+<p>创建一个模板文件</p></blockquote>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl">{<span class="l">%for i in ports%}</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="l">server {</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"> </span><span class="l">listen {{i}}</span><span class="w">

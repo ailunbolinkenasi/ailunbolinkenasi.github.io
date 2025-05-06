@@ -45,8 +45,7 @@
 &lt;/ul&gt;
 &lt;h3 id=&#34;编辑配置文件&#34;&gt;&lt;/h&gt;编辑配置文件
 &lt;/h3&gt;&lt;blockquote&gt;
-&lt;p&gt;此文件内容为集群模式最小配置文件内容.&lt;/p&gt;
-&lt;/blockquote&gt;
+&lt;p&gt;此文件内容为集群模式最小配置文件内容.&lt;/p&gt;&lt;/blockquote&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;vim 7001/redis.conf &lt;span class=&#34;c1&#34;&gt;# 以此类推,记得更改端口号和日志文件&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nb&#34;&gt;bind&lt;/span&gt; 127.0.0.1 &lt;span class=&#34;c1&#34;&gt;# IP可更换为内网IP&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;port &lt;span class=&#34;m&#34;&gt;7001&lt;/span&gt;
@@ -73,8 +72,7 @@
 &lt;/ul&gt;
 &lt;h3 id=&#34;启动集群&#34;&gt;&lt;/h&gt;启动集群
 &lt;/h3&gt;&lt;blockquote&gt;
-&lt;p&gt;自己建一个启动脚本,要不然手动启动太麻烦了&lt;/p&gt;
-&lt;/blockquote&gt;
+&lt;p&gt;自己建一个启动脚本,要不然手动启动太麻烦了&lt;/p&gt;&lt;/blockquote&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;cp&#34;&gt;#!/bin/bash
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;cp&#34;&gt;&lt;/span&gt;redis-server /usr/local/redis-cluster/7001/redis.conf
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;redis-server /usr/local/redis-cluster/7002/redis.conf
@@ -97,8 +95,7 @@
 &lt;p&gt;对于Redis版本3或4，有一个称为的旧工具&lt;code&gt;redis-trib.rb&lt;/code&gt;，它非常相似。您可以&lt;code&gt;src&lt;/code&gt;在Redis源代码分发的目录中找到它。您需要安装&lt;code&gt;redis&lt;/code&gt;gem才能运行&lt;code&gt;redis-trib&lt;/code&gt;。&lt;/p&gt;
 &lt;blockquote&gt;
 &lt;p&gt;如果你是用的是Redis3.x或者4.x 请前往官网链接 &lt;a class=&#34;link&#34; href=&#34;https://redis.io/topics/cluster-tutorial&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
-    &gt;点我进入&lt;/a&gt;&lt;/p&gt;
-&lt;/blockquote&gt;
+    &gt;点我进入&lt;/a&gt;&lt;/p&gt;&lt;/blockquote&gt;
 &lt;ul&gt;
 &lt;li&gt;此方法为&lt;code&gt;Redis5&lt;/code&gt;或者更高版本&lt;/li&gt;
 &lt;/ul&gt;

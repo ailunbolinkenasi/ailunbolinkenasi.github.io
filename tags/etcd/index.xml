@@ -26,12 +26,10 @@
 &lt;li&gt;一些可以用来在主机间复制文件的基础设施。例如 ssh 和 scp 就可以满足需求。&lt;/li&gt;
 &lt;/ul&gt;
 &lt;blockquote&gt;
-&lt;p&gt;本次容器运行时采用&lt;code&gt;Containerd&lt;/code&gt;作为Runtime&lt;/p&gt;
-&lt;/blockquote&gt;
+&lt;p&gt;本次容器运行时采用&lt;code&gt;Containerd&lt;/code&gt;作为Runtime&lt;/p&gt;&lt;/blockquote&gt;
 &lt;h3 id=&#34;将kubelet配置为etcd的服务启动管理器&#34;&gt;&lt;/h&gt;将Kubelet配置为Etcd的服务启动管理器
 &lt;/h3&gt;&lt;blockquote&gt;
-&lt;p&gt;你必须在要运行 etcd 的所有主机上执行此操作。&lt;/p&gt;
-&lt;/blockquote&gt;
+&lt;p&gt;你必须在要运行 etcd 的所有主机上执行此操作。&lt;/p&gt;&lt;/blockquote&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;cat &lt;span class=&#34;s&#34;&gt;&amp;lt;&amp;lt; EOF &amp;gt; /usr/lib/systemd/system/kubelet.service.d/20-etcd-service-manager.conf 
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s&#34;&gt;[Service]
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s&#34;&gt;ExecStart=
@@ -42,8 +40,7 @@
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;systemctl daemon-reload
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;systemctl restart kubelet
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;blockquote&gt;
-&lt;p&gt;注意: 请执行完毕后务必确保&lt;code&gt;kubelet&lt;/code&gt;处于&lt;code&gt;running&lt;/code&gt;状态。&lt;/p&gt;
-&lt;/blockquote&gt;
+&lt;p&gt;注意: 请执行完毕后务必确保&lt;code&gt;kubelet&lt;/code&gt;处于&lt;code&gt;running&lt;/code&gt;状态。&lt;/p&gt;&lt;/blockquote&gt;
 &lt;h3 id=&#34;为kubeadm创建配置文件&#34;&gt;&lt;/h&gt;为Kubeadm创建配置文件
 &lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 使用你的主机 IP 替换 HOST0、HOST1 和 HOST2 的 IP 地址&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nb&#34;&gt;export&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;HOST0&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;10.1.6.48

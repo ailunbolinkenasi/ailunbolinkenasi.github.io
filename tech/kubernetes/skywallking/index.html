@@ -6,7 +6,7 @@
 
 <link rel='canonical' href='https://blog.mletter.cn/tech/kubernetes/skywallking/'>
 
-<link rel="stylesheet" href="https://blog.mletter.cn/scss/style.min.e738e6f23cab51289304e49575e3f627bf3a6f32f7b82812a9ab0c552ae38a78.css"><meta property='og:title' content='kubernetes-离线部署Skywallking'>
+<link rel="stylesheet" href="https://blog.mletter.cn/scss/style.min.2cbc22726b422f9f13736f86d63fc4586e66e6cd6e9d7213ab3ccaeb176299b7.css"><meta property='og:title' content='kubernetes-离线部署Skywallking'>
 <meta property='og:description' content='离线状态的环境下如何去部署skywalking'>
 <meta property='og:url' content='https://blog.mletter.cn/tech/kubernetes/skywallking/'>
 <meta property='og:site_name' content='太阳可以是蓝色'>
@@ -399,8 +399,7 @@
     
     
     <blockquote>
-<p>注意：请各位记住把所有离线包全拿到本地…</p>
-</blockquote>
+<p>注意：请各位记住把所有离线包全拿到本地…</p></blockquote>
 <h2 id="在线部署chartmuseum"></h>在线部署chartmuseum
 </h2><p>直接使用最简单的 docker run 方式，使用local 本地存储方式，通过 -v 映射到宿主机 /opt/charts
 更多支持安装方式见官网</p>
@@ -429,16 +428,14 @@
 </h2><blockquote>
 <p>以防万一请先安装helmpush插件</p>
 <p><a class="link" href="https://github.com/chartmuseum/helm-push"  target="_blank" rel="noopener"
-    >https://github.com/chartmuseum/helm-push</a></p>
-</blockquote>
+    >https://github.com/chartmuseum/helm-push</a></p></blockquote>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">helm repo add chartmuseum http://localhost:8080
 </span></span><span class="line"><span class="cl">curl --data-binary <span class="s2">&#34;@elasticsearch-7.12.1.tgz&#34;</span> http://localhost:8080/api/charts
 </span></span><span class="line"><span class="cl">helm push /root/skywalking-kubernetes-master/chart/skywalking/ chartmuseum
 </span></span><span class="line"><span class="cl">helm repo update <span class="c1"># 更新仓库</span>
 </span></span></code></pre></div><p><strong>你可以尝试搜索一下</strong></p>
 <blockquote>
-<p>保证仓库中存在elasticsarch和skywalking</p>
-</blockquote>
+<p>保证仓库中存在elasticsarch和skywalking</p></blockquote>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">[</span>root@k-master1 ~<span class="o">]</span><span class="c1"># helm search repo</span>
 </span></span><span class="line"><span class="cl">NAME                            CHART VERSION   APP VERSION     DESCRIPTION                                       
 </span></span><span class="line"><span class="cl">chartmuseum/elasticsearch       7.12.1          7.12.1          Official Elastic helm chart <span class="k">for</span> Elasticsearch     
@@ -464,8 +461,7 @@
 </span></span><span class="line"><span class="cl">chartmuseum/chartmuseum:latest
 </span></span></code></pre></div><h2 id="helm中的elasticsearch可能会存在问题"></h>Helm中的Elasticsearch可能会存在问题
 </h2><blockquote>
-<p>你们也可以用我的这个elasticsearch配置 注意修改PVC</p>
-</blockquote>
+<p>你们也可以用我的这个elasticsearch配置 注意修改PVC</p></blockquote>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">StatefulSet</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">apps/v1</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">metadata</span><span class="p">:</span><span class="w">
@@ -531,7 +527,7 @@
 </span></span></span><span class="line"><span class="cl"><span class="w">                  </span><span class="nt">fieldPath</span><span class="p">:</span><span class="w"> </span><span class="l">metadata.name</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">            </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">cluster.initial_master_nodes</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">              </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="p">&gt;-</span><span class="sd">
-</span></span></span><span class="line"><span class="cl"><span class="sd">                elasticsearch-master-0,elasticsearch-master-1,elasticsearch-master-2,</span><span class="w">                
+</span></span></span><span class="line"><span class="cl"><span class="sd">                elasticsearch-master-0,elasticsearch-master-1,elasticsearch-master-2,</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">            </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">discovery.seed_hosts</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">              </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="l">elasticsearch-master-headless</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">            </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">cluster.name</span><span class="w">
@@ -593,7 +589,7 @@
 </span></span></span><span class="line"><span class="cl"><span class="sd">                          echo &#39;Cluster is not yet ready (request params: &#34;wait_for_status=green&amp;timeout=1s&#34; )&#39;
 </span></span></span><span class="line"><span class="cl"><span class="sd">                          exit 1
 </span></span></span><span class="line"><span class="cl"><span class="sd">                      fi
-</span></span></span><span class="line"><span class="cl"><span class="sd">                  fi</span><span class="w">                  
+</span></span></span><span class="line"><span class="cl"><span class="sd">                  fi</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="nt">initialDelaySeconds</span><span class="p">:</span><span class="w"> </span><span class="m">10</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="nt">timeoutSeconds</span><span class="p">:</span><span class="w"> </span><span class="m">5</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="nt">periodSeconds</span><span class="p">:</span><span class="w"> </span><span class="m">10</span><span class="w">

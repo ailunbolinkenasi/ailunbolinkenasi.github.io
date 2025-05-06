@@ -6,7 +6,7 @@
 
 <link rel='canonical' href='https://blog.mletter.cn/tech/kubernetes/horizontal-pod-autoscaler/'>
 
-<link rel="stylesheet" href="https://blog.mletter.cn/scss/style.min.e738e6f23cab51289304e49575e3f627bf3a6f32f7b82812a9ab0c552ae38a78.css"><meta property='og:title' content='HorizontalPodAutoscaler'>
+<link rel="stylesheet" href="https://blog.mletter.cn/scss/style.min.2cbc22726b422f9f13736f86d63fc4586e66e6cd6e9d7213ab3ccaeb176299b7.css"><meta property='og:title' content='HorizontalPodAutoscaler'>
 <meta property='og:description' content='在Kubernetes 中HorizontalPodAutoscaler自动更新工作负载资源 （例如 Deployment 或者 StatefulSet）， 目的是自动扩缩工作负载以满足需求。'>
 <meta property='og:url' content='https://blog.mletter.cn/tech/kubernetes/horizontal-pod-autoscaler/'>
 <meta property='og:site_name' content='太阳可以是蓝色'>
@@ -407,8 +407,7 @@
     >Pod</a>。 这与垂直(Vertical)扩缩不同，对于 Kubernetes， 垂直扩缩意味着将更多资源（例如：内存或 CPU）分配给已经为工作负载运行的 Pod。</p>
 <p>如果负载减少，并且Pod的数量高于配置的最小值，<code>HorizontalPodAutoscaler</code> 会指示工作负载资源（Deployment、StatefulSet 或其他类似资源）缩减。</p>
 <blockquote>
-<p>水平Pod自动扩缩不适用于无法扩缩的对象: 例如DemonSet这种</p>
-</blockquote>
+<p>水平Pod自动扩缩不适用于无法扩缩的对象: 例如DemonSet这种</p></blockquote>
 <p>我们可以简单的通过 <code>kubectl autoscale</code> 命令来创建一个 HPA 资源对象，<code>HPA Controller</code>默认<code>30s</code>轮询一次（可通过 <code>kube-controller-manager</code> 的<code>--horizontal-pod-autoscaler-sync-period</code> 参数进行设置），查询指定的资源中的 Pod 资源使用率，并且与创建时设定的值和指标做对比，从而实现自动伸缩的功能。</p>
 <h3 id="horizontalpodautoscaler-是如何工作的"></h>HorizontalPodAutoscaler 是如何工作的
 </h3><p>
@@ -520,8 +519,7 @@
 </span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="nt">privileged</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="w">
 </span></span></span></code></pre></div><h3 id="创建基于cpu的自动扩容"></h>创建基于CPU的自动扩容
 </h3><blockquote>
-<p>我们这次只针对CPU进行操作,后续我们会根据更多的自定义资源来进行扩缩容。</p>
-</blockquote>
+<p>我们这次只针对CPU进行操作,后续我们会根据更多的自定义资源来进行扩缩容。</p></blockquote>
 <p>现在我们来创建一个<code>HPA</code>，可以使用<code>kubectl autoscale</code>命令来创建：</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">kubectl autoscale deployment hpa-demo-nginx --cpu-percent<span class="o">=</span><span class="m">10</span> --min<span class="o">=</span><span class="m">1</span> --max<span class="o">=</span><span class="m">6</span>
 </span></span></code></pre></div><p>此命令创建了一个关联资源<code>hpa-demo-nginx</code> 的<code>HPA</code>，最小的 pod 副本数为3，最大为6。<code>HPA</code>会根据设定的 cpu使用率（10%）动态的增加或者减少pod数量。</p>
@@ -586,7 +584,7 @@
 </span></span></span><span class="line"><span class="cl"><span class="sd">    sleep 60 
 </span></span></span><span class="line"><span class="cl"><span class="sd">    rm /tmp/memory/block  
 </span></span></span><span class="line"><span class="cl"><span class="sd">    umount /tmp/memory  
-</span></span></span><span class="line"><span class="cl"><span class="sd">    rmdir /tmp/memory</span><span class="w">    
+</span></span></span><span class="line"><span class="cl"><span class="sd">    rmdir /tmp/memory</span><span class="w">
 </span></span></span></code></pre></div><p>由于这里增加内存的脚本需要使用到 <code>mount</code> 命令，这需要声明为特权模式，所以我们添加了 <code>securityContext.privileged=true</code> 这个配置。现在我们直接创建上面的资源对象即可</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">kubectl apply -f hpa-demo-mem.yaml
 </span></span><span class="line"><span class="cl">kubectl apply -f increase-mem-config.yaml 

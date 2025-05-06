@@ -30,8 +30,7 @@
 &lt;li&gt;nofile 是代表最大文件打开数&lt;/li&gt;
 &lt;/ul&gt;
 &lt;blockquote&gt;
-&lt;p&gt;本次修改仅仅以Rocky Linux和CentOS为例,不同的系统修改方法可能有所差异.&lt;/p&gt;
-&lt;/blockquote&gt;
+&lt;p&gt;本次修改仅仅以Rocky Linux和CentOS为例,不同的系统修改方法可能有所差异.&lt;/p&gt;&lt;/blockquote&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;* soft nofile 65535
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;* hard nofile 65535
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;配置nginx当中的&lt;code&gt;work_connections&lt;/code&gt;&lt;/p&gt;
@@ -40,8 +39,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    use epoll;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;}
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;blockquote&gt;
-&lt;p&gt;简单的提一嘴ulimit的作用: 当进程打开的文件数目超过此限制时，该进程就会退出。&lt;/p&gt;
-&lt;/blockquote&gt;
+&lt;p&gt;简单的提一嘴ulimit的作用: 当进程打开的文件数目超过此限制时，该进程就会退出。&lt;/p&gt;&lt;/blockquote&gt;
 &lt;h2 id=&#34;启用gzip压缩&#34;&gt;&lt;/h&gt;启用gzip压缩
 &lt;/h2&gt;&lt;p&gt;nginx使用 gzip 进行文件压缩和解压缩,您可以节省带宽并在连接缓慢时提高网站的加载时间。&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-gdscript3&#34; data-lang=&#34;gdscript3&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;server&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;

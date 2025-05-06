@@ -7,7 +7,7 @@
 
 <link rel='canonical' href='https://blog.mletter.cn/tech/gitlab/repository-management/'>
 
-<link rel="stylesheet" href="https://blog.mletter.cn/scss/style.min.e738e6f23cab51289304e49575e3f627bf3a6f32f7b82812a9ab0c552ae38a78.css"><meta property='og:title' content='管理好内部的代码仓库-GitLab篇'>
+<link rel="stylesheet" href="https://blog.mletter.cn/scss/style.min.2cbc22726b422f9f13736f86d63fc4586e66e6cd6e9d7213ab3ccaeb176299b7.css"><meta property='og:title' content='管理好内部的代码仓库-GitLab篇'>
 <meta property='og:description' content='今天聊聊如何来管理我们的代码仓库 在软件开发过程中，代码仓库是一个非常重要的组成部分。它不仅是存储代码的地方，也是团队协作和版本控制的基础。因此，管理好自己的代码仓库至关重要。
 '>
 <meta property='og:url' content='https://blog.mletter.cn/tech/gitlab/repository-management/'>
@@ -393,8 +393,7 @@
 <li>版本更新：<code>Docker</code>部署<code>Gitlab</code>需要时刻关注版本更新，需要进行升级或者迁移，主要是数据迁移的数据保障工作需要额外注意。</li>
 </ol>
 <blockquote>
-<p>好了我们带着上面的两点问题，我们先来使用<code>docker</code>部署<code>GitLab</code>然后再慢慢探索。</p>
-</blockquote>
+<p>好了我们带着上面的两点问题，我们先来使用<code>docker</code>部署<code>GitLab</code>然后再慢慢探索。</p></blockquote>
 <ul>
 <li><a class="link" href="https://github.com/docker/compose/releases/download/v2.24.0/docker-compose-linux-x86_64"  target="_blank" rel="noopener"
     >DockerCompose</a></li>
@@ -412,7 +411,7 @@
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">environment</span><span class="p">:</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">GITLAB_OMNIBUS_CONFIG</span><span class="p">:</span><span class="w"> </span><span class="p">|</span><span class="sd">
 </span></span></span><span class="line"><span class="cl"><span class="sd">        # gitlab访问地址
-</span></span></span><span class="line"><span class="cl"><span class="sd">        external_url &#39;http://10.1.6.100&#39;</span><span class="w">        
+</span></span></span><span class="line"><span class="cl"><span class="sd">        external_url &#39;http://10.1.6.100&#39;</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">ports</span><span class="p">:</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="s1">&#39;80:80&#39;</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="s1">&#39;443:443&#39;</span><span class="w">
@@ -490,8 +489,7 @@
 </ol>
 <blockquote>
 <p>如果这两种文件丢失请参考<a class="link" href="https://docs.gitlab.com/ee/administration/backup_restore/troubleshooting_backup_gitlab.html#when-the-secrets-file-is-lost"  target="_blank" rel="noopener"
-    >官方文档</a></p>
-</blockquote>
+    >官方文档</a></p></blockquote>
 <h2 id="恢复保存的数据"></h>恢复保存的数据
 </h2><p>首先恢复数据要满足的一些<code>前提条件</code></p>
 <ol>

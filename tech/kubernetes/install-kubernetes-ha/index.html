@@ -6,7 +6,7 @@
 
 <link rel='canonical' href='https://blog.mletter.cn/tech/kubernetes/install-kubernetes-ha/'>
 
-<link rel="stylesheet" href="https://blog.mletter.cn/scss/style.min.e738e6f23cab51289304e49575e3f627bf3a6f32f7b82812a9ab0c552ae38a78.css"><meta property='og:title' content='利用Kubeadm进行多Master高可用部署'>
+<link rel="stylesheet" href="https://blog.mletter.cn/scss/style.min.2cbc22726b422f9f13736f86d63fc4586e66e6cd6e9d7213ab3ccaeb176299b7.css"><meta property='og:title' content='利用Kubeadm进行多Master高可用部署'>
 <meta property='og:description' content='如何使用kubeadm方案来安装高可用的kubernetes集群'>
 <meta property='og:url' content='https://blog.mletter.cn/tech/kubernetes/install-kubernetes-ha/'>
 <meta property='og:site_name' content='太阳可以是蓝色'>
@@ -554,8 +554,7 @@
 </span></span><span class="line"><span class="cl">    <span class="n">server</span> <span class="n">kube</span><span class="o">-</span><span class="n">apiserver</span><span class="o">-</span><span class="mi">3</span> <span class="mf">10.1</span><span class="o">.</span><span class="mf">6.45</span><span class="p">:</span><span class="mi">6443</span> <span class="n">check</span> <span class="c1"># Replace the IP address with your own.</span>
 </span></span></code></pre></div><p>启动Haproxy</p>
 <blockquote>
-<p>请确保你的LB2也已经进行如上配置</p>
-</blockquote>
+<p>请确保你的LB2也已经进行如上配置</p></blockquote>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">systemctl restart haproxy
 </span></span><span class="line"><span class="cl">systemctl <span class="nb">enable</span> haproxy
 </span></span></code></pre></div><p>配置Keepalived
@@ -692,8 +691,7 @@
 <p>在节点上运行如下命令</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">kubeadm init --config kubeadm-config.yaml --upload-certs --v<span class="o">=</span><span class="m">5</span>
 </span></span></code></pre></div><blockquote>
-<p>注意：如果你的集群初始化成功你将会看到如下信息.</p>
-</blockquote>
+<p>注意：如果你的集群初始化成功你将会看到如下信息.</p></blockquote>
 <ul>
 <li>请保存好<code>kubeadm join</code>的内容,默认2小时后过期,过期后重新生成即可</li>
 </ul>
@@ -732,8 +730,7 @@
 </span></span><span class="line"><span class="cl">sudo chown <span class="k">$(</span>id -u<span class="k">)</span>:<span class="k">$(</span>id -g<span class="k">)</span> <span class="nv">$HOME</span>/.kube/config
 </span></span></code></pre></div><h2 id="运行网络cni插件calico"></h>运行网络CNI插件(Calico)
 </h2><blockquote>
-<p>注意：此时你应当有一个CNI插件来提供网络服务,如果不安装CNI插件,那么集群将会处于<code>不可用</code>状态.</p>
-</blockquote>
+<p>注意：此时你应当有一个CNI插件来提供网络服务,如果不安装CNI插件,那么集群将会处于<code>不可用</code>状态.</p></blockquote>
 <p>如果你可以正常访问github</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">[</span>root@containerd-kube-master .kube<span class="o">]</span><span class="c1"># curl https://raw.githubusercontent.com/projectcalico/calico/v3.24.1/manifests/calico.yaml -O</span>
 </span></span></code></pre></div><p>国内用户</p>
@@ -783,8 +780,7 @@
 </span></span><span class="line"><span class="cl">kubectl delete node online-beijing-master1
 </span></span></code></pre></div><blockquote>
 <p>这里提一个小问题: 当你使用<code>kubectl drain</code>的时候,如果你当前的Master已经有挂载的<code>emptyDir</code>需要使用<code>--delete-emptydir-data </code>进行删除。
-TODO: 删除前请注意备份您的数据。</p>
-</blockquote>
+TODO: 删除前请注意备份您的数据。</p></blockquote>
 
 </section>
 

@@ -24,8 +24,7 @@
 &lt;li&gt;版本更新：&lt;code&gt;Docker&lt;/code&gt;部署&lt;code&gt;Gitlab&lt;/code&gt;需要时刻关注版本更新，需要进行升级或者迁移，主要是数据迁移的数据保障工作需要额外注意。&lt;/li&gt;
 &lt;/ol&gt;
 &lt;blockquote&gt;
-&lt;p&gt;好了我们带着上面的两点问题，我们先来使用&lt;code&gt;docker&lt;/code&gt;部署&lt;code&gt;GitLab&lt;/code&gt;然后再慢慢探索。&lt;/p&gt;
-&lt;/blockquote&gt;
+&lt;p&gt;好了我们带着上面的两点问题，我们先来使用&lt;code&gt;docker&lt;/code&gt;部署&lt;code&gt;GitLab&lt;/code&gt;然后再慢慢探索。&lt;/p&gt;&lt;/blockquote&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://github.com/docker/compose/releases/download/v2.24.0/docker-compose-linux-x86_64&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;DockerCompose&lt;/a&gt;&lt;/li&gt;
@@ -43,7 +42,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;    &lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;environment&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;      &lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;GITLAB_OMNIBUS_CONFIG&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;&lt;span class=&#34;sd&#34;&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;sd&#34;&gt;        # gitlab访问地址
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;sd&#34;&gt;        external_url &amp;#39;http://10.1.6.100&amp;#39;&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;        
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;sd&#34;&gt;        external_url &amp;#39;http://10.1.6.100&amp;#39;&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;    &lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;ports&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;      &lt;/span&gt;- &lt;span class=&#34;s1&#34;&gt;&amp;#39;80:80&amp;#39;&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;      &lt;/span&gt;- &lt;span class=&#34;s1&#34;&gt;&amp;#39;443:443&amp;#39;&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
@@ -121,8 +120,7 @@
 &lt;/ol&gt;
 &lt;blockquote&gt;
 &lt;p&gt;如果这两种文件丢失请参考&lt;a class=&#34;link&#34; href=&#34;https://docs.gitlab.com/ee/administration/backup_restore/troubleshooting_backup_gitlab.html#when-the-secrets-file-is-lost&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
-    &gt;官方文档&lt;/a&gt;&lt;/p&gt;
-&lt;/blockquote&gt;
+    &gt;官方文档&lt;/a&gt;&lt;/p&gt;&lt;/blockquote&gt;
 &lt;h2 id=&#34;恢复保存的数据&#34;&gt;&lt;/h&gt;恢复保存的数据
 &lt;/h2&gt;&lt;p&gt;首先恢复数据要满足的一些&lt;code&gt;前提条件&lt;/code&gt;&lt;/p&gt;
 &lt;ol&gt;

@@ -6,7 +6,7 @@
 
 <link rel='canonical' href='https://blog.mletter.cn/tech/kubernetes/local-storage/'>
 
-<link rel="stylesheet" href="https://blog.mletter.cn/scss/style.min.e738e6f23cab51289304e49575e3f627bf3a6f32f7b82812a9ab0c552ae38a78.css"><meta property='og:title' content='Kubernetes-本地存储'>
+<link rel="stylesheet" href="https://blog.mletter.cn/scss/style.min.2cbc22726b422f9f13736f86d63fc4586e66e6cd6e9d7213ab3ccaeb176299b7.css"><meta property='og:title' content='Kubernetes-本地存储'>
 <meta property='og:description' content='前面我们有通过 hostPath 或者 emptyDir 的方式来持久化我们的数据'>
 <meta property='og:url' content='https://blog.mletter.cn/tech/kubernetes/local-storage/'>
 <meta property='og:site_name' content='太阳可以是蓝色'>
@@ -411,8 +411,7 @@
 <h2 id="hostpath"></h>HostPath
 </h2><p>我们上面提到了 PV 是对底层存储技术的一种抽象，PV 一般都是由管理员来创建和配置的，我们首先来创建一个 <code>hostPath</code> 类型的 <code>PersistentVolume</code>。Kubernetes 支持 <code>hostPath</code> 类型的 <code>PersistentVolume</code> 使用节点上的文件或目录来模拟附带网络的存储，但是需要注意的是在生产集群中，我们不会使用 <code>hostPath</code>，集群管理员会提供网络存储资源，比如 <code>NFS</code> 共享卷或 <code>Ceph</code> 存储卷，集群管理员还可以使用 <code>StorageClasses</code> 来设置动态提供存储。因为 Pod 并不是始终固定在某个节点上面的，所以要使用 hostPath 的话我们就需要将 Pod 固定在某个节点上，这样显然就大大降低了应用的容错性。</p>
 <blockquote>
-<p>当然了，生产环境中用的还是相对较少因为有较少的需求需要将Pod来固定到某些节点上。</p>
-</blockquote>
+<p>当然了，生产环境中用的还是相对较少因为有较少的需求需要将Pod来固定到某些节点上。</p></blockquote>
 <h3 id="创建persistentvolume"></h>创建PersistentVolume
 </h3><ol>
 <li>假设我们现在在节点1上新建一个<code>/data/hostPath/index.html</code></li>
@@ -463,8 +462,7 @@
 </ul>
 <p>目前，仅 NFS 和 HostPath 支持回收（Recycle）。 AWS EBS、GCE PD、Azure Disk 和 Cinder 卷都支持删除（Delete）。</p>
 <blockquote>
-<p>不过需要注意的是，目前只有 <code>NFS</code> 和 <code>HostPath</code> 两种类型支持回收策略，当然一般来说还是设置为 <code>Retain</code> 这种策略保险一点。</p>
-</blockquote>
+<p>不过需要注意的是，目前只有 <code>NFS</code> 和 <code>HostPath</code> 两种类型支持回收策略，当然一般来说还是设置为 <code>Retain</code> 这种策略保险一点。</p></blockquote>
 <p>关于 PV 的状态，实际上描述的是 PV 的生命周期的某个阶段，一个 PV 的生命周期中，可能会处于4种不同的阶段：</p>
 <ul>
 <li>Available（可用）：表示可用状态，还未被任何 PVC 绑定</li>
@@ -496,8 +494,7 @@
 </span></span><span class="line"><span class="cl">task-pv-claim   Bound    demo-hostpath   10Gi       RWO            type-ssd-sc    18m
 </span></span></code></pre></div><p>可以看到已经绑定到了一个<code>Volume</code>叫做<code>demo-hostpath</code>的<code>PersistentVolume</code></p>
 <blockquote>
-<p>需要注意的是目前<code>PersistentVolume</code>和<code>PersistentVolumeClaim</code>之间是一对一绑定的关系，也就是说一个<code>PersistentVolume</code>只能被一个<code>PersistentVolumeClaim</code>绑定。</p>
-</blockquote>
+<p>需要注意的是目前<code>PersistentVolume</code>和<code>PersistentVolumeClaim</code>之间是一对一绑定的关系，也就是说一个<code>PersistentVolume</code>只能被一个<code>PersistentVolumeClaim</code>绑定。</p></blockquote>
 <h3 id="创建一个deployment"></h>创建一个Deployment
 </h3><p>创建一个<code>deployment</code>然后绑定<code>PersistentVolumeClaim</code>紧接着固定节点到<code>online-beijing-node1</code></p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">---
@@ -597,8 +594,7 @@
 <p>最大的区别是 Kubernetes 调度程序了解本地持久卷属于哪个节点。对于 HostPath 卷，引用 HostPath 卷的 pod 可能会被调度程序移动到不同的节点，从而导致数据丢失。但是对于 <code>Local Persistent Volumes</code>，Kubernetes 调度器确保使用 <code>Local Persistent Volume</code> 的 pod 总是被调度到同一个节点。</p>
 <p>虽然 HostPath 卷可以通过 <code>Persistent Volume Claim (PVC)</code> 引用或直接内嵌在 pod 定义中，但 <code>Local Persistent Volumes</code> 只能通过 PVC 引用。这提供了额外的安全优势，因为 <code>Persistent Volume</code> 对象由管理员管理，防止 Pod 能够访问主机上的任何路径。</p>
 <blockquote>
-<p>所以，一般来说 <code>Local PV</code> 对应的存储介质是一块额外挂载在宿主机的磁盘或者块设备。</p>
-</blockquote>
+<p>所以，一般来说 <code>Local PV</code> 对应的存储介质是一块额外挂载在宿主机的磁盘或者块设备。</p></blockquote>
 <h3 id="创建一个local持久卷实例"></h>创建一个Local持久卷实例
 </h3><p>下面是一个使用 <code>local</code> 卷和 <code>nodeAffinity</code> 的持久卷示例：</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">v1</span><span class="w">

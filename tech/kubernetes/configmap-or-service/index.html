@@ -6,7 +6,7 @@
 
 <link rel='canonical' href='https://blog.mletter.cn/tech/kubernetes/configmap-or-service/'>
 
-<link rel="stylesheet" href="https://blog.mletter.cn/scss/style.min.e738e6f23cab51289304e49575e3f627bf3a6f32f7b82812a9ab0c552ae38a78.css"><meta property='og:title' content='ConfigMap和Secret的使用'>
+<link rel="stylesheet" href="https://blog.mletter.cn/scss/style.min.2cbc22726b422f9f13736f86d63fc4586e66e6cd6e9d7213ab3ccaeb176299b7.css"><meta property='og:title' content='ConfigMap和Secret的使用'>
 <meta property='og:description' content='ConfigMap 是一种 API 对象，用来将非机密性的数据保存到键值对中。使用时， Pods 可以将其用作环境变量、命令行参数或者存储卷中的配置文件。'>
 <meta property='og:url' content='https://blog.mletter.cn/tech/kubernetes/configmap-or-service/'>
 <meta property='og:site_name' content='太阳可以是蓝色'>
@@ -307,7 +307,7 @@
         <li><a href="#opaque-secret的使用">Opaque Secret的使用</a></li>
         <li><a href="#通过环境变量挂载secret">通过环境变量挂载Secret</a></li>
         <li><a href="#通过volume挂载">通过Volume挂载</a></li>
-        <li><a href="#kubernetesiodockerconfigjsonhttpkubernetesiodockerconfigjson"><a href="http://kubernetes.io/dockerconfigjson">kubernetes.io/dockerconfigjson</a></a></li>
+        <li><a href="#kubernetesiodockerconfigjson"><a href="http://kubernetes.io/dockerconfigjson">kubernetes.io/dockerconfigjson</a></a></li>
       </ul>
     </li>
     <li><a href="#serviceaccount">ServiceAccount</a>
@@ -427,11 +427,11 @@ ConfigMap 在设计上不是用来保存大量数据的。在 ConfigMap 中保�
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c"># 类文件键,一般用来保存一个文件到指定目录</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">game.properties</span><span class="p">:</span><span class="w"> </span><span class="p">|</span><span class="sd">
 </span></span></span><span class="line"><span class="cl"><span class="sd">    enemy.types=aliens,monsters
-</span></span></span><span class="line"><span class="cl"><span class="sd">    player.maximum-lives=5    </span><span class="w">    
+</span></span></span><span class="line"><span class="cl"><span class="sd">    player.maximum-lives=5    </span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">user-interface.properties</span><span class="p">:</span><span class="w"> </span><span class="p">|</span><span class="sd">
 </span></span></span><span class="line"><span class="cl"><span class="sd">    color.good=purple
 </span></span></span><span class="line"><span class="cl"><span class="sd">    color.bad=yellow
-</span></span></span><span class="line"><span class="cl"><span class="sd">    allow.textmode=true</span><span class="w">    
+</span></span></span><span class="line"><span class="cl"><span class="sd">    allow.textmode=true</span><span class="w">
 </span></span></span></code></pre></div><p>你可以使用四种方式来使用 ConfigMap 配置 Pod 中的容器：</p>
 <ol>
 <li>在容器命令和参数内</li>
@@ -530,8 +530,7 @@ ConfigMap 在设计上不是用来保存大量数据的。在 ConfigMap 中保�
     >KubeletConfiguration 结构</a>. 的 <code>ConfigMapAndSecretChangeDetectionStrategy</code> 字段来配置。</p>
 <p>ConfigMap 既可以通过 watch 操作实现内容传播（默认形式），也可实现基于 TTL 的缓存，还可以直接经过所有请求重定向到 API 服务器。 因此，从 ConfigMap 被更新的那一刻算起，到新的主键被投射到 Pod 中去， 这一时间跨度可能与 kubelet 的同步周期加上高速缓存的传播延迟相等。 这里的传播延迟取决于所选的高速缓存类型 （分别对应 watch 操作的传播延迟、高速缓存的 TTL 时长或者 0）。</p>
 <blockquote>
-<p>以环境变量方式使用的 ConfigMap 数据不会被自动更新。 更新这些数据需要重新启动 Pod。</p>
-</blockquote>
+<p>以环境变量方式使用的 ConfigMap 数据不会被自动更新。 更新这些数据需要重新启动 Pod。</p></blockquote>
 <h2 id="secret"></h>Secret
 </h2><p>Secret 是一种包含少量敏感信息例如密码、令牌或密钥的对象。 这样的信息可能会被放在 <a class="link" href="https://kubernetes.io/zh-cn/docs/concepts/workloads/pods/"  target="_blank" rel="noopener"
     >Pod</a> 规约中或者镜像中。 使用 Secret 意味着你不需要在应用程序代码中包含机密数据。</p>
@@ -539,8 +538,7 @@ ConfigMap 在设计上不是用来保存大量数据的。在 ConfigMap 中保�
 <p>Secret 类似于 <a class="link" href="https://kubernetes.io/zh-cn/docs/tasks/configure-pod-container/configure-pod-configmap/"  target="_blank" rel="noopener"
     >ConfigMap</a> 但专门用于保存机密数据。</p>
 <blockquote>
-<p><strong>注意</strong>: 默认情况下，Kubernetes Secret 未加密地存储在 API 服务器的底层数据存储（etcd）中。 任何拥有 API 访问权限的人都可以检索或修改 Secret，任何有权访问 etcd 的人也可以。 此外，任何有权限在命名空间中创建 Pod 的人都可以使用该访问权限读取该命名空间中的任何 Secret； 这包括间接访问，例如创建 Deployment 的能力。</p>
-</blockquote>
+<p><strong>注意</strong>: 默认情况下，Kubernetes Secret 未加密地存储在 API 服务器的底层数据存储（etcd）中。 任何拥有 API 访问权限的人都可以检索或修改 Secret，任何有权访问 etcd 的人也可以。 此外，任何有权限在命名空间中创建 Pod 的人都可以使用该访问权限读取该命名空间中的任何 Secret； 这包括间接访问，例如创建 Deployment 的能力。</p></blockquote>
 <p>为了安全地使用 Secret，请至少执行以下步骤：</p>
 <ol>
 <li>为 Secret <a class="link" href="https://kubernetes.io/zh-cn/docs/tasks/administer-cluster/encrypt-data/"  target="_blank" rel="noopener"
@@ -648,7 +646,7 @@ ConfigMap 在设计上不是用来保存大量数据的。在 ConfigMap 中保�
 </span></span></span></code></pre></div><p>一般来说Pod默认的访问<code>API Server</code>的Token都会挂载到<code>/var/run/secrets/kubernetes.io/serviceaccount</code>当中,利用自带的<code>token</code>和<code>ca.crt</code>，默认情况下所有的Pod都会被注入当前<code>namespace</code>下的<code>token</code>和<code>ca.crt</code>这样以来就可以去访问APIServer了</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">root@nginx-web-beijing-87c9f478f-knrfp:/var/run/secrets/kubernetes.io/serviceaccount# ls
 </span></span><span class="line"><span class="cl">ca.crt  namespace  token
-</span></span></code></pre></div><h3 id="kubernetesiodockerconfigjsonhttpkubernetesiodockerconfigjson"></h><a class="link" href="http://kubernetes.io/dockerconfigjson"  target="_blank" rel="noopener"
+</span></span></code></pre></div><h3 id="kubernetesiodockerconfigjson"></h><a class="link" href="http://kubernetes.io/dockerconfigjson"  target="_blank" rel="noopener"
     >kubernetes.io/dockerconfigjson</a>
 </h3><p>除了上面的 <code>Opaque</code> 这种类型外，我们还可以来创建用户 <code>docker registry</code> 认证的 <code>Secret</code>，直接使用<code>kubectl create</code> 命令创建即可，如下：</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">kubectl create secret docker-registry beijing-harbor --docker-server<span class="o">=</span>DOCKER_SERVER --docker-username<span class="o">=</span>DOCKER_USER --docker-password<span class="o">=</span>DOCKER_PASSWORD --docker-email<span class="o">=</span>DOCKER_EMAIL
@@ -702,8 +700,7 @@ ConfigMap 在设计上不是用来保存大量数据的。在 ConfigMap 中保�
 <p>前面我们也提到了默认情况下当前 namespace 下面的 Pod 会默认使用 <code>default</code> 这个 ServiceAccount，对应的 <code>Secret</code> 会自动挂载到 Pod 的 <code>/var/run/secrets/kubernetes.io/serviceaccount/</code> 目录中，这样我们就可以在 Pod 里面获取到用于身份认证的信息了。</p>
 <p>实际上这个自动挂载过程是在 Pod 创建的时候通过 <code>Admisson Controller（准入控制器）</code> 来实现的，关于准入控制器的详细信息我们会在后面的安全章节中和大家继续学习。</p>
 <blockquote>
-<p><code>Admission Controller（准入控制）</code>是 Kubernetes API Server 用于拦截请求的一种手段。<code>Admission</code> 可以做到对请求的资源对象进行校验，修改，Pod 创建时 <code>Admission Controller</code> 会根据指定的的 <code>ServiceAccount</code>（默认的 default）把对应的 <code>Secret</code> 挂载到容器中的固定目录下 <code>/var/run/secrets/kubernetes.io/serviceaccount/</code>。</p>
-</blockquote>
+<p><code>Admission Controller（准入控制）</code>是 Kubernetes API Server 用于拦截请求的一种手段。<code>Admission</code> 可以做到对请求的资源对象进行校验，修改，Pod 创建时 <code>Admission Controller</code> 会根据指定的的 <code>ServiceAccount</code>（默认的 default）把对应的 <code>Secret</code> 挂载到容器中的固定目录下 <code>/var/run/secrets/kubernetes.io/serviceaccount/</code>。</p></blockquote>
 
 </section>
 

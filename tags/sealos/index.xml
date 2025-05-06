@@ -100,8 +100,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  goVersion: go1.20.10
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  platform: linux/amd64
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;blockquote&gt;
-&lt;p&gt;正常能显示出来版本号信息就表示安装正常。&lt;/p&gt;
-&lt;/blockquote&gt;
+&lt;p&gt;正常能显示出来版本号信息就表示安装正常。&lt;/p&gt;&lt;/blockquote&gt;
 &lt;h2 id=&#34;快速部署高可用集群&#34;&gt;&lt;/h&gt;快速部署高可用集群
 &lt;/h2&gt;&lt;ul&gt;
 &lt;li&gt;默认使用的容器运行时为&lt;code&gt;Containerd&lt;/code&gt;&lt;/li&gt;

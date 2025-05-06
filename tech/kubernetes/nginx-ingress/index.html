@@ -9,7 +9,7 @@ Ingress 公开从集群外部到集群内服务的 HTTP 和 HTTPS 路由。 流�
 
 <link rel='canonical' href='https://blog.mletter.cn/tech/kubernetes/nginx-ingress/'>
 
-<link rel="stylesheet" href="https://blog.mletter.cn/scss/style.min.e738e6f23cab51289304e49575e3f627bf3a6f32f7b82812a9ab0c552ae38a78.css"><meta property='og:title' content='Ingress的简单使用'>
+<link rel="stylesheet" href="https://blog.mletter.cn/scss/style.min.2cbc22726b422f9f13736f86d63fc4586e66e6cd6e9d7213ab3ccaeb176299b7.css"><meta property='og:title' content='Ingress的简单使用'>
 <meta property='og:description' content='什么是Ingress Ingress 是对集群中服务的外部访问进行管理的 API 对象，典型的访问方式是 HTTP。
 Ingress 可以提供负载均衡、SSL 终结和基于名称的虚拟托管。
 Ingress 公开从集群外部到集群内服务的 HTTP 和 HTTPS 路由。 流量路由由 Ingress 资源上定义的规则控制。
@@ -455,8 +455,7 @@ Ingress 公开从集群外部到集群内服务的 HTTP 和 HTTPS 路由。 流�
 <p>Ingress 其实就是从 Kuberenets 集群外部访问集群的一个入口，将外部的请求转发到集群内不同的 Service 上，其实就相当于 nginx、haproxy 等负载均衡代理服务器，可能你会觉得我们直接使用 nginx 就实现了，但是只使用 nginx 这种方式有很大缺陷，每次有新服务加入的时候怎么改 Nginx 配置？不可能让我们去手动更改或者滚动更新前端的 Nginx Pod 吧？那我们再加上一个服务发现的工具比如 consul 如何？貌似是可以，对吧？Ingress 实际上就是这样实现的，只是服务发现的功能自己实现了，不需要使用第三方的服务了，然后再加上一个域名规则定义，路由信息的刷新依靠 Ingress Controller 来提供。</p>
 <p>Ingress Controller 可以理解为一个监听器，通过不断地监听 kube-apiserver，实时的感知后端 Service、Pod 的变化，当得到这些信息变化后，Ingress Controller 再结合 Ingress 的配置，更新反向代理负载均衡器，达到服务发现的作用。其实这点和服务发现工具 consul、 consul-template 非常类似。</p>
 <blockquote>
-<p>现在可以供大家使用的 Ingress Controller 有很多，比如 <code>traefik</code>、<code>nginx-controller</code>、<code>Kubernetes Ingress Controller</code> for Kong、<code>HAProxy Ingress controller</code>，当然你也可以自己实现一个 Ingress Controller，现在普遍用得较多的是 traefik 和 nginx-controller，traefik 的性能较 nginx-controller 差，但是配置使用要简单许多，我们这里会重点给大家介绍 nginx-controller 以及 traefik 的使用。</p>
-</blockquote>
+<p>现在可以供大家使用的 Ingress Controller 有很多，比如 <code>traefik</code>、<code>nginx-controller</code>、<code>Kubernetes Ingress Controller</code> for Kong、<code>HAProxy Ingress controller</code>，当然你也可以自己实现一个 Ingress Controller，现在普遍用得较多的是 traefik 和 nginx-controller，traefik 的性能较 nginx-controller 差，但是配置使用要简单许多，我们这里会重点给大家介绍 nginx-controller 以及 traefik 的使用。</p></blockquote>
 <h2 id="安装nginx-ingress-controller"></h>安装NGINX Ingress Controller
 </h2><ul>
 <li>官方文档：<a class="link" href="https://kubernetes.github.io/ingress-nginx/"  target="_blank" rel="noopener"
@@ -666,8 +665,7 @@ Ingress 公开从集群外部到集群内服务的 HTTP 和 HTTPS 路由。 流�
     >重写目标注解</a>。 不同的 <a class="link" href="https://kubernetes.io/zh-cn/docs/concepts/services-networking/ingress-controllers"  target="_blank" rel="noopener"
     >Ingress 控制器</a>支持不同的注解。 查看你所选的 Ingress 控制器的文档，以了解其支持哪些注解。</p>
 <blockquote>
-<p>如果 <code>ingressClassName</code> 被省略，那么你应该定义一个默认 <code>Ingress 类</code>,否则无法转发服务</p>
-</blockquote>
+<p>如果 <code>ingressClassName</code> 被省略，那么你应该定义一个默认 <code>Ingress 类</code>,否则无法转发服务</p></blockquote>
 <p>创建一个默认的<code>ingressClass</code></p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">networking.k8s.io/v1</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">IngressClass</span><span class="w">
@@ -682,8 +680,7 @@ Ingress 公开从集群外部到集群内服务的 HTTP 和 HTTPS 路由。 流�
 </span></span></span></code></pre></div><p>有一些 Ingress 控制器不需要定义默认的 <code>IngressClass</code>。比如：Ingress-NGINX 控制器可以通过<a class="link" href="https://kubernetes.github.io/ingress-nginx/#what-is-the-flag-watch-ingress-without-class"  target="_blank" rel="noopener"
     >参数</a> <code>--watch-ingress-without-class</code> 来配置。 不过仍然推荐创建默认的<code>ingressClass</code></p>
 <blockquote>
-<p>可以看一下简单地ingress-controller请求流程</p>
-</blockquote>
+<p>可以看一下简单地ingress-controller请求流程</p></blockquote>
 <ol>
 <li>客户端首先对 <code>ngdemo.qikqiak.com</code> 执行 DNS 解析，得到 Ingress Controller 所在节点的 IP</li>
 <li>后客户端向 Ingress Controller 发送 HTTP 请求</li>
@@ -865,8 +862,7 @@ Ingress 公开从集群外部到集群内服务的 HTTP 和 HTTPS 路由。 流�
 <li><code>nginx.qingyang.com/something/new</code>改写为<code>nginx.qingyang.com/new</code></li>
 </ul>
 <blockquote>
-<p>使用此方法可能会导致部分<code>css、js</code>等内容无法找到,可以使用以下方法实现</p>
-</blockquote>
+<p>使用此方法可能会导致部分<code>css、js</code>等内容无法找到,可以使用以下方法实现</p></blockquote>
 <ol>
 <li>通过<code>configuration-snippet</code>注解</li>
 </ol>
@@ -878,7 +874,7 @@ Ingress 公开从集群外部到集群内服务的 HTTP 和 HTTPS 路由。 流�
 </span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">nginx.ingress.kubernetes.io/rewrite-target</span><span class="p">:</span><span class="w"> </span><span class="l">/$2</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">nginx.ingress.kubernetes.io/configuration-snippet</span><span class="p">:</span><span class="w"> </span><span class="p">|</span><span class="sd">
 </span></span></span><span class="line"><span class="cl"><span class="sd">        rewrite ^/css/(.*)$ /something/css/$1  redirect; # 为css样式添加/something前缀
-</span></span></span><span class="line"><span class="cl"><span class="sd">        rewrite ^/js/(.*)$ /something/js/$1</span><span class="w">        
+</span></span></span><span class="line"><span class="cl"><span class="sd">        rewrite ^/js/(.*)$ /something/js/$1</span><span class="w">
 </span></span></span></code></pre></div><h2 id="basic-auth"></h>Basic Auth
 </h2><p>们还可以在 Ingress Controller 上面配置一些基本的 Auth 认证，比如 Basic Auth，可以用 htpasswd 生成一个密码文件来验证身份验证。</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">[root@Online-Beijing-master1 ~]# htpasswd -c auth admin
@@ -919,8 +915,7 @@ Ingress 公开从集群外部到集群内服务的 HTTP 和 HTTPS 路由。 流�
 <li><code>nginx.ingress.kubernetes.io/canary-by-cookie</code>: 基于 cookie 的流量切分，适用于灰度发布与 A/B 测试。用于通知 Ingress 将请求路由到 Canary Ingress 中指定的服务的cookie。当 cookie 值设置为 always 时，它将被路由到 Canary 入口；当 cookie 值设置为 never 时，请求不会被发送到 Canary 入口；对于任何其他值，将忽略 cookie 并将请求与其他金丝雀规则进行优先级的比较。</li>
 </ul>
 <blockquote>
-<p>Canary 规则按优先顺序进行评估。优先级如下：<code>canary-by-header -&gt; canary-by-cookie -&gt; canary-weight</code></p>
-</blockquote>
+<p>Canary 规则按优先顺序进行评估。优先级如下：<code>canary-by-header -&gt; canary-by-cookie -&gt; canary-weight</code></p></blockquote>
 <p>把以上的四个 annotation 规则可以总体划分为以下两类：</p>
 <h3 id="基于权重的的canary规则"></h>基于权重的的Canary规则
 </h3><p>
@@ -1103,8 +1098,7 @@ Ingress 公开从集群外部到集群内服务的 HTTP 和 HTTPS 路由。 流�
 </span></span></span></code></pre></div><h4 id="基于权重的canary规则"></h>基于权重的Canary规则
 </h4><p>基于权重的流量切分的典型应用场景就是<code>蓝绿部署</code>，可通过将权重设置为 0 或 100 来实现。例如，可将 Green 版本设置为主要部分，并将 Blue 版本的入口配置为 Canary。最初，将权重设置为 0，因此不会将流量代理到 Blue 版本。一旦新版本测试和验证都成功后，即可将 Blue 版本的权重设置为 100，即所有流量从 Green 版本转向 Blue。</p>
 <blockquote>
-<p>以下 Ingress 示例的 Canary 版本使用了<strong>基于权重进行流量切分</strong>的 annotation 规则，将分配 <strong>30%</strong> 的流量请求发送至 Canary 版本。</p>
-</blockquote>
+<p>以下 Ingress 示例的 Canary 版本使用了<strong>基于权重进行流量切分</strong>的 annotation 规则，将分配 <strong>30%</strong> 的流量请求发送至 Canary 版本。</p></blockquote>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">networking.k8s.io/v1</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">Ingress</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">metadata</span><span class="p">:</span><span class="w">
@@ -1126,13 +1120,11 @@ Ingress 公开从集群外部到集群内服务的 HTTP 和 HTTPS 路由。 流�
 </span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="nt">port</span><span class="p">:</span><span class="w"> 
 </span></span></span><span class="line"><span class="cl"><span class="w">              </span><span class="nt">number</span><span class="p">:</span><span class="w"> </span><span class="m">80</span><span class="w">
 </span></span></span></code></pre></div><blockquote>
-<p>应用的 Canary 版本基于权重 (30%) 进行流量切分后，访问到 Canary 版本的概率接近 30%，流量比例可能会有小范围的浮动。</p>
-</blockquote>
+<p>应用的 Canary 版本基于权重 (30%) 进行流量切分后，访问到 Canary 版本的概率接近 30%，流量比例可能会有小范围的浮动。</p></blockquote>
 <h4 id="基于-request-header"></h>基于 Request Header
 </h4><p>基于 Request Header 进行流量切分的典型应用场景即<code>灰度发布或 A/B 测试场景</code>。参考以下截图，在 KubeSphere 给 Canary 版本的应用路由 (Ingress) 新增一条 annotation <code>nginx.ingress.kubernetes.io/canary-by-header: canary</code>(这里的 annotation 的 value 可以是任意值)，使当前的 Ingress 实现基于 Request Header 进行流量切分。</p>
 <blockquote>
-<p>金丝雀规则按优先顺序 <code>canary-by-header - &gt; canary-by-cookie - &gt; canary-weight</code>进行如下排序，因此以下情况将忽略原有 canary-weight 的规则。</p>
-</blockquote>
+<p>金丝雀规则按优先顺序 <code>canary-by-header - &gt; canary-by-cookie - &gt; canary-weight</code>进行如下排序，因此以下情况将忽略原有 canary-weight 的规则。</p></blockquote>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">networking.k8s.io/v1</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">Ingress</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">metadata</span><span class="p">:</span><span class="w">
@@ -1415,8 +1407,7 @@ Ingress 公开从集群外部到集群内服务的 HTTP 和 HTTPS 路由。 流�
 </span></span><span class="line"><span class="cl">  Normal  Sync    7m46s <span class="o">(</span>x2 over 8m13s<span class="o">)</span>  nginx-ingress-controller  Scheduled <span class="k">for</span> sync
 </span></span></code></pre></div><p>你可以尝试访问<code>https://demo.qingyang.com/.well-known/acme-challenge/pVY-ihomZPdlWDMt44cV9qZUwMQScjHvd3Zkf_FDLRI</code>。正常会出现具体的<code>验证密钥</code>即成功.</p>
 <blockquote>
-<p>由于我的是本地自己搭建的kubernetes集群,没有外部解析的访问权限所以这个地方就没办法给大家演示了。</p>
-</blockquote>
+<p>由于我的是本地自己搭建的kubernetes集群,没有外部解析的访问权限所以这个地方就没办法给大家演示了。</p></blockquote>
 <h4 id="dns-01-校验"></h>DNS-01 校验
 </h4><p><code>NS-01</code> 的校验是通过 DNS 提供商的 API 拿到你的 DNS 控制权限， 在 <code>Let's Encrypt</code> 为 cert-manager 提供 TOKEN 后，cert-manager 将创建从该 TOKEN 和你的帐户密钥派生的 <code>TXT</code> 记录，并将该记录放在 <code>_acme-challenge.&lt;YOUR_DOMAIN&gt;</code>。然后 <code>Let's Encrypt</code> 将向 DNS 系统查询该记录，如果找到匹配项，就可以颁发证书，这种方法是支持泛域名证书的。</p>
 <p>DNS-01 支持多种不同的服务提供商，直接在 Issuer 或者 ClusterIssuer 中可以直接配置，对于一些不支持的 DNS 服务提供商可以使用外部 webhook 来提供支持，比如阿里云的 DNS 解析默认情况下是不支持的，我们可以使用阿里云这个 webhook 来提供支持。</p>

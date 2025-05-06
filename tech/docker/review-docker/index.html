@@ -6,7 +6,7 @@
 
 <link rel='canonical' href='https://blog.mletter.cn/tech/docker/review-docker/'>
 
-<link rel="stylesheet" href="https://blog.mletter.cn/scss/style.min.e738e6f23cab51289304e49575e3f627bf3a6f32f7b82812a9ab0c552ae38a78.css"><meta property='og:title' content='优雅的多阶段构建微服务镜像'>
+<link rel="stylesheet" href="https://blog.mletter.cn/scss/style.min.2cbc22726b422f9f13736f86d63fc4586e66e6cd6e9d7213ab3ccaeb176299b7.css"><meta property='og:title' content='优雅的多阶段构建微服务镜像'>
 <meta property='og:description' content='如何使用Docker的多阶段构建功能来优雅的构建服务镜像'>
 <meta property='og:url' content='https://blog.mletter.cn/tech/docker/review-docker/'>
 <meta property='og:site_name' content='太阳可以是蓝色'>
@@ -451,8 +451,7 @@
 </span></span><span class="line"><span class="cl">  <span class="nv">distributionUrlName</span><span class="o">=</span><span class="s2">&#34;</span><span class="si">${</span><span class="nv">distributionUrl</span><span class="p">##*/</span><span class="si">}</span><span class="s2">&#34;</span>
 </span></span><span class="line"><span class="cl"><span class="k">fi</span>
 </span></span></code></pre></div><blockquote>
-<p>关于本问题的解释：由于官方的mvnw脚本当中存在select zip or tar.gz的文件类型判断，所以当服务器上没有<code>unzip</code>的命令的时候会出现如上提示。</p>
-</blockquote>
+<p>关于本问题的解释：由于官方的mvnw脚本当中存在select zip or tar.gz的文件类型判断，所以当服务器上没有<code>unzip</code>的命令的时候会出现如上提示。</p></blockquote>
 <h2 id="官方的dockerfile"></h>官方的Dockerfile
 </h2><ul>
 <li>其实都是引用了<code>BuildKit</code>的一些特性，如果需要了解更多的话可以使用<code>docker Desktop</code>来进行初始化看一下官方写的这些脚本。</li>
@@ -535,8 +534,7 @@
 </span></span></span><span class="line"><span class="cl"><span class="err">
 </span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">ENTRYPOINT</span> <span class="p">[</span> <span class="s2">&#34;java&#34;</span><span class="p">,</span> <span class="s2">&#34;-jar&#34;</span><span class="p">,</span> <span class="s2">&#34;app.jar&#34;</span> <span class="p">]</span><span class="err">
 </span></span></span></code></pre></div><blockquote>
-<p>另外说一句：我永远相信最佳实践的内容，但是大厂的东西一定适合大厂，但是不一定适合你自己，所以我觉得应该带一些辨证的眼光去看待最佳实践的这些内容。</p>
-</blockquote>
+<p>另外说一句：我永远相信最佳实践的内容，但是大厂的东西一定适合大厂，但是不一定适合你自己，所以我觉得应该带一些辨证的眼光去看待最佳实践的这些内容。</p></blockquote>
 
 </section>
 

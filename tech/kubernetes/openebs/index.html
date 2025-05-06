@@ -7,7 +7,7 @@
 
 <link rel='canonical' href='https://blog.mletter.cn/tech/kubernetes/openebs/'>
 
-<link rel="stylesheet" href="https://blog.mletter.cn/scss/style.min.e738e6f23cab51289304e49575e3f627bf3a6f32f7b82812a9ab0c552ae38a78.css"><meta property='og:title' content='OpenEBS存储的使用'>
+<link rel="stylesheet" href="https://blog.mletter.cn/scss/style.min.2cbc22726b422f9f13736f86d63fc4586e66e6cd6e9d7213ab3ccaeb176299b7.css"><meta property='og:title' content='OpenEBS存储的使用'>
 <meta property='og:description' content='OpenEBS存储使用 OpenEBS 是一种模拟了 AWS 的 EBS、阿里云的云盘等块存储实现的基于容器的存储开源软件。OpenEBS 是一种基于 CAS(Container Attached Storage) 理念的容器解决方案，其核心理念是存储和应用一样采用微服务架构，并通过 Kubernetes 来做资源编排。其架构实现上，每个卷的 Controller 都是一个单独的 Pod，且与应用 Pod 在同一个节点，卷的数据使用多个 Pod 进行管理。
 '>
 <meta property='og:url' content='https://blog.mletter.cn/tech/kubernetes/openebs/'>
@@ -516,8 +516,7 @@
 </picture>
 </p>
 <blockquote>
-<p>NDM 在安装 OpenEBS 期间部署为守护进程。NDM daemonset 发现每个节点上的磁盘并创建称为块设备或 BD 的自定义资源。</p>
-</blockquote>
+<p>NDM 在安装 OpenEBS 期间部署为守护进程。NDM daemonset 发现每个节点上的磁盘并创建称为块设备或 BD 的自定义资源。</p></blockquote>
 <h2 id="启用openebs"></h>启用OpenEBS
 </h2><p>由于 OpenEBS 通过 iSCSI 协议提供存储支持，因此，需要在所有 Kubernetes 节点上都安装 iSCSI 客户端（启动器）。</p>
 <p>比如我们这里使用的是Rocky的系统，执行下面的命令安装启动 iSCSI 启动器：</p>
@@ -591,8 +590,7 @@
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span>- <span class="nt">mountPath</span><span class="p">:</span><span class="w"> </span><span class="l">/data</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">local-storage</span><span class="w">
 </span></span></span></code></pre></div><blockquote>
-<p>注意：如果你想知道这个Pvc具体挂载位置可以使用<code>kubectl describe pv pv名称</code>,其中的<code>Ptah: /var/openebs/local/pvc-e011f2a1-27dc-46d0-ba34-9ad44ba03188</code>就是我们所在节点的路径</p>
-</blockquote>
+<p>注意：如果你想知道这个Pvc具体挂载位置可以使用<code>kubectl describe pv pv名称</code>,其中的<code>Ptah: /var/openebs/local/pvc-e011f2a1-27dc-46d0-ba34-9ad44ba03188</code>就是我们所在节点的路径</p></blockquote>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">[</span>root@Online-Beijing-master1 ~<span class="o">]</span><span class="c1"># kubectl get pv</span>
 </span></span><span class="line"><span class="cl">NAME                                       CAPACITY   ACCESS MODES   RECLAIM POLICY   STATUS   CLAIM                        STORAGECLASS       REASON   AGE
 </span></span><span class="line"><span class="cl">example-local                              20Gi       RWO            Delete           Bound    default/bound-tasknginx      local-storage               26d
@@ -651,7 +649,7 @@
 </span></span></span><span class="line"><span class="cl"><span class="sd">      # the PV sub-directory will be deleted.
 </span></span></span><span class="line"><span class="cl"><span class="sd">      #Default value is /var/openebs/local
 </span></span></span><span class="line"><span class="cl"><span class="sd">      - name: BasePath
-</span></span></span><span class="line"><span class="cl"><span class="sd">        value: &#34;/var/openebs/local/&#34;</span><span class="w">      
+</span></span></span><span class="line"><span class="cl"><span class="sd">        value: &#34;/var/openebs/local/&#34;</span><span class="w">
 </span></span></span></code></pre></div>
 </section>
 

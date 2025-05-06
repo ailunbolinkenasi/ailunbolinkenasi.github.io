@@ -6,7 +6,7 @@
 
 <link rel='canonical' href='https://blog.mletter.cn/tech/kubernetes/apiserver-read/'>
 
-<link rel="stylesheet" href="https://blog.mletter.cn/scss/style.min.e738e6f23cab51289304e49575e3f627bf3a6f32f7b82812a9ab0c552ae38a78.css"><meta property='og:title' content='Kubernetes中Api-Server简单解读'>
+<link rel="stylesheet" href="https://blog.mletter.cn/scss/style.min.2cbc22726b422f9f13736f86d63fc4586e66e6cd6e9d7213ab3ccaeb176299b7.css"><meta property='og:title' content='Kubernetes中Api-Server简单解读'>
 <meta property='og:description' content='Kubernetes API的每个请求都会经过多阶段的访问控制之后才会被接受,这一阶段包括认证、授权、以及准入控制(Admission Control)等'>
 <meta property='og:url' content='https://blog.mletter.cn/tech/kubernetes/apiserver-read/'>
 <meta property='og:site_name' content='太阳可以是蓝色'>
@@ -477,8 +477,7 @@ Kubernetes API的每个请求都会经过多阶段的访问控制之后才会被
 <li>将Token内容写入到文件当中</li>
 </ol>
 <blockquote>
-<p>注意：该文件格式为CSV格式，其实你也可以随便写:happy:</p>
-</blockquote>
+<p>注意：该文件格式为CSV格式，其实你也可以随便写:happy:</p></blockquote>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">描述： Token值  用户名称  用户ID 可选组名
 </span></span><span class="line"><span class="cl">kube-token,kubeadminer,1000,<span class="s2">&#34;group1,group2,group3&#34;</span>
 </span></span></code></pre></div><p>假设这是我们请求名称空间的请求: <code>curl -k -v -XGET -H &quot;Authrization: Bearer kube-token&quot; https://api.k8s.version.cn:6443/api/v1/namespaces/default</code></p>
@@ -501,8 +500,7 @@ Kubernetes API的每个请求都会经过多阶段的访问控制之后才会被
 <li>设置<code>API Server</code></li>
 </ol>
 <blockquote>
-<p>注意： 操作的时候请备份你的API Server文件，这是一个好习惯.</p>
-</blockquote>
+<p>注意： 操作的时候请备份你的API Server文件，这是一个好习惯.</p></blockquote>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="c">#  vim /etc/kubernetes/manifests/kube-apiserver.yaml </span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c"># 挂载本地的/etc/basic-auth路径</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"> </span><span class="nt">volumeMounts</span><span class="p">:</span><span class="w">
@@ -517,8 +515,7 @@ Kubernetes API的每个请求都会经过多阶段的访问控制之后才会被
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c"># 修改API Server启动参数</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span>- --<span class="l">token-auth-file=/etc/basic-auth/kube-token.csv</span><span class="w">
 </span></span></span></code></pre></div><blockquote>
-<p>请您等待APIServer重启完成</p>
-</blockquote>
+<p>请您等待APIServer重启完成</p></blockquote>
 <p>当我们再次通过<code>kube-token</code>进行请求API Server 如果能成功识别到我们的用户即可，也就知道我们当前的用户为<code>kubeadminer</code></p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-json" data-lang="json"><span class="line"><span class="cl"><span class="p">{</span>
 </span></span><span class="line"><span class="cl">  <span class="nt">&#34;kind&#34;</span><span class="p">:</span> <span class="s2">&#34;Status&#34;</span><span class="p">,</span>
@@ -605,8 +602,7 @@ Kubernetes API的每个请求都会经过多阶段的访问控制之后才会被
 </h3><p>Role(角色)是一系列特定角色权限的集合，例如一个角色可以包含读取Pod的权限和列出Pod的权限。</p>
 <p>Role只能用来给某个特定的namespace中的资源作鉴权，对多namespace和集群级的资源活着是非资源类的API(如/healthz)使用ClusterRole</p>
 <blockquote>
-<p>下面是一个简单的Role配置</p>
-</blockquote>
+<p>下面是一个简单的Role配置</p></blockquote>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">Role</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">rbac.authorization.k8s.io/v1</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">metadata</span><span class="p">:</span><span class="w">
@@ -617,8 +613,7 @@ Kubernetes API的每个请求都会经过多阶段的访问控制之后才会被
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">resources</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&#34;pods&#34;</span><span class="p">]</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">verbs</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&#34;get&#34;</span><span class="p">,</span><span class="s2">&#34;watch&#34;</span><span class="p">,</span><span class="s2">&#34;list&#34;</span><span class="p">]</span><span class="w">
 </span></span></span></code></pre></div><blockquote>
-<p>下面是一个简单地ClusterRole配置</p>
-</blockquote>
+<p>下面是一个简单地ClusterRole配置</p></blockquote>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">ClusterRole</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">rbac.authorization.k8s.io/v1</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">metadata</span><span class="p">:</span><span class="w">
@@ -698,8 +693,7 @@ SystemAccount</li>
 通常需要创建一个管理员角色，并且绑定给开发运营团队的成员
 <code>ThirdPartyResource</code>和<code>CustomResourceDefinition</code>是全局资源，普通用户创建以后需要管理员授权才能真正操作该对象。</p>
 <blockquote>
-<p>ssh到master节点通过<code>insecure port</code>访问apiserver可以绕过鉴权,当需要做管理操作又没有权限的时候可以使用(不推荐)</p>
-</blockquote>
+<p>ssh到master节点通过<code>insecure port</code>访问apiserver可以绕过鉴权,当需要做管理操作又没有权限的时候可以使用(不推荐)</p></blockquote>
 <h2 id="准入"></h>准入
 </h2><h3 id="准入控制"></h>准入控制
 </h3><p>准入控制(Admission Control)在授权后对请求做进一步的验证或添加默认参数。不同于授权和认证只关心请求的用户和操作，准入控制还处理请求的内容，并且仅对创建、更新、删除或连接等有效，而对读操作无效。
@@ -739,8 +733,7 @@ SystemAccount</li>
 <li>ValidatingWebhoookConfiguration: 校验插件，只能对准入对象合法性进行校验</li>
 </ul>
 <blockquote>
-<p>太多了 我就不一个一个写了…除了默认的准入控制插件以外，kubernetes预留了准入控制插件的扩展点，用户可以自定义准入控制插件</p>
-</blockquote>
+<p>太多了 我就不一个一个写了…除了默认的准入控制插件以外，kubernetes预留了准入控制插件的扩展点，用户可以自定义准入控制插件</p></blockquote>
 <h3 id="准入控制插件的演示"></h>准入控制插件的演示
 </h3><ul>
 <li>MutatingWebhookConfiguration: 说白了就是对准入控制的对象内容进行修改</li>
@@ -750,8 +743,7 @@ SystemAccount</li>
 </ul>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">git clone https://github.com/cncamp/admission-controller-webhook-demo.git
 </span></span></code></pre></div><blockquote>
-<p>这个暂且先不演示了…我也在研究哈哈</p>
-</blockquote>
+<p>这个暂且先不演示了…我也在研究哈哈</p></blockquote>
 <h2 id="限流"></h>限流
 </h2><h3 id="漏斗算法"></h>漏斗算法
 </h3><p>漏洞算法也很容易理解，请求进来以后首先进入漏斗里面，然后漏斗以恒定的速率将请求流出进行处理，从而起到平滑流量的作用。
@@ -847,8 +839,7 @@ SystemAccount</li>
 </h3><p>一个<code>PriorityLevelConfiguration</code>表示单个隔离类型。
 每个<code>PriorityLevelConfiguration</code>对未完成的请求数有各自的限制,对排队中的请求数也有限制。</p>
 <blockquote>
-<p>PriorityLevelConfiguration是可以被多个FlowSchema进行复用的</p>
-</blockquote>
+<p>PriorityLevelConfiguration是可以被多个FlowSchema进行复用的</p></blockquote>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">flowcontrol.apiserver.k8s.io/v1beta1</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">PriorityLevelConfiguration</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">metadata</span><span class="p">:</span><span class="w">

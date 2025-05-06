@@ -6,7 +6,7 @@
 
 <link rel='canonical' href='https://blog.mletter.cn/tech/kubernetes/install-etcd-ha/'>
 
-<link rel="stylesheet" href="https://blog.mletter.cn/scss/style.min.e738e6f23cab51289304e49575e3f627bf3a6f32f7b82812a9ab0c552ae38a78.css"><meta property='og:title' content='使用Kubeadm创建一个高可用的ETCD集群'>
+<link rel="stylesheet" href="https://blog.mletter.cn/scss/style.min.2cbc22726b422f9f13736f86d63fc4586e66e6cd6e9d7213ab3ccaeb176299b7.css"><meta property='og:title' content='使用Kubeadm创建一个高可用的ETCD集群'>
 <meta property='og:description' content='默认情况下，kubeadm 在每个控制平面节点上运行一个本地 etcd 实例。也可以使用外部的 etcd 集群，并在不同的主机上提供 etcd 实例。 这两种方法的区别在 高可用拓扑的选项 页面中阐述。这个任务将指导你创建一个由三个成员组成的高可用外部 etcd 集群，该集群在创建过程中可被 kubeadm 使用。'>
 <meta property='og:url' content='https://blog.mletter.cn/tech/kubernetes/install-etcd-ha/'>
 <meta property='og:site_name' content='太阳可以是蓝色'>
@@ -411,12 +411,10 @@
 <li>一些可以用来在主机间复制文件的基础设施。例如 ssh 和 scp 就可以满足需求。</li>
 </ul>
 <blockquote>
-<p>本次容器运行时采用<code>Containerd</code>作为Runtime</p>
-</blockquote>
+<p>本次容器运行时采用<code>Containerd</code>作为Runtime</p></blockquote>
 <h3 id="将kubelet配置为etcd的服务启动管理器"></h>将Kubelet配置为Etcd的服务启动管理器
 </h3><blockquote>
-<p>你必须在要运行 etcd 的所有主机上执行此操作。</p>
-</blockquote>
+<p>你必须在要运行 etcd 的所有主机上执行此操作。</p></blockquote>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">cat <span class="s">&lt;&lt; EOF &gt; /usr/lib/systemd/system/kubelet.service.d/20-etcd-service-manager.conf 
 </span></span></span><span class="line"><span class="cl"><span class="s">[Service]
 </span></span></span><span class="line"><span class="cl"><span class="s">ExecStart=
@@ -427,8 +425,7 @@
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">systemctl daemon-reload
 </span></span><span class="line"><span class="cl">systemctl restart kubelet
 </span></span></code></pre></div><blockquote>
-<p>注意: 请执行完毕后务必确保<code>kubelet</code>处于<code>running</code>状态。</p>
-</blockquote>
+<p>注意: 请执行完毕后务必确保<code>kubelet</code>处于<code>running</code>状态。</p></blockquote>
 <h3 id="为kubeadm创建配置文件"></h>为Kubeadm创建配置文件
 </h3><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 使用你的主机 IP 替换 HOST0、HOST1 和 HOST2 的 IP 地址</span>
 </span></span><span class="line"><span class="cl"><span class="nb">export</span> <span class="nv">HOST0</span><span class="o">=</span>10.1.6.48

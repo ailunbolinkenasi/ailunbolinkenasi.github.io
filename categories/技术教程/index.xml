@@ -15,8 +15,7 @@
         <guid>https://blog.mletter.cn/tech/flash/xiaomi-flash/</guid>
         <description>&lt;img src="https://img10.360buyimg.com/ddimg/jfs/t1/136341/28/50928/16917/67396488Fdfa333bf/98aaaa3b10a88b53.jpg" alt="Featured image of post 小米刷入PixelExperience指南" /&gt;&lt;p&gt;最近，成功收购了一台安卓之光小米&lt;code&gt;11 Ultra&lt;/code&gt;，我的第一个计划，就是给它刷上类原生系统，开启一段全新的折腾之旅。&lt;/p&gt;
 &lt;blockquote&gt;
-&lt;p&gt;什么MIUI、HyperOS、三方改、都一边凉快去吧。&lt;/p&gt;
-&lt;/blockquote&gt;
+&lt;p&gt;什么MIUI、HyperOS、三方改、都一边凉快去吧。&lt;/p&gt;&lt;/blockquote&gt;
 &lt;h2 id=&#34;为什么选择类原生&#34;&gt;&lt;/h&gt;为什么选择类原生
 &lt;/h2&gt;&lt;p&gt;对于我来说，类原生系统有着许多吸引我的地方。首先，类原生系统通常非常简洁，没有过多的预装软件和繁杂的功能，能够让手机运行更加流畅。其次，类原生系统更新速度快，能够及时体验到最新的安卓版本和功能。此外，类原生系统还具有高度的可定制性。相对于MIUI来说可能在某些适配方面小米做的更好吧，例如相机适配、音效适配、显示效果适配上。&lt;/p&gt;
 &lt;h2 id=&#34;准备工作&#34;&gt;&lt;/h&gt;准备工作
@@ -52,8 +51,7 @@
 &lt;li&gt;流畅程度：✨✨✨✨✨&lt;/li&gt;
 &lt;/ul&gt;
 &lt;blockquote&gt;
-&lt;p&gt;给我打广告了，开玩笑的，这个体验了一把，流畅度和简易程度上没得说。&lt;/p&gt;
-&lt;/blockquote&gt;
+&lt;p&gt;给我打广告了，开玩笑的，这个体验了一把，流畅度和简易程度上没得说。&lt;/p&gt;&lt;/blockquote&gt;
 &lt;h3 id=&#34;projectelixiros&#34;&gt;&lt;/h&gt;ProjectElixiros
 &lt;/h3&gt;&lt;ul&gt;
 &lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://projectelixiros.com/download&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
@@ -96,14 +94,12 @@
 &lt;/ol&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;fastboot devices
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;blockquote&gt;
-&lt;p&gt;这个地方如果没有输出类似于编号的信息，请检查自己的ADB服务是否可用。&lt;/p&gt;
-&lt;/blockquote&gt;
+&lt;p&gt;这个地方如果没有输出类似于编号的信息，请检查自己的ADB服务是否可用。&lt;/p&gt;&lt;/blockquote&gt;
 &lt;ol start=&#34;3&#34;&gt;
 &lt;li&gt;线刷方式可以直接通过&lt;code&gt;adb sideload filename.zip&lt;/code&gt;进行输入，卡刷包用户可以直接进入&lt;code&gt;TWRP&lt;/code&gt;进行卡刷。&lt;/li&gt;
 &lt;/ol&gt;
 &lt;blockquote&gt;
-&lt;p&gt;正常情况下，adb会报告&lt;code&gt;Total xfer: 1.00x&lt;/code&gt;，但在某些情况下，即使进程成功，输出也会在 47% 处停止并报告&lt;code&gt;Total xfer: 0.98x&lt;/code&gt;或&lt;code&gt;adb: failed to read command: Success&lt;/code&gt;。在某些情况下它会报告&lt;code&gt;adb: failed to read command: No error&lt;/code&gt;或 ，&lt;code&gt;adb: failed to read command: Undefined error: 0&lt;/code&gt;这也是可以的。&lt;/p&gt;
-&lt;/blockquote&gt;
+&lt;p&gt;正常情况下，adb会报告&lt;code&gt;Total xfer: 1.00x&lt;/code&gt;，但在某些情况下，即使进程成功，输出也会在 47% 处停止并报告&lt;code&gt;Total xfer: 0.98x&lt;/code&gt;或&lt;code&gt;adb: failed to read command: Success&lt;/code&gt;。在某些情况下它会报告&lt;code&gt;adb: failed to read command: No error&lt;/code&gt;或 ，&lt;code&gt;adb: failed to read command: Undefined error: 0&lt;/code&gt;这也是可以的。&lt;/p&gt;&lt;/blockquote&gt;
 &lt;h2 id=&#34;问题处理&#34;&gt;&lt;/h&gt;问题处理
 &lt;/h2&gt;&lt;ol&gt;
 &lt;li&gt;如果出现无法连接WIFI问题请切换国内接入点，因为谷歌开启了&lt;code&gt;captive_portal&lt;/code&gt;机制来确保WiFi是否可用。请开启USB调试模式以后进行修改。&lt;/li&gt;

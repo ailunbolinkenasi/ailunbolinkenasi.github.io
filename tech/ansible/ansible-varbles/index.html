@@ -6,7 +6,7 @@
 
 <link rel='canonical' href='https://blog.mletter.cn/tech/ansible/ansible-varbles/'>
 
-<link rel="stylesheet" href="https://blog.mletter.cn/scss/style.min.e738e6f23cab51289304e49575e3f627bf3a6f32f7b82812a9ab0c552ae38a78.css"><meta property='og:title' content='Ansible变量相关内容'>
+<link rel="stylesheet" href="https://blog.mletter.cn/scss/style.min.2cbc22726b422f9f13736f86d63fc4586e66e6cd6e9d7213ab3ccaeb176299b7.css"><meta property='og:title' content='Ansible变量相关内容'>
 <meta property='og:description' content='主要讲一下ansible当中的几种变量定义方法'>
 <meta property='og:url' content='https://blog.mletter.cn/tech/ansible/ansible-varbles/'>
 <meta property='og:site_name' content='太阳可以是蓝色'>
@@ -415,8 +415,7 @@
 </ul>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">depence: <span class="o">[</span><span class="s1">&#39;openssl-devel&#39;</span>,<span class="s1">&#39;pcre-devel&#39;</span>,<span class="s1">&#39;zlib-devel&#39;</span><span class="o">]</span>
 </span></span></code></pre></div><blockquote>
-<p>注意: 当你引用了变量文件中的变量,请在读取变量的时候增加双引号<code>&quot;&quot;</code></p>
-</blockquote>
+<p>注意: 当你引用了变量文件中的变量,请在读取变量的时候增加双引号<code>&quot;&quot;</code></p></blockquote>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl">- <span class="nt">hosts</span><span class="p">:</span><span class="w"> </span><span class="l">test</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">remote_user</span><span class="p">:</span><span class="w"> </span><span class="l">root</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">vars_files</span><span class="p">:</span><span class="w"> 
@@ -437,14 +436,12 @@
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">[</span><span class="l">test:vars]</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="l">file_name=group_sys</span><span class="w">
 </span></span></span></code></pre></div><blockquote>
-<p>官方推荐的方法: 在项目目录中创建两个变量目录<code>host_vars</code>和<code>group_vars</code></p>
-</blockquote>
+<p>官方推荐的方法: 在项目目录中创建两个变量目录<code>host_vars</code>和<code>group_vars</code></p></blockquote>
 <h4 id="group_vars"></h>group_vars
 </h4><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">mkdir host_vars<span class="p">;</span> mkdir group_vars
 </span></span></code></pre></div><p>创建一个同名文件,用于写入变量内容</p>
 <blockquote>
-<p>必须与hosts清单中的组名保持一致,如果不同名会报错。但是如果你想要多个配置文件使用同一个组中的变量,只需要在<code>group_vars/all</code>新建一个<code>all</code>文件,所有组可用!</p>
-</blockquote>
+<p>必须与hosts清单中的组名保持一致,如果不同名会报错。但是如果你想要多个配置文件使用同一个组中的变量,只需要在<code>group_vars/all</code>新建一个<code>all</code>文件,所有组可用!</p></blockquote>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="p">[</span><span class="l">root@bogon ~]# cat group_vars/test </span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">file_name</span><span class="p">:</span><span class="w"> </span><span class="l">group_sys</span><span class="w">
 </span></span></span></code></pre></div><h4 id="host_vars"></h>host_vars

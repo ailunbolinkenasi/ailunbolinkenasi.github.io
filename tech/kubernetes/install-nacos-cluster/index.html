@@ -6,7 +6,7 @@
 
 <link rel='canonical' href='https://blog.mletter.cn/tech/kubernetes/install-nacos-cluster/'>
 
-<link rel="stylesheet" href="https://blog.mletter.cn/scss/style.min.e738e6f23cab51289304e49575e3f627bf3a6f32f7b82812a9ab0c552ae38a78.css"><meta property='og:title' content='基于kubernetes部署nacos集群'>
+<link rel="stylesheet" href="https://blog.mletter.cn/scss/style.min.2cbc22726b422f9f13736f86d63fc4586e66e6cd6e9d7213ab3ccaeb176299b7.css"><meta property='og:title' content='基于kubernetes部署nacos集群'>
 <meta property='og:description' content='kubernetes持久化部署nacos集群演示'>
 <meta property='og:url' content='https://blog.mletter.cn/tech/kubernetes/install-nacos-cluster/'>
 <meta property='og:site_name' content='太阳可以是蓝色'>
@@ -396,8 +396,7 @@
     
     <h2 id="简单安装使用"></h>简单安装使用
 </h2><blockquote>
-<p>最新版本应该是1.4.1</p>
-</blockquote>
+<p>最新版本应该是1.4.1</p></blockquote>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">git clone https://github.com/nacos-group/nacos-k8s.git
 </span></span></code></pre></div><ul>
 <li>简单使用</li>
@@ -425,8 +424,7 @@
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">curl -X GET <span class="s2">&#34;http://cluster-ip:8848/nacos/v1/cs/configs?dataId=nacos.cfg.dataId&amp;group=test&#34;</span>
 </span></span></code></pre></div><h2 id="高级用法"></h>高级用法
 </h2><blockquote>
-<p>在高级使用中,Nacos在K8S拥有自动扩容缩容和数据持久特性,请注意如果需要使用这部分功能请使用PVC持久卷,Nacos的自动扩容缩容需要依赖持久卷,以及数据持久化也是一样,本例中使用的是NFS来使用PVC.</p>
-</blockquote>
+<p>在高级使用中,Nacos在K8S拥有自动扩容缩容和数据持久特性,请注意如果需要使用这部分功能请使用PVC持久卷,Nacos的自动扩容缩容需要依赖持久卷,以及数据持久化也是一样,本例中使用的是NFS来使用PVC.</p></blockquote>
 <h3 id="部署nfs"></h>部署NFS
 </h3><p>nfs-client-provisioner 可动态为kubernetes提供pv卷，是Kubernetes的简易NFS的外部provisioner，本身不提供NFS，需要现有的NFS服务器提供存储。持久卷目录的命名规则为: <code>${namespace}-${pvcName}-${pvName}</code></p>
 <p><strong>创建角色</strong></p>
@@ -486,8 +484,7 @@
 <li>修改 <strong>deploy/nacos/nacos-pvc-nfs.yaml</strong></li>
 </ul>
 <blockquote>
-<p>可以自行选择更改</p>
-</blockquote>
+<p>可以自行选择更改</p></blockquote>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">data</span><span class="p">:</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">mysql.master.db.name</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;主库名称&#34;</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">mysql.master.port</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;主库端口&#34;</span><span class="w">

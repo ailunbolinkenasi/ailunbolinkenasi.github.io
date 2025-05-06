@@ -6,7 +6,7 @@
 
 <link rel='canonical' href='https://blog.mletter.cn/tech/kubernetes/architectural-design/'>
 
-<link rel="stylesheet" href="https://blog.mletter.cn/scss/style.min.e738e6f23cab51289304e49575e3f627bf3a6f32f7b82812a9ab0c552ae38a78.css"><meta property='og:title' content='Kubernetes的架构设计和对象属性基本理解'>
+<link rel="stylesheet" href="https://blog.mletter.cn/scss/style.min.2cbc22726b422f9f13736f86d63fc4586e66e6cd6e9d7213ab3ccaeb176299b7.css"><meta property='og:title' content='Kubernetes的架构设计和对象属性基本理解'>
 <meta property='og:description' content='主要讲解kubernetes的组成和组件的具体作用'>
 <meta property='og:url' content='https://blog.mletter.cn/tech/kubernetes/architectural-design/'>
 <meta property='og:site_name' content='太阳可以是蓝色'>
@@ -414,8 +414,7 @@
 </ul>
 <p>那么我们来看一下早期单体容器架构</p>
 <blockquote>
-<p>其实对于容器化技术带来了那些优势呢?</p>
-</blockquote>
+<p>其实对于容器化技术带来了那些优势呢?</p></blockquote>
 <ol>
 <li>其实我觉得容器化带来的最大的优势就是交付和部署的优势</li>
 </ol>
@@ -500,8 +499,7 @@
 
 那么随之而来带来的问题是:</p>
 <blockquote>
-<p>那么由于Docker的容器镜像可以在A、B、C任意一台机器上运行,那么是否可以当A机器所运行的镜像挂掉以后自动的帮我在B机器上进行重启呢?</p>
-</blockquote>
+<p>那么由于Docker的容器镜像可以在A、B、C任意一台机器上运行,那么是否可以当A机器所运行的镜像挂掉以后自动的帮我在B机器上进行重启呢?</p></blockquote>
 <p>okey 带着这个问题 一起往下进行。</p>
 <h2 id="kubernes组件"></h>kubernes组件
 </h2><p>先看一张官方给出的kubernetes的架构图
@@ -725,8 +723,7 @@
 </span></span><span class="line"><span class="cl">    <span class="p">}</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></div><blockquote>
-<p>另外: 当你需要创建资源类型的时候,我并不建议你从头开始去编写相关文件,可以灵活的应用<code>kubectl run</code>来进行填充相关的字段信息。</p>
-</blockquote>
+<p>另外: 当你需要创建资源类型的时候,我并不建议你从头开始去编写相关文件,可以灵活的应用<code>kubectl run</code>来进行填充相关的字段信息。</p></blockquote>
 <h2 id="kubernetes设计理念"></h>kubernetes设计理念
 </h2><ul>
 <li>声明式：典型就是在资源文件中进行声明</li>
@@ -837,8 +834,7 @@
 </span></span></code></pre></div><p>实际上也就是说当我需要访问<code>wecho-canary</code>这个服务的时候,我无需关心他后端end如何进行变化,我只需要记住访问<code>wecho-canary</code>的<code>Service</code>所给出的<code>ClusterIP</code>即可进行访问到相应的服务。</p>
 <p>另外的一种方式就是通过我们的<code>Service</code>名称来进行访问，下面说一下具体是如何通过<code>Service</code>名称进行访问的。</p>
 <blockquote>
-<p>我们假设使用上面的<code>wecho-canary</code>名称进行一次访问</p>
-</blockquote>
+<p>我们假设使用上面的<code>wecho-canary</code>名称进行一次访问</p></blockquote>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">curl -v wecho-canary <span class="c1"># 假设访问正常</span>
 </span></span></code></pre></div><p>很简单,大家都知道当我们访问一个域名的时候背后肯定又DNS服务器来解析其所对应的IP地址,那么其实在kubernetes当中也有一个内部的DNS服务器,名字叫做<code>kube-dns</code>
 我们可以通过<code>kubectl get svc -A </code>进行查看,其中所指定的<code>10.10.0.10</code>就是我们kube-dns的IP地址.</p>
@@ -858,8 +854,7 @@
 <li>当我们访问<code>wecho-canary</code>的时候实际上是访问了<code>wecho-canary.default.cluster.local.svc</code>,即<code>ServiceName.Namespace.cluster.local.svc</code></li>
 <li>所有的解析域名请求都会请求到<code>kube-dns</code>当中,当<code>kube-dns</code>无法完成解析的时候,我们会将请求<code>forward</code>到本地的解析文件当中,如果本地解析文件也无法解析则认为失败。典型的就是超时、无法解析等问题。</li>
 <li>Service通过监视API server的数据变化来感知后端Pod的变化,并及时更新负载均衡规则。具体来说,Kubernetes ApiServer负责管理集群状态,它会记录每一个对象(包括Pod)的Spec和Status。Service对象使用ApiServer的watch接口,监视后端关联Pod对象的变化事件。比如Pod实例加入或销毁时,ApiServer会主动通知Service。一旦检测到Pod变化,Service会立即使用新的Pod列表,重新计算并更新自己负载均衡的端口转发规则。例如使用iptables规则或IPVS表更新后端目标地址。这样,无论Pod是动态伸缩还是故障转移,Service都能即时感知,保持负载均衡入口地址的高可靠性。这就是Service如何实现动态更新负载均衡规则的原理。</li>
-</ol>
-</blockquote>
+</ol></blockquote>
 <h3 id="service类型"></h>Service类型
 </h3><ul>
 <li>ClusterIP: 通过集群的内部IP公开<code>Service</code>，选择该值时<code>Service</code>只能够在集群内部访问。这也是你没有为服务显式指定<code>type</code>时使用的默认值。</li>

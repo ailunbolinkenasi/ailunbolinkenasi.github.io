@@ -116,33 +116,12 @@
 </description>
         </item>
         <item>
-        <title>1. Prompt Engineering入门指南：如何让AI更懂你的需求</title>
+        <title>Prompt Engineering入门指南：如何让AI更懂你的需求</title>
         <link>https://blog.mletter.cn/tech/aiops/prompt-engineering-guide/</link>
         <pubDate>Mon, 24 Mar 2025 00:00:00 +0000</pubDate>
         
         <guid>https://blog.mletter.cn/tech/aiops/prompt-engineering-guide/</guid>
-        <description>&lt;p&gt;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  
-  &lt;picture&gt;
-  &lt;img class=&#34;img-fluid&#34; src=&#34;https://img11.360buyimg.com/ddimg/jfs/t1/278387/8/8864/84171/67e0ffdaFc7c004b0/e828ceb487b9e3a8.jpg&#34; alt=&#34;&#34; loading=&#34;lazy&#34; /&gt;
-&lt;/picture&gt;
-&lt;/p&gt;
-&lt;p&gt;&lt;em&gt;通过优化Prompt，让AI生成更精准的响应&lt;/em&gt;&lt;/p&gt;
+        <description>&lt;img src="https://img11.360buyimg.com/ddimg/jfs/t1/278387/8/8864/84171/67e0ffdaFc7c004b0/e828ceb487b9e3a8.jpg" alt="Featured image of post Prompt Engineering入门指南：如何让AI更懂你的需求" /&gt;&lt;p&gt;&lt;em&gt;通过优化Prompt，让AI生成更精准的响应&lt;/em&gt;&lt;/p&gt;
 &lt;h2 id=&#34;一什么是prompt-engineering&#34;&gt;&lt;/h&gt;一、什么是Prompt Engineering？
 &lt;/h2&gt;&lt;p&gt;&lt;strong&gt;Prompt&lt;/strong&gt;（提示词）是用户与AI模型对话的&amp;quot;钥匙&amp;quot;，它决定了AI如何理解需求并生成响应。&lt;strong&gt;Prompt Engineering&lt;/strong&gt;则是通过系统化设计和优化输入内容，让AI输出更符合预期的结果。就像与人类专家沟通一样，一个优质的问题往往包含答案的种子。&lt;/p&gt;
 &lt;h3 id=&#34;优质prompt公式&#34;&gt;&lt;/h&gt;优质Prompt公式
@@ -205,7 +184,8 @@
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-text&#34; data-lang=&#34;text&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;第一轮：&amp;#34;用React实现登录表单&amp;#34;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;第二轮：&amp;#34;用React 18+TypeScript实现Material Design风格的登录表单，要求：1. 邮箱格式验证 2. 密码强度提示 3. 防重复提交 4. 使用Zustand进行状态管理&amp;#34;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;第三轮：&amp;#34;在第二轮基础上增加：1. Google reCAPTCHA集成 2. 错误处理显示Snackbar组件 3. 使用react-hook-form管理表单状态&amp;#34;
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;table&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;hr&gt;
+&lt;table&gt;
   &lt;thead&gt;
       &lt;tr&gt;
           &lt;th&gt;版本&lt;/th&gt;

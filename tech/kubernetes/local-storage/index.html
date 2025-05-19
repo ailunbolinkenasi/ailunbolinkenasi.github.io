@@ -1,1002 +1,192 @@
-<!DOCTYPE html>
-<html lang="en-us" dir="ltr">
-    <head><meta charset='utf-8'>
-<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='前面我们有通过 hostPath 或者 emptyDir 的方式来持久化我们的数据'>
-<title>Kubernetes-本地存储</title>
-
-<link rel='canonical' href='https://blog.mletter.cn/tech/kubernetes/local-storage/'>
-
-<link rel="stylesheet" href="https://blog.mletter.cn/scss/style.min.32f495b331a3a2ec798b5794653a9845d7022a01e2ae16546c6a98dfe13b68b4.css"><meta property='og:title' content='Kubernetes-本地存储'>
-<meta property='og:description' content='前面我们有通过 hostPath 或者 emptyDir 的方式来持久化我们的数据'>
-<meta property='og:url' content='https://blog.mletter.cn/tech/kubernetes/local-storage/'>
-<meta property='og:site_name' content='太阳可以是蓝色'>
-<meta property='og:type' content='article'><meta property='article:section' content='Posts' /><meta property='article:tag' content='kubernetes' /><meta property='article:published_time' content='2023-03-22T00:00:00&#43;00:00'/><meta property='article:modified_time' content='2023-03-22T00:00:00&#43;00:00'/><meta property='og:image' content='https://img14.360buyimg.com/ddimg/jfs/t1/164569/9/40677/14419/65bc6e4cFa1d8c0c3/5ccf7e6caadc9b83.jpg' />
-<meta name="twitter:title" content="Kubernetes-本地存储">
-<meta name="twitter:description" content="前面我们有通过 hostPath 或者 emptyDir 的方式来持久化我们的数据"><meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:image" content='https://img14.360buyimg.com/ddimg/jfs/t1/164569/9/40677/14419/65bc6e4cFa1d8c0c3/5ccf7e6caadc9b83.jpg' />
-    <link rel="shortcut icon" href="wechat.svg" />
-<style>
-  :root {
-       
-      --sys-font-family: -apple-system, "PingFang SC", Georgia, 'Nimbus Roman No9 L', 'Hiragino Sans GB', 'Noto Serif SC', 'Microsoft Yahei', 'WenQuanYi Micro Hei', 'ST Heiti', sans-serif;
-      --code-font-family: "JetBrains Mono", Menlo, Monaco, Consolas, "Courier New";
-      --article-font-family: -apple-system, "PingFang SC", var(--base-font-family);
-  }
-</style>
-
-
-
-
-
-
-<script src="https://blog.mletter.cn/view-image.min.js"></script>
-
-<script>
-  window.ViewImage && ViewImage.init('.article-content img');
-</script>
-
-
-
-<link rel="stylesheet" href="https://cdn.staticfile.net/highlight.js/11.9.0/styles/tokyo-night-dark.min.css">
-<script src="https://lf26-cdn-tos.bytecdntp.com/cdn/expire-1-M/highlight.js/11.4.0/highlight.min.js"></script>
-<script src="https://cdn.staticfile.net/highlight.js/11.9.0/es/languages/go.min.js"></script>
-
-<script>hljs.initHighlightingOnLoad();</script>
-<script>document.addEventListener('DOMContentLoaded', (event) => {document.querySelectorAll('pre code').forEach((el) => {hljs.highlightElement(el);});});</script>
-
-
-
-
-
-
-<script async src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
-<script>
-    mermaid.init(undefined, '.language-mermaid');
-</script>
-    </head>
-    <body class="
-    article-page
-    ">
-    <script>
-        (function() {
-            const colorSchemeKey = 'StackColorScheme';
-            if(!localStorage.getItem(colorSchemeKey)){
-                localStorage.setItem(colorSchemeKey, "auto");
-            }
-        })();
-    </script><script>
-    (function() {
-        const colorSchemeKey = 'StackColorScheme';
-        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
-        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
-
-        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
-            
-
-            document.documentElement.dataset.scheme = 'dark';
-        } else {
-            document.documentElement.dataset.scheme = 'light';
-        }
-    })();
-</script>
-<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
-    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
-        <span class="hamburger-box">
-            <span class="hamburger-inner"></span>
-        </span>
-    </button>
-
-    <header>
-        
-            
-            <figure class="site-avatar">
-                <a href="https://blog.mletter.cn/">
-                
-                    <img src="https://img14.360buyimg.com/ddimg/jfs/t1/77628/23/27254/26944/66bc1a36Fc596606a/d912965b8bba22af.jpg" width="300" height="300" class="site-logo" loading="lazy" alt="Avatar">
-                
-                </a>
-                
-                    <span class="emoji">🍥</span>
-                
-            </figure>
-            
-        
-        
-        <div class="site-meta">
-            <h1 class="site-name"><a href="https://blog.mletter.cn/">太阳可以是蓝色</a></h1>
-            <h2 class="site-description">Live and learn. 🌱</h2>
-        </div>
-    </header><ol class="menu" id="main-menu">
-        
-        
-        
-        <li >
-            <a href='https://blog.mletter.cn/search/' >
-                
-                
-                
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <circle cx="10" cy="10" r="7" />
-  <line x1="21" y1="21" x2="15" y2="15" />
-</svg>
-
-
-
-                
-                <span>搜索</span>
-            </a>
-        </li>
-        
-        
-        <li >
-            <a href='https://blog.mletter.cn/' >
-                
-                
-                
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <polyline points="5 12 3 12 12 3 21 12 19 12" />
-  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
-  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
-</svg>
-
-
-
-                
-                <span>首页</span>
-            </a>
-        </li>
-        
-        
-        <li >
-            <a href='https://blog.mletter.cn/posts' >
-                
-                
-                
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-inbox" width="24" height="24" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 4m0 2a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2z" /><path d="M4 13h3l3 3h4l3 -3h3" /></svg>
-                
-                <span>文章</span>
-            </a>
-        </li>
-        
-        
-        <li >
-            <a href='https://blog.mletter.cn/archives' >
-                
-                
-                
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <rect x="3" y="4" width="18" height="4" rx="2" />
-  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
-  <line x1="10" y1="12" x2="14" y2="12" />
-</svg>
-
-
-
-                
-                <span>归档</span>
-            </a>
-        </li>
-        
-        
-        <li >
-            <a href='https://mletter.cn' target="_blank">
-                
-                
-                
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-health-recognition" width="24" height="24" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 8v-2a2 2 0 0 1 2 -2h2" /><path d="M4 16v2a2 2 0 0 0 2 2h2" /><path d="M16 4h2a2 2 0 0 1 2 2v2" /><path d="M16 20h2a2 2 0 0 0 2 -2v-2" /><path d="M8.603 9.61a2.04 2.04 0 0 1 2.912 0l.485 .39l.5 -.396a2.035 2.035 0 0 1 2.897 .007a2.104 2.104 0 0 1 0 2.949l-3.397 3.44l-3.397 -3.44a2.104 2.104 0 0 1 0 -2.95z" /></svg>
-                
-                <span>主页</span>
-            </a>
-        </li>
-        
-        
-        <li >
-            <a href='https://pic.mletter.cn' target="_blank">
-                
-                
-                
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-photo-cog" width="24" height="24" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M15 8h.01" /><path d="M12 21h-6a3 3 0 0 1 -3 -3v-12a3 3 0 0 1 3 -3h12a3 3 0 0 1 3 3v6" /><path d="M3 16l5 -5c.928 -.893 2.072 -.893 3 0l3 3" /><path d="M14 14l1 -1c.48 -.461 1.016 -.684 1.551 -.67" /><path d="M19.001 19m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" /><path d="M19.001 15.5v1.5" /><path d="M19.001 21v1.5" /><path d="M22.032 17.25l-1.299 .75" /><path d="M17.27 20l-1.3 .75" /><path d="M15.97 17.25l1.3 .75" /><path d="M20.733 20l1.3 .75" /></svg>
-                
-                <span>相册</span>
-            </a>
-        </li>
-        
-        
-        <li >
-            <a href='https://blog.mletter.cn/friends' >
-                
-                
-                
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
-  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
-</svg>
-
-
-
-                
-                <span>友联</span>
-            </a>
-        </li>
-        
-        
-        <li >
-            <a href='https://blog.mletter.cn/about' >
-                
-                
-                
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <circle cx="12" cy="7" r="4" />
-  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
-</svg>
-
-
-
-                
-                <span>关于</span>
-            </a>
-        </li>
-        
-
-        <div class="menu-bottom-section">
-                
-            
-            
-            
-                <li id="dark-mode-toggle">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <circle cx="8" cy="12" r="2" />
-  <rect x="2" y="6" width="20" height="12" rx="6" />
-</svg>
-
-
-
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <circle cx="16" cy="12" r="2" />
-  <rect x="2" y="6" width="20" height="12" rx="6" />
-</svg>
-
-
-
-                    <span>暗色模式</span>
-                </li>
-            
-        </div>
-    </ol>
-</aside>
-
-    <aside class="sidebar right-sidebar sticky">
-        
-            
-                
-    <section class="widget archives">
-        <div class="widget-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <line x1="5" y1="9" x2="19" y2="9" />
-  <line x1="5" y1="15" x2="19" y2="15" />
-  <line x1="11" y1="4" x2="7" y2="20" />
-  <line x1="17" y1="4" x2="13" y2="20" />
-</svg>
-
-
-
-        </div>
-        <h2 class="widget-title section-title">目录</h2>
-        
-        <div class="widget--toc">
-            <nav id="TableOfContents">
-  <ul>
-    <li><a href="#persistentvolume">PersistentVolume</a></li>
-    <li><a href="#persistentvolumeclaim">PersistentVolumeClaim</a></li>
-    <li><a href="#hostpath">HostPath</a>
-      <ul>
-        <li><a href="#创建persistentvolume">创建PersistentVolume</a></li>
-        <li><a href="#创建persistentvolumeclaim">创建PersistentVolumeClaim</a></li>
-        <li><a href="#创建一个deployment">创建一个Deployment</a></li>
-      </ul>
-    </li>
-    <li><a href="#local-persistentvolume">Local PersistentVolume</a>
-      <ul>
-        <li><a href="#它与hostpath有何不同">它与HostPath有何不同？</a></li>
-        <li><a href="#创建一个local持久卷实例">创建一个Local持久卷实例</a></li>
-      </ul>
-    </li>
-    <li><a href="#删除静态管理的持久化存储">删除静态管理的持久化存储</a></li>
-  </ul>
-</nav>
-        </div>
-    </section>
-
-            
-        
-    </aside>
-
-
-            <main class="main full-width">
-    <article class="has-image main-article">
-    <header class="article-header">
-        <div class="article-image">
-            <a href="https://blog.mletter.cn/tech/kubernetes/local-storage/">
-                
-                    <img src="https://img14.360buyimg.com/ddimg/jfs/t1/164569/9/40677/14419/65bc6e4cFa1d8c0c3/5ccf7e6caadc9b83.jpg" loading="lazy" alt="Featured image of post Kubernetes-本地存储" />
-                
-            </a>
-        </div>
-    
-
-    <div class="article-details">
-    
-    <header class="article-category">
-        
-            <a href="https://blog.mletter.cn/categories/kubernetes/" >
-                Kubernetes
-            </a>
-        
-    </header>
-    
-
-    <div class="article-title-wrapper">
-        <h2 class="article-title">
-            <a href="https://blog.mletter.cn/tech/kubernetes/local-storage/">Kubernetes-本地存储</a>
-        </h2>
-    
-        
-        <h3 class="article-subtitle">
-            前面我们有通过 hostPath 或者 emptyDir 的方式来持久化我们的数据
-        </h3>
-        
-    </div>
-
-    
-    
-    
-    
-    <footer class="article-time">
-        
-            <div>
-                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
-  <circle cx="18" cy="18" r="4" />
-  <path d="M15 3v4" />
-  <path d="M7 3v4" />
-  <path d="M3 11h16" />
-  <path d="M18 16.496v1.504l1 1" />
-</svg>
-                <time class="article-time--published">Mar 22, 2023</time>
-            </div>
-        
-
-        
-            <div>
-                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <circle cx="12" cy="12" r="9" />
-  <polyline points="12 7 12 12 15 15" />
-</svg>
-
-
-
-                <time class="article-time--reading">
-                    阅读时长: 9 分钟
-                </time>
-            </div>
-        
-    </footer>
-    
-
-    
-</div>
-
-</header>
-
-    <section class="article-content">
-    
-    
-    <h1 id="本地存储"></h>本地存储
-</h1><p>前面我们有通过 <code>hostPath</code> 或者 <code>emptyDir</code> 的方式来持久化我们的数据，但是显然我们还需要更加可靠的存储来保存应用的持久化数据，这样容器在重建后，依然可以使用之前的数据。但是存储资源和 CPU 资源以及内存资源有很大不同，为了屏蔽底层的技术实现细节，让用户更加方便的使用，Kubernetes 便引入了 <code>PV</code> 和 <code>PVC</code> 两个重要的资源对象来实现对存储的管理。</p>
-<h2 id="persistentvolume"></h>PersistentVolume
-</h2><p><code>PV</code> 的全称是：<code>PersistentVolume</code>（持久化卷），是对底层共享存储的一种抽象，PV 由管理员进行创建和配置，它和具体的底层的共享存储技术的实现方式有关，比如 <code>Ceph</code>、<code>GlusterFS</code>、<code>NFS</code>、<code>hostPath</code> 等，都是通过插件机制完成与共享存储的对接。</p>
-<h2 id="persistentvolumeclaim"></h>PersistentVolumeClaim
-</h2><p><code>PVC</code> 的全称是：<code>PersistentVolumeClaim</code>（持久化卷声明），PVC 是用户存储的一种声明，PVC 和 Pod 比较类似，Pod 消耗的是节点，PVC 消耗的是 PV 资源，Pod 可以请求 CPU 和内存，而 PVC 可以请求特定的存储空间和访问模式。对于真正使用存储的用户不需要关心底层的存储实现细节，只需要直接使用 PVC 即可。</p>
-<p>但是通过 PVC 请求到一定的存储空间也很有可能不足以满足应用对于存储设备的各种需求，而且不同的应用程序对于存储性能的要求可能也不尽相同，比如读写速度、并发性能等，为了解决这一问题，Kubernetes 又为我们引入了一个新的资源对象：<code>StorageClass</code>，通过 <code>StorageClass</code> 的定义，管理员可以将存储资源定义为某种类型的资源，比如快速存储、慢速存储等，用户根据 <code>StorageClass</code> 的描述就可以非常直观的知道各种存储资源的具体特性了，这样就可以根据应用的特性去申请合适的存储资源了，此外 <code>StorageClass</code> 还可以为我们自动生成 PV，免去了每次手动创建的麻烦。</p>
-<h2 id="hostpath"></h>HostPath
-</h2><p>我们上面提到了 PV 是对底层存储技术的一种抽象，PV 一般都是由管理员来创建和配置的，我们首先来创建一个 <code>hostPath</code> 类型的 <code>PersistentVolume</code>。Kubernetes 支持 <code>hostPath</code> 类型的 <code>PersistentVolume</code> 使用节点上的文件或目录来模拟附带网络的存储，但是需要注意的是在生产集群中，我们不会使用 <code>hostPath</code>，集群管理员会提供网络存储资源，比如 <code>NFS</code> 共享卷或 <code>Ceph</code> 存储卷，集群管理员还可以使用 <code>StorageClasses</code> 来设置动态提供存储。因为 Pod 并不是始终固定在某个节点上面的，所以要使用 hostPath 的话我们就需要将 Pod 固定在某个节点上，这样显然就大大降低了应用的容错性。</p>
-<blockquote>
-<p>当然了，生产环境中用的还是相对较少因为有较少的需求需要将Pod来固定到某些节点上。</p></blockquote>
-<h3 id="创建persistentvolume"></h>创建PersistentVolume
-</h3><ol>
-<li>假设我们现在在节点1上新建一个<code>/data/hostPath/index.html</code></li>
-</ol>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">[</span>root@Online-Beijing-node1 ~<span class="o">]</span><span class="c1"># echo &#34;Hello This is new hostPath message.&#34; &gt;&gt; /data/hostPath/index.html</span>
-</span></span></code></pre></div><ol>
-<li>接下来创建一个Pv对象</li>
-</ol>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">v1</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">PersistentVolume</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">metadata</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">demo-hostpath</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">labels</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l">local</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">spec</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">capacity</span><span class="p">:</span><span class="w"> </span><span class="c"># 定义该Pv的容量为10Gb</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">storage</span><span class="p">:</span><span class="w"> </span><span class="l">10Gi</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">accessModes</span><span class="p">:</span><span class="w">  </span><span class="c"># 定义该Pv的访问模式</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span>- <span class="l">ReadWriteOnce</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">hostPath</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;/data/hostPath&#34;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">storageClassName</span><span class="p">:</span><span class="w"> </span><span class="l">type-ssd-sc</span><span class="w">
-</span></span></span></code></pre></div><ul>
-<li>Capacity（存储能力）：一般来说，一个 PV 对象都要指定一个存储能力，通过 PV 的 <code>capacity</code> 属性来设置的，目前只支持存储空间的设置，就是我们这里的 <code>storage=10Gi</code>，不过未来可能会加入 <code>IOPS</code>、吞吐量等指标的配置。</li>
-<li>AccessModes（访问模式）：用来对 PV 进行访问模式的设置，用于描述用户应用对存储资源的访问权限，访问权限包括下面几种方式：
-<ul>
-<li>ReadWriteOnce（RWO）：读写权限，但是只能被单个节点挂载</li>
-<li>ReadOnlyMany（ROX）：只读权限，可以被多个节点挂载</li>
-<li>ReadWriteMany（RWX）：读写权限，可以被多个节点挂载</li>
-</ul>
-</li>
-</ul>
-<p>创建完成后查看 PersistentVolume 的信息，输出结果显示该 <code>PersistentVolume</code> 的状态（STATUS） 为 <code>Available</code>。 这意味着它还没有被绑定给 <code>PersistentVolumeClaim</code></p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">[</span>root@Online-Beijing-master1 ~<span class="o">]</span><span class="c1"># kubectl get pv</span>
-</span></span><span class="line"><span class="cl">NAME            CAPACITY   ACCESS MODES   RECLAIM POLICY   STATUS      CLAIM   STORAGECLASS   REASON   AGE
-</span></span><span class="line"><span class="cl">demo-hostpath   10Gi       RWO            Retain           Available           type-ssd-sc             13m
-</span></span></code></pre></div><p>其中有一项 <code>RECLAIM POLICY</code> 的配置，同样我们可以通过 PV 的 <code>persistentVolumeReclaimPolicy</code>（回收策略）属性来进行配置，目前 PV 支持的策略有三种：</p>
-<ul>
-<li>Retain（保留）：回收策略 <code>Retain</code> 使得用户可以手动回收资源。当 <code>PersistentVolumeClaim</code> 对象被删除时，<code>PersistentVolume</code> 卷仍然存在，对应的数据卷被视为&quot;已释放（released）&quot;。 由于卷上仍然存在这前一申领人的数据，该卷还不能用于其他申领。 管理员可以通过下面的步骤来手动回收该卷：
-<ul>
-<li>删除 PersistentVolume 对象。与之相关的、位于外部基础设施中的存储资产 （例如 AWS EBS、GCE PD、Azure Disk 或 Cinder 卷）在 PV 删除之后仍然存在。</li>
-<li>根据情况，手动清除所关联的存储资产上的数据。</li>
-<li>手动删除所关联的存储资产。</li>
-</ul>
-</li>
-<li>Recycle（回收）：回收策略 <code>Recycle</code> 已被废弃。取而代之的建议方案是使用动态制备。如果下层的卷插件支持，回收策略 <code>Recycle</code> 会在卷上执行一些基本的擦除 （<code>rm -rf /thevolume/*</code>）操作，之后允许该卷用于新的 PVC 申领。</li>
-<li>Delete（删除）：对于支持 <code>Delete</code> 回收策略的卷插件，删除动作会将 <code>PersistentVolume</code> 对象从 Kubernetes 中移除，同时也会从外部基础设施（如 AWS EBS、GCE PD、Azure Disk 或 Cinder 卷）中移除所关联的存储资产。</li>
-</ul>
-<p>目前，仅 NFS 和 HostPath 支持回收（Recycle）。 AWS EBS、GCE PD、Azure Disk 和 Cinder 卷都支持删除（Delete）。</p>
-<blockquote>
-<p>不过需要注意的是，目前只有 <code>NFS</code> 和 <code>HostPath</code> 两种类型支持回收策略，当然一般来说还是设置为 <code>Retain</code> 这种策略保险一点。</p></blockquote>
-<p>关于 PV 的状态，实际上描述的是 PV 的生命周期的某个阶段，一个 PV 的生命周期中，可能会处于4种不同的阶段：</p>
-<ul>
-<li>Available（可用）：表示可用状态，还未被任何 PVC 绑定</li>
-<li>Bound（已绑定）：表示 PVC 已经被 PVC 绑定</li>
-<li>Released（已释放）：PVC 被删除，但是资源还未被集群重新声明</li>
-<li>Failed（失败）： 表示该 PV 的自动回收失败</li>
-</ul>
-<h3 id="创建persistentvolumeclaim"></h>创建PersistentVolumeClaim
-</h3><p>如果我们需要使用这个 PV 的话，就需要创建一个对应的 PVC 来和他进行绑定了，就类似于我们的服务是通过 Pod 来运行的，而不是 Node，只是 Pod 跑在 Node 上而已。</p>
-<p>让我们申请一个使用3G空间的<code>PersistentVolumeClaim</code></p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">v1</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">PersistentVolumeClaim</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">metadata</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">task-pv-claim</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">spec</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">accessModes</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span>- <span class="l">ReadWriteOnce</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">resources</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">requests</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">storage</span><span class="p">:</span><span class="w"> </span><span class="l">3Gi</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">storageClassName</span><span class="p">:</span><span class="w"> </span><span class="l">type-ssd-sc</span><span class="w">
-</span></span></span></code></pre></div><p>创建 <code>PersistentVolumeClaim</code> 之后，Kubernetes 控制平面将查找满足申领要求的 <code>PersistentVolume</code>。 如果控制平面找到具有相同 <code>StorageClass</code> 的适当的 <code>PersistentVolume</code>， 则将 <code>PersistentVolumeClaim</code> 绑定到该 <code>PersistentVolume</code> 上。所以再次<code>kubectl get pv</code>的<code>PersistentVolume</code>状态应该属于<code>Bound</code>状态。</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">[</span>root@Online-Beijing-master1 yaml<span class="o">]</span><span class="c1"># kubectl get pv</span>
-</span></span><span class="line"><span class="cl">NAME            CAPACITY   ACCESS MODES   RECLAIM POLICY   STATUS   CLAIM                   STORAGECLASS   REASON   AGE
-</span></span><span class="line"><span class="cl">demo-hostpath   10Gi       RWO            Retain           Bound    default/task-pv-claim   type-ssd-sc             47m
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="o">[</span>root@Online-Beijing-master1 yaml<span class="o">]</span><span class="c1"># kubectl get pvc</span>
-</span></span><span class="line"><span class="cl">NAME            STATUS   VOLUME          CAPACITY   ACCESS MODES   STORAGECLASS   AGE
-</span></span><span class="line"><span class="cl">task-pv-claim   Bound    demo-hostpath   10Gi       RWO            type-ssd-sc    18m
-</span></span></code></pre></div><p>可以看到已经绑定到了一个<code>Volume</code>叫做<code>demo-hostpath</code>的<code>PersistentVolume</code></p>
-<blockquote>
-<p>需要注意的是目前<code>PersistentVolume</code>和<code>PersistentVolumeClaim</code>之间是一对一绑定的关系，也就是说一个<code>PersistentVolume</code>只能被一个<code>PersistentVolumeClaim</code>绑定。</p></blockquote>
-<h3 id="创建一个deployment"></h>创建一个Deployment
-</h3><p>创建一个<code>deployment</code>然后绑定<code>PersistentVolumeClaim</code>紧接着固定节点到<code>online-beijing-node1</code></p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">---
-</span></span><span class="line"><span class="cl">apiVersion: apps/v1
-</span></span><span class="line"><span class="cl">kind: Deployment
-</span></span><span class="line"><span class="cl">metadata:
-</span></span><span class="line"><span class="cl">  labels:
-</span></span><span class="line"><span class="cl">    k8s.kuboard.cn/name: task-nginx-demo
-</span></span><span class="line"><span class="cl">  name: task-nginx-demo
-</span></span><span class="line"><span class="cl">  namespace: default
-</span></span><span class="line"><span class="cl">spec:
-</span></span><span class="line"><span class="cl">  progressDeadlineSeconds: 600
-</span></span><span class="line"><span class="cl">  replicas: 1
-</span></span><span class="line"><span class="cl">  revisionHistoryLimit: 10
-</span></span><span class="line"><span class="cl">  selector:
-</span></span><span class="line"><span class="cl">    matchLabels:
-</span></span><span class="line"><span class="cl">      k8s.kuboard.cn/name: task-nginx-demo
-</span></span><span class="line"><span class="cl">  strategy:
-</span></span><span class="line"><span class="cl">    rollingUpdate:
-</span></span><span class="line"><span class="cl">      maxSurge: 25%
-</span></span><span class="line"><span class="cl">      maxUnavailable: 25%
-</span></span><span class="line"><span class="cl">    type: RollingUpdate
-</span></span><span class="line"><span class="cl">  template:
-</span></span><span class="line"><span class="cl">    metadata:
-</span></span><span class="line"><span class="cl">      creationTimestamp: null
-</span></span><span class="line"><span class="cl">      labels:
-</span></span><span class="line"><span class="cl">        k8s.kuboard.cn/name: task-nginx-demo
-</span></span><span class="line"><span class="cl">    nodeSelector:
-</span></span><span class="line"><span class="cl">      kubernetes.io/hostname: online-beijing-node1
-</span></span><span class="line"><span class="cl">    spec:
-</span></span><span class="line"><span class="cl">      containers:
-</span></span><span class="line"><span class="cl">        - image: &#39;nginx:latest&#39;
-</span></span><span class="line"><span class="cl">          imagePullPolicy: Always
-</span></span><span class="line"><span class="cl">          name: task-nginx-demo
-</span></span><span class="line"><span class="cl">          ports:
-</span></span><span class="line"><span class="cl">            - containerPort: 80
-</span></span><span class="line"><span class="cl">              hostPort: 80
-</span></span><span class="line"><span class="cl">              name: http
-</span></span><span class="line"><span class="cl">              protocol: TCP
-</span></span><span class="line"><span class="cl">          resources: {}
-</span></span><span class="line"><span class="cl">          terminationMessagePath: /dev/termination-log
-</span></span><span class="line"><span class="cl">          terminationMessagePolicy: File
-</span></span><span class="line"><span class="cl">          volumeMounts:
-</span></span><span class="line"><span class="cl">          - mountPath: &#34;/usr/share/nginx/html&#34;
-</span></span><span class="line"><span class="cl">            name: task-hostpath-volume
-</span></span><span class="line"><span class="cl">      dnsPolicy: ClusterFirst
-</span></span><span class="line"><span class="cl">      restartPolicy: Always
-</span></span><span class="line"><span class="cl">      schedulerName: default-scheduler
-</span></span><span class="line"><span class="cl">      securityContext: {}
-</span></span><span class="line"><span class="cl">      terminationGracePeriodSeconds: 30
-</span></span><span class="line"><span class="cl">      volumes:
-</span></span><span class="line"><span class="cl">      - name: task-hostpath-volume
-</span></span><span class="line"><span class="cl">        persistentVolumeClaim:
-</span></span><span class="line"><span class="cl">          claimName: task-pv-claim
-</span></span></code></pre></div><p>当这个<code>deployment</code>创建完成以后我们就可以通过访问<code>service</code>测试一下.</p>
-<p>正常情况下你可以看到<code>Hello This is new hostPath message.</code>这条信息</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="p">[</span><span class="l">root@Online-Beijing-master1 yaml]# curl -v 10.10.56.102</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">* Rebuilt URL to</span><span class="p">:</span><span class="w"> </span><span class="m">10.10.56.102</span><span class="l">/</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span>*<span class="w">   </span><span class="l">Trying 10.10.56.102...</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span>*<span class="w"> </span><span class="l">TCP_NODELAY set</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span>*<span class="w"> </span><span class="l">Connected to 10.10.56.102 (10.10.56.102) port 80 (#0)</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="l">&gt; GET / HTTP/1.1</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">&gt; Host</span><span class="p">:</span><span class="w"> </span><span class="m">10.10.56.102</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">&gt; User-Agent</span><span class="p">:</span><span class="w"> </span><span class="l">curl/7.61.1</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">&gt; Accept</span><span class="p">:</span><span class="w"> </span><span class="cp">*/*</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="l">&gt; </span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="l">&lt; HTTP/1.1 200 OK</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">&lt; Server</span><span class="p">:</span><span class="w"> </span><span class="l">nginx/1.23.3</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">&lt; Date</span><span class="p">:</span><span class="w"> </span><span class="l">Wed, 22 Mar 2023 09:54:49 GMT</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">&lt; Content-Type</span><span class="p">:</span><span class="w"> </span><span class="l">text/html</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">&lt; Content-Length</span><span class="p">:</span><span class="w"> </span><span class="m">36</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">&lt; Last-Modified</span><span class="p">:</span><span class="w"> </span><span class="l">Wed, 22 Mar 2023 07:53:15 GMT</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">&lt; Connection</span><span class="p">:</span><span class="w"> </span><span class="l">keep-alive</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">&lt; ETag</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;641ab3eb-24&#34;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">&lt; Accept-Ranges</span><span class="p">:</span><span class="w"> </span><span class="l">bytes</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="l">Hello This is new hostPath message.</span><span class="w">
-</span></span></span></code></pre></div><p>这个就是我们一个很简单的基于<code>hostPath</code>来持久化数据使用<code>PersistentVolume</code>和<code>PersistentVolumeClaim</code>简单教学。</p>
-<h2 id="local-persistentvolume"></h>Local PersistentVolume
-</h2><p>上面我们创建了后端是 <code>hostPath</code> 类型的 PV 资源对象,那么个人认为<code>hostPath</code>的缺点在于</p>
-<ol>
-<li>
-<p>Pod不能进行随时随地的节点更换,如果更换则会出现丢失数据的现象。</p>
-<p>需要每次都搭配<code>nodeSelector</code>进行使用。</p>
-</li>
-</ol>
-<p>其优点也是相对于比较明显</p>
-<ol>
-<li>因为<code>hostPath</code>使用的是本地磁盘,可以充分的利用磁盘的读写性能。</li>
-</ol>
-<hr>
-<p>所以在 hostPath 的基础上，Kubernetes 依靠 PV、PVC 实现了一个新的特性，这个特性的名字叫作：<code>Local Persistent Volume</code>，也就是我们说的 <code>Local PV</code>。</p>
-<p><code>local</code> 卷只能用作静态创建的持久卷。不支持动态配置。</p>
-<p>然而，<code>local</code> 卷仍然取决于底层节点的可用性，并不适合所有应用程序。 如果节点变得不健康，那么 <code>local</code> 卷也将变得不可被 Pod 访问。使用它的 Pod 将不能运行。 使用 <code>local</code> 卷的应用程序必须能够容忍这种可用性的降低，以及因底层磁盘的耐用性特征而带来的潜在的数据丢失风险。</p>
-<h3 id="它与hostpath有何不同"></h>它与HostPath有何不同？
-</h3><p>为了更好地理解本地持久卷的优势，将其与<a class="link" href="https://kubernetes.io/docs/concepts/storage/volumes/#hostpath"  target="_blank" rel="noopener"
-    >HostPath 卷</a>进行比较很有用。<code>HostPath</code> 卷将主机节点文件系统中的文件或目录挂载到 Pod 中。类似地，<code>Local Persistent Volume</code> 将本地磁盘或分区挂载到 Pod 中</p>
-<p>最大的区别是 Kubernetes 调度程序了解本地持久卷属于哪个节点。对于 HostPath 卷，引用 HostPath 卷的 pod 可能会被调度程序移动到不同的节点，从而导致数据丢失。但是对于 <code>Local Persistent Volumes</code>，Kubernetes 调度器确保使用 <code>Local Persistent Volume</code> 的 pod 总是被调度到同一个节点。</p>
-<p>虽然 HostPath 卷可以通过 <code>Persistent Volume Claim (PVC)</code> 引用或直接内嵌在 pod 定义中，但 <code>Local Persistent Volumes</code> 只能通过 PVC 引用。这提供了额外的安全优势，因为 <code>Persistent Volume</code> 对象由管理员管理，防止 Pod 能够访问主机上的任何路径。</p>
-<blockquote>
-<p>所以，一般来说 <code>Local PV</code> 对应的存储介质是一块额外挂载在宿主机的磁盘或者块设备。</p></blockquote>
-<h3 id="创建一个local持久卷实例"></h>创建一个Local持久卷实例
-</h3><p>下面是一个使用 <code>local</code> 卷和 <code>nodeAffinity</code> 的持久卷示例：</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">v1</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">PersistentVolume</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">metadata</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">example-local</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">spec</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">capacity</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">storage</span><span class="p">:</span><span class="w"> </span><span class="l">20Gi</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">volumeMode</span><span class="p">:</span><span class="w"> </span><span class="l">Filesystem</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">accessModes</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="l">ReadWriteOnce</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">persistentVolumeReclaimPolicy</span><span class="p">:</span><span class="w"> </span><span class="l">Delete</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">storageClassName</span><span class="p">:</span><span class="w"> </span><span class="l">local-storage</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">local</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l">/mnt/disks/ssd1</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">nodeAffinity</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">required</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">nodeSelectorTerms</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="nt">matchExpressions</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span>- <span class="nt">key</span><span class="p">:</span><span class="w"> </span><span class="l">kubernetes.io/hostname</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">operator</span><span class="p">:</span><span class="w"> </span><span class="l">In</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">values</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">          </span>- <span class="l">online-beijing-node1</span><span class="w">
-</span></span></span></code></pre></div><p>使用 <code>local</code> 卷时，你需要设置 <code>PersistentVolume</code> 对象的 <code>nodeAffinity</code> 字段。 Kubernetes 调度器使用 <code>PersistentVolume</code> 的 <code>nodeAffinity</code> 信息来将使用 <code>local</code> 卷的 Pod 调度到正确的节点。</p>
-<p>当然了,这也就意味着如果你的Pod想使用这个<code>PV</code>的话,那么就只能运行在<code>online-beijing-node1</code>这个节点上。这样，调度器在调度 Pod 的时候，就能够知道一个 PV 与节点的对应关系，从而做出正确的选择。</p>
-<p><strong>绑定PersistentVolumeClaim</strong></p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">PersistentVolumeClaim</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">v1</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">metadata</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">bound-tasknginx</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">spec</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">accessModes</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="l">ReadWriteOnce</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">resources</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">requests</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">storage</span><span class="p">:</span><span class="w"> </span><span class="l">5Gi</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">storageClassName</span><span class="p">:</span><span class="w"> </span><span class="l">local-storage</span><span class="w">
-</span></span></span></code></pre></div><p>接下来创建一个Pod来绑定这个Pvc,然后可以通过访问<code>Pod</code>的<code>IP</code>地址进行验证。</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">v1</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">Pod</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">metadata</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">pv-local-pod</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">spec</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">volumes</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">example-pv-local</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">persistentVolumeClaim</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">claimName</span><span class="p">:</span><span class="w"> </span><span class="l">bound-tasknginx</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">containers</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">example-pv-local</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l">nginx</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">ports</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span>- <span class="nt">containerPort</span><span class="p">:</span><span class="w"> </span><span class="m">80</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">volumeMounts</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span>- <span class="nt">mountPath</span><span class="p">:</span><span class="w"> </span><span class="l">/usr/share/nginx/html</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">example-pv-local</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">[</span><span class="l">root@Online-Beijing-master1 yaml]# curl -v 10.10.38.225 </span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">* Rebuilt URL to</span><span class="p">:</span><span class="w"> </span><span class="m">10.10.38.225</span><span class="l">/</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span>*<span class="w">   </span><span class="l">Trying 10.10.38.225...</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span>*<span class="w"> </span><span class="l">TCP_NODELAY set</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span>*<span class="w"> </span><span class="l">Connected to 10.10.38.225 (10.10.38.225) port 80 (#0)</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="l">&gt; GET / HTTP/1.1</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">&gt; Host</span><span class="p">:</span><span class="w"> </span><span class="m">10.10.38.225</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">&gt; User-Agent</span><span class="p">:</span><span class="w"> </span><span class="l">curl/7.61.1</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">&gt; Accept</span><span class="p">:</span><span class="w"> </span><span class="cp">*/*</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="l">&gt; </span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="l">&lt; HTTP/1.1 200 OK</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">&lt; Server</span><span class="p">:</span><span class="w"> </span><span class="l">nginx/1.23.3</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">&lt; Date</span><span class="p">:</span><span class="w"> </span><span class="l">Thu, 23 Mar 2023 08:45:18 GMT</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">&lt; Content-Type</span><span class="p">:</span><span class="w"> </span><span class="l">text/html</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">&lt; Content-Length</span><span class="p">:</span><span class="w"> </span><span class="m">25</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">&lt; Last-Modified</span><span class="p">:</span><span class="w"> </span><span class="l">Thu, 23 Mar 2023 08:43:41 GMT</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">&lt; Connection</span><span class="p">:</span><span class="w"> </span><span class="l">keep-alive</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">&lt; ETag</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;641c113d-19&#34;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">&lt; Accept-Ranges</span><span class="p">:</span><span class="w"> </span><span class="l">bytes</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="l">&lt; </span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">Date</span><span class="p">:</span><span class="w"> </span><span class="ld">2023-03-23</span><span class="w"> </span><span class="l">LocalPv</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span>*<span class="w"> </span><span class="l">Connection</span><span class="w"> </span><span class="c">#0 to host 10.10.38.225 left intact</span><span class="w">
-</span></span></span></code></pre></div><p>当然了你也可以进入到<code>Pod</code>当中查看是否成功</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">[</span>root@Online-Beijing-master1 yaml<span class="o">]</span><span class="c1"># kubectl exec -it pv-local-pod /bin/bash</span>
-</span></span><span class="line"><span class="cl">root@pv-local-pod:/usr/share/nginx/html# <span class="nb">cd</span> /usr/share/nginx/html/
-</span></span><span class="line"><span class="cl">root@pv-local-pod:/usr/share/nginx/html# cat index.html 
-</span></span><span class="line"><span class="cl">Date: 2023-03-23 LocalPv
-</span></span></code></pre></div><h2 id="删除静态管理的持久化存储"></h>删除静态管理的持久化存储
-</h2><p>需要注意的是，我们上面手动创建<code>PersistentVolume</code>的方式，即静态的<code>PersistentVolume</code>管理方式，在删除<code>PersistentVolume</code>时需要按如下流程执行操作。</p>
-<ol>
-<li>删除使用这个<code>PersistentVolume</code>的 Pod</li>
-<li>从宿主机移除本地磁盘</li>
-<li>删除<code>PersistentVolumeClaim</code></li>
-<li>删除<code>PersistentVolume</code></li>
-</ol>
-
-</section>
-
-
-
-    <footer class="article-footer">
-    
-    <section class="article-tags">
-        
-            <a href="https://blog.mletter.cn/tags/kubernetes/">Kubernetes</a>
-        
-    </section>
-
-
-    
-    <section class="article-copyright">
-        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <circle cx="12" cy="12" r="9" />
-  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
-</svg>
-
-
-
-        <span>Licensed under CC BY-NC-SA 4.0</span>
-    </section>
-    </footer>
-
-
-    
-</article>
-
-    
-
-    
-
-<aside class="related-content--wrapper">
-    <h2 class="section-title">相关文章</h2>
-    <div class="related-content">
-        <div class="flex article-list--tile">
-            
-                
-<article class="has-image">
-    <a href="https://blog.mletter.cn/tech/kubernetes/sealos/">
-        
-        
-            <div class="article-image">
-                
-                    <img src="https://img10.360buyimg.com/ddimg/jfs/t1/244560/31/7618/14121/661de12eFfa7f6ba5/0239fa873abb0bd5.jpg" loading="lazy" data-key="" data-hash="https://img10.360buyimg.com/ddimg/jfs/t1/244560/31/7618/14121/661de12eFfa7f6ba5/0239fa873abb0bd5.jpg"/>
-                
-            </div>
-        
-
-        <div class="article-details">
-            <h2 class="article-title">基于SealOS部署高可用的kubernetes集群</h2>
-        </div>
-    </a>
-</article>
-
-            
-                
-<article class="has-image">
-    <a href="https://blog.mletter.cn/tech/kubernetes/install-efk/">
-        
-        
-            <div class="article-image">
-                
-                    <img src="https://img14.360buyimg.com/ddimg/jfs/t1/177175/31/35833/30306/64cb08eeF5ba90f46/1da6311bbbec8921.jpg" loading="lazy" data-key="" data-hash="https://img14.360buyimg.com/ddimg/jfs/t1/177175/31/35833/30306/64cb08eeF5ba90f46/1da6311bbbec8921.jpg"/>
-                
-            </div>
-        
-
-        <div class="article-details">
-            <h2 class="article-title">kubernetes基于EFK的日志落地实现</h2>
-        </div>
-    </a>
-</article>
-
-            
-                
-<article class="has-image">
-    <a href="https://blog.mletter.cn/tech/kubernetes/architectural-design/">
-        
-        
-            <div class="article-image">
-                
-                    <img src="https://img13.360buyimg.com/ddimg/jfs/t1/164078/6/34165/22231/654ba81fFe1bf21d7/9d02bd791b795b3b.jpg" loading="lazy" data-key="" data-hash="https://img13.360buyimg.com/ddimg/jfs/t1/164078/6/34165/22231/654ba81fFe1bf21d7/9d02bd791b795b3b.jpg"/>
-                
-            </div>
-        
-
-        <div class="article-details">
-            <h2 class="article-title">Kubernetes的架构设计和对象属性基本理解</h2>
-        </div>
-    </a>
-</article>
-
-            
-                
-<article class="has-image">
-    <a href="https://blog.mletter.cn/tech/kubernetes/openebs/">
-        
-        
-            <div class="article-image">
-                
-                    <img src="https://openebs.io/docs/assets/images/control-plane-overview-93c59878e3356a11f03029dd0fc1cd6b.svg" loading="lazy" data-key="" data-hash="https://openebs.io/docs/assets/images/control-plane-overview-93c59878e3356a11f03029dd0fc1cd6b.svg"/>
-                
-            </div>
-        
-
-        <div class="article-details">
-            <h2 class="article-title">OpenEBS存储的使用</h2>
-        </div>
-    </a>
-</article>
-
-            
-                
-<article class="has-image">
-    <a href="https://blog.mletter.cn/tech/kubernetes/traefik/">
-        
-        
-            <div class="article-image">
-                
-                    <img src="https://doc.traefik.io/traefik/assets/img/traefik-architecture.png" loading="lazy" data-key="" data-hash="https://doc.traefik.io/traefik/assets/img/traefik-architecture.png"/>
-                
-            </div>
-        
-
-        <div class="article-details">
-            <h2 class="article-title">Traekfik基础使用指南</h2>
-        </div>
-    </a>
-</article>
-
-            
-        </div>
-    </div>
-</aside>
-
-     
-    
-        
-    <script src="//lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/twikoo/1.4.18/twikoo.all.min.js"></script>
-<div id="tcomment"></div>
-<style>
-    .twikoo {
-        background-color: var(--card-background);
-        border-radius: var(--card-border-radius);
-        box-shadow: var(--shadow-l1);
-        padding: var(--card-padding);
-    }
-    :root[data-scheme="dark"] {
-        --twikoo-body-text-color-main: rgba(255, 255, 255, 0.9);
-        --twikoo-body-text-color: rgba(255, 255, 255, 0.7);
-    }
-    .twikoo .el-input-group__prepend,
-    .twikoo .tk-action-icon,
-    .twikoo .tk-submit-action-icon,
-    .twikoo .tk-time,
-    .twikoo .tk-comments-no,
-    .twikoo .tk-comments-count {
-        color: var(--twikoo-body-text-color);
-    }
-    .twikoo .el-input__inner,
-    .twikoo .el-textarea__inner,
-    .twikoo .tk-preview-container,
-    .twikoo .tk-content,
-    .twikoo .tk-nick,
-    .twikoo .tk-send {
-        color: var(--twikoo-body-text-color-main);
-    }
-    .twikoo .el-button{
-        color: var(--twikoo-body-text-color)!important;
-    }
-    .twikoo .el-input__count {
-        color: var(--twikoo-body-text-color) !important;
-    }
-    .OwO .OwO-body {
-        background-color: var(--body-background) !important;
-        color: var(--body-text-color) !important;
-    }
-</style><script>
-    twikoo.init({
-        envId: 'https:\/\/twikoo.mletter.cn\/',
-        el: '#tcomment',lang: 'zh-cn',})
-</script>
-
-    
-
-    <footer class="site-footer">
-    <section class="copyright">
-        &copy; 
-        
-            2020 - 
-        
-        2025 Live and learn. 🌱
-    </section>
-    
-    <section class="powerby">
-        Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo By Netlify</a> <br />
-        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.21.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
-    </section>
-</footer>
-
-
-    
-<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
-
-    
-    <div class="pswp__bg"></div>
-
-    
-    <div class="pswp__scroll-wrap">
-
-        
-        <div class="pswp__container">
-            <div class="pswp__item"></div>
-            <div class="pswp__item"></div>
-            <div class="pswp__item"></div>
-        </div>
-
-        
-        <div class="pswp__ui pswp__ui--hidden">
-
-            <div class="pswp__top-bar">
-
-                
-
-                <div class="pswp__counter"></div>
-
-                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
-
-                <button class="pswp__button pswp__button--share" title="Share"></button>
-
-                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
-
-                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
-
-                
-                
-                <div class="pswp__preloader">
-                    <div class="pswp__preloader__icn">
-                        <div class="pswp__preloader__cut">
-                            <div class="pswp__preloader__donut"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
-                <div class="pswp__share-tooltip"></div>
-            </div>
-
-            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
-            </button>
-
-            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
-            </button>
-
-            <div class="pswp__caption">
-                <div class="pswp__caption__center"></div>
-            </div>
-
-        </div>
-
-    </div>
-
-</div><script 
-                src="https://lf26-cdn-tos.bytecdntp.com/cdn/expire-1-M/photoswipe/4.1.3/photoswipe.min.js"crossorigin="anonymous"
-                defer
-                >
-            </script><script 
-                src="https://lf26-cdn-tos.bytecdntp.com/cdn/expire-1-M/photoswipe/4.1.3/photoswipe-ui-default.min.js"crossorigin="anonymous"
-                defer
-                >
-            </script><link 
-                rel="stylesheet" 
-                href="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/photoswipe/4.1.3/default-skin/default-skin.min.css"crossorigin="anonymous"
-            ><link 
-                rel="stylesheet" 
-                href="https://lf26-cdn-tos.bytecdntp.com/cdn/expire-1-M/photoswipe/4.1.3/photoswipe.min.css"crossorigin="anonymous"
-            >
-
-            </main>
-        </div>
-        <script 
-                src="https://lf9-cdn-tos.bytecdntp.com/cdn/expire-1-M/vibrant.js/1.0.0/Vibrant.min.js"crossorigin="anonymous"
-                
-                >
-            </script><script type="text/javascript" src="https://blog.mletter.cn/ts/main.js" defer></script>
-<script>
-    (function () {
-        const customFont = document.createElement('link');
-        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
-
-        customFont.type = "text/css";
-        customFont.rel = "stylesheet";
-
-        document.head.appendChild(customFont);
-    }());
-</script>
-
-<script src="https://lf26-cdn-tos.bytecdntp.com/cdn/expire-1-M/nprogress/0.2.0/nprogress.min.js" crossorigin="anonymous"></script>
-<link rel="stylesheet" href="https://lf26-cdn-tos.bytecdntp.com/cdn/expire-1-M/nprogress/0.2.0/nprogress.css" crossorigin="anonymous" />
-<script>
-    NProgress.start();
-    document.addEventListener("readystatechange", () => {
-        if (document.readyState === "interactive") NProgress.inc(0.8);
-        if (document.readyState === "complete") NProgress.done();
-    });
-</script>
-    </body>
-</html>
+<!doctype html><html lang=zh dir=auto><head><meta charset=utf-8><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=robots content="index, follow"><title>Kubernetes-本地存储 | 太阳可以是蓝色</title>
+<meta name=keywords content="kubernetes"><meta name=description content="前面我们有通过 hostPath 或者 emptyDir 的方式来持久化我们的数据"><meta name=author content="iren."><link rel=canonical href=https://blog.mletter.cn/tech/kubernetes/local-storage/><link crossorigin=anonymous href=/assets/css/stylesheet.cc707ba415c88b815010bba5c5e0b1f11e11d905dfc1004752901e8d81c3fcf3.css integrity="sha256-zHB7pBXIi4FQELulxeCx8R4R2QXfwQBHUpAejYHD/PM=" rel="preload stylesheet" as=style><link rel=icon href=https://blog.mletter.cn/%3Clink%20/%20abs%20url%3E><link rel=icon type=image/png sizes=16x16 href=https://blog.mletter.cn/%3Clink%20/%20abs%20url%3E><link rel=icon type=image/png sizes=32x32 href=https://blog.mletter.cn/%3Clink%20/%20abs%20url%3E><link rel=apple-touch-icon href=https://blog.mletter.cn/%3Clink%20/%20abs%20url%3E><link rel=mask-icon href=https://blog.mletter.cn/%3Clink%20/%20abs%20url%3E><meta name=theme-color content="#2e2e33"><meta name=msapplication-TileColor content="#2e2e33"><link rel=alternate hreflang=zh href=https://blog.mletter.cn/tech/kubernetes/local-storage/><noscript><style>#theme-toggle,.top-link{display:none}</style><style>@media(prefers-color-scheme:dark){:root{--theme:rgb(29, 30, 32);--entry:rgb(46, 46, 51);--primary:rgb(218, 218, 219);--secondary:rgb(155, 156, 157);--tertiary:rgb(65, 66, 68);--content:rgb(196, 196, 197);--code-block-bg:rgb(46, 46, 51);--code-bg:rgb(55, 56, 62);--border:rgb(51, 51, 51)}.list{background:var(--theme)}.list:not(.dark)::-webkit-scrollbar-track{background:0 0}.list:not(.dark)::-webkit-scrollbar-thumb{border-color:var(--theme)}}</style></noscript><script src=/view-image.min.js></script><script>window.ViewImage&&ViewImage.init("img")</script><style>:root{--sys-font-family:-apple-system, "PingFang SC", Georgia, 'Nimbus Roman No9 L', 'Hiragino Sans GB', 'Noto Serif SC', 'Microsoft Yahei', 'WenQuanYi Micro Hei', 'ST Heiti', sans-serif;--code-font-family:"JetBrains Mono", Menlo, Monaco, Consolas, "Courier New";--article-font-family:-apple-system, "PingFang SC", var(--base-font-family)}</style><link rel=preconnect href=https://fonts.googleapis.com><link rel=preconnect href=https://fonts.gstatic.com crossorigin><meta property="og:url" content="https://blog.mletter.cn/tech/kubernetes/local-storage/"><meta property="og:site_name" content="太阳可以是蓝色"><meta property="og:title" content="Kubernetes-本地存储"><meta property="og:description" content="前面我们有通过 hostPath 或者 emptyDir 的方式来持久化我们的数据"><meta property="og:locale" content="zh"><meta property="og:type" content="article"><meta property="article:section" content="posts"><meta property="article:published_time" content="2023-03-22T00:00:00+00:00"><meta property="article:modified_time" content="2023-03-22T00:00:00+00:00"><meta property="article:tag" content="Kubernetes"><meta property="og:image" content="https://img14.360buyimg.com/ddimg/jfs/t1/164569/9/40677/14419/65bc6e4cFa1d8c0c3/5ccf7e6caadc9b83.jpg"><meta name=twitter:card content="summary_large_image"><meta name=twitter:image content="https://img14.360buyimg.com/ddimg/jfs/t1/164569/9/40677/14419/65bc6e4cFa1d8c0c3/5ccf7e6caadc9b83.jpg"><meta name=twitter:title content="Kubernetes-本地存储"><meta name=twitter:description content="前面我们有通过 hostPath 或者 emptyDir 的方式来持久化我们的数据"><script type=application/ld+json>{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"","item":"https://blog.mletter.cn/posts/"},{"@type":"ListItem","position":2,"name":"Kubernetes-本地存储","item":"https://blog.mletter.cn/tech/kubernetes/local-storage/"}]}</script><script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","headline":"Kubernetes-本地存储","name":"Kubernetes-本地存储","description":"前面我们有通过 hostPath 或者 emptyDir 的方式来持久化我们的数据","keywords":["kubernetes"],"articleBody":"本地存储 前面我们有通过 hostPath 或者 emptyDir 的方式来持久化我们的数据，但是显然我们还需要更加可靠的存储来保存应用的持久化数据，这样容器在重建后，依然可以使用之前的数据。但是存储资源和 CPU 资源以及内存资源有很大不同，为了屏蔽底层的技术实现细节，让用户更加方便的使用，Kubernetes 便引入了 PV 和 PVC 两个重要的资源对象来实现对存储的管理。\nPersistentVolume PV 的全称是：PersistentVolume（持久化卷），是对底层共享存储的一种抽象，PV 由管理员进行创建和配置，它和具体的底层的共享存储技术的实现方式有关，比如 Ceph、GlusterFS、NFS、hostPath 等，都是通过插件机制完成与共享存储的对接。\nPersistentVolumeClaim PVC 的全称是：PersistentVolumeClaim（持久化卷声明），PVC 是用户存储的一种声明，PVC 和 Pod 比较类似，Pod 消耗的是节点，PVC 消耗的是 PV 资源，Pod 可以请求 CPU 和内存，而 PVC 可以请求特定的存储空间和访问模式。对于真正使用存储的用户不需要关心底层的存储实现细节，只需要直接使用 PVC 即可。\n但是通过 PVC 请求到一定的存储空间也很有可能不足以满足应用对于存储设备的各种需求，而且不同的应用程序对于存储性能的要求可能也不尽相同，比如读写速度、并发性能等，为了解决这一问题，Kubernetes 又为我们引入了一个新的资源对象：StorageClass，通过 StorageClass 的定义，管理员可以将存储资源定义为某种类型的资源，比如快速存储、慢速存储等，用户根据 StorageClass 的描述就可以非常直观的知道各种存储资源的具体特性了，这样就可以根据应用的特性去申请合适的存储资源了，此外 StorageClass 还可以为我们自动生成 PV，免去了每次手动创建的麻烦。\nHostPath 我们上面提到了 PV 是对底层存储技术的一种抽象，PV 一般都是由管理员来创建和配置的，我们首先来创建一个 hostPath 类型的 PersistentVolume。Kubernetes 支持 hostPath 类型的 PersistentVolume 使用节点上的文件或目录来模拟附带网络的存储，但是需要注意的是在生产集群中，我们不会使用 hostPath，集群管理员会提供网络存储资源，比如 NFS 共享卷或 Ceph 存储卷，集群管理员还可以使用 StorageClasses 来设置动态提供存储。因为 Pod 并不是始终固定在某个节点上面的，所以要使用 hostPath 的话我们就需要将 Pod 固定在某个节点上，这样显然就大大降低了应用的容错性。\n当然了，生产环境中用的还是相对较少因为有较少的需求需要将Pod来固定到某些节点上。\n创建PersistentVolume 假设我们现在在节点1上新建一个/data/hostPath/index.html [root@Online-Beijing-node1 ~]# echo \"Hello This is new hostPath message.\" \u003e\u003e /data/hostPath/index.html 接下来创建一个Pv对象 apiVersion: v1 kind: PersistentVolume metadata: name: demo-hostpath labels: type: local spec: capacity: # 定义该Pv的容量为10Gb storage: 10Gi accessModes: # 定义该Pv的访问模式 - ReadWriteOnce hostPath: path: \"/data/hostPath\" storageClassName: type-ssd-sc Capacity（存储能力）：一般来说，一个 PV 对象都要指定一个存储能力，通过 PV 的 capacity 属性来设置的，目前只支持存储空间的设置，就是我们这里的 storage=10Gi，不过未来可能会加入 IOPS、吞吐量等指标的配置。 AccessModes（访问模式）：用来对 PV 进行访问模式的设置，用于描述用户应用对存储资源的访问权限，访问权限包括下面几种方式： ReadWriteOnce（RWO）：读写权限，但是只能被单个节点挂载 ReadOnlyMany（ROX）：只读权限，可以被多个节点挂载 ReadWriteMany（RWX）：读写权限，可以被多个节点挂载 创建完成后查看 PersistentVolume 的信息，输出结果显示该 PersistentVolume 的状态（STATUS） 为 Available。 这意味着它还没有被绑定给 PersistentVolumeClaim\n[root@Online-Beijing-master1 ~]# kubectl get pv NAME CAPACITY ACCESS MODES RECLAIM POLICY STATUS CLAIM STORAGECLASS REASON AGE demo-hostpath 10Gi RWO Retain Available type-ssd-sc 13m 其中有一项 RECLAIM POLICY 的配置，同样我们可以通过 PV 的 persistentVolumeReclaimPolicy（回收策略）属性来进行配置，目前 PV 支持的策略有三种：\nRetain（保留）：回收策略 Retain 使得用户可以手动回收资源。当 PersistentVolumeClaim 对象被删除时，PersistentVolume 卷仍然存在，对应的数据卷被视为\"已释放（released）\"。 由于卷上仍然存在这前一申领人的数据，该卷还不能用于其他申领。 管理员可以通过下面的步骤来手动回收该卷： 删除 PersistentVolume 对象。与之相关的、位于外部基础设施中的存储资产 （例如 AWS EBS、GCE PD、Azure Disk 或 Cinder 卷）在 PV 删除之后仍然存在。 根据情况，手动清除所关联的存储资产上的数据。 手动删除所关联的存储资产。 Recycle（回收）：回收策略 Recycle 已被废弃。取而代之的建议方案是使用动态制备。如果下层的卷插件支持，回收策略 Recycle 会在卷上执行一些基本的擦除 （rm -rf /thevolume/*）操作，之后允许该卷用于新的 PVC 申领。 Delete（删除）：对于支持 Delete 回收策略的卷插件，删除动作会将 PersistentVolume 对象从 Kubernetes 中移除，同时也会从外部基础设施（如 AWS EBS、GCE PD、Azure Disk 或 Cinder 卷）中移除所关联的存储资产。 目前，仅 NFS 和 HostPath 支持回收（Recycle）。 AWS EBS、GCE PD、Azure Disk 和 Cinder 卷都支持删除（Delete）。\n不过需要注意的是，目前只有 NFS 和 HostPath 两种类型支持回收策略，当然一般来说还是设置为 Retain 这种策略保险一点。\n关于 PV 的状态，实际上描述的是 PV 的生命周期的某个阶段，一个 PV 的生命周期中，可能会处于4种不同的阶段：\nAvailable（可用）：表示可用状态，还未被任何 PVC 绑定 Bound（已绑定）：表示 PVC 已经被 PVC 绑定 Released（已释放）：PVC 被删除，但是资源还未被集群重新声明 Failed（失败）： 表示该 PV 的自动回收失败 创建PersistentVolumeClaim 如果我们需要使用这个 PV 的话，就需要创建一个对应的 PVC 来和他进行绑定了，就类似于我们的服务是通过 Pod 来运行的，而不是 Node，只是 Pod 跑在 Node 上而已。\n让我们申请一个使用3G空间的PersistentVolumeClaim\napiVersion: v1 kind: PersistentVolumeClaim metadata: name: task-pv-claim spec: accessModes: - ReadWriteOnce resources: requests: storage: 3Gi storageClassName: type-ssd-sc 创建 PersistentVolumeClaim 之后，Kubernetes 控制平面将查找满足申领要求的 PersistentVolume。 如果控制平面找到具有相同 StorageClass 的适当的 PersistentVolume， 则将 PersistentVolumeClaim 绑定到该 PersistentVolume 上。所以再次kubectl get pv的PersistentVolume状态应该属于Bound状态。\n[root@Online-Beijing-master1 yaml]# kubectl get pv NAME CAPACITY ACCESS MODES RECLAIM POLICY STATUS CLAIM STORAGECLASS REASON AGE demo-hostpath 10Gi RWO Retain Bound default/task-pv-claim type-ssd-sc 47m [root@Online-Beijing-master1 yaml]# kubectl get pvc NAME STATUS VOLUME CAPACITY ACCESS MODES STORAGECLASS AGE task-pv-claim Bound demo-hostpath 10Gi RWO type-ssd-sc 18m 可以看到已经绑定到了一个Volume叫做demo-hostpath的PersistentVolume\n需要注意的是目前PersistentVolume和PersistentVolumeClaim之间是一对一绑定的关系，也就是说一个PersistentVolume只能被一个PersistentVolumeClaim绑定。\n创建一个Deployment 创建一个deployment然后绑定PersistentVolumeClaim紧接着固定节点到online-beijing-node1\n--- apiVersion: apps/v1 kind: Deployment metadata: labels: k8s.kuboard.cn/name: task-nginx-demo name: task-nginx-demo namespace: default spec: progressDeadlineSeconds: 600 replicas: 1 revisionHistoryLimit: 10 selector: matchLabels: k8s.kuboard.cn/name: task-nginx-demo strategy: rollingUpdate: maxSurge: 25% maxUnavailable: 25% type: RollingUpdate template: metadata: creationTimestamp: null labels: k8s.kuboard.cn/name: task-nginx-demo nodeSelector: kubernetes.io/hostname: online-beijing-node1 spec: containers: - image: 'nginx:latest' imagePullPolicy: Always name: task-nginx-demo ports: - containerPort: 80 hostPort: 80 name: http protocol: TCP resources: {} terminationMessagePath: /dev/termination-log terminationMessagePolicy: File volumeMounts: - mountPath: \"/usr/share/nginx/html\" name: task-hostpath-volume dnsPolicy: ClusterFirst restartPolicy: Always schedulerName: default-scheduler securityContext: {} terminationGracePeriodSeconds: 30 volumes: - name: task-hostpath-volume persistentVolumeClaim: claimName: task-pv-claim 当这个deployment创建完成以后我们就可以通过访问service测试一下.\n正常情况下你可以看到Hello This is new hostPath message.这条信息\n[root@Online-Beijing-master1 yaml]# curl -v 10.10.56.102 * Rebuilt URL to: 10.10.56.102/ * Trying 10.10.56.102... * TCP_NODELAY set * Connected to 10.10.56.102 (10.10.56.102) port 80 (#0) \u003e GET / HTTP/1.1 \u003e Host: 10.10.56.102 \u003e User-Agent: curl/7.61.1 \u003e Accept: */* \u003e \u003c HTTP/1.1 200 OK \u003c Server: nginx/1.23.3 \u003c Date: Wed, 22 Mar 2023 09:54:49 GMT \u003c Content-Type: text/html \u003c Content-Length: 36 \u003c Last-Modified: Wed, 22 Mar 2023 07:53:15 GMT \u003c Connection: keep-alive \u003c ETag: \"641ab3eb-24\" \u003c Accept-Ranges: bytes Hello This is new hostPath message. 这个就是我们一个很简单的基于hostPath来持久化数据使用PersistentVolume和PersistentVolumeClaim简单教学。\nLocal PersistentVolume 上面我们创建了后端是 hostPath 类型的 PV 资源对象,那么个人认为hostPath的缺点在于\nPod不能进行随时随地的节点更换,如果更换则会出现丢失数据的现象。\n需要每次都搭配nodeSelector进行使用。\n其优点也是相对于比较明显\n因为hostPath使用的是本地磁盘,可以充分的利用磁盘的读写性能。 所以在 hostPath 的基础上，Kubernetes 依靠 PV、PVC 实现了一个新的特性，这个特性的名字叫作：Local Persistent Volume，也就是我们说的 Local PV。\nlocal 卷只能用作静态创建的持久卷。不支持动态配置。\n然而，local 卷仍然取决于底层节点的可用性，并不适合所有应用程序。 如果节点变得不健康，那么 local 卷也将变得不可被 Pod 访问。使用它的 Pod 将不能运行。 使用 local 卷的应用程序必须能够容忍这种可用性的降低，以及因底层磁盘的耐用性特征而带来的潜在的数据丢失风险。\n它与HostPath有何不同？ 为了更好地理解本地持久卷的优势，将其与HostPath 卷进行比较很有用。HostPath 卷将主机节点文件系统中的文件或目录挂载到 Pod 中。类似地，Local Persistent Volume 将本地磁盘或分区挂载到 Pod 中\n最大的区别是 Kubernetes 调度程序了解本地持久卷属于哪个节点。对于 HostPath 卷，引用 HostPath 卷的 pod 可能会被调度程序移动到不同的节点，从而导致数据丢失。但是对于 Local Persistent Volumes，Kubernetes 调度器确保使用 Local Persistent Volume 的 pod 总是被调度到同一个节点。\n虽然 HostPath 卷可以通过 Persistent Volume Claim (PVC) 引用或直接内嵌在 pod 定义中，但 Local Persistent Volumes 只能通过 PVC 引用。这提供了额外的安全优势，因为 Persistent Volume 对象由管理员管理，防止 Pod 能够访问主机上的任何路径。\n所以，一般来说 Local PV 对应的存储介质是一块额外挂载在宿主机的磁盘或者块设备。\n创建一个Local持久卷实例 下面是一个使用 local 卷和 nodeAffinity 的持久卷示例：\napiVersion: v1 kind: PersistentVolume metadata: name: example-local spec: capacity: storage: 20Gi volumeMode: Filesystem accessModes: - ReadWriteOnce persistentVolumeReclaimPolicy: Delete storageClassName: local-storage local: path: /mnt/disks/ssd1 nodeAffinity: required: nodeSelectorTerms: - matchExpressions: - key: kubernetes.io/hostname operator: In values: - online-beijing-node1 使用 local 卷时，你需要设置 PersistentVolume 对象的 nodeAffinity 字段。 Kubernetes 调度器使用 PersistentVolume 的 nodeAffinity 信息来将使用 local 卷的 Pod 调度到正确的节点。\n当然了,这也就意味着如果你的Pod想使用这个PV的话,那么就只能运行在online-beijing-node1这个节点上。这样，调度器在调度 Pod 的时候，就能够知道一个 PV 与节点的对应关系，从而做出正确的选择。\n绑定PersistentVolumeClaim\nkind: PersistentVolumeClaim apiVersion: v1 metadata: name: bound-tasknginx spec: accessModes: - ReadWriteOnce resources: requests: storage: 5Gi storageClassName: local-storage 接下来创建一个Pod来绑定这个Pvc,然后可以通过访问Pod的IP地址进行验证。\napiVersion: v1 kind: Pod metadata: name: pv-local-pod spec: volumes: - name: example-pv-local persistentVolumeClaim: claimName: bound-tasknginx containers: - name: example-pv-local image: nginx ports: - containerPort: 80 volumeMounts: - mountPath: /usr/share/nginx/html name: example-pv-local [root@Online-Beijing-master1 yaml]# curl -v 10.10.38.225 * Rebuilt URL to: 10.10.38.225/ * Trying 10.10.38.225... * TCP_NODELAY set * Connected to 10.10.38.225 (10.10.38.225) port 80 (#0) \u003e GET / HTTP/1.1 \u003e Host: 10.10.38.225 \u003e User-Agent: curl/7.61.1 \u003e Accept: */* \u003e \u003c HTTP/1.1 200 OK \u003c Server: nginx/1.23.3 \u003c Date: Thu, 23 Mar 2023 08:45:18 GMT \u003c Content-Type: text/html \u003c Content-Length: 25 \u003c Last-Modified: Thu, 23 Mar 2023 08:43:41 GMT \u003c Connection: keep-alive \u003c ETag: \"641c113d-19\" \u003c Accept-Ranges: bytes \u003c Date: 2023-03-23 LocalPv * Connection #0 to host 10.10.38.225 left intact 当然了你也可以进入到Pod当中查看是否成功\n[root@Online-Beijing-master1 yaml]# kubectl exec -it pv-local-pod /bin/bash root@pv-local-pod:/usr/share/nginx/html# cd /usr/share/nginx/html/ root@pv-local-pod:/usr/share/nginx/html# cat index.html Date: 2023-03-23 LocalPv 删除静态管理的持久化存储 需要注意的是，我们上面手动创建PersistentVolume的方式，即静态的PersistentVolume管理方式，在删除PersistentVolume时需要按如下流程执行操作。\n删除使用这个PersistentVolume的 Pod 从宿主机移除本地磁盘 删除PersistentVolumeClaim 删除PersistentVolume ","wordCount":"849","inLanguage":"zh","image":"https://img14.360buyimg.com/ddimg/jfs/t1/164569/9/40677/14419/65bc6e4cFa1d8c0c3/5ccf7e6caadc9b83.jpg","datePublished":"2023-03-22T00:00:00Z","dateModified":"2023-03-22T00:00:00Z","author":{"@type":"Person","name":"iren."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.mletter.cn/tech/kubernetes/local-storage/"},"publisher":{"@type":"Organization","name":"太阳可以是蓝色","logo":{"@type":"ImageObject","url":"https://blog.mletter.cn/%3Clink%20/%20abs%20url%3E"}}}</script></head><body id=top><script>localStorage.getItem("pref-theme")==="dark"?document.body.classList.add("dark"):localStorage.getItem("pref-theme")==="light"?document.body.classList.remove("dark"):window.matchMedia("(prefers-color-scheme: dark)").matches&&document.body.classList.add("dark")</script><header class=header><nav class=nav><div class=logo><a href=https://blog.mletter.cn/ accesskey=h title="太阳可以是蓝色 (Alt + H)">太阳可以是蓝色</a><div class=logo-switches><button id=theme-toggle accesskey=t title="(Alt + T)"><svg id="moon" width="24" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg><svg id="sun" width="24" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button></div></div><ul id=menu><li><a href=https://blog.mletter.cn/ title=主页><span>主页</span></a></li><li><a href=https://blog.mletter.cn/search/ title="搜索 (Alt + /)" accesskey=/><span>搜索</span></a></li><li><a href=https://blog.mletter.cn/posts/ title=文章><span>文章</span></a></li><li><a href=https://blog.mletter.cn/tags/ title=标签><span>标签</span></a></li><li><a href=https://blog.mletter.cn/friends/ title=友联><span>友联</span></a></li><li><a href=https://blog.mletter.cn/about title=关于><span>关于</span></a></li></ul></nav></header><main class=main><article class=post-single><header class=post-header><div class=breadcrumbs><a href=https://blog.mletter.cn/>主页</a>&nbsp;»&nbsp;<a href=https://blog.mletter.cn/posts/></a></div><h1 class="post-title entry-hint-parent">Kubernetes-本地存储</h1><div class=post-description>前面我们有通过 hostPath 或者 emptyDir 的方式来持久化我们的数据</div><div class=post-meta><span title='2023-03-22 00:00:00 +0000 UTC'>三月 22, 2023</span>&nbsp;·&nbsp;4 分钟&nbsp;·&nbsp;iren.</div></header><div class=toc><details><summary accesskey=c title="(Alt + C)"><span class=details>目录</span></summary><div class=inner><nav id=TableOfContents><ul><li><a href=#persistentvolume>PersistentVolume</a></li><li><a href=#persistentvolumeclaim>PersistentVolumeClaim</a></li><li><a href=#hostpath>HostPath</a><ul><li><a href=#创建persistentvolume>创建PersistentVolume</a></li><li><a href=#创建persistentvolumeclaim>创建PersistentVolumeClaim</a></li><li><a href=#创建一个deployment>创建一个Deployment</a></li></ul></li><li><a href=#local-persistentvolume>Local PersistentVolume</a><ul><li><a href=#它与hostpath有何不同>它与HostPath有何不同？</a></li><li><a href=#创建一个local持久卷实例>创建一个Local持久卷实例</a></li></ul></li><li><a href=#删除静态管理的持久化存储>删除静态管理的持久化存储</a></li></ul></nav></div></details></div><div class=post-content><h1 id=本地存储>本地存储<a hidden class=anchor aria-hidden=true href=#本地存储>#</a></h1><p>前面我们有通过 <code>hostPath</code> 或者 <code>emptyDir</code> 的方式来持久化我们的数据，但是显然我们还需要更加可靠的存储来保存应用的持久化数据，这样容器在重建后，依然可以使用之前的数据。但是存储资源和 CPU 资源以及内存资源有很大不同，为了屏蔽底层的技术实现细节，让用户更加方便的使用，Kubernetes 便引入了 <code>PV</code> 和 <code>PVC</code> 两个重要的资源对象来实现对存储的管理。</p><h2 id=persistentvolume>PersistentVolume<a hidden class=anchor aria-hidden=true href=#persistentvolume>#</a></h2><p><code>PV</code> 的全称是：<code>PersistentVolume</code>（持久化卷），是对底层共享存储的一种抽象，PV 由管理员进行创建和配置，它和具体的底层的共享存储技术的实现方式有关，比如 <code>Ceph</code>、<code>GlusterFS</code>、<code>NFS</code>、<code>hostPath</code> 等，都是通过插件机制完成与共享存储的对接。</p><h2 id=persistentvolumeclaim>PersistentVolumeClaim<a hidden class=anchor aria-hidden=true href=#persistentvolumeclaim>#</a></h2><p><code>PVC</code> 的全称是：<code>PersistentVolumeClaim</code>（持久化卷声明），PVC 是用户存储的一种声明，PVC 和 Pod 比较类似，Pod 消耗的是节点，PVC 消耗的是 PV 资源，Pod 可以请求 CPU 和内存，而 PVC 可以请求特定的存储空间和访问模式。对于真正使用存储的用户不需要关心底层的存储实现细节，只需要直接使用 PVC 即可。</p><p>但是通过 PVC 请求到一定的存储空间也很有可能不足以满足应用对于存储设备的各种需求，而且不同的应用程序对于存储性能的要求可能也不尽相同，比如读写速度、并发性能等，为了解决这一问题，Kubernetes 又为我们引入了一个新的资源对象：<code>StorageClass</code>，通过 <code>StorageClass</code> 的定义，管理员可以将存储资源定义为某种类型的资源，比如快速存储、慢速存储等，用户根据 <code>StorageClass</code> 的描述就可以非常直观的知道各种存储资源的具体特性了，这样就可以根据应用的特性去申请合适的存储资源了，此外 <code>StorageClass</code> 还可以为我们自动生成 PV，免去了每次手动创建的麻烦。</p><h2 id=hostpath>HostPath<a hidden class=anchor aria-hidden=true href=#hostpath>#</a></h2><p>我们上面提到了 PV 是对底层存储技术的一种抽象，PV 一般都是由管理员来创建和配置的，我们首先来创建一个 <code>hostPath</code> 类型的 <code>PersistentVolume</code>。Kubernetes 支持 <code>hostPath</code> 类型的 <code>PersistentVolume</code> 使用节点上的文件或目录来模拟附带网络的存储，但是需要注意的是在生产集群中，我们不会使用 <code>hostPath</code>，集群管理员会提供网络存储资源，比如 <code>NFS</code> 共享卷或 <code>Ceph</code> 存储卷，集群管理员还可以使用 <code>StorageClasses</code> 来设置动态提供存储。因为 Pod 并不是始终固定在某个节点上面的，所以要使用 hostPath 的话我们就需要将 Pod 固定在某个节点上，这样显然就大大降低了应用的容错性。</p><blockquote><p>当然了，生产环境中用的还是相对较少因为有较少的需求需要将Pod来固定到某些节点上。</p></blockquote><h3 id=创建persistentvolume>创建PersistentVolume<a hidden class=anchor aria-hidden=true href=#创建persistentvolume>#</a></h3><ol><li>假设我们现在在节点1上新建一个<code>/data/hostPath/index.html</code></li></ol><div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=o>[</span>root@Online-Beijing-node1 ~<span class=o>]</span><span class=c1># echo &#34;Hello This is new hostPath message.&#34; &gt;&gt; /data/hostPath/index.html</span>
+</span></span></code></pre></div><ol><li>接下来创建一个Pv对象</li></ol><div class=highlight><pre tabindex=0 class=chroma><code class=language-yaml data-lang=yaml><span class=line><span class=cl><span class=nt>apiVersion</span><span class=p>:</span><span class=w> </span><span class=l>v1</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>kind</span><span class=p>:</span><span class=w> </span><span class=l>PersistentVolume</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>metadata</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>demo-hostpath</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>labels</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>type</span><span class=p>:</span><span class=w> </span><span class=l>local</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>spec</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>capacity</span><span class=p>:</span><span class=w> </span><span class=c># 定义该Pv的容量为10Gb</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>storage</span><span class=p>:</span><span class=w> </span><span class=l>10Gi</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>accessModes</span><span class=p>:</span><span class=w>  </span><span class=c># 定义该Pv的访问模式</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span>- <span class=l>ReadWriteOnce</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>hostPath</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>path</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;/data/hostPath&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>storageClassName</span><span class=p>:</span><span class=w> </span><span class=l>type-ssd-sc</span><span class=w>
+</span></span></span></code></pre></div><ul><li>Capacity（存储能力）：一般来说，一个 PV 对象都要指定一个存储能力，通过 PV 的 <code>capacity</code> 属性来设置的，目前只支持存储空间的设置，就是我们这里的 <code>storage=10Gi</code>，不过未来可能会加入 <code>IOPS</code>、吞吐量等指标的配置。</li><li>AccessModes（访问模式）：用来对 PV 进行访问模式的设置，用于描述用户应用对存储资源的访问权限，访问权限包括下面几种方式：<ul><li>ReadWriteOnce（RWO）：读写权限，但是只能被单个节点挂载</li><li>ReadOnlyMany（ROX）：只读权限，可以被多个节点挂载</li><li>ReadWriteMany（RWX）：读写权限，可以被多个节点挂载</li></ul></li></ul><p>创建完成后查看 PersistentVolume 的信息，输出结果显示该 <code>PersistentVolume</code> 的状态（STATUS） 为 <code>Available</code>。 这意味着它还没有被绑定给 <code>PersistentVolumeClaim</code></p><div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=o>[</span>root@Online-Beijing-master1 ~<span class=o>]</span><span class=c1># kubectl get pv</span>
+</span></span><span class=line><span class=cl>NAME            CAPACITY   ACCESS MODES   RECLAIM POLICY   STATUS      CLAIM   STORAGECLASS   REASON   AGE
+</span></span><span class=line><span class=cl>demo-hostpath   10Gi       RWO            Retain           Available           type-ssd-sc             13m
+</span></span></code></pre></div><p>其中有一项 <code>RECLAIM POLICY</code> 的配置，同样我们可以通过 PV 的 <code>persistentVolumeReclaimPolicy</code>（回收策略）属性来进行配置，目前 PV 支持的策略有三种：</p><ul><li>Retain（保留）：回收策略 <code>Retain</code> 使得用户可以手动回收资源。当 <code>PersistentVolumeClaim</code> 对象被删除时，<code>PersistentVolume</code> 卷仍然存在，对应的数据卷被视为"已释放（released）"。 由于卷上仍然存在这前一申领人的数据，该卷还不能用于其他申领。 管理员可以通过下面的步骤来手动回收该卷：<ul><li>删除 PersistentVolume 对象。与之相关的、位于外部基础设施中的存储资产 （例如 AWS EBS、GCE PD、Azure Disk 或 Cinder 卷）在 PV 删除之后仍然存在。</li><li>根据情况，手动清除所关联的存储资产上的数据。</li><li>手动删除所关联的存储资产。</li></ul></li><li>Recycle（回收）：回收策略 <code>Recycle</code> 已被废弃。取而代之的建议方案是使用动态制备。如果下层的卷插件支持，回收策略 <code>Recycle</code> 会在卷上执行一些基本的擦除 （<code>rm -rf /thevolume/*</code>）操作，之后允许该卷用于新的 PVC 申领。</li><li>Delete（删除）：对于支持 <code>Delete</code> 回收策略的卷插件，删除动作会将 <code>PersistentVolume</code> 对象从 Kubernetes 中移除，同时也会从外部基础设施（如 AWS EBS、GCE PD、Azure Disk 或 Cinder 卷）中移除所关联的存储资产。</li></ul><p>目前，仅 NFS 和 HostPath 支持回收（Recycle）。 AWS EBS、GCE PD、Azure Disk 和 Cinder 卷都支持删除（Delete）。</p><blockquote><p>不过需要注意的是，目前只有 <code>NFS</code> 和 <code>HostPath</code> 两种类型支持回收策略，当然一般来说还是设置为 <code>Retain</code> 这种策略保险一点。</p></blockquote><p>关于 PV 的状态，实际上描述的是 PV 的生命周期的某个阶段，一个 PV 的生命周期中，可能会处于4种不同的阶段：</p><ul><li>Available（可用）：表示可用状态，还未被任何 PVC 绑定</li><li>Bound（已绑定）：表示 PVC 已经被 PVC 绑定</li><li>Released（已释放）：PVC 被删除，但是资源还未被集群重新声明</li><li>Failed（失败）： 表示该 PV 的自动回收失败</li></ul><h3 id=创建persistentvolumeclaim>创建PersistentVolumeClaim<a hidden class=anchor aria-hidden=true href=#创建persistentvolumeclaim>#</a></h3><p>如果我们需要使用这个 PV 的话，就需要创建一个对应的 PVC 来和他进行绑定了，就类似于我们的服务是通过 Pod 来运行的，而不是 Node，只是 Pod 跑在 Node 上而已。</p><p>让我们申请一个使用3G空间的<code>PersistentVolumeClaim</code></p><div class=highlight><pre tabindex=0 class=chroma><code class=language-yaml data-lang=yaml><span class=line><span class=cl><span class=nt>apiVersion</span><span class=p>:</span><span class=w> </span><span class=l>v1</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>kind</span><span class=p>:</span><span class=w> </span><span class=l>PersistentVolumeClaim</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>metadata</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>task-pv-claim</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>spec</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>accessModes</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span>- <span class=l>ReadWriteOnce</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>resources</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>requests</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>storage</span><span class=p>:</span><span class=w> </span><span class=l>3Gi</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>storageClassName</span><span class=p>:</span><span class=w> </span><span class=l>type-ssd-sc</span><span class=w>
+</span></span></span></code></pre></div><p>创建 <code>PersistentVolumeClaim</code> 之后，Kubernetes 控制平面将查找满足申领要求的 <code>PersistentVolume</code>。 如果控制平面找到具有相同 <code>StorageClass</code> 的适当的 <code>PersistentVolume</code>， 则将 <code>PersistentVolumeClaim</code> 绑定到该 <code>PersistentVolume</code> 上。所以再次<code>kubectl get pv</code>的<code>PersistentVolume</code>状态应该属于<code>Bound</code>状态。</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=o>[</span>root@Online-Beijing-master1 yaml<span class=o>]</span><span class=c1># kubectl get pv</span>
+</span></span><span class=line><span class=cl>NAME            CAPACITY   ACCESS MODES   RECLAIM POLICY   STATUS   CLAIM                   STORAGECLASS   REASON   AGE
+</span></span><span class=line><span class=cl>demo-hostpath   10Gi       RWO            Retain           Bound    default/task-pv-claim   type-ssd-sc             47m
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=o>[</span>root@Online-Beijing-master1 yaml<span class=o>]</span><span class=c1># kubectl get pvc</span>
+</span></span><span class=line><span class=cl>NAME            STATUS   VOLUME          CAPACITY   ACCESS MODES   STORAGECLASS   AGE
+</span></span><span class=line><span class=cl>task-pv-claim   Bound    demo-hostpath   10Gi       RWO            type-ssd-sc    18m
+</span></span></code></pre></div><p>可以看到已经绑定到了一个<code>Volume</code>叫做<code>demo-hostpath</code>的<code>PersistentVolume</code></p><blockquote><p>需要注意的是目前<code>PersistentVolume</code>和<code>PersistentVolumeClaim</code>之间是一对一绑定的关系，也就是说一个<code>PersistentVolume</code>只能被一个<code>PersistentVolumeClaim</code>绑定。</p></blockquote><h3 id=创建一个deployment>创建一个Deployment<a hidden class=anchor aria-hidden=true href=#创建一个deployment>#</a></h3><p>创建一个<code>deployment</code>然后绑定<code>PersistentVolumeClaim</code>紧接着固定节点到<code>online-beijing-node1</code></p><pre tabindex=0><code>---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    k8s.kuboard.cn/name: task-nginx-demo
+  name: task-nginx-demo
+  namespace: default
+spec:
+  progressDeadlineSeconds: 600
+  replicas: 1
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      k8s.kuboard.cn/name: task-nginx-demo
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        k8s.kuboard.cn/name: task-nginx-demo
+    nodeSelector:
+      kubernetes.io/hostname: online-beijing-node1
+    spec:
+      containers:
+        - image: &#39;nginx:latest&#39;
+          imagePullPolicy: Always
+          name: task-nginx-demo
+          ports:
+            - containerPort: 80
+              hostPort: 80
+              name: http
+              protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+          - mountPath: &#34;/usr/share/nginx/html&#34;
+            name: task-hostpath-volume
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      terminationGracePeriodSeconds: 30
+      volumes:
+      - name: task-hostpath-volume
+        persistentVolumeClaim:
+          claimName: task-pv-claim
+</code></pre><p>当这个<code>deployment</code>创建完成以后我们就可以通过访问<code>service</code>测试一下.</p><p>正常情况下你可以看到<code>Hello This is new hostPath message.</code>这条信息</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-yaml data-lang=yaml><span class=line><span class=cl><span class=p>[</span><span class=l>root@Online-Beijing-master1 yaml]# curl -v 10.10.56.102</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>* Rebuilt URL to</span><span class=p>:</span><span class=w> </span><span class=m>10.10.56.102</span><span class=l>/</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span>*<span class=w>   </span><span class=l>Trying 10.10.56.102...</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span>*<span class=w> </span><span class=l>TCP_NODELAY set</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span>*<span class=w> </span><span class=l>Connected to 10.10.56.102 (10.10.56.102) port 80 (#0)</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=l>&gt; GET / HTTP/1.1</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>&gt; Host</span><span class=p>:</span><span class=w> </span><span class=m>10.10.56.102</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>&gt; User-Agent</span><span class=p>:</span><span class=w> </span><span class=l>curl/7.61.1</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>&gt; Accept</span><span class=p>:</span><span class=w> </span><span class=cp>*/*</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=l>&gt; </span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=l>&lt; HTTP/1.1 200 OK</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>&lt; Server</span><span class=p>:</span><span class=w> </span><span class=l>nginx/1.23.3</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>&lt; Date</span><span class=p>:</span><span class=w> </span><span class=l>Wed, 22 Mar 2023 09:54:49 GMT</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>&lt; Content-Type</span><span class=p>:</span><span class=w> </span><span class=l>text/html</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>&lt; Content-Length</span><span class=p>:</span><span class=w> </span><span class=m>36</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>&lt; Last-Modified</span><span class=p>:</span><span class=w> </span><span class=l>Wed, 22 Mar 2023 07:53:15 GMT</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>&lt; Connection</span><span class=p>:</span><span class=w> </span><span class=l>keep-alive</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>&lt; ETag</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;641ab3eb-24&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>&lt; Accept-Ranges</span><span class=p>:</span><span class=w> </span><span class=l>bytes</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=l>Hello This is new hostPath message.</span><span class=w>
+</span></span></span></code></pre></div><p>这个就是我们一个很简单的基于<code>hostPath</code>来持久化数据使用<code>PersistentVolume</code>和<code>PersistentVolumeClaim</code>简单教学。</p><h2 id=local-persistentvolume>Local PersistentVolume<a hidden class=anchor aria-hidden=true href=#local-persistentvolume>#</a></h2><p>上面我们创建了后端是 <code>hostPath</code> 类型的 PV 资源对象,那么个人认为<code>hostPath</code>的缺点在于</p><ol><li><p>Pod不能进行随时随地的节点更换,如果更换则会出现丢失数据的现象。</p><p>需要每次都搭配<code>nodeSelector</code>进行使用。</p></li></ol><p>其优点也是相对于比较明显</p><ol><li>因为<code>hostPath</code>使用的是本地磁盘,可以充分的利用磁盘的读写性能。</li></ol><hr><p>所以在 hostPath 的基础上，Kubernetes 依靠 PV、PVC 实现了一个新的特性，这个特性的名字叫作：<code>Local Persistent Volume</code>，也就是我们说的 <code>Local PV</code>。</p><p><code>local</code> 卷只能用作静态创建的持久卷。不支持动态配置。</p><p>然而，<code>local</code> 卷仍然取决于底层节点的可用性，并不适合所有应用程序。 如果节点变得不健康，那么 <code>local</code> 卷也将变得不可被 Pod 访问。使用它的 Pod 将不能运行。 使用 <code>local</code> 卷的应用程序必须能够容忍这种可用性的降低，以及因底层磁盘的耐用性特征而带来的潜在的数据丢失风险。</p><h3 id=它与hostpath有何不同>它与HostPath有何不同？<a hidden class=anchor aria-hidden=true href=#它与hostpath有何不同>#</a></h3><p>为了更好地理解本地持久卷的优势，将其与<a class=link href=https://kubernetes.io/docs/concepts/storage/volumes/#hostpath target=_blank rel=noopener>HostPath 卷</a>进行比较很有用。<code>HostPath</code> 卷将主机节点文件系统中的文件或目录挂载到 Pod 中。类似地，<code>Local Persistent Volume</code> 将本地磁盘或分区挂载到 Pod 中</p><p>最大的区别是 Kubernetes 调度程序了解本地持久卷属于哪个节点。对于 HostPath 卷，引用 HostPath 卷的 pod 可能会被调度程序移动到不同的节点，从而导致数据丢失。但是对于 <code>Local Persistent Volumes</code>，Kubernetes 调度器确保使用 <code>Local Persistent Volume</code> 的 pod 总是被调度到同一个节点。</p><p>虽然 HostPath 卷可以通过 <code>Persistent Volume Claim (PVC)</code> 引用或直接内嵌在 pod 定义中，但 <code>Local Persistent Volumes</code> 只能通过 PVC 引用。这提供了额外的安全优势，因为 <code>Persistent Volume</code> 对象由管理员管理，防止 Pod 能够访问主机上的任何路径。</p><blockquote><p>所以，一般来说 <code>Local PV</code> 对应的存储介质是一块额外挂载在宿主机的磁盘或者块设备。</p></blockquote><h3 id=创建一个local持久卷实例>创建一个Local持久卷实例<a hidden class=anchor aria-hidden=true href=#创建一个local持久卷实例>#</a></h3><p>下面是一个使用 <code>local</code> 卷和 <code>nodeAffinity</code> 的持久卷示例：</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-yaml data-lang=yaml><span class=line><span class=cl><span class=nt>apiVersion</span><span class=p>:</span><span class=w> </span><span class=l>v1</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>kind</span><span class=p>:</span><span class=w> </span><span class=l>PersistentVolume</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>metadata</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>example-local</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>spec</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>capacity</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>storage</span><span class=p>:</span><span class=w> </span><span class=l>20Gi</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>volumeMode</span><span class=p>:</span><span class=w> </span><span class=l>Filesystem</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>accessModes</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span>- <span class=l>ReadWriteOnce</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>persistentVolumeReclaimPolicy</span><span class=p>:</span><span class=w> </span><span class=l>Delete</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>storageClassName</span><span class=p>:</span><span class=w> </span><span class=l>local-storage</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>local</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>path</span><span class=p>:</span><span class=w> </span><span class=l>/mnt/disks/ssd1</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>nodeAffinity</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>required</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>nodeSelectorTerms</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span>- <span class=nt>matchExpressions</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span>- <span class=nt>key</span><span class=p>:</span><span class=w> </span><span class=l>kubernetes.io/hostname</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>          </span><span class=nt>operator</span><span class=p>:</span><span class=w> </span><span class=l>In</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>          </span><span class=nt>values</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>          </span>- <span class=l>online-beijing-node1</span><span class=w>
+</span></span></span></code></pre></div><p>使用 <code>local</code> 卷时，你需要设置 <code>PersistentVolume</code> 对象的 <code>nodeAffinity</code> 字段。 Kubernetes 调度器使用 <code>PersistentVolume</code> 的 <code>nodeAffinity</code> 信息来将使用 <code>local</code> 卷的 Pod 调度到正确的节点。</p><p>当然了,这也就意味着如果你的Pod想使用这个<code>PV</code>的话,那么就只能运行在<code>online-beijing-node1</code>这个节点上。这样，调度器在调度 Pod 的时候，就能够知道一个 PV 与节点的对应关系，从而做出正确的选择。</p><p><strong>绑定PersistentVolumeClaim</strong></p><div class=highlight><pre tabindex=0 class=chroma><code class=language-yaml data-lang=yaml><span class=line><span class=cl><span class=nt>kind</span><span class=p>:</span><span class=w> </span><span class=l>PersistentVolumeClaim</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>apiVersion</span><span class=p>:</span><span class=w> </span><span class=l>v1</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>metadata</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>bound-tasknginx</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>spec</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>accessModes</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span>- <span class=l>ReadWriteOnce</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>resources</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>requests</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>storage</span><span class=p>:</span><span class=w> </span><span class=l>5Gi</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>storageClassName</span><span class=p>:</span><span class=w> </span><span class=l>local-storage</span><span class=w>
+</span></span></span></code></pre></div><p>接下来创建一个Pod来绑定这个Pvc,然后可以通过访问<code>Pod</code>的<code>IP</code>地址进行验证。</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-yaml data-lang=yaml><span class=line><span class=cl><span class=nt>apiVersion</span><span class=p>:</span><span class=w> </span><span class=l>v1</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>kind</span><span class=p>:</span><span class=w> </span><span class=l>Pod</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>metadata</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>pv-local-pod</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>spec</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>volumes</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span>- <span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>example-pv-local</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>persistentVolumeClaim</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>claimName</span><span class=p>:</span><span class=w> </span><span class=l>bound-tasknginx</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>containers</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span>- <span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>example-pv-local</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>image</span><span class=p>:</span><span class=w> </span><span class=l>nginx</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>ports</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span>- <span class=nt>containerPort</span><span class=p>:</span><span class=w> </span><span class=m>80</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>volumeMounts</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span>- <span class=nt>mountPath</span><span class=p>:</span><span class=w> </span><span class=l>/usr/share/nginx/html</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>example-pv-local</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>[</span><span class=l>root@Online-Beijing-master1 yaml]# curl -v 10.10.38.225 </span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>* Rebuilt URL to</span><span class=p>:</span><span class=w> </span><span class=m>10.10.38.225</span><span class=l>/</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span>*<span class=w>   </span><span class=l>Trying 10.10.38.225...</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span>*<span class=w> </span><span class=l>TCP_NODELAY set</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span>*<span class=w> </span><span class=l>Connected to 10.10.38.225 (10.10.38.225) port 80 (#0)</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=l>&gt; GET / HTTP/1.1</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>&gt; Host</span><span class=p>:</span><span class=w> </span><span class=m>10.10.38.225</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>&gt; User-Agent</span><span class=p>:</span><span class=w> </span><span class=l>curl/7.61.1</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>&gt; Accept</span><span class=p>:</span><span class=w> </span><span class=cp>*/*</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=l>&gt; </span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=l>&lt; HTTP/1.1 200 OK</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>&lt; Server</span><span class=p>:</span><span class=w> </span><span class=l>nginx/1.23.3</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>&lt; Date</span><span class=p>:</span><span class=w> </span><span class=l>Thu, 23 Mar 2023 08:45:18 GMT</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>&lt; Content-Type</span><span class=p>:</span><span class=w> </span><span class=l>text/html</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>&lt; Content-Length</span><span class=p>:</span><span class=w> </span><span class=m>25</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>&lt; Last-Modified</span><span class=p>:</span><span class=w> </span><span class=l>Thu, 23 Mar 2023 08:43:41 GMT</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>&lt; Connection</span><span class=p>:</span><span class=w> </span><span class=l>keep-alive</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>&lt; ETag</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;641c113d-19&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>&lt; Accept-Ranges</span><span class=p>:</span><span class=w> </span><span class=l>bytes</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=l>&lt; </span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>Date</span><span class=p>:</span><span class=w> </span><span class=ld>2023-03-23</span><span class=w> </span><span class=l>LocalPv</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span>*<span class=w> </span><span class=l>Connection</span><span class=w> </span><span class=c>#0 to host 10.10.38.225 left intact</span><span class=w>
+</span></span></span></code></pre></div><p>当然了你也可以进入到<code>Pod</code>当中查看是否成功</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=o>[</span>root@Online-Beijing-master1 yaml<span class=o>]</span><span class=c1># kubectl exec -it pv-local-pod /bin/bash</span>
+</span></span><span class=line><span class=cl>root@pv-local-pod:/usr/share/nginx/html# <span class=nb>cd</span> /usr/share/nginx/html/
+</span></span><span class=line><span class=cl>root@pv-local-pod:/usr/share/nginx/html# cat index.html 
+</span></span><span class=line><span class=cl>Date: 2023-03-23 LocalPv
+</span></span></code></pre></div><h2 id=删除静态管理的持久化存储>删除静态管理的持久化存储<a hidden class=anchor aria-hidden=true href=#删除静态管理的持久化存储>#</a></h2><p>需要注意的是，我们上面手动创建<code>PersistentVolume</code>的方式，即静态的<code>PersistentVolume</code>管理方式，在删除<code>PersistentVolume</code>时需要按如下流程执行操作。</p><ol><li>删除使用这个<code>PersistentVolume</code>的 Pod</li><li>从宿主机移除本地磁盘</li><li>删除<code>PersistentVolumeClaim</code></li><li>删除<code>PersistentVolume</code></li></ol></div><footer class=post-footer><ul class=post-tags><li><a href=https://blog.mletter.cn/tags/kubernetes/>Kubernetes</a></li></ul><nav class=paginav><a class=prev href=https://blog.mletter.cn/tech/kubernetes/traefik/><span class=title>« 上一页</span><br><span>Traekfik基础使用指南</span>
+</a><a class=next href=https://blog.mletter.cn/life-story/6/><span class=title>下一页 »</span><br><span>摄影日记-颐和园</span></a></nav><ul class=share-buttons><li><a target=_blank rel="noopener noreferrer" aria-label="share Kubernetes-本地存储 on x" href="https://x.com/intent/tweet/?text=Kubernetes-%e6%9c%ac%e5%9c%b0%e5%ad%98%e5%82%a8&amp;url=https%3a%2f%2fblog.mletter.cn%2ftech%2fkubernetes%2flocal-storage%2f&amp;hashtags=kubernetes"><svg viewBox="0 0 512 512" height="30" width="30" fill="currentcolor"><path d="M512 62.554V449.446C512 483.97 483.97 512 449.446 512H62.554C28.03 512 0 483.97.0 449.446V62.554C0 28.03 28.029.0 62.554.0H449.446C483.971.0 512 28.03 512 62.554zM269.951 190.75 182.567 75.216H56L207.216 272.95 63.9 436.783h61.366L235.9 310.383l96.667 126.4H456L298.367 228.367l134-153.151H371.033zM127.633 110h36.468l219.38 290.065H349.5z"/></svg></a></li><li><a target=_blank rel="noopener noreferrer" aria-label="share Kubernetes-本地存储 on linkedin" href="https://www.linkedin.com/shareArticle?mini=true&amp;url=https%3a%2f%2fblog.mletter.cn%2ftech%2fkubernetes%2flocal-storage%2f&amp;title=Kubernetes-%e6%9c%ac%e5%9c%b0%e5%ad%98%e5%82%a8&amp;summary=Kubernetes-%e6%9c%ac%e5%9c%b0%e5%ad%98%e5%82%a8&amp;source=https%3a%2f%2fblog.mletter.cn%2ftech%2fkubernetes%2flocal-storage%2f"><svg viewBox="0 0 512 512" height="30" width="30" fill="currentcolor"><path d="M449.446.0C483.971.0 512 28.03 512 62.554v386.892C512 483.97 483.97 512 449.446 512H62.554c-34.524.0-62.554-28.03-62.554-62.554V62.554c0-34.524 28.029-62.554 62.554-62.554h386.892zM160.461 423.278V197.561h-75.04v225.717h75.04zm270.539.0V293.839c0-69.333-37.018-101.586-86.381-101.586-39.804.0-57.634 21.891-67.617 37.266v-31.958h-75.021c.995 21.181.0 225.717.0 225.717h75.02V297.222c0-6.748.486-13.492 2.474-18.315 5.414-13.475 17.767-27.434 38.494-27.434 27.135.0 38.007 20.707 38.007 51.037v120.768H431zM123.448 88.722C97.774 88.722 81 105.601 81 127.724c0 21.658 16.264 39.002 41.455 39.002h.484c26.165.0 42.452-17.344 42.452-39.002-.485-22.092-16.241-38.954-41.943-39.002z"/></svg></a></li><li><a target=_blank rel="noopener noreferrer" aria-label="share Kubernetes-本地存储 on reddit" href="https://reddit.com/submit?url=https%3a%2f%2fblog.mletter.cn%2ftech%2fkubernetes%2flocal-storage%2f&title=Kubernetes-%e6%9c%ac%e5%9c%b0%e5%ad%98%e5%82%a8"><svg viewBox="0 0 512 512" height="30" width="30" fill="currentcolor"><path d="M449.446.0C483.971.0 512 28.03 512 62.554v386.892C512 483.97 483.97 512 449.446 512H62.554c-34.524.0-62.554-28.03-62.554-62.554V62.554c0-34.524 28.029-62.554 62.554-62.554h386.892zM446 265.638c0-22.964-18.616-41.58-41.58-41.58-11.211.0-21.361 4.457-28.841 11.666-28.424-20.508-67.586-33.757-111.204-35.278l18.941-89.121 61.884 13.157c.756 15.734 13.642 28.29 29.56 28.29 16.407.0 29.706-13.299 29.706-29.701.0-16.403-13.299-29.702-29.706-29.702-11.666.0-21.657 6.792-26.515 16.578l-69.105-14.69c-1.922-.418-3.939-.042-5.585 1.036-1.658 1.073-2.811 2.761-3.224 4.686l-21.152 99.438c-44.258 1.228-84.046 14.494-112.837 35.232-7.468-7.164-17.589-11.591-28.757-11.591-22.965.0-41.585 18.616-41.585 41.58.0 16.896 10.095 31.41 24.568 37.918-.639 4.135-.99 8.328-.99 12.576.0 63.977 74.469 115.836 166.33 115.836s166.334-51.859 166.334-115.836c0-4.218-.347-8.387-.977-12.493 14.564-6.47 24.735-21.034 24.735-38.001zM326.526 373.831c-20.27 20.241-59.115 21.816-70.534 21.816-11.428.0-50.277-1.575-70.522-21.82-3.007-3.008-3.007-7.882.0-10.889 3.003-2.999 7.882-3.003 10.885.0 12.777 12.781 40.11 17.317 59.637 17.317 19.522.0 46.86-4.536 59.657-17.321 3.016-2.999 7.886-2.995 10.885.008 3.008 3.011 3.003 7.882-.008 10.889zm-5.23-48.781c-16.373.0-29.701-13.324-29.701-29.698.0-16.381 13.328-29.714 29.701-29.714 16.378.0 29.706 13.333 29.706 29.714.0 16.374-13.328 29.698-29.706 29.698zM160.91 295.348c0-16.381 13.328-29.71 29.714-29.71 16.369.0 29.689 13.329 29.689 29.71.0 16.373-13.32 29.693-29.689 29.693-16.386.0-29.714-13.32-29.714-29.693z"/></svg></a></li><li><a target=_blank rel="noopener noreferrer" aria-label="share Kubernetes-本地存储 on facebook" href="https://facebook.com/sharer/sharer.php?u=https%3a%2f%2fblog.mletter.cn%2ftech%2fkubernetes%2flocal-storage%2f"><svg viewBox="0 0 512 512" height="30" width="30" fill="currentcolor"><path d="M449.446.0C483.971.0 512 28.03 512 62.554v386.892C512 483.97 483.97 512 449.446 512H342.978V319.085h66.6l12.672-82.621h-79.272v-53.617c0-22.603 11.073-44.636 46.58-44.636H425.6v-70.34s-32.71-5.582-63.982-5.582c-65.288.0-107.96 39.569-107.96 111.204v62.971h-72.573v82.621h72.573V512h-191.104c-34.524.0-62.554-28.03-62.554-62.554V62.554c0-34.524 28.029-62.554 62.554-62.554h386.892z"/></svg></a></li><li><a target=_blank rel="noopener noreferrer" aria-label="share Kubernetes-本地存储 on whatsapp" href="https://api.whatsapp.com/send?text=Kubernetes-%e6%9c%ac%e5%9c%b0%e5%ad%98%e5%82%a8%20-%20https%3a%2f%2fblog.mletter.cn%2ftech%2fkubernetes%2flocal-storage%2f"><svg viewBox="0 0 512 512" height="30" width="30" fill="currentcolor"><path d="M449.446.0C483.971.0 512 28.03 512 62.554v386.892C512 483.97 483.97 512 449.446 512H62.554c-34.524.0-62.554-28.03-62.554-62.554V62.554c0-34.524 28.029-62.554 62.554-62.554h386.892zm-58.673 127.703c-33.842-33.881-78.847-52.548-126.798-52.568-98.799.0-179.21 80.405-179.249 179.234-.013 31.593 8.241 62.428 23.927 89.612l-25.429 92.884 95.021-24.925c26.181 14.28 55.659 21.807 85.658 21.816h.074c98.789.0 179.206-80.413 179.247-179.243.018-47.895-18.61-92.93-52.451-126.81zM263.976 403.485h-.06c-26.734-.01-52.954-7.193-75.828-20.767l-5.441-3.229-56.386 14.792 15.05-54.977-3.542-5.637c-14.913-23.72-22.791-51.136-22.779-79.287.033-82.142 66.867-148.971 149.046-148.971 39.793.014 77.199 15.531 105.329 43.692 28.128 28.16 43.609 65.592 43.594 105.4-.034 82.149-66.866 148.983-148.983 148.984zm81.721-111.581c-4.479-2.242-26.499-13.075-30.604-14.571-4.105-1.495-7.091-2.241-10.077 2.241-2.986 4.483-11.569 14.572-14.182 17.562-2.612 2.988-5.225 3.364-9.703 1.12-4.479-2.241-18.91-6.97-36.017-22.23C231.8 264.15 222.81 249.484 220.198 245s-.279-6.908 1.963-9.14c2.016-2.007 4.48-5.232 6.719-7.847 2.24-2.615 2.986-4.484 4.479-7.472 1.493-2.99.747-5.604-.374-7.846-1.119-2.241-10.077-24.288-13.809-33.256-3.635-8.733-7.327-7.55-10.077-7.688-2.609-.13-5.598-.158-8.583-.158-2.986.0-7.839 1.121-11.944 5.604-4.105 4.484-15.675 15.32-15.675 37.364.0 22.046 16.048 43.342 18.287 46.332 2.24 2.99 31.582 48.227 76.511 67.627 10.685 4.615 19.028 7.371 25.533 9.434 10.728 3.41 20.492 2.929 28.209 1.775 8.605-1.285 26.499-10.833 30.231-21.295 3.732-10.464 3.732-19.431 2.612-21.298-1.119-1.869-4.105-2.99-8.583-5.232z"/></svg></a></li><li><a target=_blank rel="noopener noreferrer" aria-label="share Kubernetes-本地存储 on telegram" href="https://telegram.me/share/url?text=Kubernetes-%e6%9c%ac%e5%9c%b0%e5%ad%98%e5%82%a8&amp;url=https%3a%2f%2fblog.mletter.cn%2ftech%2fkubernetes%2flocal-storage%2f"><svg viewBox="2 2 28 28" height="30" width="30" fill="currentcolor"><path d="M26.49 29.86H5.5a3.37 3.37.0 01-2.47-1 3.35 3.35.0 01-1-2.47V5.48A3.36 3.36.0 013 3 3.37 3.37.0 015.5 2h21A3.38 3.38.0 0129 3a3.36 3.36.0 011 2.46V26.37a3.35 3.35.0 01-1 2.47 3.38 3.38.0 01-2.51 1.02zm-5.38-6.71a.79.79.0 00.85-.66L24.73 9.24a.55.55.0 00-.18-.46.62.62.0 00-.41-.17q-.08.0-16.53 6.11a.59.59.0 00-.41.59.57.57.0 00.43.52l4 1.24 1.61 4.83a.62.62.0 00.63.43.56.56.0 00.4-.17L16.54 20l4.09 3A.9.9.0 0021.11 23.15zM13.8 20.71l-1.21-4q8.72-5.55 8.78-5.55c.15.0.23.0.23.16a.18.18.0 010 .06s-2.51 2.3-7.52 6.8z"/></svg></a></li><li><a target=_blank rel="noopener noreferrer" aria-label="share Kubernetes-本地存储 on ycombinator" href="https://news.ycombinator.com/submitlink?t=Kubernetes-%e6%9c%ac%e5%9c%b0%e5%ad%98%e5%82%a8&u=https%3a%2f%2fblog.mletter.cn%2ftech%2fkubernetes%2flocal-storage%2f"><svg width="30" height="30" viewBox="0 0 512 512" fill="currentcolor" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"><path d="M449.446.0C483.971.0 512 28.03 512 62.554V449.446C512 483.97 483.97 512 449.446 512H62.554C28.03 512 0 483.97.0 449.446V62.554C0 28.03 28.029.0 62.554.0H449.446zM183.8767 87.9921h-62.034L230.6673 292.4508V424.0079h50.6655V292.4508L390.1575 87.9921H328.1233L256 238.2489z"/></svg></a></li></ul></footer><div id=tcomment></div><script src=https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/twikoo/1.4.18/twikoo.all.min.js></script><script>twikoo.init({envId:"https://twikoo.mletter.cn/",el:"#tcomment"})</script></article></main><footer class=footer><span>&copy; 2025 <a href=https://blog.mletter.cn/>太阳可以是蓝色</a></span> ·
+<span>Powered by
+<a href=https://gohugo.io/ rel="noopener noreferrer" target=_blank>Hugo</a> &
+        <a href=https://github.com/adityatelange/hugo-PaperMod/ rel=noopener target=_blank>PaperMod</a></span><br><span id=span style=color:#101011></span>
+<script type=text/javascript>function runtime(){const a=new Date("12/07/2020 12:50:18"),r=new Date,c=r.getTime()-a.getTime(),l=24*60*60*1e3,e=c/l,t=Math.floor(e),n=(e-t)*24,s=Math.floor(n),o=(n-s)*60,i=Math.floor(o),d=Math.floor((o-i)*60);document.getElementById("span").innerHTML="已运行: "+t+"天"+s+"小时"+i+"分"+d+"秒"}runtime(),setInterval(runtime,1e3)</script><br><font color=#101011>本站由 <a href=https://www.netlify.com/ rel="noopener noreferrer nofollow" target=_blank>Netlify</a> 提供计算服务, 由 <a href=https://www.netlify.com/ rel="noopener noreferrer nofollow" target=_blank>Netlify</a> 提供全站加速服务。</font><br></footer><a href=#top aria-label="go to top" title="Go to Top (Alt + G)" class=top-link id=top-link accesskey=g><svg viewBox="0 0 12 6" fill="currentcolor"><path d="M12 6H0l6-6z"/></svg>
+</a><script>const menu=document.getElementById("menu");menu&&(menu.scrollLeft=localStorage.getItem("menu-scroll-position"),menu.onscroll=function(){localStorage.setItem("menu-scroll-position",menu.scrollLeft)}),document.querySelectorAll('a[href^="#"]').forEach(e=>{e.addEventListener("click",function(e){e.preventDefault();const t=this.getAttribute("href").substr(1),n=document.querySelector(`[id='${decodeURIComponent(t)}']`);window.matchMedia("(prefers-reduced-motion: reduce)").matches?n.scrollIntoView():n.scrollIntoView({behavior:"smooth"}),t==="top"?history.replaceState(null,null," "):history.pushState(null,null,`#${t}`)})})</script><script>const mybutton=document.getElementById("top-link");window.onscroll=function(){document.body.scrollTop>800||document.documentElement.scrollTop>800?(mybutton.style.visibility="visible",mybutton.style.opacity="1"):(mybutton.style.visibility="hidden",mybutton.style.opacity="0")}</script><script>document.getElementById("theme-toggle").addEventListener("click",()=>{document.body.classList.contains("dark")?(document.body.classList.remove("dark"),localStorage.setItem("pref-theme","light")):(document.body.classList.add("dark"),localStorage.setItem("pref-theme","dark"))})</script></body></html>

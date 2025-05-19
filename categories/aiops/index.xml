@@ -1,247 +1,252 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
-    <channel>
-        <title>AIOPS on 太阳可以是蓝色</title>
-        <link>https://blog.mletter.cn/categories/aiops/</link>
-        <description>Recent content in AIOPS on 太阳可以是蓝色</description>
-        <generator>Hugo -- gohugo.io</generator>
-        <language>en-us</language>
-        <copyright>Live and learn. 🌱</copyright>
-        <lastBuildDate>Mon, 24 Mar 2025 00:00:00 +0000</lastBuildDate><atom:link href="https://blog.mletter.cn/categories/aiops/index.xml" rel="self" type="application/rss+xml" /><item>
-        <title>Prompt Engineering入门指南：如何让AI更懂你的需求</title>
-        <link>https://blog.mletter.cn/tech/aiops/prompt-engineering-guide/</link>
-        <pubDate>Mon, 24 Mar 2025 00:00:00 +0000</pubDate>
-        
-        <guid>https://blog.mletter.cn/tech/aiops/prompt-engineering-guide/</guid>
-        <description>&lt;img src="https://img11.360buyimg.com/ddimg/jfs/t1/278387/8/8864/84171/67e0ffdaFc7c004b0/e828ceb487b9e3a8.jpg" alt="Featured image of post Prompt Engineering入门指南：如何让AI更懂你的需求" /&gt;&lt;p&gt;&lt;em&gt;通过优化Prompt，让AI生成更精准的响应&lt;/em&gt;&lt;/p&gt;
-&lt;h2 id=&#34;一什么是prompt-engineering&#34;&gt;&lt;/h&gt;一、什么是Prompt Engineering？
-&lt;/h2&gt;&lt;p&gt;&lt;strong&gt;Prompt&lt;/strong&gt;（提示词）是用户与AI模型对话的&amp;quot;钥匙&amp;quot;，它决定了AI如何理解需求并生成响应。&lt;strong&gt;Prompt Engineering&lt;/strong&gt;则是通过系统化设计和优化输入内容，让AI输出更符合预期的结果。就像与人类专家沟通一样，一个优质的问题往往包含答案的种子。&lt;/p&gt;
-&lt;h3 id=&#34;优质prompt公式&#34;&gt;&lt;/h&gt;优质Prompt公式
-&lt;/h3&gt;&lt;p&gt;明确目标 + 结构化表达 + 具体约束 = 理想输出&lt;/p&gt;
-&lt;h2 id=&#34;四大核心优化原则&#34;&gt;&lt;/h&gt;四大核心优化原则
-&lt;/h2&gt;&lt;ul&gt;
-&lt;li&gt;明确自身定位和角色设计&lt;/li&gt;
-&lt;/ul&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-text&#34; data-lang=&#34;text&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;# 基础版（模糊）
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&amp;#34;帮我写Python爬虫&amp;#34;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;# 专家版（精确）
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;你是有10年Python爬虫经验的专家，需要完成：
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;1. 抓取京东商品页（示例URL）的价格和评论
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;2. 使用requests-html处理动态渲染
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;3. 实现异常重试机制（最大重试3次）
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;4. 数据保存为UTF-8编码的CSV
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;blockquote&gt;
-&lt;p&gt;&lt;strong&gt;优化效果&lt;/strong&gt;：成功率提升300% | 代码可读性提升50%&lt;/p&gt;&lt;/blockquote&gt;
-&lt;ul&gt;
-&lt;li&gt;对模型进行格式的约束&lt;/li&gt;
-&lt;/ul&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-text&#34; data-lang=&#34;text&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;# 通用请求
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&amp;#34;写斐波那契数列函数&amp;#34;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;# 专业级需求
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&amp;#34;&amp;#34;&amp;#34;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;编写Python函数需满足：
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;1. 函数名：fibonacci_sequence
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;2. 参数：n（生成数列长度）
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;3. 返回：前n项的元组
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;4. 添加类型注解
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;5. 包含docstring说明时间复杂度
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&amp;#34;&amp;#34;&amp;#34;
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;blockquote&gt;
-&lt;p&gt;&lt;strong&gt;关键点&lt;/strong&gt;：明确的格式要求可降低70%的返工率&lt;/p&gt;&lt;/blockquote&gt;
-&lt;ul&gt;
-&lt;li&gt;对模型进行引导&lt;/li&gt;
-&lt;/ul&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-json&#34; data-lang=&#34;json&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;// 请求示例
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  &lt;span class=&#34;nt&#34;&gt;&amp;#34;user_query&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;天气&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  &lt;span class=&#34;nt&#34;&gt;&amp;#34;context&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;用户位置：北京&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;当前季节：冬季&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;// 响应模板
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  &lt;span class=&#34;nt&#34;&gt;&amp;#34;response_type&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;weather_report&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  &lt;span class=&#34;nt&#34;&gt;&amp;#34;parameters&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;nt&#34;&gt;&amp;#34;location&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;nt&#34;&gt;&amp;#34;time_range&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;nt&#34;&gt;&amp;#34;temperature_range&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;&amp;#34;&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  &lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;blockquote&gt;
-&lt;p&gt;&lt;strong&gt;优势&lt;/strong&gt;：结构化模板使API响应规范度提升90%&lt;/p&gt;&lt;/blockquote&gt;
-&lt;ul&gt;
-&lt;li&gt;渐进修正&lt;/li&gt;
-&lt;/ul&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-text&#34; data-lang=&#34;text&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;第一轮：&amp;#34;用React实现登录表单&amp;#34;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;第二轮：&amp;#34;用React 18+TypeScript实现Material Design风格的登录表单，要求：1. 邮箱格式验证 2. 密码强度提示 3. 防重复提交 4. 使用Zustand进行状态管理&amp;#34;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;第三轮：&amp;#34;在第二轮基础上增加：1. Google reCAPTCHA集成 2. 错误处理显示Snackbar组件 3. 使用react-hook-form管理表单状态&amp;#34;
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;hr&gt;
-&lt;table&gt;
-  &lt;thead&gt;
-      &lt;tr&gt;
-          &lt;th&gt;版本&lt;/th&gt;
-          &lt;th&gt;需求演进&lt;/th&gt;
-      &lt;/tr&gt;
-  &lt;/thead&gt;
-  &lt;tbody&gt;
-      &lt;tr&gt;
-          &lt;td&gt;V1&lt;/td&gt;
-          &lt;td&gt;用React实现登录表单&lt;/td&gt;
-      &lt;/tr&gt;
-      &lt;tr&gt;
-          &lt;td&gt;V2&lt;/td&gt;
-          &lt;td&gt;React 18+TS实现Material Design风格表单，含邮箱验证/密码强度提示&lt;/td&gt;
-      &lt;/tr&gt;
-      &lt;tr&gt;
-          &lt;td&gt;V3&lt;/td&gt;
-          &lt;td&gt;增加Google reCAPTCHA集成/错误提示Snackbar/react-hook-form状态管理&lt;/td&gt;
-      &lt;/tr&gt;
-  &lt;/tbody&gt;
-&lt;/table&gt;
-&lt;p&gt;&lt;strong&gt;开发效率&lt;/strong&gt;：分阶段需求可使开发时间缩短40%&lt;/p&gt;
-&lt;h2 id=&#34;token&#34;&gt;&lt;/h&gt;Token
-&lt;/h2&gt;&lt;p&gt;大模型通过&lt;code&gt;Token&lt;/code&gt;来处理文本，模型理解了Token所谓之间的统计关系，并且需要基于已经输出的Token计算下一个Token的概率分布，并且选择最高的Token作为预测的结果。
-Token是模型理解和处理文本的最小单位，可能对应：&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;完整单词（如&amp;quot;Python&amp;quot;）&lt;/li&gt;
-&lt;li&gt;子词（如&amp;quot;un&amp;quot;+&amp;ldquo;able&amp;rdquo;→&amp;ldquo;unable&amp;rdquo;）&lt;/li&gt;
-&lt;li&gt;单个字符（常见于中日韩文本）&lt;/li&gt;
-&lt;li&gt;标点符号或空格&lt;/li&gt;
-&lt;/ul&gt;
-&lt;blockquote&gt;
-&lt;p&gt;特别注意：空格是会导致Token的耗费的!&lt;/p&gt;&lt;/blockquote&gt;
-&lt;h2 id=&#34;核心影响维度&#34;&gt;&lt;/h&gt;核心影响维度
-&lt;/h2&gt;&lt;ol&gt;
-&lt;li&gt;上下文窗口
-&lt;ul&gt;
-&lt;li&gt;GPT-3：2048 Tokens&lt;/li&gt;
-&lt;li&gt;GPT-4 Turbo：128,000 Tokens&lt;/li&gt;
-&lt;li&gt;Claude 3：200,000 Tokens （超过限制时会出现&amp;quot;截断遗忘&amp;quot;现象）&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;计算资源消耗
-&lt;ul&gt;
-&lt;li&gt;内存占用：与Token数量呈线性关系&lt;/li&gt;
-&lt;li&gt;计算复杂度：随Token数量呈平方级增长（注意力机制）&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;/ol&gt;
-&lt;blockquote&gt;
-&lt;p&gt;Token越大，可以输入的内容就越多，其实模型回答的效果不会随着Token数量线性增长。&lt;/p&gt;&lt;/blockquote&gt;
-&lt;h3 id=&#34;模型能力对比&#34;&gt;&lt;/h&gt;模型能力对比
-&lt;/h3&gt;&lt;table&gt;
-  &lt;thead&gt;
-      &lt;tr&gt;
-          &lt;th&gt;模型&lt;/th&gt;
-          &lt;th&gt;上下文窗口&lt;/th&gt;
-          &lt;th&gt;内存消耗&lt;/th&gt;
-          &lt;th&gt;计算复杂度&lt;/th&gt;
-      &lt;/tr&gt;
-  &lt;/thead&gt;
-  &lt;tbody&gt;
-      &lt;tr&gt;
-          &lt;td&gt;GPT-3&lt;/td&gt;
-          &lt;td&gt;2048 Tokens&lt;/td&gt;
-          &lt;td&gt;线性增长&lt;/td&gt;
-          &lt;td&gt;平方级增长&lt;/td&gt;
-      &lt;/tr&gt;
-      &lt;tr&gt;
-          &lt;td&gt;GPT-4 Turbo&lt;/td&gt;
-          &lt;td&gt;128K Tokens&lt;/td&gt;
-          &lt;td&gt;▲35%&lt;/td&gt;
-          &lt;td&gt;▲200%&lt;/td&gt;
-      &lt;/tr&gt;
-      &lt;tr&gt;
-          &lt;td&gt;Claude 3&lt;/td&gt;
-          &lt;td&gt;200K Tokens&lt;/td&gt;
-          &lt;td&gt;▲50%&lt;/td&gt;
-          &lt;td&gt;▲300%&lt;/td&gt;
-      &lt;/tr&gt;
-  &lt;/tbody&gt;
-&lt;/table&gt;
-&lt;h2 id=&#34;思维链chain-of-thought&#34;&gt;&lt;/h&gt;思维链（Chain-of-Thought）
-&lt;/h2&gt;&lt;p&gt;思维链是模型通过 显式展示推理步骤 得出最终答案的技术。不同于直接输出结果，其核心机制是：
-输入问题 → 分解推理步骤 → 验证中间结论 → 合成最终答案&lt;/p&gt;
-&lt;h3 id=&#34;普通回答-vs-思维链回答&#34;&gt;&lt;/h&gt;普通回答 vs 思维链回答
-&lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-text&#34; data-lang=&#34;text&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;# 直接回答
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&amp;#34;答案是42&amp;#34;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;# CoT模式
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&amp;#34;&amp;#34;&amp;#34;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;已知：
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;A=3，B=5
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;计算步骤：
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;1. A² = 3² = 9
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;2. B² = 5² = 25
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;3. 求和：9+25=34
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;4. 开平方：√34≈5.83
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;最终答案：5.83
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&amp;#34;&amp;#34;&amp;#34;
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;适用场景推荐&#34;&gt;&lt;/h&gt;适用场景推荐
-&lt;/h3&gt;&lt;ul&gt;
-&lt;li&gt;数学计算&lt;/li&gt;
-&lt;li&gt;法律条款解析&lt;/li&gt;
-&lt;li&gt;医疗诊断建议&lt;/li&gt;
-&lt;li&gt;金融风险评估&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;&lt;strong&gt;激活方式&lt;/strong&gt;：在Prompt中添加&lt;code&gt;请逐步分析&lt;/code&gt;、&lt;code&gt;展示推理过程&lt;/code&gt;等指令&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;实践建议：在需要高可靠性答案的场景（如数学计算、法律条款解析）中强制启用CoT模式，可通过在Prompt中添加`逐步分析，等结构化指令触发模型的链式思考能力。&lt;/p&gt;&lt;/blockquote&gt;
-&lt;h2 id=&#34;prompt分片超过token长度限制&#34;&gt;&lt;/h&gt;Prompt分片(超过Token长度限制)
-&lt;/h2&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 自然分界点检测函数&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;k&#34;&gt;def&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;detect_boundary&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;text&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;):&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;s2&#34;&gt;&amp;#34;&amp;#34;&amp;#34;智能分片逻辑&amp;#34;&amp;#34;&amp;#34;&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;n&#34;&gt;boundaries&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;\n&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;s1&#34;&gt;&amp;#39;。&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;s1&#34;&gt;&amp;#39;;&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;s1&#34;&gt;&amp;#39;段落结束&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;s1&#34;&gt;&amp;#39;章节标题&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;k&#34;&gt;return&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;any&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;b&lt;/span&gt; &lt;span class=&#34;ow&#34;&gt;in&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;text&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;for&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;b&lt;/span&gt; &lt;span class=&#34;ow&#34;&gt;in&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;boundaries&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;对于长文本的总结，首先需要分片总结然后再汇总进行总结&lt;/p&gt;
-&lt;div align=center&gt;
-&lt;div class=&#34;mermaid&#34;&gt;
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>AIOPS on 太阳可以是蓝色</title>
+    <link>https://blog.mletter.cn/categories/aiops/</link>
+    <description>Recent content in AIOPS on 太阳可以是蓝色</description>
+    <image>
+      <title>太阳可以是蓝色</title>
+      <url>https://blog.mletter.cn/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</url>
+      <link>https://blog.mletter.cn/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</link>
+    </image>
+    <generator>Hugo -- 0.145.0</generator>
+    <language>zh</language>
+    <lastBuildDate>Mon, 24 Mar 2025 00:00:00 +0000</lastBuildDate>
+    <atom:link href="https://blog.mletter.cn/categories/aiops/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Prompt Engineering入门指南：如何让AI更懂你的需求</title>
+      <link>https://blog.mletter.cn/tech/aiops/prompt-engineering-guide/</link>
+      <pubDate>Mon, 24 Mar 2025 00:00:00 +0000</pubDate>
+      <guid>https://blog.mletter.cn/tech/aiops/prompt-engineering-guide/</guid>
+      <description>Prompt（提示词）是用户与AI模型对话的&amp;#34;钥匙&amp;#34;，它决定了AI如何理解需求并生成响应。Prompt Engineering则是通过系统化设计和优化输入内容，让AI输出更符合预期的结果。就像与人类专家沟通一样，一个优质的问题往往包含答案的种子。</description>
+      <content:encoded><![CDATA[<p><em>通过优化Prompt，让AI生成更精准的响应</em></p>
+<h2 id="一什么是prompt-engineering">一、什么是Prompt Engineering？</h2>
+<p><strong>Prompt</strong>（提示词）是用户与AI模型对话的&quot;钥匙&quot;，它决定了AI如何理解需求并生成响应。<strong>Prompt Engineering</strong>则是通过系统化设计和优化输入内容，让AI输出更符合预期的结果。就像与人类专家沟通一样，一个优质的问题往往包含答案的种子。</p>
+<h3 id="优质prompt公式">优质Prompt公式</h3>
+<p>明确目标 + 结构化表达 + 具体约束 = 理想输出</p>
+<h2 id="四大核心优化原则">四大核心优化原则</h2>
+<ul>
+<li>明确自身定位和角色设计</li>
+</ul>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl"># 基础版（模糊）
+</span></span><span class="line"><span class="cl">&#34;帮我写Python爬虫&#34;
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"># 专家版（精确）
+</span></span><span class="line"><span class="cl">你是有10年Python爬虫经验的专家，需要完成：
+</span></span><span class="line"><span class="cl">1. 抓取京东商品页（示例URL）的价格和评论
+</span></span><span class="line"><span class="cl">2. 使用requests-html处理动态渲染
+</span></span><span class="line"><span class="cl">3. 实现异常重试机制（最大重试3次）
+</span></span><span class="line"><span class="cl">4. 数据保存为UTF-8编码的CSV
+</span></span></code></pre></div><blockquote>
+<p><strong>优化效果</strong>：成功率提升300% | 代码可读性提升50%</p></blockquote>
+<ul>
+<li>对模型进行格式的约束</li>
+</ul>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl"># 通用请求
+</span></span><span class="line"><span class="cl">&#34;写斐波那契数列函数&#34;
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"># 专业级需求
+</span></span><span class="line"><span class="cl">&#34;&#34;&#34;
+</span></span><span class="line"><span class="cl">编写Python函数需满足：
+</span></span><span class="line"><span class="cl">1. 函数名：fibonacci_sequence
+</span></span><span class="line"><span class="cl">2. 参数：n（生成数列长度）
+</span></span><span class="line"><span class="cl">3. 返回：前n项的元组
+</span></span><span class="line"><span class="cl">4. 添加类型注解
+</span></span><span class="line"><span class="cl">5. 包含docstring说明时间复杂度
+</span></span><span class="line"><span class="cl">&#34;&#34;&#34;
+</span></span></code></pre></div><blockquote>
+<p><strong>关键点</strong>：明确的格式要求可降低70%的返工率</p></blockquote>
+<ul>
+<li>对模型进行引导</li>
+</ul>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-json" data-lang="json"><span class="line"><span class="cl"><span class="c1">// 请求示例
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;user_query&#34;</span><span class="p">:</span> <span class="s2">&#34;天气&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;context&#34;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&#34;用户位置：北京&#34;</span><span class="p">,</span> <span class="s2">&#34;当前季节：冬季&#34;</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// 响应模板
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;response_type&#34;</span><span class="p">:</span> <span class="s2">&#34;weather_report&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;parameters&#34;</span><span class="p">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;location&#34;</span><span class="p">:</span> <span class="s2">&#34;&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;time_range&#34;</span><span class="p">:</span> <span class="s2">&#34;&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;temperature_range&#34;</span><span class="p">:</span> <span class="s2">&#34;&#34;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><blockquote>
+<p><strong>优势</strong>：结构化模板使API响应规范度提升90%</p></blockquote>
+<ul>
+<li>渐进修正</li>
+</ul>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">第一轮：&#34;用React实现登录表单&#34;
+</span></span><span class="line"><span class="cl">第二轮：&#34;用React 18+TypeScript实现Material Design风格的登录表单，要求：1. 邮箱格式验证 2. 密码强度提示 3. 防重复提交 4. 使用Zustand进行状态管理&#34;
+</span></span><span class="line"><span class="cl">第三轮：&#34;在第二轮基础上增加：1. Google reCAPTCHA集成 2. 错误处理显示Snackbar组件 3. 使用react-hook-form管理表单状态&#34;
+</span></span></code></pre></div><hr>
+<table>
+  <thead>
+      <tr>
+          <th>版本</th>
+          <th>需求演进</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>V1</td>
+          <td>用React实现登录表单</td>
+      </tr>
+      <tr>
+          <td>V2</td>
+          <td>React 18+TS实现Material Design风格表单，含邮箱验证/密码强度提示</td>
+      </tr>
+      <tr>
+          <td>V3</td>
+          <td>增加Google reCAPTCHA集成/错误提示Snackbar/react-hook-form状态管理</td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>开发效率</strong>：分阶段需求可使开发时间缩短40%</p>
+<h2 id="token">Token</h2>
+<p>大模型通过<code>Token</code>来处理文本，模型理解了Token所谓之间的统计关系，并且需要基于已经输出的Token计算下一个Token的概率分布，并且选择最高的Token作为预测的结果。
+Token是模型理解和处理文本的最小单位，可能对应：</p>
+<ul>
+<li>完整单词（如&quot;Python&quot;）</li>
+<li>子词（如&quot;un&quot;+&ldquo;able&rdquo;→&ldquo;unable&rdquo;）</li>
+<li>单个字符（常见于中日韩文本）</li>
+<li>标点符号或空格</li>
+</ul>
+<blockquote>
+<p>特别注意：空格是会导致Token的耗费的!</p></blockquote>
+<h2 id="核心影响维度">核心影响维度</h2>
+<ol>
+<li>上下文窗口
+<ul>
+<li>GPT-3：2048 Tokens</li>
+<li>GPT-4 Turbo：128,000 Tokens</li>
+<li>Claude 3：200,000 Tokens （超过限制时会出现&quot;截断遗忘&quot;现象）</li>
+</ul>
+</li>
+<li>计算资源消耗
+<ul>
+<li>内存占用：与Token数量呈线性关系</li>
+<li>计算复杂度：随Token数量呈平方级增长（注意力机制）</li>
+</ul>
+</li>
+</ol>
+<blockquote>
+<p>Token越大，可以输入的内容就越多，其实模型回答的效果不会随着Token数量线性增长。</p></blockquote>
+<h3 id="模型能力对比">模型能力对比</h3>
+<table>
+  <thead>
+      <tr>
+          <th>模型</th>
+          <th>上下文窗口</th>
+          <th>内存消耗</th>
+          <th>计算复杂度</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>GPT-3</td>
+          <td>2048 Tokens</td>
+          <td>线性增长</td>
+          <td>平方级增长</td>
+      </tr>
+      <tr>
+          <td>GPT-4 Turbo</td>
+          <td>128K Tokens</td>
+          <td>▲35%</td>
+          <td>▲200%</td>
+      </tr>
+      <tr>
+          <td>Claude 3</td>
+          <td>200K Tokens</td>
+          <td>▲50%</td>
+          <td>▲300%</td>
+      </tr>
+  </tbody>
+</table>
+<h2 id="思维链chain-of-thought">思维链（Chain-of-Thought）</h2>
+<p>思维链是模型通过 显式展示推理步骤 得出最终答案的技术。不同于直接输出结果，其核心机制是：
+输入问题 → 分解推理步骤 → 验证中间结论 → 合成最终答案</p>
+<h3 id="普通回答-vs-思维链回答">普通回答 vs 思维链回答</h3>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl"># 直接回答
+</span></span><span class="line"><span class="cl">&#34;答案是42&#34;
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"># CoT模式
+</span></span><span class="line"><span class="cl">&#34;&#34;&#34;
+</span></span><span class="line"><span class="cl">已知：
+</span></span><span class="line"><span class="cl">A=3，B=5
+</span></span><span class="line"><span class="cl">计算步骤：
+</span></span><span class="line"><span class="cl">1. A² = 3² = 9
+</span></span><span class="line"><span class="cl">2. B² = 5² = 25
+</span></span><span class="line"><span class="cl">3. 求和：9+25=34
+</span></span><span class="line"><span class="cl">4. 开平方：√34≈5.83
+</span></span><span class="line"><span class="cl">最终答案：5.83
+</span></span><span class="line"><span class="cl">&#34;&#34;&#34;
+</span></span></code></pre></div><h3 id="适用场景推荐">适用场景推荐</h3>
+<ul>
+<li>数学计算</li>
+<li>法律条款解析</li>
+<li>医疗诊断建议</li>
+<li>金融风险评估</li>
+</ul>
+<p><strong>激活方式</strong>：在Prompt中添加<code>请逐步分析</code>、<code>展示推理过程</code>等指令</p>
+<blockquote>
+<p>实践建议：在需要高可靠性答案的场景（如数学计算、法律条款解析）中强制启用CoT模式，可通过在Prompt中添加`逐步分析，等结构化指令触发模型的链式思考能力。</p></blockquote>
+<h2 id="prompt分片超过token长度限制">Prompt分片(超过Token长度限制)</h2>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="c1"># 自然分界点检测函数</span>
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">detect_boundary</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;&#34;&#34;智能分片逻辑&#34;&#34;&#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">boundaries</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span> <span class="s1">&#39;。&#39;</span><span class="p">,</span> <span class="s1">&#39;;&#39;</span><span class="p">,</span> <span class="s1">&#39;段落结束&#39;</span><span class="p">,</span> <span class="s1">&#39;章节标题&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="nb">any</span><span class="p">(</span><span class="n">b</span> <span class="ow">in</span> <span class="n">text</span> <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">boundaries</span><span class="p">)</span>
+</span></span></code></pre></div><p>对于长文本的总结，首先需要分片总结然后再汇总进行总结</p>
+<div align=center>
+<div class="mermaid">
     
 graph TD
-    A[原始输入] --&gt; B{Token计数&lt;br&gt;&lt;8000?}
-    B --&gt;|Yes| C[直接处理]
-    B --&gt;|No| D[分片策略选择]
-    D --&gt; E[结构分析]
-    D --&gt; F[滑动窗口]
-    D --&gt; G[关键提取]
-    E --&gt; H[层次分割]
-    F --&gt; I[重叠分块]
-    G --&gt; J[摘要生成]
-    H --&gt; K[分片处理]
-    I --&gt; K
-    J --&gt; K
-    K --&gt; L[结果聚合]
+    A[原始输入] --> B{Token计数<br><8000?}
+    B -->|Yes| C[直接处理]
+    B -->|No| D[分片策略选择]
+    D --> E[结构分析]
+    D --> F[滑动窗口]
+    D --> G[关键提取]
+    E --> H[层次分割]
+    F --> I[重叠分块]
+    G --> J[摘要生成]
+    H --> K[分片处理]
+    I --> K
+    J --> K
+    K --> L[结果聚合]
 
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;p&gt;简单的一些自然分界点是这样的,会以逗号、空格、换行等内容作为分界点。&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;k&#34;&gt;def&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;_is_boundary&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;bp&#34;&gt;self&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;token&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;):&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;	&lt;span class=&#34;s2&#34;&gt;&amp;#34;&amp;#34;&amp;#34;检测自然分界字符&amp;#34;&amp;#34;&amp;#34;&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;	&lt;span class=&#34;k&#34;&gt;return&lt;/span&gt; &lt;span class=&#34;bp&#34;&gt;self&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;encoder&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;decode&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;([&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;token&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;])&lt;/span&gt; &lt;span class=&#34;ow&#34;&gt;in&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;\n&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;s1&#34;&gt;&amp;#39;。&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;s1&#34;&gt;&amp;#39;;&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;s1&#34;&gt;&amp;#39;)&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;s1&#34;&gt;&amp;#39;]&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;s1&#34;&gt;&amp;#39;}&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;三大分片方法&#34;&gt;&lt;/h&gt;三大分片方法
-&lt;/h3&gt;&lt;ol&gt;
-&lt;li&gt;&lt;strong&gt;结构分析法&lt;/strong&gt;：按章节/段落切割&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;滑动窗口法&lt;/strong&gt;：保留20%重叠内容&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;关键提取法&lt;/strong&gt;：先摘要再处理
-&lt;strong&gt;最佳实践&lt;/strong&gt;：对学术论文等结构化文档，推荐组合使用结构分析+滑动窗口&lt;/li&gt;
-&lt;/ol&gt;
-&lt;h2 id=&#34;常见问题解答&#34;&gt;&lt;/h&gt;常见问题解答
-&lt;/h2&gt;&lt;p&gt;❓ &lt;strong&gt;Prompt越长越好吗？&lt;/strong&gt;&lt;br&gt;
-→ 不是！实验数据显示，超过300Token后效果提升不足5%，但成本增加200%&lt;/p&gt;
-&lt;p&gt;❓ &lt;strong&gt;中文Token更费资源吗？&lt;/strong&gt;&lt;br&gt;
-→ 是的！平均1个汉字=2.3个Token（相比英文1词≈1.3Token）&lt;/p&gt;
-&lt;p&gt;❓ &lt;strong&gt;如何验证Prompt效果？&lt;/strong&gt;&lt;br&gt;
-→ 推荐A/B测试法：准备3组不同Prompt，各测试50次，统计成功率/响应时间/满意度&lt;/p&gt;
-&lt;h2 id=&#34;结语成为prompt工程师的三大秘诀&#34;&gt;&lt;/h&gt;结语：成为Prompt工程师的三大秘诀
-&lt;/h2&gt;&lt;ol&gt;
-&lt;li&gt;&lt;strong&gt;场景化思考&lt;/strong&gt;：把自己想象成目标用户&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;迭代优化&lt;/strong&gt;：记录每次修改的效果数据&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;工具辅助&lt;/strong&gt;：使用Prompt调试工具（如PromptPerfect）
-立即尝试优化你的第一个Prompt，评论区欢迎交流你的实践心得！🚀&lt;/li&gt;
-&lt;/ol&gt;
-</description>
-        </item>
-        
-    </channel>
+</div>
+</div>
+<p>简单的一些自然分界点是这样的,会以逗号、空格、换行等内容作为分界点。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">_is_boundary</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">token</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">	<span class="s2">&#34;&#34;&#34;检测自然分界字符&#34;&#34;&#34;</span>
+</span></span><span class="line"><span class="cl">	<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">encoder</span><span class="o">.</span><span class="n">decode</span><span class="p">([</span><span class="n">token</span><span class="p">])</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span> <span class="s1">&#39;。&#39;</span><span class="p">,</span> <span class="s1">&#39;;&#39;</span><span class="p">,</span> <span class="s1">&#39;)&#39;</span><span class="p">,</span> <span class="s1">&#39;]&#39;</span><span class="p">,</span> <span class="s1">&#39;}&#39;</span><span class="p">)</span>
+</span></span></code></pre></div><h3 id="三大分片方法">三大分片方法</h3>
+<ol>
+<li><strong>结构分析法</strong>：按章节/段落切割</li>
+<li><strong>滑动窗口法</strong>：保留20%重叠内容</li>
+<li><strong>关键提取法</strong>：先摘要再处理
+<strong>最佳实践</strong>：对学术论文等结构化文档，推荐组合使用结构分析+滑动窗口</li>
+</ol>
+<h2 id="常见问题解答">常见问题解答</h2>
+<p>❓ <strong>Prompt越长越好吗？</strong><br>
+→ 不是！实验数据显示，超过300Token后效果提升不足5%，但成本增加200%</p>
+<p>❓ <strong>中文Token更费资源吗？</strong><br>
+→ 是的！平均1个汉字=2.3个Token（相比英文1词≈1.3Token）</p>
+<p>❓ <strong>如何验证Prompt效果？</strong><br>
+→ 推荐A/B测试法：准备3组不同Prompt，各测试50次，统计成功率/响应时间/满意度</p>
+<h2 id="结语成为prompt工程师的三大秘诀">结语：成为Prompt工程师的三大秘诀</h2>
+<ol>
+<li><strong>场景化思考</strong>：把自己想象成目标用户</li>
+<li><strong>迭代优化</strong>：记录每次修改的效果数据</li>
+<li><strong>工具辅助</strong>：使用Prompt调试工具（如PromptPerfect）
+立即尝试优化你的第一个Prompt，评论区欢迎交流你的实践心得！🚀</li>
+</ol>
+]]></content:encoded>
+    </item>
+  </channel>
 </rss>

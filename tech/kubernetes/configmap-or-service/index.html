@@ -1,1017 +1,198 @@
-<!DOCTYPE html>
-<html lang="en-us" dir="ltr">
-    <head><meta charset='utf-8'>
-<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='ConfigMap 是一种 API 对象，用来将非机密性的数据保存到键值对中。使用时， Pods 可以将其用作环境变量、命令行参数或者存储卷中的配置文件。'>
-<title>ConfigMap和Secret的使用</title>
-
-<link rel='canonical' href='https://blog.mletter.cn/tech/kubernetes/configmap-or-service/'>
-
-<link rel="stylesheet" href="https://blog.mletter.cn/scss/style.min.32f495b331a3a2ec798b5794653a9845d7022a01e2ae16546c6a98dfe13b68b4.css"><meta property='og:title' content='ConfigMap和Secret的使用'>
-<meta property='og:description' content='ConfigMap 是一种 API 对象，用来将非机密性的数据保存到键值对中。使用时， Pods 可以将其用作环境变量、命令行参数或者存储卷中的配置文件。'>
-<meta property='og:url' content='https://blog.mletter.cn/tech/kubernetes/configmap-or-service/'>
-<meta property='og:site_name' content='太阳可以是蓝色'>
-<meta property='og:type' content='article'><meta property='article:section' content='Posts' /><meta property='article:tag' content='kubernetes' /><meta property='article:published_time' content='2023-02-14T00:00:00&#43;00:00'/><meta property='article:modified_time' content='2023-02-14T00:00:00&#43;00:00'/><meta property='og:image' content='https://img14.360buyimg.com/ddimg/jfs/t1/164569/9/40677/14419/65bc6e4cFa1d8c0c3/5ccf7e6caadc9b83.jpg' />
-<meta name="twitter:title" content="ConfigMap和Secret的使用">
-<meta name="twitter:description" content="ConfigMap 是一种 API 对象，用来将非机密性的数据保存到键值对中。使用时， Pods 可以将其用作环境变量、命令行参数或者存储卷中的配置文件。"><meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:image" content='https://img14.360buyimg.com/ddimg/jfs/t1/164569/9/40677/14419/65bc6e4cFa1d8c0c3/5ccf7e6caadc9b83.jpg' />
-    <link rel="shortcut icon" href="wechat.svg" />
-<style>
-  :root {
-       
-      --sys-font-family: -apple-system, "PingFang SC", Georgia, 'Nimbus Roman No9 L', 'Hiragino Sans GB', 'Noto Serif SC', 'Microsoft Yahei', 'WenQuanYi Micro Hei', 'ST Heiti', sans-serif;
-      --code-font-family: "JetBrains Mono", Menlo, Monaco, Consolas, "Courier New";
-      --article-font-family: -apple-system, "PingFang SC", var(--base-font-family);
-  }
-</style>
-
-
-
-
-
-
-<script src="https://blog.mletter.cn/view-image.min.js"></script>
-
-<script>
-  window.ViewImage && ViewImage.init('.article-content img');
-</script>
-
-
-
-<link rel="stylesheet" href="https://cdn.staticfile.net/highlight.js/11.9.0/styles/tokyo-night-dark.min.css">
-<script src="https://lf26-cdn-tos.bytecdntp.com/cdn/expire-1-M/highlight.js/11.4.0/highlight.min.js"></script>
-<script src="https://cdn.staticfile.net/highlight.js/11.9.0/es/languages/go.min.js"></script>
-
-<script>hljs.initHighlightingOnLoad();</script>
-<script>document.addEventListener('DOMContentLoaded', (event) => {document.querySelectorAll('pre code').forEach((el) => {hljs.highlightElement(el);});});</script>
-
-
-
-
-
-
-<script async src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
-<script>
-    mermaid.init(undefined, '.language-mermaid');
-</script>
-    </head>
-    <body class="
-    article-page
-    ">
-    <script>
-        (function() {
-            const colorSchemeKey = 'StackColorScheme';
-            if(!localStorage.getItem(colorSchemeKey)){
-                localStorage.setItem(colorSchemeKey, "auto");
-            }
-        })();
-    </script><script>
-    (function() {
-        const colorSchemeKey = 'StackColorScheme';
-        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
-        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
-
-        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
-            
-
-            document.documentElement.dataset.scheme = 'dark';
-        } else {
-            document.documentElement.dataset.scheme = 'light';
-        }
-    })();
-</script>
-<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
-    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
-        <span class="hamburger-box">
-            <span class="hamburger-inner"></span>
-        </span>
-    </button>
-
-    <header>
-        
-            
-            <figure class="site-avatar">
-                <a href="https://blog.mletter.cn/">
-                
-                    <img src="https://img14.360buyimg.com/ddimg/jfs/t1/77628/23/27254/26944/66bc1a36Fc596606a/d912965b8bba22af.jpg" width="300" height="300" class="site-logo" loading="lazy" alt="Avatar">
-                
-                </a>
-                
-                    <span class="emoji">🍥</span>
-                
-            </figure>
-            
-        
-        
-        <div class="site-meta">
-            <h1 class="site-name"><a href="https://blog.mletter.cn/">太阳可以是蓝色</a></h1>
-            <h2 class="site-description">Live and learn. 🌱</h2>
-        </div>
-    </header><ol class="menu" id="main-menu">
-        
-        
-        
-        <li >
-            <a href='https://blog.mletter.cn/search/' >
-                
-                
-                
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <circle cx="10" cy="10" r="7" />
-  <line x1="21" y1="21" x2="15" y2="15" />
-</svg>
-
-
-
-                
-                <span>搜索</span>
-            </a>
-        </li>
-        
-        
-        <li >
-            <a href='https://blog.mletter.cn/' >
-                
-                
-                
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <polyline points="5 12 3 12 12 3 21 12 19 12" />
-  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
-  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
-</svg>
-
-
-
-                
-                <span>首页</span>
-            </a>
-        </li>
-        
-        
-        <li >
-            <a href='https://blog.mletter.cn/posts' >
-                
-                
-                
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-inbox" width="24" height="24" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 4m0 2a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2z" /><path d="M4 13h3l3 3h4l3 -3h3" /></svg>
-                
-                <span>文章</span>
-            </a>
-        </li>
-        
-        
-        <li >
-            <a href='https://blog.mletter.cn/archives' >
-                
-                
-                
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <rect x="3" y="4" width="18" height="4" rx="2" />
-  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
-  <line x1="10" y1="12" x2="14" y2="12" />
-</svg>
-
-
-
-                
-                <span>归档</span>
-            </a>
-        </li>
-        
-        
-        <li >
-            <a href='https://mletter.cn' target="_blank">
-                
-                
-                
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-health-recognition" width="24" height="24" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 8v-2a2 2 0 0 1 2 -2h2" /><path d="M4 16v2a2 2 0 0 0 2 2h2" /><path d="M16 4h2a2 2 0 0 1 2 2v2" /><path d="M16 20h2a2 2 0 0 0 2 -2v-2" /><path d="M8.603 9.61a2.04 2.04 0 0 1 2.912 0l.485 .39l.5 -.396a2.035 2.035 0 0 1 2.897 .007a2.104 2.104 0 0 1 0 2.949l-3.397 3.44l-3.397 -3.44a2.104 2.104 0 0 1 0 -2.95z" /></svg>
-                
-                <span>主页</span>
-            </a>
-        </li>
-        
-        
-        <li >
-            <a href='https://pic.mletter.cn' target="_blank">
-                
-                
-                
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-photo-cog" width="24" height="24" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M15 8h.01" /><path d="M12 21h-6a3 3 0 0 1 -3 -3v-12a3 3 0 0 1 3 -3h12a3 3 0 0 1 3 3v6" /><path d="M3 16l5 -5c.928 -.893 2.072 -.893 3 0l3 3" /><path d="M14 14l1 -1c.48 -.461 1.016 -.684 1.551 -.67" /><path d="M19.001 19m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" /><path d="M19.001 15.5v1.5" /><path d="M19.001 21v1.5" /><path d="M22.032 17.25l-1.299 .75" /><path d="M17.27 20l-1.3 .75" /><path d="M15.97 17.25l1.3 .75" /><path d="M20.733 20l1.3 .75" /></svg>
-                
-                <span>相册</span>
-            </a>
-        </li>
-        
-        
-        <li >
-            <a href='https://blog.mletter.cn/friends' >
-                
-                
-                
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
-  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
-</svg>
-
-
-
-                
-                <span>友联</span>
-            </a>
-        </li>
-        
-        
-        <li >
-            <a href='https://blog.mletter.cn/about' >
-                
-                
-                
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <circle cx="12" cy="7" r="4" />
-  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
-</svg>
-
-
-
-                
-                <span>关于</span>
-            </a>
-        </li>
-        
-
-        <div class="menu-bottom-section">
-                
-            
-            
-            
-                <li id="dark-mode-toggle">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <circle cx="8" cy="12" r="2" />
-  <rect x="2" y="6" width="20" height="12" rx="6" />
-</svg>
-
-
-
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <circle cx="16" cy="12" r="2" />
-  <rect x="2" y="6" width="20" height="12" rx="6" />
-</svg>
-
-
-
-                    <span>暗色模式</span>
-                </li>
-            
-        </div>
-    </ol>
-</aside>
-
-    <aside class="sidebar right-sidebar sticky">
-        
-            
-                
-    <section class="widget archives">
-        <div class="widget-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <line x1="5" y1="9" x2="19" y2="9" />
-  <line x1="5" y1="15" x2="19" y2="15" />
-  <line x1="11" y1="4" x2="7" y2="20" />
-  <line x1="17" y1="4" x2="13" y2="20" />
-</svg>
-
-
-
-        </div>
-        <h2 class="widget-title section-title">目录</h2>
-        
-        <div class="widget--toc">
-            <nav id="TableOfContents">
-  <ul>
-    <li><a href="#configmap">ConfigMap</a>
-      <ul>
-        <li><a href="#通过环境变量的方式使用configmap">通过环境变量的方式使用ConfigMap</a></li>
-        <li><a href="#将configmap当做文件使用">将ConfigMap当做文件使用</a></li>
-        <li><a href="#被挂载的configmap内容会被自动更新">被挂载的ConfigMap内容会被自动更新</a></li>
-      </ul>
-    </li>
-    <li><a href="#secret">Secret</a>
-      <ul>
-        <li><a href="#secret的使用">Secret的使用</a></li>
-        <li><a href="#opaque-secret的使用">Opaque Secret的使用</a></li>
-        <li><a href="#通过环境变量挂载secret">通过环境变量挂载Secret</a></li>
-        <li><a href="#通过volume挂载">通过Volume挂载</a></li>
-        <li><a href="#kubernetesiodockerconfigjson"><a href="http://kubernetes.io/dockerconfigjson">kubernetes.io/dockerconfigjson</a></a></li>
-      </ul>
-    </li>
-    <li><a href="#serviceaccount">ServiceAccount</a>
-      <ul>
-        <li><a href="#实现原理">实现原理</a></li>
-      </ul>
-    </li>
-  </ul>
-</nav>
-        </div>
-    </section>
-
-            
-        
-    </aside>
-
-
-            <main class="main full-width">
-    <article class="has-image main-article">
-    <header class="article-header">
-        <div class="article-image">
-            <a href="https://blog.mletter.cn/tech/kubernetes/configmap-or-service/">
-                
-                    <img src="https://img14.360buyimg.com/ddimg/jfs/t1/164569/9/40677/14419/65bc6e4cFa1d8c0c3/5ccf7e6caadc9b83.jpg" loading="lazy" alt="Featured image of post ConfigMap和Secret的使用" />
-                
-            </a>
-        </div>
-    
-
-    <div class="article-details">
-    
-    <header class="article-category">
-        
-            <a href="https://blog.mletter.cn/categories/kubernetes/" >
-                Kubernetes
-            </a>
-        
-    </header>
-    
-
-    <div class="article-title-wrapper">
-        <h2 class="article-title">
-            <a href="https://blog.mletter.cn/tech/kubernetes/configmap-or-service/">ConfigMap和Secret的使用</a>
-        </h2>
-    
-        
-        <h3 class="article-subtitle">
-            ConfigMap 是一种 API 对象，用来将非机密性的数据保存到键值对中。使用时， Pods 可以将其用作环境变量、命令行参数或者存储卷中的配置文件。
-        </h3>
-        
-    </div>
-
-    
-    
-    
-    
-    <footer class="article-time">
-        
-            <div>
-                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
-  <circle cx="18" cy="18" r="4" />
-  <path d="M15 3v4" />
-  <path d="M7 3v4" />
-  <path d="M3 11h16" />
-  <path d="M18 16.496v1.504l1 1" />
-</svg>
-                <time class="article-time--published">Feb 14, 2023</time>
-            </div>
-        
-
-        
-            <div>
-                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <circle cx="12" cy="12" r="9" />
-  <polyline points="12 7 12 12 15 15" />
-</svg>
-
-
-
-                <time class="article-time--reading">
-                    阅读时长: 7 分钟
-                </time>
-            </div>
-        
-    </footer>
-    
-
-    
-</div>
-
-</header>
-
-    <section class="article-content">
-    
-    
-    <h2 id="configmap"></h>ConfigMap
-</h2><p>ConfigMap 是一种 API 对象，用来将非机密性的数据保存到键值对中。使用时， <a class="link" href="https://kubernetes.io/zh-cn/docs/concepts/workloads/pods/"  target="_blank" rel="noopener"
-    >Pods</a> 可以将其用作环境变量、命令行参数或者存储卷中的配置文件。</p>
-<p>ConfigMap 将你的环境配置信息和 <a class="link" href="https://kubernetes.io/zh-cn/docs/reference/glossary/?all=true#term-image"  target="_blank" rel="noopener"
-    >容器镜像</a> 解耦，便于应用配置的修改。
-ConfigMap 在设计上不是用来保存大量数据的。在 ConfigMap 中保存的数据不可超过1MiB(这其实是ETCD的要求哈哈哈)。如果你需要保存超出此尺寸限制的数据，你可能希望考虑挂载存储卷 或者使用独立的数据库或者文件服务。</p>
-<p>这是一个 ConfigMap 的示例，它的一些键只有一个值，其他键的值看起来像是 配置的片段格式。</p>
-<ul>
-<li>通过<code>Key</code>和<code>Value</code>这种键值对来进行写入数据</li>
-</ul>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">v1</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">ConfigMap</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">metadata</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">game-demo</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">data</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c"># 类属性键；每一个键都映射到一个简单的值</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">player_initial_lives</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;3&#34;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">ui_properties_file_name</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;user-interface.properties&#34;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c"># 类文件键,一般用来保存一个文件到指定目录</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">game.properties</span><span class="p">:</span><span class="w"> </span><span class="p">|</span><span class="sd">
-</span></span></span><span class="line"><span class="cl"><span class="sd">    enemy.types=aliens,monsters
-</span></span></span><span class="line"><span class="cl"><span class="sd">    player.maximum-lives=5    </span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">user-interface.properties</span><span class="p">:</span><span class="w"> </span><span class="p">|</span><span class="sd">
-</span></span></span><span class="line"><span class="cl"><span class="sd">    color.good=purple
-</span></span></span><span class="line"><span class="cl"><span class="sd">    color.bad=yellow
-</span></span></span><span class="line"><span class="cl"><span class="sd">    allow.textmode=true</span><span class="w">
-</span></span></span></code></pre></div><p>你可以使用四种方式来使用 ConfigMap 配置 Pod 中的容器：</p>
-<ol>
-<li>在容器命令和参数内</li>
-<li>容器的环境变量</li>
-<li>在只读卷里面添加一个文件，让应用来读取</li>
-<li>编写代码在 Pod 中运行，使用 Kubernetes API 来读取 ConfigMap</li>
-</ol>
-<h3 id="通过环境变量的方式使用configmap"></h>通过环境变量的方式使用ConfigMap
-</h3><p>首先我们创建一个<code>Deployment</code>然后通过Env环境变量的方式进行使用<code>ConfigMap</code></p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">apps/v1</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">Deployment</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">metadata</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">nginx-web-beijing</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l">default</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">labels</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">k8s-app</span><span class="p">:</span><span class="w"> </span><span class="l">nginx-web</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">zone</span><span class="p">:</span><span class="w"> </span><span class="l">beijing</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">spec</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">replicas</span><span class="p">:</span><span class="w"> </span><span class="m">1</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">selector</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">matchLabels</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">k8s-app</span><span class="p">:</span><span class="w"> </span><span class="l">nginx-web</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">template</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">metadata</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">nginx-web-beijing</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">labels</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">k8s-app</span><span class="p">:</span><span class="w"> </span><span class="l">nginx-web</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">spec</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">containers</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">vue-shop-beijing</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l">nginx:latest</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">resources</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="nt">requests</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">              </span><span class="nt">memory</span><span class="p">:</span><span class="w"> </span><span class="l">100Mi</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">              </span><span class="nt">cpu</span><span class="p">:</span><span class="w"> </span><span class="l">10m</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="c"># 通过环境变量的方式进行挂载</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">env</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">            </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">PLAYER_INITIAL_LIVES</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">              </span><span class="nt">valueFrom</span><span class="p">:</span><span class="w"> 
-</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="nt">configMapKeyRef</span><span class="p">:</span><span class="w">  
-</span></span></span><span class="line"><span class="cl"><span class="w">                  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">game-demo </span><span class="w"> </span><span class="c"># 表示当前键来自game-demo这个ConfigMap</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">                  </span><span class="nt">key</span><span class="p">:</span><span class="w"> </span><span class="l">player_initial_lives</span><span class="w"> </span><span class="c"># 表示取player_initial_lives这个键的内容</span><span class="w">
-</span></span></span></code></pre></div><p>然后我们可以进入到Pod内部进行<code>echo</code>挂载的变量名查看是否有输出</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">root@nginx-web-beijing-d6d994854-d6tjk:/# <span class="nb">echo</span> <span class="nv">$PLAYER_INITIAL_LIVES</span>
-</span></span><span class="line"><span class="cl"><span class="m">3</span>
-</span></span></code></pre></div><h3 id="将configmap当做文件使用"></h>将ConfigMap当做文件使用
-</h3><ol>
-<li>创建一个 ConfigMap 对象或者使用现有的 ConfigMap 对象。多个 Pod 可以引用同一个 ConfigMap。</li>
-<li>修改 Pod 定义，在 <code>spec.volumes[]</code> 下添加一个卷。 为该卷设置任意名称，之后将 <code>spec.volumes[].configMap.name</code> 字段设置为对你的 ConfigMap 对象的引用。</li>
-<li>为每个需要该 ConfigMap 的容器添加一个 <code>.spec.containers[].volumeMounts[]</code>。 设置 <code>.spec.containers[].volumeMounts[].readOnly=true</code> 并将 <code>.spec.containers[].volumeMounts[].mountPath</code> 设置为一个未使用的目录名， ConfigMap 的内容将出现在该目录中。</li>
-<li>更改你的镜像或者命令行，以便程序能够从该目录中查找文件。ConfigMap 中的每个 <code>data</code> 键会变成 <code>mountPath</code> 下面的一个文件名。</li>
-</ol>
-<p>创建一个挂载ConfigMap的<code>Deployment</code></p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">apps/v1</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">Deployment</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">metadata</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">nginx-web-beijing</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l">default</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">labels</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">k8s-app</span><span class="p">:</span><span class="w"> </span><span class="l">nginx-web</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">zone</span><span class="p">:</span><span class="w"> </span><span class="l">beijing</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">spec</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">replicas</span><span class="p">:</span><span class="w"> </span><span class="m">1</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">selector</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">matchLabels</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">k8s-app</span><span class="p">:</span><span class="w"> </span><span class="l">nginx-web</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">template</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">metadata</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">nginx-web-beijing</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">labels</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">k8s-app</span><span class="p">:</span><span class="w"> </span><span class="l">nginx-web</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">spec</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">containers</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">vue-shop-beijing</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l">nginx:latest</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">resources</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="nt">requests</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">              </span><span class="nt">memory</span><span class="p">:</span><span class="w"> </span><span class="l">100Mi</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">              </span><span class="nt">cpu</span><span class="p">:</span><span class="w"> </span><span class="l">10m</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">volumeMounts</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">          </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">vue-config</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="nt">mountPath</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;/etc/vue-config&#34;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="nt">readOnly</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">volumes</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">vue-config</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">configMap</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">game-demo</span><span class="w">
-</span></span></span></code></pre></div><p>进入容器中查看<code>/etc/vue-config</code>目录下是否有配置文件</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">root@nginx-web-beijing-5649b8f646-pzmm4:/etc/vue-config# ls
-</span></span><span class="line"><span class="cl">service-interface.properties
-</span></span><span class="line"><span class="cl">root@nginx-web-beijing-5649b8f646-pzmm4:/etc/vue-config# cat service-interface.properties  
-</span></span><span class="line"><span class="cl">port: <span class="m">4000</span>
-</span></span></code></pre></div><p>如果 Pod 中有多个容器，则每个容器都需要自己的 <code>volumeMounts</code> 块，但针对每个 ConfigMap，你只需要设置一个 <code>spec.volumes</code> 块。</p>
-<h3 id="被挂载的configmap内容会被自动更新"></h>被挂载的ConfigMap内容会被自动更新
-</h3><p>当卷中使用的 ConfigMap 被更新时，所投射的键最终也会被更新。 kubelet 组件会在每次周期性同步时检查所挂载的 ConfigMap 是否为最新。 不过，kubelet 使用的是其本地的高速缓存来获得 ConfigMap 的当前值。 高速缓存的类型可以通过 <a class="link" href="https://kubernetes.io/zh-cn/docs/reference/config-api/kubelet-config.v1beta1/"  target="_blank" rel="noopener"
-    >KubeletConfiguration 结构</a>. 的 <code>ConfigMapAndSecretChangeDetectionStrategy</code> 字段来配置。</p>
-<p>ConfigMap 既可以通过 watch 操作实现内容传播（默认形式），也可实现基于 TTL 的缓存，还可以直接经过所有请求重定向到 API 服务器。 因此，从 ConfigMap 被更新的那一刻算起，到新的主键被投射到 Pod 中去， 这一时间跨度可能与 kubelet 的同步周期加上高速缓存的传播延迟相等。 这里的传播延迟取决于所选的高速缓存类型 （分别对应 watch 操作的传播延迟、高速缓存的 TTL 时长或者 0）。</p>
-<blockquote>
-<p>以环境变量方式使用的 ConfigMap 数据不会被自动更新。 更新这些数据需要重新启动 Pod。</p></blockquote>
-<h2 id="secret"></h>Secret
-</h2><p>Secret 是一种包含少量敏感信息例如密码、令牌或密钥的对象。 这样的信息可能会被放在 <a class="link" href="https://kubernetes.io/zh-cn/docs/concepts/workloads/pods/"  target="_blank" rel="noopener"
-    >Pod</a> 规约中或者镜像中。 使用 Secret 意味着你不需要在应用程序代码中包含机密数据。</p>
-<p>由于创建 Secret 可以独立于使用它们的 Pod， 因此在创建、查看和编辑 Pod 的工作流程中暴露 Secret（及其数据）的风险较小。 Kubernetes 和在集群中运行的应用程序也可以对 Secret 采取额外的预防措施， 例如避免将机密数据写入非易失性存储。</p>
-<p>Secret 类似于 <a class="link" href="https://kubernetes.io/zh-cn/docs/tasks/configure-pod-container/configure-pod-configmap/"  target="_blank" rel="noopener"
-    >ConfigMap</a> 但专门用于保存机密数据。</p>
-<blockquote>
-<p><strong>注意</strong>: 默认情况下，Kubernetes Secret 未加密地存储在 API 服务器的底层数据存储（etcd）中。 任何拥有 API 访问权限的人都可以检索或修改 Secret，任何有权访问 etcd 的人也可以。 此外，任何有权限在命名空间中创建 Pod 的人都可以使用该访问权限读取该命名空间中的任何 Secret； 这包括间接访问，例如创建 Deployment 的能力。</p></blockquote>
-<p>为了安全地使用 Secret，请至少执行以下步骤：</p>
-<ol>
-<li>为 Secret <a class="link" href="https://kubernetes.io/zh-cn/docs/tasks/administer-cluster/encrypt-data/"  target="_blank" rel="noopener"
-    >启用静态加密</a>。</li>
-<li>以最小特权访问 Secret 并<a class="link" href="https://kubernetes.io/zh-cn/docs/reference/access-authn-authz/authorization/"  target="_blank" rel="noopener"
-    >启用或配置 RBAC 规则</a>。</li>
-<li>限制 Secret 对特定容器的访问。</li>
-<li><a class="link" href="https://secrets-store-csi-driver.sigs.k8s.io/concepts.html#provider-for-the-secrets-store-csi-driver"  target="_blank" rel="noopener"
-    >考虑使用外部 Secret 存储驱动</a>。</li>
-</ol>
-<h3 id="secret的使用"></h>Secret的使用
-</h3><p>Pod 可以用三种方式之一来使用 Secret：</p>
-<ul>
-<li>作为挂载到一个或多个容器上的<a class="link" href="https://kubernetes.io/zh-cn/docs/concepts/storage/volumes/"  target="_blank" rel="noopener"
-    >卷</a> 中的<a class="link" href="https://kubernetes.io/zh-cn/docs/concepts/configuration/secret/#using-secrets-as-files-from-a-pod"  target="_blank" rel="noopener"
-    >文件</a>。</li>
-<li>作为<a class="link" href="https://kubernetes.io/zh-cn/docs/concepts/configuration/secret/#using-secrets-as-environment-variables"  target="_blank" rel="noopener"
-    >容器的环境变量</a>。</li>
-<li>由 <a class="link" href="https://kubernetes.io/zh-cn/docs/concepts/configuration/secret/#using-imagepullsecrets"  target="_blank" rel="noopener"
-    >kubelet 在为 Pod 拉取镜像时使用</a>。</li>
-</ul>
-<p>Kubernetes控制面也使用 Secret； 例如，<a class="link" href="https://kubernetes.io/zh-cn/docs/concepts/configuration/secret/#bootstrap-token-secrets"  target="_blank" rel="noopener"
-    >引导令牌 Secret</a> 是一种帮助自动化节点注册的机制。</p>
-<p><code>Secret</code> 主要使用的有以下三种类型：</p>
-<ul>
-<li><code>Opaque</code>：base64 编码格式的 Secret，用来存储密码、密钥等；但数据也可以通过<code>base64 –decode</code>解码得到原始数据，所有加密性很弱。</li>
-<li><code>kubernetes.io/dockerconfigjson</code>：用来存储私有<code>docker registry</code>的认证信息。</li>
-<li><code>kubernetes.io/service-account-token</code>：用于 <code>ServiceAccount</code>, ServiceAccount 创建时 Kubernetes 会默认创建一个对应的 Secret 对象，Pod 如果使用了 ServiceAccount，对应的 Secret 会自动挂载到 Pod 目录 <code>/run/secrets/kubernetes.io/serviceaccount</code> 中。</li>
-<li><code>bootstrap.kubernetes.io/token</code>：用于节点接入集群的校验的 Secret</li>
-</ul>
-<h3 id="opaque-secret的使用"></h>Opaque Secret的使用
-</h3><p><code>Opaque</code> 类型的数据是一个 map 类型，要求 value 必须是 <code>base64</code> 编码格式，比如我们来创建一个用户名为 admin，密码为 admin321 的 <code>Secret</code> 对象，首先我们需要先把用户名和密码做 <code>base64</code> 编码：</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">[</span>root@Online-Beijing-master1 ~<span class="o">]</span><span class="c1"># echo -n &#34;admin321&#34; | base64</span>
-</span></span><span class="line"><span class="cl"><span class="nv">YWRtaW4zMjE</span><span class="o">=</span>
-</span></span></code></pre></div><p>然后我们就可以利用上面编码过后的数据来编写一个 YAML 文件：(opaque-demo.yaml)</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">v1</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">Secret</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">metadata</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">base-user-info</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l">Opaque</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">data</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">username</span><span class="p">:</span><span class="w"> </span><span class="l">YWRtaW4=</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">password</span><span class="p">:</span><span class="w"> </span><span class="l">YWRtaW4zMjE=</span><span class="w">
-</span></span></span></code></pre></div><p>创建好 <code>Secret</code>对象后，有两种方式来使用它：</p>
-<ul>
-<li>以环境变量的形式</li>
-<li>以Volume的形式挂载</li>
-</ul>
-<h3 id="通过环境变量挂载secret"></h>通过环境变量挂载Secret
-</h3><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">apps/v1</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">Deployment</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">metadata</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">nginx-web-beijing</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l">default</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">labels</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">k8s-app</span><span class="p">:</span><span class="w"> </span><span class="l">nginx-web</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">zone</span><span class="p">:</span><span class="w"> </span><span class="l">beijing</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">spec</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">replicas</span><span class="p">:</span><span class="w"> </span><span class="m">1</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">selector</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">matchLabels</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">k8s-app</span><span class="p">:</span><span class="w"> </span><span class="l">nginx-web</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">template</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">metadata</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">nginx-web-beijing</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">labels</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">k8s-app</span><span class="p">:</span><span class="w"> </span><span class="l">nginx-web</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">spec</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">containers</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">vue-shop-beijing</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l">nginx:latest</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">resources</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="nt">requests</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">              </span><span class="nt">memory</span><span class="p">:</span><span class="w"> </span><span class="l">100Mi</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">              </span><span class="nt">cpu</span><span class="p">:</span><span class="w"> </span><span class="l">10m</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">env</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">          </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">USERNAME</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="nt">valueFrom</span><span class="p">:</span><span class="w"> 
-</span></span></span><span class="line"><span class="cl"><span class="w">              </span><span class="nt">secretKeyRef</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">base-user-info</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="nt">key</span><span class="p">:</span><span class="w"> </span><span class="l">username</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">          </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">PASSWORD</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="nt">valueFrom</span><span class="p">:</span><span class="w"> 
-</span></span></span><span class="line"><span class="cl"><span class="w">              </span><span class="nt">secretKeyRef</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">base-user-info</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="nt">key</span><span class="p">:</span><span class="w"> </span><span class="l">password</span><span class="w">
-</span></span></span></code></pre></div><h3 id="通过volume挂载"></h>通过Volume挂载
-</h3><p>Secret 把两个 key 挂载成了两个对应的文件。当然如果想要挂载到指定的文件上面，是不是也可以使用上一节课的方法：在 <code>secretName</code> 下面添加 <code>items</code> 指定 <code>key</code> 和 <code>path</code></p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">v1</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">Pod</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">metadata</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">secret2-pod</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">spec</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">containers</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">secret2</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l">busybox</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">command</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&#34;/bin/sh&#34;</span><span class="p">,</span><span class="w"> </span><span class="s2">&#34;-c&#34;</span><span class="p">,</span><span class="w"> </span><span class="s2">&#34;ls /etc/secrets&#34;</span><span class="p">]</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">volumeMounts</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">secrets</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">mountPath</span><span class="p">:</span><span class="w"> </span><span class="l">/etc/secrets</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">volumes</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">secrets</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">secret</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">     </span><span class="nt">secretName</span><span class="p">:</span><span class="w"> </span><span class="l">base-user-info</span><span class="w">
-</span></span></span></code></pre></div><p>一般来说Pod默认的访问<code>API Server</code>的Token都会挂载到<code>/var/run/secrets/kubernetes.io/serviceaccount</code>当中,利用自带的<code>token</code>和<code>ca.crt</code>，默认情况下所有的Pod都会被注入当前<code>namespace</code>下的<code>token</code>和<code>ca.crt</code>这样以来就可以去访问APIServer了</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">root@nginx-web-beijing-87c9f478f-knrfp:/var/run/secrets/kubernetes.io/serviceaccount# ls
-</span></span><span class="line"><span class="cl">ca.crt  namespace  token
-</span></span></code></pre></div><h3 id="kubernetesiodockerconfigjson"></h><a class="link" href="http://kubernetes.io/dockerconfigjson"  target="_blank" rel="noopener"
-    >kubernetes.io/dockerconfigjson</a>
-</h3><p>除了上面的 <code>Opaque</code> 这种类型外，我们还可以来创建用户 <code>docker registry</code> 认证的 <code>Secret</code>，直接使用<code>kubectl create</code> 命令创建即可，如下：</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">kubectl create secret docker-registry beijing-harbor --docker-server<span class="o">=</span>DOCKER_SERVER --docker-username<span class="o">=</span>DOCKER_USER --docker-password<span class="o">=</span>DOCKER_PASSWORD --docker-email<span class="o">=</span>DOCKER_EMAIL
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">kubectl create secret docker-registry beijing-harbor --docker-server<span class="o">=</span>127.0.0.1 --docker-username<span class="o">=</span>admin --docker-password<span class="o">=</span><span class="m">123123</span> --docker-email<span class="o">=</span>beilanzhisen@163.com
-</span></span></code></pre></div><p>除了上面这种方法之外，我们也可以通过指定文件的方式来创建镜像仓库认证信息，需要注意对应的 <code>KEY</code> 和 <code>TYPE</code>：</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">kubectl create secret generic beijing-harbor --from-file<span class="o">=</span>.dockerconfigjson<span class="o">=</span>/root/.docker/config.json --type<span class="o">=</span>kubernetes.io/dockerconfigjson
-</span></span></code></pre></div><p>如果我们需要拉取私有仓库中的 Docker 镜像的话就需要使用到上面的 myregistry 这个 <code>Secret</code>：</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">piVersion</span><span class="p">:</span><span class="w"> </span><span class="l">apps/v1</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">Deployment</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">metadata</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">foo</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">spec</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">containers</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">foo</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="m">192.168.1.100</span><span class="p">:</span><span class="m">5000</span><span class="l">/test:v1</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">imagePullSecrets</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">beijing-harbor</span><span class="w">
-</span></span></span></code></pre></div><p><code>ImagePullSecrets</code> 与 <code>Secrets</code> 不同，因为 <code>Secrets</code> 可以挂载到 Pod 中，但是 <code>ImagePullSecrets</code> 只能由 Kubelet 访问。</p>
-<h2 id="serviceaccount"></h>ServiceAccount
-</h2><p><code>ServiceAccount</code> 主要是用于解决 Pod 在集群中的身份认证问题的。认证使用的授权信息其实就是利用前面我们讲到的一个类型为 <code>kubernetes.io/service-account-token</code> 进行管理的。</p>
-<p><code>ServiceAccount</code> 是命名空间级别的，每一个命名空间创建的时候就会自动创建一个名为 <code>default</code> 的 <code>ServiceAccount</code> 对象:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">kubectl create ns kube-test
-</span></span><span class="line"><span class="cl">kubectl get secret -n kube-test
-</span></span><span class="line"><span class="cl">NAME                  TYPE                                  DATA   AGE
-</span></span><span class="line"><span class="cl">default-token-vn4tr   kubernetes.io/service-account-token   <span class="m">3</span>      2m27s
-</span></span></code></pre></div><h3 id="实现原理"></h>实现原理
-</h3><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">v1</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">data</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">ca.crt</span><span class="p">:</span><span class="w"> </span><span class="l">LS0tLS...</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l">a3ViZS10ZXN0</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">token</span><span class="p">:</span><span class="w"> </span><span class="l">ZXlKaG...</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">Secret</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">metadata</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">annotations</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">kubernetes.io/service-account.name</span><span class="p">:</span><span class="w"> </span><span class="l">default</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">kubernetes.io/service-account.uid</span><span class="p">:</span><span class="w"> </span><span class="l">75b3314b-e949-4f7b-9450-9bcd89c8c972</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">creationTimestamp</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;2019-11-23T04:19:47Z&#34;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">default-token-vn4tr</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l">kube-test</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">resourceVersion</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;4297521&#34;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">selfLink</span><span class="p">:</span><span class="w"> </span><span class="l">/api/v1/namespaces/kube-test/secrets/default-token-vn4tr</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">uid</span><span class="p">:</span><span class="w"> </span><span class="l">e3e60f95-f255-471b-a6c0-600a3c0ee53a</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l">kubernetes.io/service-account-token</span><span class="w">
-</span></span></span></code></pre></div><p>在 <code>data</code> 区域我们可以看到有3个信息：</p>
-<ul>
-<li><code>ca.crt</code>：用于校验服务端的证书信息</li>
-<li><code>namespace</code>：表示当前管理的命名空间</li>
-<li><code>token</code>：用于 Pod 身份认证的 Token</li>
-</ul>
-<p>前面我们也提到了默认情况下当前 namespace 下面的 Pod 会默认使用 <code>default</code> 这个 ServiceAccount，对应的 <code>Secret</code> 会自动挂载到 Pod 的 <code>/var/run/secrets/kubernetes.io/serviceaccount/</code> 目录中，这样我们就可以在 Pod 里面获取到用于身份认证的信息了。</p>
-<p>实际上这个自动挂载过程是在 Pod 创建的时候通过 <code>Admisson Controller（准入控制器）</code> 来实现的，关于准入控制器的详细信息我们会在后面的安全章节中和大家继续学习。</p>
-<blockquote>
-<p><code>Admission Controller（准入控制）</code>是 Kubernetes API Server 用于拦截请求的一种手段。<code>Admission</code> 可以做到对请求的资源对象进行校验，修改，Pod 创建时 <code>Admission Controller</code> 会根据指定的的 <code>ServiceAccount</code>（默认的 default）把对应的 <code>Secret</code> 挂载到容器中的固定目录下 <code>/var/run/secrets/kubernetes.io/serviceaccount/</code>。</p></blockquote>
-
-</section>
-
-
-
-    <footer class="article-footer">
-    
-    <section class="article-tags">
-        
-            <a href="https://blog.mletter.cn/tags/kubernetes/">Kubernetes</a>
-        
-    </section>
-
-
-    
-    <section class="article-copyright">
-        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <circle cx="12" cy="12" r="9" />
-  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
-</svg>
-
-
-
-        <span>Licensed under CC BY-NC-SA 4.0</span>
-    </section>
-    </footer>
-
-
-    
-</article>
-
-    
-
-    
-
-<aside class="related-content--wrapper">
-    <h2 class="section-title">相关文章</h2>
-    <div class="related-content">
-        <div class="flex article-list--tile">
-            
-                
-<article class="has-image">
-    <a href="https://blog.mletter.cn/tech/kubernetes/sealos/">
-        
-        
-            <div class="article-image">
-                
-                    <img src="https://img10.360buyimg.com/ddimg/jfs/t1/244560/31/7618/14121/661de12eFfa7f6ba5/0239fa873abb0bd5.jpg" loading="lazy" data-key="" data-hash="https://img10.360buyimg.com/ddimg/jfs/t1/244560/31/7618/14121/661de12eFfa7f6ba5/0239fa873abb0bd5.jpg"/>
-                
-            </div>
-        
-
-        <div class="article-details">
-            <h2 class="article-title">基于SealOS部署高可用的kubernetes集群</h2>
-        </div>
-    </a>
-</article>
-
-            
-                
-<article class="has-image">
-    <a href="https://blog.mletter.cn/tech/kubernetes/install-efk/">
-        
-        
-            <div class="article-image">
-                
-                    <img src="https://img14.360buyimg.com/ddimg/jfs/t1/177175/31/35833/30306/64cb08eeF5ba90f46/1da6311bbbec8921.jpg" loading="lazy" data-key="" data-hash="https://img14.360buyimg.com/ddimg/jfs/t1/177175/31/35833/30306/64cb08eeF5ba90f46/1da6311bbbec8921.jpg"/>
-                
-            </div>
-        
-
-        <div class="article-details">
-            <h2 class="article-title">kubernetes基于EFK的日志落地实现</h2>
-        </div>
-    </a>
-</article>
-
-            
-                
-<article class="has-image">
-    <a href="https://blog.mletter.cn/tech/kubernetes/architectural-design/">
-        
-        
-            <div class="article-image">
-                
-                    <img src="https://img13.360buyimg.com/ddimg/jfs/t1/164078/6/34165/22231/654ba81fFe1bf21d7/9d02bd791b795b3b.jpg" loading="lazy" data-key="" data-hash="https://img13.360buyimg.com/ddimg/jfs/t1/164078/6/34165/22231/654ba81fFe1bf21d7/9d02bd791b795b3b.jpg"/>
-                
-            </div>
-        
-
-        <div class="article-details">
-            <h2 class="article-title">Kubernetes的架构设计和对象属性基本理解</h2>
-        </div>
-    </a>
-</article>
-
-            
-                
-<article class="has-image">
-    <a href="https://blog.mletter.cn/tech/kubernetes/openebs/">
-        
-        
-            <div class="article-image">
-                
-                    <img src="https://openebs.io/docs/assets/images/control-plane-overview-93c59878e3356a11f03029dd0fc1cd6b.svg" loading="lazy" data-key="" data-hash="https://openebs.io/docs/assets/images/control-plane-overview-93c59878e3356a11f03029dd0fc1cd6b.svg"/>
-                
-            </div>
-        
-
-        <div class="article-details">
-            <h2 class="article-title">OpenEBS存储的使用</h2>
-        </div>
-    </a>
-</article>
-
-            
-                
-<article class="has-image">
-    <a href="https://blog.mletter.cn/tech/kubernetes/traefik/">
-        
-        
-            <div class="article-image">
-                
-                    <img src="https://doc.traefik.io/traefik/assets/img/traefik-architecture.png" loading="lazy" data-key="" data-hash="https://doc.traefik.io/traefik/assets/img/traefik-architecture.png"/>
-                
-            </div>
-        
-
-        <div class="article-details">
-            <h2 class="article-title">Traekfik基础使用指南</h2>
-        </div>
-    </a>
-</article>
-
-            
-        </div>
-    </div>
-</aside>
-
-     
-    
-        
-    <script src="//lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/twikoo/1.4.18/twikoo.all.min.js"></script>
-<div id="tcomment"></div>
-<style>
-    .twikoo {
-        background-color: var(--card-background);
-        border-radius: var(--card-border-radius);
-        box-shadow: var(--shadow-l1);
-        padding: var(--card-padding);
-    }
-    :root[data-scheme="dark"] {
-        --twikoo-body-text-color-main: rgba(255, 255, 255, 0.9);
-        --twikoo-body-text-color: rgba(255, 255, 255, 0.7);
-    }
-    .twikoo .el-input-group__prepend,
-    .twikoo .tk-action-icon,
-    .twikoo .tk-submit-action-icon,
-    .twikoo .tk-time,
-    .twikoo .tk-comments-no,
-    .twikoo .tk-comments-count {
-        color: var(--twikoo-body-text-color);
-    }
-    .twikoo .el-input__inner,
-    .twikoo .el-textarea__inner,
-    .twikoo .tk-preview-container,
-    .twikoo .tk-content,
-    .twikoo .tk-nick,
-    .twikoo .tk-send {
-        color: var(--twikoo-body-text-color-main);
-    }
-    .twikoo .el-button{
-        color: var(--twikoo-body-text-color)!important;
-    }
-    .twikoo .el-input__count {
-        color: var(--twikoo-body-text-color) !important;
-    }
-    .OwO .OwO-body {
-        background-color: var(--body-background) !important;
-        color: var(--body-text-color) !important;
-    }
-</style><script>
-    twikoo.init({
-        envId: 'https:\/\/twikoo.mletter.cn\/',
-        el: '#tcomment',lang: 'zh-cn',})
-</script>
-
-    
-
-    <footer class="site-footer">
-    <section class="copyright">
-        &copy; 
-        
-            2020 - 
-        
-        2025 Live and learn. 🌱
-    </section>
-    
-    <section class="powerby">
-        Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo By Netlify</a> <br />
-        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.21.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
-    </section>
-</footer>
-
-
-    
-<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
-
-    
-    <div class="pswp__bg"></div>
-
-    
-    <div class="pswp__scroll-wrap">
-
-        
-        <div class="pswp__container">
-            <div class="pswp__item"></div>
-            <div class="pswp__item"></div>
-            <div class="pswp__item"></div>
-        </div>
-
-        
-        <div class="pswp__ui pswp__ui--hidden">
-
-            <div class="pswp__top-bar">
-
-                
-
-                <div class="pswp__counter"></div>
-
-                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
-
-                <button class="pswp__button pswp__button--share" title="Share"></button>
-
-                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
-
-                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
-
-                
-                
-                <div class="pswp__preloader">
-                    <div class="pswp__preloader__icn">
-                        <div class="pswp__preloader__cut">
-                            <div class="pswp__preloader__donut"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
-                <div class="pswp__share-tooltip"></div>
-            </div>
-
-            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
-            </button>
-
-            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
-            </button>
-
-            <div class="pswp__caption">
-                <div class="pswp__caption__center"></div>
-            </div>
-
-        </div>
-
-    </div>
-
-</div><script 
-                src="https://lf26-cdn-tos.bytecdntp.com/cdn/expire-1-M/photoswipe/4.1.3/photoswipe.min.js"crossorigin="anonymous"
-                defer
-                >
-            </script><script 
-                src="https://lf26-cdn-tos.bytecdntp.com/cdn/expire-1-M/photoswipe/4.1.3/photoswipe-ui-default.min.js"crossorigin="anonymous"
-                defer
-                >
-            </script><link 
-                rel="stylesheet" 
-                href="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/photoswipe/4.1.3/default-skin/default-skin.min.css"crossorigin="anonymous"
-            ><link 
-                rel="stylesheet" 
-                href="https://lf26-cdn-tos.bytecdntp.com/cdn/expire-1-M/photoswipe/4.1.3/photoswipe.min.css"crossorigin="anonymous"
-            >
-
-            </main>
-        </div>
-        <script 
-                src="https://lf9-cdn-tos.bytecdntp.com/cdn/expire-1-M/vibrant.js/1.0.0/Vibrant.min.js"crossorigin="anonymous"
-                
-                >
-            </script><script type="text/javascript" src="https://blog.mletter.cn/ts/main.js" defer></script>
-<script>
-    (function () {
-        const customFont = document.createElement('link');
-        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
-
-        customFont.type = "text/css";
-        customFont.rel = "stylesheet";
-
-        document.head.appendChild(customFont);
-    }());
-</script>
-
-<script src="https://lf26-cdn-tos.bytecdntp.com/cdn/expire-1-M/nprogress/0.2.0/nprogress.min.js" crossorigin="anonymous"></script>
-<link rel="stylesheet" href="https://lf26-cdn-tos.bytecdntp.com/cdn/expire-1-M/nprogress/0.2.0/nprogress.css" crossorigin="anonymous" />
-<script>
-    NProgress.start();
-    document.addEventListener("readystatechange", () => {
-        if (document.readyState === "interactive") NProgress.inc(0.8);
-        if (document.readyState === "complete") NProgress.done();
-    });
-</script>
-    </body>
-</html>
+<!doctype html><html lang=zh dir=auto><head><meta charset=utf-8><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=robots content="index, follow"><title>ConfigMap和Secret的使用 | 太阳可以是蓝色</title>
+<meta name=keywords content="kubernetes"><meta name=description content="ConfigMap 是一种 API 对象，用来将非机密性的数据保存到键值对中。使用时， Pods 可以将其用作环境变量、命令行参数或者存储卷中的配置文件。"><meta name=author content="iren."><link rel=canonical href=https://blog.mletter.cn/tech/kubernetes/configmap-or-service/><link crossorigin=anonymous href=/assets/css/stylesheet.cc707ba415c88b815010bba5c5e0b1f11e11d905dfc1004752901e8d81c3fcf3.css integrity="sha256-zHB7pBXIi4FQELulxeCx8R4R2QXfwQBHUpAejYHD/PM=" rel="preload stylesheet" as=style><link rel=icon href=https://blog.mletter.cn/%3Clink%20/%20abs%20url%3E><link rel=icon type=image/png sizes=16x16 href=https://blog.mletter.cn/%3Clink%20/%20abs%20url%3E><link rel=icon type=image/png sizes=32x32 href=https://blog.mletter.cn/%3Clink%20/%20abs%20url%3E><link rel=apple-touch-icon href=https://blog.mletter.cn/%3Clink%20/%20abs%20url%3E><link rel=mask-icon href=https://blog.mletter.cn/%3Clink%20/%20abs%20url%3E><meta name=theme-color content="#2e2e33"><meta name=msapplication-TileColor content="#2e2e33"><link rel=alternate hreflang=zh href=https://blog.mletter.cn/tech/kubernetes/configmap-or-service/><noscript><style>#theme-toggle,.top-link{display:none}</style><style>@media(prefers-color-scheme:dark){:root{--theme:rgb(29, 30, 32);--entry:rgb(46, 46, 51);--primary:rgb(218, 218, 219);--secondary:rgb(155, 156, 157);--tertiary:rgb(65, 66, 68);--content:rgb(196, 196, 197);--code-block-bg:rgb(46, 46, 51);--code-bg:rgb(55, 56, 62);--border:rgb(51, 51, 51)}.list{background:var(--theme)}.list:not(.dark)::-webkit-scrollbar-track{background:0 0}.list:not(.dark)::-webkit-scrollbar-thumb{border-color:var(--theme)}}</style></noscript><script src=/view-image.min.js></script><script>window.ViewImage&&ViewImage.init("img")</script><style>:root{--sys-font-family:-apple-system, "PingFang SC", Georgia, 'Nimbus Roman No9 L', 'Hiragino Sans GB', 'Noto Serif SC', 'Microsoft Yahei', 'WenQuanYi Micro Hei', 'ST Heiti', sans-serif;--code-font-family:"JetBrains Mono", Menlo, Monaco, Consolas, "Courier New";--article-font-family:-apple-system, "PingFang SC", var(--base-font-family)}</style><link rel=preconnect href=https://fonts.googleapis.com><link rel=preconnect href=https://fonts.gstatic.com crossorigin><meta property="og:url" content="https://blog.mletter.cn/tech/kubernetes/configmap-or-service/"><meta property="og:site_name" content="太阳可以是蓝色"><meta property="og:title" content="ConfigMap和Secret的使用"><meta property="og:description" content="ConfigMap 是一种 API 对象，用来将非机密性的数据保存到键值对中。使用时， Pods 可以将其用作环境变量、命令行参数或者存储卷中的配置文件。"><meta property="og:locale" content="zh"><meta property="og:type" content="article"><meta property="article:section" content="posts"><meta property="article:published_time" content="2023-02-14T00:00:00+00:00"><meta property="article:modified_time" content="2023-02-14T00:00:00+00:00"><meta property="article:tag" content="Kubernetes"><meta property="og:image" content="https://img14.360buyimg.com/ddimg/jfs/t1/164569/9/40677/14419/65bc6e4cFa1d8c0c3/5ccf7e6caadc9b83.jpg"><meta name=twitter:card content="summary_large_image"><meta name=twitter:image content="https://img14.360buyimg.com/ddimg/jfs/t1/164569/9/40677/14419/65bc6e4cFa1d8c0c3/5ccf7e6caadc9b83.jpg"><meta name=twitter:title content="ConfigMap和Secret的使用"><meta name=twitter:description content="ConfigMap 是一种 API 对象，用来将非机密性的数据保存到键值对中。使用时， Pods 可以将其用作环境变量、命令行参数或者存储卷中的配置文件。"><script type=application/ld+json>{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"","item":"https://blog.mletter.cn/posts/"},{"@type":"ListItem","position":2,"name":"ConfigMap和Secret的使用","item":"https://blog.mletter.cn/tech/kubernetes/configmap-or-service/"}]}</script><script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","headline":"ConfigMap和Secret的使用","name":"ConfigMap和Secret的使用","description":"ConfigMap 是一种 API 对象，用来将非机密性的数据保存到键值对中。使用时， Pods 可以将其用作环境变量、命令行参数或者存储卷中的配置文件。","keywords":["kubernetes"],"articleBody":"ConfigMap ConfigMap 是一种 API 对象，用来将非机密性的数据保存到键值对中。使用时， Pods 可以将其用作环境变量、命令行参数或者存储卷中的配置文件。\nConfigMap 将你的环境配置信息和 容器镜像 解耦，便于应用配置的修改。 ConfigMap 在设计上不是用来保存大量数据的。在 ConfigMap 中保存的数据不可超过1MiB(这其实是ETCD的要求哈哈哈)。如果你需要保存超出此尺寸限制的数据，你可能希望考虑挂载存储卷 或者使用独立的数据库或者文件服务。\n这是一个 ConfigMap 的示例，它的一些键只有一个值，其他键的值看起来像是 配置的片段格式。\n通过Key和Value这种键值对来进行写入数据 apiVersion: v1 kind: ConfigMap metadata: name: game-demo data: # 类属性键；每一个键都映射到一个简单的值 player_initial_lives: \"3\" ui_properties_file_name: \"user-interface.properties\" # 类文件键,一般用来保存一个文件到指定目录 game.properties: | enemy.types=aliens,monsters player.maximum-lives=5 user-interface.properties: | color.good=purple color.bad=yellow allow.textmode=true 你可以使用四种方式来使用 ConfigMap 配置 Pod 中的容器：\n在容器命令和参数内 容器的环境变量 在只读卷里面添加一个文件，让应用来读取 编写代码在 Pod 中运行，使用 Kubernetes API 来读取 ConfigMap 通过环境变量的方式使用ConfigMap 首先我们创建一个Deployment然后通过Env环境变量的方式进行使用ConfigMap\napiVersion: apps/v1 kind: Deployment metadata: name: nginx-web-beijing namespace: default labels: k8s-app: nginx-web zone: beijing spec: replicas: 1 selector: matchLabels: k8s-app: nginx-web template: metadata: name: nginx-web-beijing labels: k8s-app: nginx-web spec: containers: - name: vue-shop-beijing image: nginx:latest resources: requests: memory: 100Mi cpu: 10m # 通过环境变量的方式进行挂载 env: - name: PLAYER_INITIAL_LIVES valueFrom: configMapKeyRef: name: game-demo # 表示当前键来自game-demo这个ConfigMap key: player_initial_lives # 表示取player_initial_lives这个键的内容 然后我们可以进入到Pod内部进行echo挂载的变量名查看是否有输出\nroot@nginx-web-beijing-d6d994854-d6tjk:/# echo $PLAYER_INITIAL_LIVES 3 将ConfigMap当做文件使用 创建一个 ConfigMap 对象或者使用现有的 ConfigMap 对象。多个 Pod 可以引用同一个 ConfigMap。 修改 Pod 定义，在 spec.volumes[] 下添加一个卷。 为该卷设置任意名称，之后将 spec.volumes[].configMap.name 字段设置为对你的 ConfigMap 对象的引用。 为每个需要该 ConfigMap 的容器添加一个 .spec.containers[].volumeMounts[]。 设置 .spec.containers[].volumeMounts[].readOnly=true 并将 .spec.containers[].volumeMounts[].mountPath 设置为一个未使用的目录名， ConfigMap 的内容将出现在该目录中。 更改你的镜像或者命令行，以便程序能够从该目录中查找文件。ConfigMap 中的每个 data 键会变成 mountPath 下面的一个文件名。 创建一个挂载ConfigMap的Deployment\napiVersion: apps/v1 kind: Deployment metadata: name: nginx-web-beijing namespace: default labels: k8s-app: nginx-web zone: beijing spec: replicas: 1 selector: matchLabels: k8s-app: nginx-web template: metadata: name: nginx-web-beijing labels: k8s-app: nginx-web spec: containers: - name: vue-shop-beijing image: nginx:latest resources: requests: memory: 100Mi cpu: 10m volumeMounts: - name: vue-config mountPath: \"/etc/vue-config\" readOnly: true volumes: - name: vue-config configMap: name: game-demo 进入容器中查看/etc/vue-config目录下是否有配置文件\nroot@nginx-web-beijing-5649b8f646-pzmm4:/etc/vue-config# ls service-interface.properties root@nginx-web-beijing-5649b8f646-pzmm4:/etc/vue-config# cat service-interface.properties port: 4000 如果 Pod 中有多个容器，则每个容器都需要自己的 volumeMounts 块，但针对每个 ConfigMap，你只需要设置一个 spec.volumes 块。\n被挂载的ConfigMap内容会被自动更新 当卷中使用的 ConfigMap 被更新时，所投射的键最终也会被更新。 kubelet 组件会在每次周期性同步时检查所挂载的 ConfigMap 是否为最新。 不过，kubelet 使用的是其本地的高速缓存来获得 ConfigMap 的当前值。 高速缓存的类型可以通过 KubeletConfiguration 结构. 的 ConfigMapAndSecretChangeDetectionStrategy 字段来配置。\nConfigMap 既可以通过 watch 操作实现内容传播（默认形式），也可实现基于 TTL 的缓存，还可以直接经过所有请求重定向到 API 服务器。 因此，从 ConfigMap 被更新的那一刻算起，到新的主键被投射到 Pod 中去， 这一时间跨度可能与 kubelet 的同步周期加上高速缓存的传播延迟相等。 这里的传播延迟取决于所选的高速缓存类型 （分别对应 watch 操作的传播延迟、高速缓存的 TTL 时长或者 0）。\n以环境变量方式使用的 ConfigMap 数据不会被自动更新。 更新这些数据需要重新启动 Pod。\nSecret Secret 是一种包含少量敏感信息例如密码、令牌或密钥的对象。 这样的信息可能会被放在 Pod 规约中或者镜像中。 使用 Secret 意味着你不需要在应用程序代码中包含机密数据。\n由于创建 Secret 可以独立于使用它们的 Pod， 因此在创建、查看和编辑 Pod 的工作流程中暴露 Secret（及其数据）的风险较小。 Kubernetes 和在集群中运行的应用程序也可以对 Secret 采取额外的预防措施， 例如避免将机密数据写入非易失性存储。\nSecret 类似于 ConfigMap 但专门用于保存机密数据。\n注意: 默认情况下，Kubernetes Secret 未加密地存储在 API 服务器的底层数据存储（etcd）中。 任何拥有 API 访问权限的人都可以检索或修改 Secret，任何有权访问 etcd 的人也可以。 此外，任何有权限在命名空间中创建 Pod 的人都可以使用该访问权限读取该命名空间中的任何 Secret； 这包括间接访问，例如创建 Deployment 的能力。\n为了安全地使用 Secret，请至少执行以下步骤：\n为 Secret 启用静态加密。 以最小特权访问 Secret 并启用或配置 RBAC 规则。 限制 Secret 对特定容器的访问。 考虑使用外部 Secret 存储驱动。 Secret的使用 Pod 可以用三种方式之一来使用 Secret：\n作为挂载到一个或多个容器上的卷 中的文件。 作为容器的环境变量。 由 kubelet 在为 Pod 拉取镜像时使用。 Kubernetes控制面也使用 Secret； 例如，引导令牌 Secret 是一种帮助自动化节点注册的机制。\nSecret 主要使用的有以下三种类型：\nOpaque：base64 编码格式的 Secret，用来存储密码、密钥等；但数据也可以通过base64 –decode解码得到原始数据，所有加密性很弱。 kubernetes.io/dockerconfigjson：用来存储私有docker registry的认证信息。 kubernetes.io/service-account-token：用于 ServiceAccount, ServiceAccount 创建时 Kubernetes 会默认创建一个对应的 Secret 对象，Pod 如果使用了 ServiceAccount，对应的 Secret 会自动挂载到 Pod 目录 /run/secrets/kubernetes.io/serviceaccount 中。 bootstrap.kubernetes.io/token：用于节点接入集群的校验的 Secret Opaque Secret的使用 Opaque 类型的数据是一个 map 类型，要求 value 必须是 base64 编码格式，比如我们来创建一个用户名为 admin，密码为 admin321 的 Secret 对象，首先我们需要先把用户名和密码做 base64 编码：\n[root@Online-Beijing-master1 ~]# echo -n \"admin321\" | base64 YWRtaW4zMjE= 然后我们就可以利用上面编码过后的数据来编写一个 YAML 文件：(opaque-demo.yaml)\napiVersion: v1 kind: Secret metadata: name: base-user-info type: Opaque data: username: YWRtaW4= password: YWRtaW4zMjE= 创建好 Secret对象后，有两种方式来使用它：\n以环境变量的形式 以Volume的形式挂载 通过环境变量挂载Secret apiVersion: apps/v1 kind: Deployment metadata: name: nginx-web-beijing namespace: default labels: k8s-app: nginx-web zone: beijing spec: replicas: 1 selector: matchLabels: k8s-app: nginx-web template: metadata: name: nginx-web-beijing labels: k8s-app: nginx-web spec: containers: - name: vue-shop-beijing image: nginx:latest resources: requests: memory: 100Mi cpu: 10m env: - name: USERNAME valueFrom: secretKeyRef: name: base-user-info key: username - name: PASSWORD valueFrom: secretKeyRef: name: base-user-info key: password 通过Volume挂载 Secret 把两个 key 挂载成了两个对应的文件。当然如果想要挂载到指定的文件上面，是不是也可以使用上一节课的方法：在 secretName 下面添加 items 指定 key 和 path\napiVersion: v1 kind: Pod metadata: name: secret2-pod spec: containers: - name: secret2 image: busybox command: [\"/bin/sh\", \"-c\", \"ls /etc/secrets\"] volumeMounts: - name: secrets mountPath: /etc/secrets volumes: - name: secrets secret: secretName: base-user-info 一般来说Pod默认的访问API Server的Token都会挂载到/var/run/secrets/kubernetes.io/serviceaccount当中,利用自带的token和ca.crt，默认情况下所有的Pod都会被注入当前namespace下的token和ca.crt这样以来就可以去访问APIServer了\nroot@nginx-web-beijing-87c9f478f-knrfp:/var/run/secrets/kubernetes.io/serviceaccount# ls ca.crt namespace token kubernetes.io/dockerconfigjson 除了上面的 Opaque 这种类型外，我们还可以来创建用户 docker registry 认证的 Secret，直接使用kubectl create 命令创建即可，如下：\nkubectl create secret docker-registry beijing-harbor --docker-server=DOCKER_SERVER --docker-username=DOCKER_USER --docker-password=DOCKER_PASSWORD --docker-email=DOCKER_EMAIL kubectl create secret docker-registry beijing-harbor --docker-server=127.0.0.1 --docker-username=admin --docker-password=123123 --docker-email=beilanzhisen@163.com 除了上面这种方法之外，我们也可以通过指定文件的方式来创建镜像仓库认证信息，需要注意对应的 KEY 和 TYPE：\nkubectl create secret generic beijing-harbor --from-file=.dockerconfigjson=/root/.docker/config.json --type=kubernetes.io/dockerconfigjson 如果我们需要拉取私有仓库中的 Docker 镜像的话就需要使用到上面的 myregistry 这个 Secret：\npiVersion: apps/v1 kind: Deployment metadata: name: foo spec: containers: - name: foo image: 192.168.1.100:5000/test:v1 imagePullSecrets: - name: beijing-harbor ImagePullSecrets 与 Secrets 不同，因为 Secrets 可以挂载到 Pod 中，但是 ImagePullSecrets 只能由 Kubelet 访问。\nServiceAccount ServiceAccount 主要是用于解决 Pod 在集群中的身份认证问题的。认证使用的授权信息其实就是利用前面我们讲到的一个类型为 kubernetes.io/service-account-token 进行管理的。\nServiceAccount 是命名空间级别的，每一个命名空间创建的时候就会自动创建一个名为 default 的 ServiceAccount 对象:\nkubectl create ns kube-test kubectl get secret -n kube-test NAME TYPE DATA AGE default-token-vn4tr kubernetes.io/service-account-token 3 2m27s 实现原理 apiVersion: v1 data: ca.crt: LS0tLS... namespace: a3ViZS10ZXN0 token: ZXlKaG... kind: Secret metadata: annotations: kubernetes.io/service-account.name: default kubernetes.io/service-account.uid: 75b3314b-e949-4f7b-9450-9bcd89c8c972 creationTimestamp: \"2019-11-23T04:19:47Z\" name: default-token-vn4tr namespace: kube-test resourceVersion: \"4297521\" selfLink: /api/v1/namespaces/kube-test/secrets/default-token-vn4tr uid: e3e60f95-f255-471b-a6c0-600a3c0ee53a type: kubernetes.io/service-account-token 在 data 区域我们可以看到有3个信息：\nca.crt：用于校验服务端的证书信息 namespace：表示当前管理的命名空间 token：用于 Pod 身份认证的 Token 前面我们也提到了默认情况下当前 namespace 下面的 Pod 会默认使用 default 这个 ServiceAccount，对应的 Secret 会自动挂载到 Pod 的 /var/run/secrets/kubernetes.io/serviceaccount/ 目录中，这样我们就可以在 Pod 里面获取到用于身份认证的信息了。\n实际上这个自动挂载过程是在 Pod 创建的时候通过 Admisson Controller（准入控制器） 来实现的，关于准入控制器的详细信息我们会在后面的安全章节中和大家继续学习。\nAdmission Controller（准入控制）是 Kubernetes API Server 用于拦截请求的一种手段。Admission 可以做到对请求的资源对象进行校验，修改，Pod 创建时 Admission Controller 会根据指定的的 ServiceAccount（默认的 default）把对应的 Secret 挂载到容器中的固定目录下 /var/run/secrets/kubernetes.io/serviceaccount/。\n","wordCount":"727","inLanguage":"zh","image":"https://img14.360buyimg.com/ddimg/jfs/t1/164569/9/40677/14419/65bc6e4cFa1d8c0c3/5ccf7e6caadc9b83.jpg","datePublished":"2023-02-14T00:00:00Z","dateModified":"2023-02-14T00:00:00Z","author":{"@type":"Person","name":"iren."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.mletter.cn/tech/kubernetes/configmap-or-service/"},"publisher":{"@type":"Organization","name":"太阳可以是蓝色","logo":{"@type":"ImageObject","url":"https://blog.mletter.cn/%3Clink%20/%20abs%20url%3E"}}}</script></head><body id=top><script>localStorage.getItem("pref-theme")==="dark"?document.body.classList.add("dark"):localStorage.getItem("pref-theme")==="light"?document.body.classList.remove("dark"):window.matchMedia("(prefers-color-scheme: dark)").matches&&document.body.classList.add("dark")</script><header class=header><nav class=nav><div class=logo><a href=https://blog.mletter.cn/ accesskey=h title="太阳可以是蓝色 (Alt + H)">太阳可以是蓝色</a><div class=logo-switches><button id=theme-toggle accesskey=t title="(Alt + T)"><svg id="moon" width="24" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg><svg id="sun" width="24" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button></div></div><ul id=menu><li><a href=https://blog.mletter.cn/ title=主页><span>主页</span></a></li><li><a href=https://blog.mletter.cn/search/ title="搜索 (Alt + /)" accesskey=/><span>搜索</span></a></li><li><a href=https://blog.mletter.cn/posts/ title=文章><span>文章</span></a></li><li><a href=https://blog.mletter.cn/tags/ title=标签><span>标签</span></a></li><li><a href=https://blog.mletter.cn/friends/ title=友联><span>友联</span></a></li><li><a href=https://blog.mletter.cn/about title=关于><span>关于</span></a></li></ul></nav></header><main class=main><article class=post-single><header class=post-header><div class=breadcrumbs><a href=https://blog.mletter.cn/>主页</a>&nbsp;»&nbsp;<a href=https://blog.mletter.cn/posts/></a></div><h1 class="post-title entry-hint-parent">ConfigMap和Secret的使用</h1><div class=post-description>ConfigMap 是一种 API 对象，用来将非机密性的数据保存到键值对中。使用时， Pods 可以将其用作环境变量、命令行参数或者存储卷中的配置文件。</div><div class=post-meta><span title='2023-02-14 00:00:00 +0000 UTC'>二月 14, 2023</span>&nbsp;·&nbsp;4 分钟&nbsp;·&nbsp;iren.</div></header><div class=toc><details><summary accesskey=c title="(Alt + C)"><span class=details>目录</span></summary><div class=inner><nav id=TableOfContents><ul><li><a href=#configmap>ConfigMap</a><ul><li><a href=#通过环境变量的方式使用configmap>通过环境变量的方式使用ConfigMap</a></li><li><a href=#将configmap当做文件使用>将ConfigMap当做文件使用</a></li><li><a href=#被挂载的configmap内容会被自动更新>被挂载的ConfigMap内容会被自动更新</a></li></ul></li><li><a href=#secret>Secret</a><ul><li><a href=#secret的使用>Secret的使用</a></li><li><a href=#opaque-secret的使用>Opaque Secret的使用</a></li><li><a href=#通过环境变量挂载secret>通过环境变量挂载Secret</a></li><li><a href=#通过volume挂载>通过Volume挂载</a></li><li><a href=#kubernetesiodockerconfigjson><a href=http://kubernetes.io/dockerconfigjson>kubernetes.io/dockerconfigjson</a></a></li></ul></li><li><a href=#serviceaccount>ServiceAccount</a><ul><li><a href=#实现原理>实现原理</a></li></ul></li></ul></nav></div></details></div><div class=post-content><h2 id=configmap>ConfigMap<a hidden class=anchor aria-hidden=true href=#configmap>#</a></h2><p>ConfigMap 是一种 API 对象，用来将非机密性的数据保存到键值对中。使用时， <a class=link href=https://kubernetes.io/zh-cn/docs/concepts/workloads/pods/ target=_blank rel=noopener>Pods</a> 可以将其用作环境变量、命令行参数或者存储卷中的配置文件。</p><p>ConfigMap 将你的环境配置信息和 <a class=link href="https://kubernetes.io/zh-cn/docs/reference/glossary/?all=true#term-image" target=_blank rel=noopener>容器镜像</a> 解耦，便于应用配置的修改。
+ConfigMap 在设计上不是用来保存大量数据的。在 ConfigMap 中保存的数据不可超过1MiB(这其实是ETCD的要求哈哈哈)。如果你需要保存超出此尺寸限制的数据，你可能希望考虑挂载存储卷 或者使用独立的数据库或者文件服务。</p><p>这是一个 ConfigMap 的示例，它的一些键只有一个值，其他键的值看起来像是 配置的片段格式。</p><ul><li>通过<code>Key</code>和<code>Value</code>这种键值对来进行写入数据</li></ul><div class=highlight><pre tabindex=0 class=chroma><code class=language-yaml data-lang=yaml><span class=line><span class=cl><span class=nt>apiVersion</span><span class=p>:</span><span class=w> </span><span class=l>v1</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>kind</span><span class=p>:</span><span class=w> </span><span class=l>ConfigMap</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>metadata</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>game-demo</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>data</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=c># 类属性键；每一个键都映射到一个简单的值</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>player_initial_lives</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;3&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>ui_properties_file_name</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;user-interface.properties&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=c># 类文件键,一般用来保存一个文件到指定目录</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>game.properties</span><span class=p>:</span><span class=w> </span><span class=p>|</span><span class=sd>
+</span></span></span><span class=line><span class=cl><span class=sd>    enemy.types=aliens,monsters
+</span></span></span><span class=line><span class=cl><span class=sd>    player.maximum-lives=5    </span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>user-interface.properties</span><span class=p>:</span><span class=w> </span><span class=p>|</span><span class=sd>
+</span></span></span><span class=line><span class=cl><span class=sd>    color.good=purple
+</span></span></span><span class=line><span class=cl><span class=sd>    color.bad=yellow
+</span></span></span><span class=line><span class=cl><span class=sd>    allow.textmode=true</span><span class=w>
+</span></span></span></code></pre></div><p>你可以使用四种方式来使用 ConfigMap 配置 Pod 中的容器：</p><ol><li>在容器命令和参数内</li><li>容器的环境变量</li><li>在只读卷里面添加一个文件，让应用来读取</li><li>编写代码在 Pod 中运行，使用 Kubernetes API 来读取 ConfigMap</li></ol><h3 id=通过环境变量的方式使用configmap>通过环境变量的方式使用ConfigMap<a hidden class=anchor aria-hidden=true href=#通过环境变量的方式使用configmap>#</a></h3><p>首先我们创建一个<code>Deployment</code>然后通过Env环境变量的方式进行使用<code>ConfigMap</code></p><div class=highlight><pre tabindex=0 class=chroma><code class=language-yaml data-lang=yaml><span class=line><span class=cl><span class=nt>apiVersion</span><span class=p>:</span><span class=w> </span><span class=l>apps/v1</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>kind</span><span class=p>:</span><span class=w> </span><span class=l>Deployment</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>metadata</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>nginx-web-beijing</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>namespace</span><span class=p>:</span><span class=w> </span><span class=l>default</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>labels</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>k8s-app</span><span class=p>:</span><span class=w> </span><span class=l>nginx-web</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>zone</span><span class=p>:</span><span class=w> </span><span class=l>beijing</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>spec</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>replicas</span><span class=p>:</span><span class=w> </span><span class=m>1</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>selector</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>matchLabels</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>k8s-app</span><span class=p>:</span><span class=w> </span><span class=l>nginx-web</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>template</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>metadata</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>nginx-web-beijing</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>labels</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=nt>k8s-app</span><span class=p>:</span><span class=w> </span><span class=l>nginx-web</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>spec</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>containers</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span>- <span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>vue-shop-beijing</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>          </span><span class=nt>image</span><span class=p>:</span><span class=w> </span><span class=l>nginx:latest</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>          </span><span class=nt>resources</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=nt>requests</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>              </span><span class=nt>memory</span><span class=p>:</span><span class=w> </span><span class=l>100Mi</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>              </span><span class=nt>cpu</span><span class=p>:</span><span class=w> </span><span class=l>10m</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>          </span><span class=c># 通过环境变量的方式进行挂载</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>          </span><span class=nt>env</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span>- <span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>PLAYER_INITIAL_LIVES</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>              </span><span class=nt>valueFrom</span><span class=p>:</span><span class=w> 
+</span></span></span><span class=line><span class=cl><span class=w>                </span><span class=nt>configMapKeyRef</span><span class=p>:</span><span class=w>  
+</span></span></span><span class=line><span class=cl><span class=w>                  </span><span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>game-demo </span><span class=w> </span><span class=c># 表示当前键来自game-demo这个ConfigMap</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                  </span><span class=nt>key</span><span class=p>:</span><span class=w> </span><span class=l>player_initial_lives</span><span class=w> </span><span class=c># 表示取player_initial_lives这个键的内容</span><span class=w>
+</span></span></span></code></pre></div><p>然后我们可以进入到Pod内部进行<code>echo</code>挂载的变量名查看是否有输出</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>root@nginx-web-beijing-d6d994854-d6tjk:/# <span class=nb>echo</span> <span class=nv>$PLAYER_INITIAL_LIVES</span>
+</span></span><span class=line><span class=cl><span class=m>3</span>
+</span></span></code></pre></div><h3 id=将configmap当做文件使用>将ConfigMap当做文件使用<a hidden class=anchor aria-hidden=true href=#将configmap当做文件使用>#</a></h3><ol><li>创建一个 ConfigMap 对象或者使用现有的 ConfigMap 对象。多个 Pod 可以引用同一个 ConfigMap。</li><li>修改 Pod 定义，在 <code>spec.volumes[]</code> 下添加一个卷。 为该卷设置任意名称，之后将 <code>spec.volumes[].configMap.name</code> 字段设置为对你的 ConfigMap 对象的引用。</li><li>为每个需要该 ConfigMap 的容器添加一个 <code>.spec.containers[].volumeMounts[]</code>。 设置 <code>.spec.containers[].volumeMounts[].readOnly=true</code> 并将 <code>.spec.containers[].volumeMounts[].mountPath</code> 设置为一个未使用的目录名， ConfigMap 的内容将出现在该目录中。</li><li>更改你的镜像或者命令行，以便程序能够从该目录中查找文件。ConfigMap 中的每个 <code>data</code> 键会变成 <code>mountPath</code> 下面的一个文件名。</li></ol><p>创建一个挂载ConfigMap的<code>Deployment</code></p><div class=highlight><pre tabindex=0 class=chroma><code class=language-yaml data-lang=yaml><span class=line><span class=cl><span class=nt>apiVersion</span><span class=p>:</span><span class=w> </span><span class=l>apps/v1</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>kind</span><span class=p>:</span><span class=w> </span><span class=l>Deployment</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>metadata</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>nginx-web-beijing</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>namespace</span><span class=p>:</span><span class=w> </span><span class=l>default</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>labels</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>k8s-app</span><span class=p>:</span><span class=w> </span><span class=l>nginx-web</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>zone</span><span class=p>:</span><span class=w> </span><span class=l>beijing</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>spec</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>replicas</span><span class=p>:</span><span class=w> </span><span class=m>1</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>selector</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>matchLabels</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>k8s-app</span><span class=p>:</span><span class=w> </span><span class=l>nginx-web</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>template</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>metadata</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>nginx-web-beijing</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>labels</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=nt>k8s-app</span><span class=p>:</span><span class=w> </span><span class=l>nginx-web</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>spec</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>containers</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span>- <span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>vue-shop-beijing</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>          </span><span class=nt>image</span><span class=p>:</span><span class=w> </span><span class=l>nginx:latest</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>          </span><span class=nt>resources</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=nt>requests</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>              </span><span class=nt>memory</span><span class=p>:</span><span class=w> </span><span class=l>100Mi</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>              </span><span class=nt>cpu</span><span class=p>:</span><span class=w> </span><span class=l>10m</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>          </span><span class=nt>volumeMounts</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>          </span>- <span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>vue-config</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=nt>mountPath</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;/etc/vue-config&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=nt>readOnly</span><span class=p>:</span><span class=w> </span><span class=kc>true</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>volumes</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span>- <span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>vue-config</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=nt>configMap</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>          </span><span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>game-demo</span><span class=w>
+</span></span></span></code></pre></div><p>进入容器中查看<code>/etc/vue-config</code>目录下是否有配置文件</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>root@nginx-web-beijing-5649b8f646-pzmm4:/etc/vue-config# ls
+</span></span><span class=line><span class=cl>service-interface.properties
+</span></span><span class=line><span class=cl>root@nginx-web-beijing-5649b8f646-pzmm4:/etc/vue-config# cat service-interface.properties  
+</span></span><span class=line><span class=cl>port: <span class=m>4000</span>
+</span></span></code></pre></div><p>如果 Pod 中有多个容器，则每个容器都需要自己的 <code>volumeMounts</code> 块，但针对每个 ConfigMap，你只需要设置一个 <code>spec.volumes</code> 块。</p><h3 id=被挂载的configmap内容会被自动更新>被挂载的ConfigMap内容会被自动更新<a hidden class=anchor aria-hidden=true href=#被挂载的configmap内容会被自动更新>#</a></h3><p>当卷中使用的 ConfigMap 被更新时，所投射的键最终也会被更新。 kubelet 组件会在每次周期性同步时检查所挂载的 ConfigMap 是否为最新。 不过，kubelet 使用的是其本地的高速缓存来获得 ConfigMap 的当前值。 高速缓存的类型可以通过 <a class=link href=https://kubernetes.io/zh-cn/docs/reference/config-api/kubelet-config.v1beta1/ target=_blank rel=noopener>KubeletConfiguration 结构</a>. 的 <code>ConfigMapAndSecretChangeDetectionStrategy</code> 字段来配置。</p><p>ConfigMap 既可以通过 watch 操作实现内容传播（默认形式），也可实现基于 TTL 的缓存，还可以直接经过所有请求重定向到 API 服务器。 因此，从 ConfigMap 被更新的那一刻算起，到新的主键被投射到 Pod 中去， 这一时间跨度可能与 kubelet 的同步周期加上高速缓存的传播延迟相等。 这里的传播延迟取决于所选的高速缓存类型 （分别对应 watch 操作的传播延迟、高速缓存的 TTL 时长或者 0）。</p><blockquote><p>以环境变量方式使用的 ConfigMap 数据不会被自动更新。 更新这些数据需要重新启动 Pod。</p></blockquote><h2 id=secret>Secret<a hidden class=anchor aria-hidden=true href=#secret>#</a></h2><p>Secret 是一种包含少量敏感信息例如密码、令牌或密钥的对象。 这样的信息可能会被放在 <a class=link href=https://kubernetes.io/zh-cn/docs/concepts/workloads/pods/ target=_blank rel=noopener>Pod</a> 规约中或者镜像中。 使用 Secret 意味着你不需要在应用程序代码中包含机密数据。</p><p>由于创建 Secret 可以独立于使用它们的 Pod， 因此在创建、查看和编辑 Pod 的工作流程中暴露 Secret（及其数据）的风险较小。 Kubernetes 和在集群中运行的应用程序也可以对 Secret 采取额外的预防措施， 例如避免将机密数据写入非易失性存储。</p><p>Secret 类似于 <a class=link href=https://kubernetes.io/zh-cn/docs/tasks/configure-pod-container/configure-pod-configmap/ target=_blank rel=noopener>ConfigMap</a> 但专门用于保存机密数据。</p><blockquote><p><strong>注意</strong>: 默认情况下，Kubernetes Secret 未加密地存储在 API 服务器的底层数据存储（etcd）中。 任何拥有 API 访问权限的人都可以检索或修改 Secret，任何有权访问 etcd 的人也可以。 此外，任何有权限在命名空间中创建 Pod 的人都可以使用该访问权限读取该命名空间中的任何 Secret； 这包括间接访问，例如创建 Deployment 的能力。</p></blockquote><p>为了安全地使用 Secret，请至少执行以下步骤：</p><ol><li>为 Secret <a class=link href=https://kubernetes.io/zh-cn/docs/tasks/administer-cluster/encrypt-data/ target=_blank rel=noopener>启用静态加密</a>。</li><li>以最小特权访问 Secret 并<a class=link href=https://kubernetes.io/zh-cn/docs/reference/access-authn-authz/authorization/ target=_blank rel=noopener>启用或配置 RBAC 规则</a>。</li><li>限制 Secret 对特定容器的访问。</li><li><a class=link href=https://secrets-store-csi-driver.sigs.k8s.io/concepts.html#provider-for-the-secrets-store-csi-driver target=_blank rel=noopener>考虑使用外部 Secret 存储驱动</a>。</li></ol><h3 id=secret的使用>Secret的使用<a hidden class=anchor aria-hidden=true href=#secret的使用>#</a></h3><p>Pod 可以用三种方式之一来使用 Secret：</p><ul><li>作为挂载到一个或多个容器上的<a class=link href=https://kubernetes.io/zh-cn/docs/concepts/storage/volumes/ target=_blank rel=noopener>卷</a> 中的<a class=link href=https://kubernetes.io/zh-cn/docs/concepts/configuration/secret/#using-secrets-as-files-from-a-pod target=_blank rel=noopener>文件</a>。</li><li>作为<a class=link href=https://kubernetes.io/zh-cn/docs/concepts/configuration/secret/#using-secrets-as-environment-variables target=_blank rel=noopener>容器的环境变量</a>。</li><li>由 <a class=link href=https://kubernetes.io/zh-cn/docs/concepts/configuration/secret/#using-imagepullsecrets target=_blank rel=noopener>kubelet 在为 Pod 拉取镜像时使用</a>。</li></ul><p>Kubernetes控制面也使用 Secret； 例如，<a class=link href=https://kubernetes.io/zh-cn/docs/concepts/configuration/secret/#bootstrap-token-secrets target=_blank rel=noopener>引导令牌 Secret</a> 是一种帮助自动化节点注册的机制。</p><p><code>Secret</code> 主要使用的有以下三种类型：</p><ul><li><code>Opaque</code>：base64 编码格式的 Secret，用来存储密码、密钥等；但数据也可以通过<code>base64 –decode</code>解码得到原始数据，所有加密性很弱。</li><li><code>kubernetes.io/dockerconfigjson</code>：用来存储私有<code>docker registry</code>的认证信息。</li><li><code>kubernetes.io/service-account-token</code>：用于 <code>ServiceAccount</code>, ServiceAccount 创建时 Kubernetes 会默认创建一个对应的 Secret 对象，Pod 如果使用了 ServiceAccount，对应的 Secret 会自动挂载到 Pod 目录 <code>/run/secrets/kubernetes.io/serviceaccount</code> 中。</li><li><code>bootstrap.kubernetes.io/token</code>：用于节点接入集群的校验的 Secret</li></ul><h3 id=opaque-secret的使用>Opaque Secret的使用<a hidden class=anchor aria-hidden=true href=#opaque-secret的使用>#</a></h3><p><code>Opaque</code> 类型的数据是一个 map 类型，要求 value 必须是 <code>base64</code> 编码格式，比如我们来创建一个用户名为 admin，密码为 admin321 的 <code>Secret</code> 对象，首先我们需要先把用户名和密码做 <code>base64</code> 编码：</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=o>[</span>root@Online-Beijing-master1 ~<span class=o>]</span><span class=c1># echo -n &#34;admin321&#34; | base64</span>
+</span></span><span class=line><span class=cl><span class=nv>YWRtaW4zMjE</span><span class=o>=</span>
+</span></span></code></pre></div><p>然后我们就可以利用上面编码过后的数据来编写一个 YAML 文件：(opaque-demo.yaml)</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-yaml data-lang=yaml><span class=line><span class=cl><span class=nt>apiVersion</span><span class=p>:</span><span class=w> </span><span class=l>v1</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>kind</span><span class=p>:</span><span class=w> </span><span class=l>Secret</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>metadata</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>base-user-info</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>type</span><span class=p>:</span><span class=w> </span><span class=l>Opaque</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>data</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>username</span><span class=p>:</span><span class=w> </span><span class=l>YWRtaW4=</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>password</span><span class=p>:</span><span class=w> </span><span class=l>YWRtaW4zMjE=</span><span class=w>
+</span></span></span></code></pre></div><p>创建好 <code>Secret</code>对象后，有两种方式来使用它：</p><ul><li>以环境变量的形式</li><li>以Volume的形式挂载</li></ul><h3 id=通过环境变量挂载secret>通过环境变量挂载Secret<a hidden class=anchor aria-hidden=true href=#通过环境变量挂载secret>#</a></h3><div class=highlight><pre tabindex=0 class=chroma><code class=language-yaml data-lang=yaml><span class=line><span class=cl><span class=nt>apiVersion</span><span class=p>:</span><span class=w> </span><span class=l>apps/v1</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>kind</span><span class=p>:</span><span class=w> </span><span class=l>Deployment</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>metadata</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>nginx-web-beijing</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>namespace</span><span class=p>:</span><span class=w> </span><span class=l>default</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>labels</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>k8s-app</span><span class=p>:</span><span class=w> </span><span class=l>nginx-web</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>zone</span><span class=p>:</span><span class=w> </span><span class=l>beijing</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>spec</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>replicas</span><span class=p>:</span><span class=w> </span><span class=m>1</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>selector</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>matchLabels</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>k8s-app</span><span class=p>:</span><span class=w> </span><span class=l>nginx-web</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>template</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>metadata</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>nginx-web-beijing</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>labels</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=nt>k8s-app</span><span class=p>:</span><span class=w> </span><span class=l>nginx-web</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>spec</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>containers</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span>- <span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>vue-shop-beijing</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>          </span><span class=nt>image</span><span class=p>:</span><span class=w> </span><span class=l>nginx:latest</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>          </span><span class=nt>resources</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=nt>requests</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>              </span><span class=nt>memory</span><span class=p>:</span><span class=w> </span><span class=l>100Mi</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>              </span><span class=nt>cpu</span><span class=p>:</span><span class=w> </span><span class=l>10m</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>          </span><span class=nt>env</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>          </span>- <span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>USERNAME</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=nt>valueFrom</span><span class=p>:</span><span class=w> 
+</span></span></span><span class=line><span class=cl><span class=w>              </span><span class=nt>secretKeyRef</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                </span><span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>base-user-info</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                </span><span class=nt>key</span><span class=p>:</span><span class=w> </span><span class=l>username</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>          </span>- <span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>PASSWORD</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=nt>valueFrom</span><span class=p>:</span><span class=w> 
+</span></span></span><span class=line><span class=cl><span class=w>              </span><span class=nt>secretKeyRef</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                </span><span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>base-user-info</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                </span><span class=nt>key</span><span class=p>:</span><span class=w> </span><span class=l>password</span><span class=w>
+</span></span></span></code></pre></div><h3 id=通过volume挂载>通过Volume挂载<a hidden class=anchor aria-hidden=true href=#通过volume挂载>#</a></h3><p>Secret 把两个 key 挂载成了两个对应的文件。当然如果想要挂载到指定的文件上面，是不是也可以使用上一节课的方法：在 <code>secretName</code> 下面添加 <code>items</code> 指定 <code>key</code> 和 <code>path</code></p><div class=highlight><pre tabindex=0 class=chroma><code class=language-yaml data-lang=yaml><span class=line><span class=cl><span class=nt>apiVersion</span><span class=p>:</span><span class=w> </span><span class=l>v1</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>kind</span><span class=p>:</span><span class=w> </span><span class=l>Pod</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>metadata</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>secret2-pod</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>spec</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>containers</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span>- <span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>secret2</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>image</span><span class=p>:</span><span class=w> </span><span class=l>busybox</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>command</span><span class=p>:</span><span class=w> </span><span class=p>[</span><span class=s2>&#34;/bin/sh&#34;</span><span class=p>,</span><span class=w> </span><span class=s2>&#34;-c&#34;</span><span class=p>,</span><span class=w> </span><span class=s2>&#34;ls /etc/secrets&#34;</span><span class=p>]</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>volumeMounts</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span>- <span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>secrets</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>mountPath</span><span class=p>:</span><span class=w> </span><span class=l>/etc/secrets</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>volumes</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span>- <span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>secrets</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>secret</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>     </span><span class=nt>secretName</span><span class=p>:</span><span class=w> </span><span class=l>base-user-info</span><span class=w>
+</span></span></span></code></pre></div><p>一般来说Pod默认的访问<code>API Server</code>的Token都会挂载到<code>/var/run/secrets/kubernetes.io/serviceaccount</code>当中,利用自带的<code>token</code>和<code>ca.crt</code>，默认情况下所有的Pod都会被注入当前<code>namespace</code>下的<code>token</code>和<code>ca.crt</code>这样以来就可以去访问APIServer了</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>root@nginx-web-beijing-87c9f478f-knrfp:/var/run/secrets/kubernetes.io/serviceaccount# ls
+</span></span><span class=line><span class=cl>ca.crt  namespace  token
+</span></span></code></pre></div><h3 id=kubernetesiodockerconfigjson><a class=link href=http://kubernetes.io/dockerconfigjson target=_blank rel=noopener>kubernetes.io/dockerconfigjson</a></h3><p>除了上面的 <code>Opaque</code> 这种类型外，我们还可以来创建用户 <code>docker registry</code> 认证的 <code>Secret</code>，直接使用<code>kubectl create</code> 命令创建即可，如下：</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>kubectl create secret docker-registry beijing-harbor --docker-server<span class=o>=</span>DOCKER_SERVER --docker-username<span class=o>=</span>DOCKER_USER --docker-password<span class=o>=</span>DOCKER_PASSWORD --docker-email<span class=o>=</span>DOCKER_EMAIL
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>kubectl create secret docker-registry beijing-harbor --docker-server<span class=o>=</span>127.0.0.1 --docker-username<span class=o>=</span>admin --docker-password<span class=o>=</span><span class=m>123123</span> --docker-email<span class=o>=</span>beilanzhisen@163.com
+</span></span></code></pre></div><p>除了上面这种方法之外，我们也可以通过指定文件的方式来创建镜像仓库认证信息，需要注意对应的 <code>KEY</code> 和 <code>TYPE</code>：</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>kubectl create secret generic beijing-harbor --from-file<span class=o>=</span>.dockerconfigjson<span class=o>=</span>/root/.docker/config.json --type<span class=o>=</span>kubernetes.io/dockerconfigjson
+</span></span></code></pre></div><p>如果我们需要拉取私有仓库中的 Docker 镜像的话就需要使用到上面的 myregistry 这个 <code>Secret</code>：</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-yaml data-lang=yaml><span class=line><span class=cl><span class=nt>piVersion</span><span class=p>:</span><span class=w> </span><span class=l>apps/v1</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>kind</span><span class=p>:</span><span class=w> </span><span class=l>Deployment</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>metadata</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>foo</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>spec</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>containers</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span>- <span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>foo</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>image</span><span class=p>:</span><span class=w> </span><span class=m>192.168.1.100</span><span class=p>:</span><span class=m>5000</span><span class=l>/test:v1</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>imagePullSecrets</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span>- <span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>beijing-harbor</span><span class=w>
+</span></span></span></code></pre></div><p><code>ImagePullSecrets</code> 与 <code>Secrets</code> 不同，因为 <code>Secrets</code> 可以挂载到 Pod 中，但是 <code>ImagePullSecrets</code> 只能由 Kubelet 访问。</p><h2 id=serviceaccount>ServiceAccount<a hidden class=anchor aria-hidden=true href=#serviceaccount>#</a></h2><p><code>ServiceAccount</code> 主要是用于解决 Pod 在集群中的身份认证问题的。认证使用的授权信息其实就是利用前面我们讲到的一个类型为 <code>kubernetes.io/service-account-token</code> 进行管理的。</p><p><code>ServiceAccount</code> 是命名空间级别的，每一个命名空间创建的时候就会自动创建一个名为 <code>default</code> 的 <code>ServiceAccount</code> 对象:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>kubectl create ns kube-test
+</span></span><span class=line><span class=cl>kubectl get secret -n kube-test
+</span></span><span class=line><span class=cl>NAME                  TYPE                                  DATA   AGE
+</span></span><span class=line><span class=cl>default-token-vn4tr   kubernetes.io/service-account-token   <span class=m>3</span>      2m27s
+</span></span></code></pre></div><h3 id=实现原理>实现原理<a hidden class=anchor aria-hidden=true href=#实现原理>#</a></h3><div class=highlight><pre tabindex=0 class=chroma><code class=language-yaml data-lang=yaml><span class=line><span class=cl><span class=nt>apiVersion</span><span class=p>:</span><span class=w> </span><span class=l>v1</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>data</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>ca.crt</span><span class=p>:</span><span class=w> </span><span class=l>LS0tLS...</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>namespace</span><span class=p>:</span><span class=w> </span><span class=l>a3ViZS10ZXN0</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>token</span><span class=p>:</span><span class=w> </span><span class=l>ZXlKaG...</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>kind</span><span class=p>:</span><span class=w> </span><span class=l>Secret</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>metadata</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>annotations</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>kubernetes.io/service-account.name</span><span class=p>:</span><span class=w> </span><span class=l>default</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>kubernetes.io/service-account.uid</span><span class=p>:</span><span class=w> </span><span class=l>75b3314b-e949-4f7b-9450-9bcd89c8c972</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>creationTimestamp</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;2019-11-23T04:19:47Z&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>default-token-vn4tr</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>namespace</span><span class=p>:</span><span class=w> </span><span class=l>kube-test</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>resourceVersion</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;4297521&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>selfLink</span><span class=p>:</span><span class=w> </span><span class=l>/api/v1/namespaces/kube-test/secrets/default-token-vn4tr</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>uid</span><span class=p>:</span><span class=w> </span><span class=l>e3e60f95-f255-471b-a6c0-600a3c0ee53a</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>type</span><span class=p>:</span><span class=w> </span><span class=l>kubernetes.io/service-account-token</span><span class=w>
+</span></span></span></code></pre></div><p>在 <code>data</code> 区域我们可以看到有3个信息：</p><ul><li><code>ca.crt</code>：用于校验服务端的证书信息</li><li><code>namespace</code>：表示当前管理的命名空间</li><li><code>token</code>：用于 Pod 身份认证的 Token</li></ul><p>前面我们也提到了默认情况下当前 namespace 下面的 Pod 会默认使用 <code>default</code> 这个 ServiceAccount，对应的 <code>Secret</code> 会自动挂载到 Pod 的 <code>/var/run/secrets/kubernetes.io/serviceaccount/</code> 目录中，这样我们就可以在 Pod 里面获取到用于身份认证的信息了。</p><p>实际上这个自动挂载过程是在 Pod 创建的时候通过 <code>Admisson Controller（准入控制器）</code> 来实现的，关于准入控制器的详细信息我们会在后面的安全章节中和大家继续学习。</p><blockquote><p><code>Admission Controller（准入控制）</code>是 Kubernetes API Server 用于拦截请求的一种手段。<code>Admission</code> 可以做到对请求的资源对象进行校验，修改，Pod 创建时 <code>Admission Controller</code> 会根据指定的的 <code>ServiceAccount</code>（默认的 default）把对应的 <code>Secret</code> 挂载到容器中的固定目录下 <code>/var/run/secrets/kubernetes.io/serviceaccount/</code>。</p></blockquote></div><footer class=post-footer><ul class=post-tags><li><a href=https://blog.mletter.cn/tags/kubernetes/>Kubernetes</a></li></ul><nav class=paginav><a class=prev href=https://blog.mletter.cn/tech/kubernetes/install-etcd-ha/><span class=title>« 上一页</span><br><span>使用Kubeadm创建一个高可用的ETCD集群</span>
+</a><a class=next href=https://blog.mletter.cn/tech/kubernetes/horizontal-pod-autoscaler/><span class=title>下一页 »</span><br><span>HorizontalPodAutoscaler</span></a></nav><ul class=share-buttons><li><a target=_blank rel="noopener noreferrer" aria-label="share ConfigMap和Secret的使用 on x" href="https://x.com/intent/tweet/?text=ConfigMap%e5%92%8cSecret%e7%9a%84%e4%bd%bf%e7%94%a8&amp;url=https%3a%2f%2fblog.mletter.cn%2ftech%2fkubernetes%2fconfigmap-or-service%2f&amp;hashtags=kubernetes"><svg viewBox="0 0 512 512" height="30" width="30" fill="currentcolor"><path d="M512 62.554V449.446C512 483.97 483.97 512 449.446 512H62.554C28.03 512 0 483.97.0 449.446V62.554C0 28.03 28.029.0 62.554.0H449.446C483.971.0 512 28.03 512 62.554zM269.951 190.75 182.567 75.216H56L207.216 272.95 63.9 436.783h61.366L235.9 310.383l96.667 126.4H456L298.367 228.367l134-153.151H371.033zM127.633 110h36.468l219.38 290.065H349.5z"/></svg></a></li><li><a target=_blank rel="noopener noreferrer" aria-label="share ConfigMap和Secret的使用 on linkedin" href="https://www.linkedin.com/shareArticle?mini=true&amp;url=https%3a%2f%2fblog.mletter.cn%2ftech%2fkubernetes%2fconfigmap-or-service%2f&amp;title=ConfigMap%e5%92%8cSecret%e7%9a%84%e4%bd%bf%e7%94%a8&amp;summary=ConfigMap%e5%92%8cSecret%e7%9a%84%e4%bd%bf%e7%94%a8&amp;source=https%3a%2f%2fblog.mletter.cn%2ftech%2fkubernetes%2fconfigmap-or-service%2f"><svg viewBox="0 0 512 512" height="30" width="30" fill="currentcolor"><path d="M449.446.0C483.971.0 512 28.03 512 62.554v386.892C512 483.97 483.97 512 449.446 512H62.554c-34.524.0-62.554-28.03-62.554-62.554V62.554c0-34.524 28.029-62.554 62.554-62.554h386.892zM160.461 423.278V197.561h-75.04v225.717h75.04zm270.539.0V293.839c0-69.333-37.018-101.586-86.381-101.586-39.804.0-57.634 21.891-67.617 37.266v-31.958h-75.021c.995 21.181.0 225.717.0 225.717h75.02V297.222c0-6.748.486-13.492 2.474-18.315 5.414-13.475 17.767-27.434 38.494-27.434 27.135.0 38.007 20.707 38.007 51.037v120.768H431zM123.448 88.722C97.774 88.722 81 105.601 81 127.724c0 21.658 16.264 39.002 41.455 39.002h.484c26.165.0 42.452-17.344 42.452-39.002-.485-22.092-16.241-38.954-41.943-39.002z"/></svg></a></li><li><a target=_blank rel="noopener noreferrer" aria-label="share ConfigMap和Secret的使用 on reddit" href="https://reddit.com/submit?url=https%3a%2f%2fblog.mletter.cn%2ftech%2fkubernetes%2fconfigmap-or-service%2f&title=ConfigMap%e5%92%8cSecret%e7%9a%84%e4%bd%bf%e7%94%a8"><svg viewBox="0 0 512 512" height="30" width="30" fill="currentcolor"><path d="M449.446.0C483.971.0 512 28.03 512 62.554v386.892C512 483.97 483.97 512 449.446 512H62.554c-34.524.0-62.554-28.03-62.554-62.554V62.554c0-34.524 28.029-62.554 62.554-62.554h386.892zM446 265.638c0-22.964-18.616-41.58-41.58-41.58-11.211.0-21.361 4.457-28.841 11.666-28.424-20.508-67.586-33.757-111.204-35.278l18.941-89.121 61.884 13.157c.756 15.734 13.642 28.29 29.56 28.29 16.407.0 29.706-13.299 29.706-29.701.0-16.403-13.299-29.702-29.706-29.702-11.666.0-21.657 6.792-26.515 16.578l-69.105-14.69c-1.922-.418-3.939-.042-5.585 1.036-1.658 1.073-2.811 2.761-3.224 4.686l-21.152 99.438c-44.258 1.228-84.046 14.494-112.837 35.232-7.468-7.164-17.589-11.591-28.757-11.591-22.965.0-41.585 18.616-41.585 41.58.0 16.896 10.095 31.41 24.568 37.918-.639 4.135-.99 8.328-.99 12.576.0 63.977 74.469 115.836 166.33 115.836s166.334-51.859 166.334-115.836c0-4.218-.347-8.387-.977-12.493 14.564-6.47 24.735-21.034 24.735-38.001zM326.526 373.831c-20.27 20.241-59.115 21.816-70.534 21.816-11.428.0-50.277-1.575-70.522-21.82-3.007-3.008-3.007-7.882.0-10.889 3.003-2.999 7.882-3.003 10.885.0 12.777 12.781 40.11 17.317 59.637 17.317 19.522.0 46.86-4.536 59.657-17.321 3.016-2.999 7.886-2.995 10.885.008 3.008 3.011 3.003 7.882-.008 10.889zm-5.23-48.781c-16.373.0-29.701-13.324-29.701-29.698.0-16.381 13.328-29.714 29.701-29.714 16.378.0 29.706 13.333 29.706 29.714.0 16.374-13.328 29.698-29.706 29.698zM160.91 295.348c0-16.381 13.328-29.71 29.714-29.71 16.369.0 29.689 13.329 29.689 29.71.0 16.373-13.32 29.693-29.689 29.693-16.386.0-29.714-13.32-29.714-29.693z"/></svg></a></li><li><a target=_blank rel="noopener noreferrer" aria-label="share ConfigMap和Secret的使用 on facebook" href="https://facebook.com/sharer/sharer.php?u=https%3a%2f%2fblog.mletter.cn%2ftech%2fkubernetes%2fconfigmap-or-service%2f"><svg viewBox="0 0 512 512" height="30" width="30" fill="currentcolor"><path d="M449.446.0C483.971.0 512 28.03 512 62.554v386.892C512 483.97 483.97 512 449.446 512H342.978V319.085h66.6l12.672-82.621h-79.272v-53.617c0-22.603 11.073-44.636 46.58-44.636H425.6v-70.34s-32.71-5.582-63.982-5.582c-65.288.0-107.96 39.569-107.96 111.204v62.971h-72.573v82.621h72.573V512h-191.104c-34.524.0-62.554-28.03-62.554-62.554V62.554c0-34.524 28.029-62.554 62.554-62.554h386.892z"/></svg></a></li><li><a target=_blank rel="noopener noreferrer" aria-label="share ConfigMap和Secret的使用 on whatsapp" href="https://api.whatsapp.com/send?text=ConfigMap%e5%92%8cSecret%e7%9a%84%e4%bd%bf%e7%94%a8%20-%20https%3a%2f%2fblog.mletter.cn%2ftech%2fkubernetes%2fconfigmap-or-service%2f"><svg viewBox="0 0 512 512" height="30" width="30" fill="currentcolor"><path d="M449.446.0C483.971.0 512 28.03 512 62.554v386.892C512 483.97 483.97 512 449.446 512H62.554c-34.524.0-62.554-28.03-62.554-62.554V62.554c0-34.524 28.029-62.554 62.554-62.554h386.892zm-58.673 127.703c-33.842-33.881-78.847-52.548-126.798-52.568-98.799.0-179.21 80.405-179.249 179.234-.013 31.593 8.241 62.428 23.927 89.612l-25.429 92.884 95.021-24.925c26.181 14.28 55.659 21.807 85.658 21.816h.074c98.789.0 179.206-80.413 179.247-179.243.018-47.895-18.61-92.93-52.451-126.81zM263.976 403.485h-.06c-26.734-.01-52.954-7.193-75.828-20.767l-5.441-3.229-56.386 14.792 15.05-54.977-3.542-5.637c-14.913-23.72-22.791-51.136-22.779-79.287.033-82.142 66.867-148.971 149.046-148.971 39.793.014 77.199 15.531 105.329 43.692 28.128 28.16 43.609 65.592 43.594 105.4-.034 82.149-66.866 148.983-148.983 148.984zm81.721-111.581c-4.479-2.242-26.499-13.075-30.604-14.571-4.105-1.495-7.091-2.241-10.077 2.241-2.986 4.483-11.569 14.572-14.182 17.562-2.612 2.988-5.225 3.364-9.703 1.12-4.479-2.241-18.91-6.97-36.017-22.23C231.8 264.15 222.81 249.484 220.198 245s-.279-6.908 1.963-9.14c2.016-2.007 4.48-5.232 6.719-7.847 2.24-2.615 2.986-4.484 4.479-7.472 1.493-2.99.747-5.604-.374-7.846-1.119-2.241-10.077-24.288-13.809-33.256-3.635-8.733-7.327-7.55-10.077-7.688-2.609-.13-5.598-.158-8.583-.158-2.986.0-7.839 1.121-11.944 5.604-4.105 4.484-15.675 15.32-15.675 37.364.0 22.046 16.048 43.342 18.287 46.332 2.24 2.99 31.582 48.227 76.511 67.627 10.685 4.615 19.028 7.371 25.533 9.434 10.728 3.41 20.492 2.929 28.209 1.775 8.605-1.285 26.499-10.833 30.231-21.295 3.732-10.464 3.732-19.431 2.612-21.298-1.119-1.869-4.105-2.99-8.583-5.232z"/></svg></a></li><li><a target=_blank rel="noopener noreferrer" aria-label="share ConfigMap和Secret的使用 on telegram" href="https://telegram.me/share/url?text=ConfigMap%e5%92%8cSecret%e7%9a%84%e4%bd%bf%e7%94%a8&amp;url=https%3a%2f%2fblog.mletter.cn%2ftech%2fkubernetes%2fconfigmap-or-service%2f"><svg viewBox="2 2 28 28" height="30" width="30" fill="currentcolor"><path d="M26.49 29.86H5.5a3.37 3.37.0 01-2.47-1 3.35 3.35.0 01-1-2.47V5.48A3.36 3.36.0 013 3 3.37 3.37.0 015.5 2h21A3.38 3.38.0 0129 3a3.36 3.36.0 011 2.46V26.37a3.35 3.35.0 01-1 2.47 3.38 3.38.0 01-2.51 1.02zm-5.38-6.71a.79.79.0 00.85-.66L24.73 9.24a.55.55.0 00-.18-.46.62.62.0 00-.41-.17q-.08.0-16.53 6.11a.59.59.0 00-.41.59.57.57.0 00.43.52l4 1.24 1.61 4.83a.62.62.0 00.63.43.56.56.0 00.4-.17L16.54 20l4.09 3A.9.9.0 0021.11 23.15zM13.8 20.71l-1.21-4q8.72-5.55 8.78-5.55c.15.0.23.0.23.16a.18.18.0 010 .06s-2.51 2.3-7.52 6.8z"/></svg></a></li><li><a target=_blank rel="noopener noreferrer" aria-label="share ConfigMap和Secret的使用 on ycombinator" href="https://news.ycombinator.com/submitlink?t=ConfigMap%e5%92%8cSecret%e7%9a%84%e4%bd%bf%e7%94%a8&u=https%3a%2f%2fblog.mletter.cn%2ftech%2fkubernetes%2fconfigmap-or-service%2f"><svg width="30" height="30" viewBox="0 0 512 512" fill="currentcolor" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"><path d="M449.446.0C483.971.0 512 28.03 512 62.554V449.446C512 483.97 483.97 512 449.446 512H62.554C28.03 512 0 483.97.0 449.446V62.554C0 28.03 28.029.0 62.554.0H449.446zM183.8767 87.9921h-62.034L230.6673 292.4508V424.0079h50.6655V292.4508L390.1575 87.9921H328.1233L256 238.2489z"/></svg></a></li></ul></footer><div id=tcomment></div><script src=https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/twikoo/1.4.18/twikoo.all.min.js></script><script>twikoo.init({envId:"https://twikoo.mletter.cn/",el:"#tcomment"})</script></article></main><footer class=footer><span>&copy; 2025 <a href=https://blog.mletter.cn/>太阳可以是蓝色</a></span> ·
+<span>Powered by
+<a href=https://gohugo.io/ rel="noopener noreferrer" target=_blank>Hugo</a> &
+        <a href=https://github.com/adityatelange/hugo-PaperMod/ rel=noopener target=_blank>PaperMod</a></span><br><span id=span style=color:#101011></span>
+<script type=text/javascript>function runtime(){const a=new Date("12/07/2020 12:50:18"),r=new Date,c=r.getTime()-a.getTime(),l=24*60*60*1e3,e=c/l,t=Math.floor(e),n=(e-t)*24,s=Math.floor(n),o=(n-s)*60,i=Math.floor(o),d=Math.floor((o-i)*60);document.getElementById("span").innerHTML="已运行: "+t+"天"+s+"小时"+i+"分"+d+"秒"}runtime(),setInterval(runtime,1e3)</script><br><font color=#101011>本站由 <a href=https://www.netlify.com/ rel="noopener noreferrer nofollow" target=_blank>Netlify</a> 提供计算服务, 由 <a href=https://www.netlify.com/ rel="noopener noreferrer nofollow" target=_blank>Netlify</a> 提供全站加速服务。</font><br></footer><a href=#top aria-label="go to top" title="Go to Top (Alt + G)" class=top-link id=top-link accesskey=g><svg viewBox="0 0 12 6" fill="currentcolor"><path d="M12 6H0l6-6z"/></svg>
+</a><script>const menu=document.getElementById("menu");menu&&(menu.scrollLeft=localStorage.getItem("menu-scroll-position"),menu.onscroll=function(){localStorage.setItem("menu-scroll-position",menu.scrollLeft)}),document.querySelectorAll('a[href^="#"]').forEach(e=>{e.addEventListener("click",function(e){e.preventDefault();const t=this.getAttribute("href").substr(1),n=document.querySelector(`[id='${decodeURIComponent(t)}']`);window.matchMedia("(prefers-reduced-motion: reduce)").matches?n.scrollIntoView():n.scrollIntoView({behavior:"smooth"}),t==="top"?history.replaceState(null,null," "):history.pushState(null,null,`#${t}`)})})</script><script>const mybutton=document.getElementById("top-link");window.onscroll=function(){document.body.scrollTop>800||document.documentElement.scrollTop>800?(mybutton.style.visibility="visible",mybutton.style.opacity="1"):(mybutton.style.visibility="hidden",mybutton.style.opacity="0")}</script><script>document.getElementById("theme-toggle").addEventListener("click",()=>{document.body.classList.contains("dark")?(document.body.classList.remove("dark"),localStorage.setItem("pref-theme","light")):(document.body.classList.add("dark"),localStorage.setItem("pref-theme","dark"))})</script></body></html>

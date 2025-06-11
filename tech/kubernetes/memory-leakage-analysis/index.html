@@ -1,50 +1,845 @@
-<!doctype html><html lang=zh dir=auto><head><meta charset=utf-8><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=robots content="index, follow"><title>Kubernetes低版本中内存泄漏问题 | 太阳可以是蓝色</title>
-<meta name=keywords content="kubernetes"><meta name=description content="绝大多数的kubernetes集群都有这个隐患。只不过一般情况下，泄漏得比较慢，还没有表现出来而已。"><meta name=author content="iren."><link rel=canonical href=https://blog.mletter.cn/tech/kubernetes/memory-leakage-analysis/><link crossorigin=anonymous href=/assets/css/stylesheet.cc707ba415c88b815010bba5c5e0b1f11e11d905dfc1004752901e8d81c3fcf3.css integrity="sha256-zHB7pBXIi4FQELulxeCx8R4R2QXfwQBHUpAejYHD/PM=" rel="preload stylesheet" as=style><link rel=icon href=https://blog.mletter.cn/%3Clink%20/%20abs%20url%3E><link rel=icon type=image/png sizes=16x16 href=https://blog.mletter.cn/%3Clink%20/%20abs%20url%3E><link rel=icon type=image/png sizes=32x32 href=https://blog.mletter.cn/%3Clink%20/%20abs%20url%3E><link rel=apple-touch-icon href=https://blog.mletter.cn/%3Clink%20/%20abs%20url%3E><link rel=mask-icon href=https://blog.mletter.cn/%3Clink%20/%20abs%20url%3E><meta name=theme-color content="#2e2e33"><meta name=msapplication-TileColor content="#2e2e33"><link rel=alternate hreflang=zh href=https://blog.mletter.cn/tech/kubernetes/memory-leakage-analysis/><noscript><style>#theme-toggle,.top-link{display:none}</style><style>@media(prefers-color-scheme:dark){:root{--theme:rgb(29, 30, 32);--entry:rgb(46, 46, 51);--primary:rgb(218, 218, 219);--secondary:rgb(155, 156, 157);--tertiary:rgb(65, 66, 68);--content:rgb(196, 196, 197);--code-block-bg:rgb(46, 46, 51);--code-bg:rgb(55, 56, 62);--border:rgb(51, 51, 51)}.list{background:var(--theme)}.list:not(.dark)::-webkit-scrollbar-track{background:0 0}.list:not(.dark)::-webkit-scrollbar-thumb{border-color:var(--theme)}}</style></noscript><script src=/view-image.min.js></script><script>window.ViewImage&&ViewImage.init("img")</script><style>:root{--sys-font-family:-apple-system, "PingFang SC", Georgia, 'Nimbus Roman No9 L', 'Hiragino Sans GB', 'Noto Serif SC', 'Microsoft Yahei', 'WenQuanYi Micro Hei', 'ST Heiti', sans-serif;--code-font-family:"JetBrains Mono", Menlo, Monaco, Consolas, "Courier New";--article-font-family:-apple-system, "PingFang SC", var(--base-font-family)}</style><link rel=preconnect href=https://fonts.googleapis.com><link rel=preconnect href=https://fonts.gstatic.com crossorigin><meta property="og:url" content="https://blog.mletter.cn/tech/kubernetes/memory-leakage-analysis/"><meta property="og:site_name" content="太阳可以是蓝色"><meta property="og:title" content="Kubernetes低版本中内存泄漏问题"><meta property="og:description" content="绝大多数的kubernetes集群都有这个隐患。只不过一般情况下，泄漏得比较慢，还没有表现出来而已。"><meta property="og:locale" content="zh"><meta property="og:type" content="article"><meta property="article:section" content="posts"><meta property="article:published_time" content="2022-10-08T00:00:00+00:00"><meta property="article:modified_time" content="2022-10-08T00:00:00+00:00"><meta property="article:tag" content="Kubernetes"><meta property="og:image" content="https://img14.360buyimg.com/ddimg/jfs/t1/164569/9/40677/14419/65bc6e4cFa1d8c0c3/5ccf7e6caadc9b83.jpg"><meta name=twitter:card content="summary_large_image"><meta name=twitter:image content="https://img14.360buyimg.com/ddimg/jfs/t1/164569/9/40677/14419/65bc6e4cFa1d8c0c3/5ccf7e6caadc9b83.jpg"><meta name=twitter:title content="Kubernetes低版本中内存泄漏问题"><meta name=twitter:description content="绝大多数的kubernetes集群都有这个隐患。只不过一般情况下，泄漏得比较慢，还没有表现出来而已。"><script type=application/ld+json>{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"","item":"https://blog.mletter.cn/posts/"},{"@type":"ListItem","position":2,"name":"Kubernetes低版本中内存泄漏问题","item":"https://blog.mletter.cn/tech/kubernetes/memory-leakage-analysis/"}]}</script><script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","headline":"Kubernetes低版本中内存泄漏问题","name":"Kubernetes低版本中内存泄漏问题","description":"绝大多数的kubernetes集群都有这个隐患。只不过一般情况下，泄漏得比较慢，还没有表现出来而已。","keywords":["kubernetes"],"articleBody":"Kubernetes中Cgroup泄漏问题 Cgorup文档: https://www.kernel.org/doc/Documentation/cgroup-v1/memory.txt\n绝大多数的kubernetes集群都有这个隐患。只不过一般情况下，泄漏得比较慢，还没有表现出来而已。\n一个pod可能泄漏两个memory cgroup数量配额。即使pod百分之百发生泄漏， 那也需要一个节点销毁过三万多个pod之后，才会造成后续pod创建失败。\n一旦表现出来，这个节点就彻底不可用了，必须重启才能恢复。\n故障表现 该内容的故障信息已经提交给Github: https://github.com/kubernetes/kubernetes/issues/112940 我在服务器中更新Pod出现如下错误 cannot allocate memory\nunable to ensure pod container exists: failed to create container for [kubepods burstable podd5dafc96-2bcd-40db-90fd-c75758746a7a] : mkdir /sys/fs/cgroup/memory/kubepods/burstable/podd5dafc96-2bcd-40db-90fd-c75758746a7a: cannot allocate memory 使用dmesg查看系统日志的错误内容信息\nSLUB: Unable to allocate memory on node -1 服务器配置信息 操作系统: CentOS Linux release 7.9.2009 (Core) 系统内核: 3.10.0-1160.el7.x86_64 Kubernetes: 1.17.9 dockerVersion: 20.10.7 问题原因1 Kubernetes在1.9版本开启了对kmem的支持,因此 1.9以后的所有版本都有该问题，但必须搭配3.x内核的机器才会出问题。一旦出现会导致新 pod 无法创建，已有 pod不受影响，但pod 漂移到有问题的节点就会失败，直接影响业务稳定性。因为是内存泄露，直接重启机器可以暂时解决，但还会再次出现。 cgroup的kmem account特性在3.x 内核上有内存泄露问题，如果开启了kmem account特性会导致可分配内存越来越少，直到无法创建新 pod 或节点异常。\nkmem account 是cgroup 的一个扩展，全称CONFIG_MEMCG_KMEM，属于机器默认配置，本身没啥问题，只是该特性在 3.10 的内核上存在漏洞有内存泄露问题，4.x的内核修复了这个问题。 因为 kmem account 是 cgroup 的扩展能力，因此runc、docker、k8s 层面也进行了该功能的支持，即默认都打开了kmem 属性。 因为3.10 的内核已经明确提示 kmem 是实验性质，我们仍然使用该特性，所以这其实不算内核的问题，是 k8s 兼容问题。 问题原因2 memcg是 Linux 内核中用于管理 cgroup 内存的模块，整个生命周期应该是跟随 cgroup 的，但是在低版本内核中(已知3.10)，一旦给某个 memory cgroup 开启 kmem accounting 中的 memory.kmem.limit_in_bytes 就可能会导致不能彻底删除 memcg 和对应的 cssid，也就是说应用即使已经删除了 cgroup (/sys/fs/cgroup/memory 下对应的 cgroup 目录已经删除), 但在内核中没有释放 cssid，导致内核认为的 cgroup 的数量实际数量不一致，我们也无法得知内核认为的 cgroup 数量是多少。 这个问题可能会导致创建容器失败，因为创建容器为其需要创建 cgroup 来做隔离，而低版本内核有个限制：允许创建的 cgroup 最大数量写死为 65535，如果节点上经常创建和销毁大量容器导致创建很多 cgroup，删除容器但没有彻底删除 cgroup 造成泄露(真实数量我们无法得知)，到达 65535 后再创建容器就会报创建 cgroup 失败并报错 no space left on device，使用 kubernetes 最直观的感受就是 pod 创建之后无法启动成功。\n解决方案 目前官方给出的解决方案如下:\nkernel upgrade to 4.0+: Update kernel rebuild the kubelet with nokmem args. See nokmem Set cgroup.memory=nokmem in grub: see grub 解决方案一 感谢提供的解决方案: https://cloud.tencent.com/developer/article/1739289 https://github.com/torvalds/linux/commit/d6e0b7fa11862433773d986b5f995ffdf47ce672 https://support.mesosphere.com/s/article/Critical-Issue-KMEM-MSPH-2018-0006 这种方式的缺点是：\n1、要升级所有节点，节点重启的话已有 pod 肯定要漂移，如果节点规模很大，这个升级操作会很繁琐，业务部门也会有意见，要事先沟通。 2、这个问题归根结底是软件兼容问题，3.x 自己都说了不成熟，不建议你使用该特性，k8s、docker却 还要开启这个属性，那就不是内核的责任，因为我们是云上机器，想替换4.x 内核需要虚机团队做足够的测试和评审，因此这是个长期方案，不能立刻解决问题。 3、已有业务在 3.x 运行正常，不代表可以在 4.x 也运行正常，即全量升级内核之前需要做足够的测试，尤其是有些业务需求对os做过定制。 解决方案2 修改虚机启动的引导项 grub 中的cgroup.memory=nokmem，让机器启动时直接禁用 cgroup的 kmem 属性\nvim /etc/default/grub GRUB_TIMEOUT=5 GRUB_DISTRIBUTOR=\"$(sed 's, release .*$,,g' /etc/system-release)\" GRUB_DEFAULT=saved GRUB_DISABLE_SUBMENU=true GRUB_TERMINAL_OUTPUT=\"console\" GRUB_CMDLINE_LINUX=\"crashkernel=auto spectre_v2=retpoline rd.lvm.lv=centos/root rd.lvm.lv=centos/swap rhgb quiet cgroup.memory=nokmem\" GRUB_DISABLE_RECOVERY=\"true\" 更改完成后你需要生成一下新的cgroup配置.\n/usr/sbin/grub2-mkconfig -o /boot/grub2/grub.cfg reboot # 重启服务器 解决方案3 如果你想在Kubernetes中禁用该属性。issue 中一般建议修改 kubelet代码并重新编译。\n对于v1.13及其之前版本的kubelet，需要手动替换以下两个函数。\nvendor/github.com/opencontainers/runc/libcontainer/cgroups/fs/memory.go func EnableKernelMemoryAccounting(path string) error { return nil } func setKernelMemory(path string, kernelMemoryLimit int64) error { return nil } 重新编译并替换 kubelet\nmake WHAT=cmd/kubelet GOFLAGS=-v GOGCFLAGS=\"-N -l\" 对于v1.14及其之后版本的kubelet,通过添加BUILDTAGS来禁止 kmem accounting.\nmake BUILDTAGS=\"nokmem\" WHAT=cmd/kubelet GOFLAGS=-v GOGCFLAGS=\"-N -l\" 遇到1.16 版本的BUILDTAGS=”nokmem“编译出来的 let 还是有问题，还是通过修改代码的方式使其生效\nvendor/github.com/opencontainers/runc/libcontainer/cgroups/fs/kmem.go package fs import ( \"errors\" ) func EnableKernelMemoryAccounting(path string) error { return nil } func setKernelMemory(path string, kernelMemoryLimit int64) error { return errors.New(\"kernel memory accounting disabled in this runc build\") } 编译前，可以编辑下文件 hack/lib/version.sh，将 KUBE_GIT_TREE_STATE=\"dirty\" 改为 KUBE_GIT_TREE_STATE=\"clean\"，确保版本号干净。\n影响范围 k8s在1.9版本开启了对kmem的支持，因此1.9以后的所有版本都有该问题,但必须搭配 3.x内核的机器才会出问题。一旦出现会导致新pod无法创建,已有 pod不受影响，但pod 漂移到有问题的节点就会失败，直接影响业务稳定性。因为是内存泄露，直接重启机器可以暂时解决，但还会再次出现。\n大概得原理理解 keme是什么? kmem是Cgroup的一个扩展，全称CONFIG_MEMCG_KMEM，属于机器默认配置。\n内核内存与用户内存：\n内核内存：专用于Linux内核系统服务使用，是不可swap的，因而这部分内存非常宝贵的。但现实中存在很多针对内核内存资源的攻击，如不断地fork新进程从而耗尽系统资源，即所谓的“fork bomb”。\n为了防止这种攻击，社区中提议通过linux内核限制 cgroup中的kmem 容量，从而限制恶意进程的行为，即kernel memory accounting机制。\n使用如下命令查看KMEM是否打开：\ncat /boot/config-`uname -r`|grep CONFIG_MEMCG CONFIG_MEMCG=y CONFIG_MEMCG_SWAP=y CONFIG_MEMCG_SWAP_ENABLED=y CONFIG_MEMCG_KMEM=y cgroup与kmem机制 使用 cgroup 限制内存时，我们不但需要限制对用户内存的使用，也需要限制对内核内存的使用。kernel memory accounting 机制为 cgroup 的内存限制增加了 stack pages（例如新进程创建）、slab pages(SLAB/SLUB分配器使用的内存)、sockets memory pressure、tcp memory pressure等，以保证 kernel memory 不被滥用。\n当你开启了kmem 机制，具体体现在 memory.kmem.limit_in_bytes 这个文件上：\n/sys/fs/cgroup/memory/kubepods/pod632f736f-5ef2-11ea-ad9e-fa163e35f5d4/memory.kmem.limit_in_bytes 实际使用中，我们一般将 memory.kmem.limit_in_bytes 设置成大于 memory.limit_in_bytes，从而只限制应用的总内存使用。\ndocker与k8s使用kmem 以上描述都是cgroup层面即机器层面，但是 runc 和 docker 发现有这个属性之后，在后来的版本中也支持了 kmem ，k8s 发现 docker支持，也在 1.9 版本开始支持。\n1.9版本及之后，kubelet 才开启 kmem 属性\nkubelet 的这部分代码位于：\nhttps://github.com/kubernetes/kubernetes/blob/release-1.12/vendor/github.com/opencontainers/runc/libcontainer/cgroups/fs/memory.go#L70-L106 对于k8s、docker 而言，kmem 属性属于正常迭代和优化，至于3.x的内核上存在 bug 不能兼容，不是k8s 关心的问题。但 issue 中不断有人反馈，因此在 k8s 1.14 版本的 kubelet 中，增加了一个编译选项 make BUILDTAGS=“nokmem”，就可以编译 kubelet 时就禁用 kmem，避免掉这个问题。而1.8 到1.14 中间的版本，只能选择更改 kubelet 的代码。\n","wordCount":"390","inLanguage":"zh","image":"https://img14.360buyimg.com/ddimg/jfs/t1/164569/9/40677/14419/65bc6e4cFa1d8c0c3/5ccf7e6caadc9b83.jpg","datePublished":"2022-10-08T00:00:00Z","dateModified":"2022-10-08T00:00:00Z","author":{"@type":"Person","name":"iren."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.mletter.cn/tech/kubernetes/memory-leakage-analysis/"},"publisher":{"@type":"Organization","name":"太阳可以是蓝色","logo":{"@type":"ImageObject","url":"https://blog.mletter.cn/%3Clink%20/%20abs%20url%3E"}}}</script></head><body id=top><script>localStorage.getItem("pref-theme")==="dark"?document.body.classList.add("dark"):localStorage.getItem("pref-theme")==="light"?document.body.classList.remove("dark"):window.matchMedia("(prefers-color-scheme: dark)").matches&&document.body.classList.add("dark")</script><header class=header><nav class=nav><div class=logo><a href=https://blog.mletter.cn/ accesskey=h title="太阳可以是蓝色 (Alt + H)">太阳可以是蓝色</a><div class=logo-switches><button id=theme-toggle accesskey=t title="(Alt + T)"><svg id="moon" width="24" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg><svg id="sun" width="24" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button></div></div><ul id=menu><li><a href=https://blog.mletter.cn/ title=主页><span>主页</span></a></li><li><a href=https://blog.mletter.cn/search/ title="搜索 (Alt + /)" accesskey=/><span>搜索</span></a></li><li><a href=https://blog.mletter.cn/posts/ title=文章><span>文章</span></a></li><li><a href=https://blog.mletter.cn/tags/ title=标签><span>标签</span></a></li><li><a href=https://blog.mletter.cn/friends/ title=友联><span>友联</span></a></li><li><a href=https://blog.mletter.cn/about title=关于><span>关于</span></a></li></ul></nav></header><main class=main><article class=post-single><header class=post-header><div class=breadcrumbs><a href=https://blog.mletter.cn/>主页</a>&nbsp;»&nbsp;<a href=https://blog.mletter.cn/posts/></a></div><h1 class="post-title entry-hint-parent">Kubernetes低版本中内存泄漏问题</h1><div class=post-description>绝大多数的kubernetes集群都有这个隐患。只不过一般情况下，泄漏得比较慢，还没有表现出来而已。</div><div class=post-meta><span title='2022-10-08 00:00:00 +0000 UTC'>十月 8, 2022</span>&nbsp;·&nbsp;2 分钟&nbsp;·&nbsp;iren.</div></header><div class=toc><details><summary accesskey=c title="(Alt + C)"><span class=details>目录</span></summary><div class=inner><nav id=TableOfContents><ul><li><a href=#kubernetes中cgroup泄漏问题>Kubernetes中Cgroup泄漏问题</a></li><li><a href=#故障表现>故障表现</a></li><li><a href=#服务器配置信息>服务器配置信息</a></li><li><a href=#问题原因1>问题原因1</a></li><li><a href=#问题原因2>问题原因2</a></li><li><a href=#解决方案>解决方案</a><ul><li><a href=#解决方案一>解决方案一</a></li><li><a href=#解决方案2>解决方案2</a></li><li><a href=#解决方案3>解决方案3</a></li><li><a href=#影响范围>影响范围</a></li></ul></li><li><a href=#大概得原理理解>大概得原理理解</a><ul><li><a href=#keme是什么>keme是什么?</a></li><li><a href=#cgroup与kmem机制>cgroup与kmem机制</a></li><li><a href=#docker与k8s使用kmem>docker与k8s使用kmem</a></li></ul></li></ul></nav></div></details></div><div class=post-content><h2 id=kubernetes中cgroup泄漏问题>Kubernetes中Cgroup泄漏问题<a hidden class=anchor aria-hidden=true href=#kubernetes中cgroup泄漏问题>#</a></h2><p>Cgorup文档: <a class=link href=https://www.kernel.org/doc/Documentation/cgroup-v1/memory.txt target=_blank rel=noopener>https://www.kernel.org/doc/Documentation/cgroup-v1/memory.txt</a></p><p>绝大多数的kubernetes集群都有这个隐患。只不过一般情况下，泄漏得比较慢，还没有表现出来而已。</p><p>一个pod可能泄漏两个memory cgroup数量配额。即使pod百分之百发生泄漏， 那也需要一个节点销毁过三万多个pod之后，才会造成后续pod创建失败。</p><p>一旦表现出来，这个节点就彻底不可用了，必须重启才能恢复。</p><h2 id=故障表现>故障表现<a hidden class=anchor aria-hidden=true href=#故障表现>#</a></h2><ul><li>该内容的故障信息已经提交给Github: <a class=link href=https://github.com/kubernetes/kubernetes/issues/112940 target=_blank rel=noopener>https://github.com/kubernetes/kubernetes/issues/112940</a></li></ul><p>我在服务器中更新Pod出现如下错误 <code>cannot allocate memory</code></p><div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>unable to ensure pod container exists: failed to create container <span class=k>for</span> <span class=o>[</span>kubepods burstable podd5dafc96-2bcd-40db-90fd-c75758746a7a<span class=o>]</span> : mkdir /sys/fs/cgroup/memory/kubepods/burstable/podd5dafc96-2bcd-40db-90fd-c75758746a7a: cannot allocate memory
-</span></span></code></pre></div><p>使用<code>dmesg</code>查看系统日志的错误内容信息</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>SLUB: Unable to allocate memory on node -1
-</span></span></code></pre></div><h2 id=服务器配置信息>服务器配置信息<a hidden class=anchor aria-hidden=true href=#服务器配置信息>#</a></h2><ul><li>操作系统: <code>CentOS Linux release 7.9.2009 (Core)</code></li><li>系统内核: <code>3.10.0-1160.el7.x86_64</code></li><li>Kubernetes: <code>1.17.9</code></li><li>dockerVersion: <code>20.10.7</code></li></ul><h2 id=问题原因1>问题原因1<a hidden class=anchor aria-hidden=true href=#问题原因1>#</a></h2><p>Kubernetes在1.9版本开启了对kmem的支持,因此 1.9以后的所有版本都有该问题，但必须搭配3.x内核的机器才会出问题。一旦出现会导致新 pod 无法创建，已有 pod不受影响，但pod 漂移到有问题的节点就会失败，直接影响业务稳定性。因为是内存泄露，直接重启机器可以暂时解决，但还会再次出现。
-cgroup的kmem account特性在3.x 内核上有内存泄露问题，如果开启了kmem account特性会导致可分配内存越来越少，直到无法创建新 pod 或节点异常。</p><ol><li>kmem account 是cgroup 的一个扩展，全称CONFIG_MEMCG_KMEM，属于机器默认配置，本身没啥问题，只是该特性在 3.10 的内核上存在漏洞有内存泄露问题，4.x的内核修复了这个问题。</li><li>因为 kmem account 是 cgroup 的扩展能力，因此runc、docker、k8s 层面也进行了该功能的支持，即默认都打开了kmem 属性。</li><li>因为3.10 的内核已经明确提示 kmem 是实验性质，我们仍然使用该特性，所以这其实不算内核的问题，是 k8s 兼容问题。</li></ol><h2 id=问题原因2>问题原因2<a hidden class=anchor aria-hidden=true href=#问题原因2>#</a></h2><p>memcg是 Linux 内核中用于管理 cgroup 内存的模块，整个生命周期应该是跟随 cgroup 的，但是在低版本内核中<code>(已知3.10)</code>，一旦给某个 memory cgroup 开启 kmem accounting 中的 memory.kmem.limit_in_bytes 就可能会导致不能彻底删除 memcg 和对应的 cssid，也就是说应用即使已经删除了 cgroup (/sys/fs/cgroup/memory 下对应的 cgroup 目录已经删除), 但在内核中没有释放 cssid，导致内核认为的 cgroup 的数量实际数量不一致，我们也无法得知内核认为的 cgroup 数量是多少。
-这个问题可能会导致创建容器失败，因为创建容器为其需要创建 cgroup 来做隔离，而低版本内核有个限制：允许创建的 cgroup 最大数量写死为 65535，如果节点上经常创建和销毁大量容器导致创建很多 cgroup，删除容器但没有彻底删除 cgroup 造成泄露(真实数量我们无法得知)，到达 65535 后再创建容器就会报创建 cgroup 失败并报错 no space left on device，使用 kubernetes 最直观的感受就是 pod 创建之后无法启动成功。</p><h2 id=解决方案>解决方案<a hidden class=anchor aria-hidden=true href=#解决方案>#</a></h2><p>目前官方给出的解决方案如下:</p><ol><li>kernel upgrade to 4.0+: <a class=link href=https://github.com/kubernetes/kubernetes/issues/61937#issuecomment-377585452 target=_blank rel=noopener>Update kernel</a></li><li>rebuild the kubelet with nokmem args. See <a class=link href=https://github.com/kubernetes/kubernetes/issues/96701#issuecomment-911061574 target=_blank rel=noopener>nokmem</a></li><li>Set cgroup.memory=nokmem in grub: see <a class=link href=https://github.com/kubernetes/kubernetes/issues/61937#issuecomment-567042968 target=_blank rel=noopener>grub</a></li></ol><h3 id=解决方案一>解决方案一<a hidden class=anchor aria-hidden=true href=#解决方案一>#</a></h3><ul><li>感谢提供的解决方案: <a class=link href=https://cloud.tencent.com/developer/article/1739289 target=_blank rel=noopener>https://cloud.tencent.com/developer/article/1739289</a></li><li><a class=link href=https://github.com/torvalds/linux/commit/d6e0b7fa11862433773d986b5f995ffdf47ce672 target=_blank rel=noopener>https://github.com/torvalds/linux/commit/d6e0b7fa11862433773d986b5f995ffdf47ce672</a></li><li><a class=link href=https://support.mesosphere.com/s/article/Critical-Issue-KMEM-MSPH-2018-0006 target=_blank rel=noopener>https://support.mesosphere.com/s/article/Critical-Issue-KMEM-MSPH-2018-0006</a></li></ul><p>这种方式的缺点是：</p><ul><li>1、要升级所有节点，节点重启的话已有 pod 肯定要漂移，如果节点规模很大，这个升级操作会很繁琐，业务部门也会有意见，要事先沟通。</li><li>2、这个问题归根结底是软件兼容问题，3.x 自己都说了不成熟，不建议你使用该特性，k8s、docker却 还要开启这个属性，那就不是内核的责任，因为我们是云上机器，想替换4.x 内核需要虚机团队做足够的测试和评审，因此这是个长期方案，不能立刻解决问题。</li><li>3、已有业务在 3.x 运行正常，不代表可以在 4.x 也运行正常，即全量升级内核之前需要做足够的测试，尤其是有些业务需求对os做过定制。</li></ul><h3 id=解决方案2>解决方案2<a hidden class=anchor aria-hidden=true href=#解决方案2>#</a></h3><p>修改虚机启动的引导项 grub 中的<code>cgroup.memory=nokmem</code>，让机器启动时直接禁用 cgroup的 kmem 属性</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>vim /etc/default/grub
-</span></span><span class=line><span class=cl><span class=nv>GRUB_TIMEOUT</span><span class=o>=</span><span class=m>5</span>
-</span></span><span class=line><span class=cl><span class=nv>GRUB_DISTRIBUTOR</span><span class=o>=</span><span class=s2>&#34;</span><span class=k>$(</span>sed <span class=s1>&#39;s, release .*$,,g&#39;</span> /etc/system-release<span class=k>)</span><span class=s2>&#34;</span>
-</span></span><span class=line><span class=cl><span class=nv>GRUB_DEFAULT</span><span class=o>=</span>saved
-</span></span><span class=line><span class=cl><span class=nv>GRUB_DISABLE_SUBMENU</span><span class=o>=</span><span class=nb>true</span>
-</span></span><span class=line><span class=cl><span class=nv>GRUB_TERMINAL_OUTPUT</span><span class=o>=</span><span class=s2>&#34;console&#34;</span>
-</span></span><span class=line><span class=cl><span class=nv>GRUB_CMDLINE_LINUX</span><span class=o>=</span><span class=s2>&#34;crashkernel=auto spectre_v2=retpoline rd.lvm.lv=centos/root rd.lvm.lv=centos/swap rhgb quiet cgroup.memory=nokmem&#34;</span>
-</span></span><span class=line><span class=cl><span class=nv>GRUB_DISABLE_RECOVERY</span><span class=o>=</span><span class=s2>&#34;true&#34;</span>
-</span></span></code></pre></div><p>更改完成后你需要生成一下新的cgroup配置.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>/usr/sbin/grub2-mkconfig -o /boot/grub2/grub.cfg
-</span></span><span class=line><span class=cl>reboot <span class=c1># 重启服务器</span>
-</span></span></code></pre></div><h3 id=解决方案3>解决方案3<a hidden class=anchor aria-hidden=true href=#解决方案3>#</a></h3><p>如果你想在Kubernetes中禁用该属性。issue 中一般建议修改 kubelet代码并重新编译。</p><p>对于v1.13及其之前版本的kubelet，需要手动替换以下两个函数。</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-go data-lang=go><span class=line><span class=cl><span class=nx>vendor</span><span class=o>/</span><span class=nx>github</span><span class=p>.</span><span class=nx>com</span><span class=o>/</span><span class=nx>opencontainers</span><span class=o>/</span><span class=nx>runc</span><span class=o>/</span><span class=nx>libcontainer</span><span class=o>/</span><span class=nx>cgroups</span><span class=o>/</span><span class=nx>fs</span><span class=o>/</span><span class=nx>memory</span><span class=p>.</span><span class=k>go</span>
-</span></span><span class=line><span class=cl><span class=kd>func</span> <span class=nf>EnableKernelMemoryAccounting</span><span class=p>(</span><span class=nx>path</span> <span class=kt>string</span><span class=p>)</span> <span class=kt>error</span> <span class=p>{</span>
-</span></span><span class=line><span class=cl>    <span class=k>return</span> <span class=kc>nil</span>
-</span></span><span class=line><span class=cl><span class=p>}</span>
-</span></span><span class=line><span class=cl><span class=kd>func</span> <span class=nf>setKernelMemory</span><span class=p>(</span><span class=nx>path</span> <span class=kt>string</span><span class=p>,</span> <span class=nx>kernelMemoryLimit</span> <span class=kt>int64</span><span class=p>)</span> <span class=kt>error</span> <span class=p>{</span>
-</span></span><span class=line><span class=cl>    <span class=k>return</span> <span class=kc>nil</span>
-</span></span><span class=line><span class=cl><span class=p>}</span>
-</span></span></code></pre></div><p>重新编译并替换 <code>kubelet</code></p><div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>make <span class=nv>WHAT</span><span class=o>=</span>cmd/kubelet <span class=nv>GOFLAGS</span><span class=o>=</span>-v <span class=nv>GOGCFLAGS</span><span class=o>=</span><span class=s2>&#34;-N -l&#34;</span>
-</span></span></code></pre></div><p>对于v1.14及其之后版本的kubelet,通过添加BUILDTAGS来禁止 kmem accounting.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>make <span class=nv>BUILDTAGS</span><span class=o>=</span><span class=s2>&#34;nokmem&#34;</span> <span class=nv>WHAT</span><span class=o>=</span>cmd/kubelet <span class=nv>GOFLAGS</span><span class=o>=</span>-v <span class=nv>GOGCFLAGS</span><span class=o>=</span><span class=s2>&#34;-N -l&#34;</span>
-</span></span></code></pre></div><p>遇到1.16 版本的BUILDTAGS=”nokmem“编译出来的 let 还是有问题，还是通过修改代码的方式使其生效</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-go data-lang=go><span class=line><span class=cl><span class=nx>vendor</span><span class=o>/</span><span class=nx>github</span><span class=p>.</span><span class=nx>com</span><span class=o>/</span><span class=nx>opencontainers</span><span class=o>/</span><span class=nx>runc</span><span class=o>/</span><span class=nx>libcontainer</span><span class=o>/</span><span class=nx>cgroups</span><span class=o>/</span><span class=nx>fs</span><span class=o>/</span><span class=nx>kmem</span><span class=p>.</span><span class=k>go</span>
-</span></span><span class=line><span class=cl><span class=kn>package</span> <span class=nx>fs</span>
-</span></span><span class=line><span class=cl>
-</span></span><span class=line><span class=cl><span class=kn>import</span> <span class=p>(</span>
-</span></span><span class=line><span class=cl>    <span class=s>&#34;errors&#34;</span>
-</span></span><span class=line><span class=cl><span class=p>)</span>
-</span></span><span class=line><span class=cl><span class=kd>func</span> <span class=nf>EnableKernelMemoryAccounting</span><span class=p>(</span><span class=nx>path</span> <span class=kt>string</span><span class=p>)</span> <span class=kt>error</span> <span class=p>{</span>
-</span></span><span class=line><span class=cl>    <span class=k>return</span> <span class=kc>nil</span>
-</span></span><span class=line><span class=cl><span class=p>}</span>
-</span></span><span class=line><span class=cl><span class=kd>func</span> <span class=nf>setKernelMemory</span><span class=p>(</span><span class=nx>path</span> <span class=kt>string</span><span class=p>,</span> <span class=nx>kernelMemoryLimit</span> <span class=kt>int64</span><span class=p>)</span> <span class=kt>error</span> <span class=p>{</span>
-</span></span><span class=line><span class=cl>    <span class=k>return</span> <span class=nx>errors</span><span class=p>.</span><span class=nf>New</span><span class=p>(</span><span class=s>&#34;kernel memory accounting disabled in this runc build&#34;</span><span class=p>)</span>
-</span></span><span class=line><span class=cl><span class=p>}</span>
-</span></span></code></pre></div><p>编译前，可以编辑下文件 hack/lib/version.sh，将 <code>KUBE_GIT_TREE_STATE="dirty"</code> 改为 <code>KUBE_GIT_TREE_STATE="clean"</code>，确保版本号干净。</p><h3 id=影响范围>影响范围<a hidden class=anchor aria-hidden=true href=#影响范围>#</a></h3><p>k8s在1.9版本开启了对kmem的支持，因此1.9以后的所有版本都有该问题,但必须搭配 3.x内核的机器才会出问题。一旦出现会导致新pod无法创建,已有 pod不受影响，但pod 漂移到有问题的节点就会失败，直接影响业务稳定性。因为是内存泄露，直接重启机器可以暂时解决，但还会再次出现。</p><h2 id=大概得原理理解>大概得原理理解<a hidden class=anchor aria-hidden=true href=#大概得原理理解>#</a></h2><h3 id=keme是什么>keme是什么?<a hidden class=anchor aria-hidden=true href=#keme是什么>#</a></h3><p>kmem是Cgroup的一个扩展，全称CONFIG_MEMCG_KMEM，属于机器默认配置。</p><p>内核内存与用户内存：</p><p>内核内存：专用于Linux内核系统服务使用，是不可swap的，因而这部分内存非常宝贵的。但现实中存在很多针对内核内存资源的攻击，如不断地fork新进程从而耗尽系统资源，即所谓的“fork bomb”。</p><p>为了防止这种攻击，社区中提议通过linux内核限制 cgroup中的kmem 容量，从而限制恶意进程的行为，即kernel memory accounting机制。</p><p>使用如下命令查看KMEM是否打开：</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>cat /boot/config-<span class=sb>`</span>uname -r<span class=sb>`</span><span class=p>|</span>grep CONFIG_MEMCG
-</span></span><span class=line><span class=cl><span class=nv>CONFIG_MEMCG</span><span class=o>=</span>y
-</span></span><span class=line><span class=cl><span class=nv>CONFIG_MEMCG_SWAP</span><span class=o>=</span>y
-</span></span><span class=line><span class=cl><span class=nv>CONFIG_MEMCG_SWAP_ENABLED</span><span class=o>=</span>y
-</span></span><span class=line><span class=cl><span class=nv>CONFIG_MEMCG_KMEM</span><span class=o>=</span>y
-</span></span></code></pre></div><h3 id=cgroup与kmem机制>cgroup与kmem机制<a hidden class=anchor aria-hidden=true href=#cgroup与kmem机制>#</a></h3><p>使用 cgroup 限制内存时，我们不但需要限制对用户内存的使用，也需要限制对内核内存的使用。kernel memory accounting 机制为 cgroup 的内存限制增加了 stack pages（例如新进程创建）、slab pages(SLAB/SLUB分配器使用的内存)、sockets memory pressure、tcp memory pressure等，以保证 kernel memory 不被滥用。</p><p>当你开启了kmem 机制，具体体现在 memory.kmem.limit_in_bytes 这个文件上：</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>/sys/fs/cgroup/memory/kubepods/pod632f736f-5ef2-11ea-ad9e-fa163e35f5d4/memory.kmem.limit_in_bytes
-</span></span></code></pre></div><p>实际使用中，我们一般将 memory.kmem.limit_in_bytes 设置成大于 memory.limit_in_bytes，从而只限制应用的总内存使用。</p><h3 id=docker与k8s使用kmem>docker与k8s使用kmem<a hidden class=anchor aria-hidden=true href=#docker与k8s使用kmem>#</a></h3><p>以上描述都是cgroup层面即机器层面，但是 runc 和 docker 发现有这个属性之后，在后来的版本中也支持了 kmem ，k8s 发现 docker支持，也在 1.9 版本开始支持。</p><p>1.9版本及之后，kubelet 才开启 kmem 属性</p><p>kubelet 的这部分代码位于：</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>https://github.com/kubernetes/kubernetes/blob/release-1.12/vendor/github.com/opencontainers/runc/libcontainer/cgroups/fs/memory.go#L70-L106
-</span></span></code></pre></div><p>对于k8s、docker 而言，kmem 属性属于正常迭代和优化，至于3.x的内核上存在 bug 不能兼容，不是k8s 关心的问题。但 issue 中不断有人反馈，因此在 k8s 1.14 版本的 kubelet 中，增加了一个编译选项 make BUILDTAGS=“nokmem”，就可以编译 kubelet 时就禁用 kmem，避免掉这个问题。而1.8 到1.14 中间的版本，只能选择更改 kubelet 的代码。</p></div><footer class=post-footer><ul class=post-tags><li><a href=https://blog.mletter.cn/tags/kubernetes/>Kubernetes</a></li></ul><nav class=paginav><a class=prev href=https://blog.mletter.cn/tech/kubernetes/install-kubernetes-ha/><span class=title>« 上一页</span><br><span>利用Kubeadm进行多Master高可用部署</span>
-</a><a class=next href=https://blog.mletter.cn/tech/ansible/ansible-task-controller/><span class=title>下一页 »</span><br><span>Ansible-任务控制</span></a></nav><ul class=share-buttons><li><a target=_blank rel="noopener noreferrer" aria-label="share Kubernetes低版本中内存泄漏问题 on x" href="https://x.com/intent/tweet/?text=Kubernetes%e4%bd%8e%e7%89%88%e6%9c%ac%e4%b8%ad%e5%86%85%e5%ad%98%e6%b3%84%e6%bc%8f%e9%97%ae%e9%a2%98&amp;url=https%3a%2f%2fblog.mletter.cn%2ftech%2fkubernetes%2fmemory-leakage-analysis%2f&amp;hashtags=kubernetes"><svg viewBox="0 0 512 512" height="30" width="30" fill="currentcolor"><path d="M512 62.554V449.446C512 483.97 483.97 512 449.446 512H62.554C28.03 512 0 483.97.0 449.446V62.554C0 28.03 28.029.0 62.554.0H449.446C483.971.0 512 28.03 512 62.554zM269.951 190.75 182.567 75.216H56L207.216 272.95 63.9 436.783h61.366L235.9 310.383l96.667 126.4H456L298.367 228.367l134-153.151H371.033zM127.633 110h36.468l219.38 290.065H349.5z"/></svg></a></li><li><a target=_blank rel="noopener noreferrer" aria-label="share Kubernetes低版本中内存泄漏问题 on linkedin" href="https://www.linkedin.com/shareArticle?mini=true&amp;url=https%3a%2f%2fblog.mletter.cn%2ftech%2fkubernetes%2fmemory-leakage-analysis%2f&amp;title=Kubernetes%e4%bd%8e%e7%89%88%e6%9c%ac%e4%b8%ad%e5%86%85%e5%ad%98%e6%b3%84%e6%bc%8f%e9%97%ae%e9%a2%98&amp;summary=Kubernetes%e4%bd%8e%e7%89%88%e6%9c%ac%e4%b8%ad%e5%86%85%e5%ad%98%e6%b3%84%e6%bc%8f%e9%97%ae%e9%a2%98&amp;source=https%3a%2f%2fblog.mletter.cn%2ftech%2fkubernetes%2fmemory-leakage-analysis%2f"><svg viewBox="0 0 512 512" height="30" width="30" fill="currentcolor"><path d="M449.446.0C483.971.0 512 28.03 512 62.554v386.892C512 483.97 483.97 512 449.446 512H62.554c-34.524.0-62.554-28.03-62.554-62.554V62.554c0-34.524 28.029-62.554 62.554-62.554h386.892zM160.461 423.278V197.561h-75.04v225.717h75.04zm270.539.0V293.839c0-69.333-37.018-101.586-86.381-101.586-39.804.0-57.634 21.891-67.617 37.266v-31.958h-75.021c.995 21.181.0 225.717.0 225.717h75.02V297.222c0-6.748.486-13.492 2.474-18.315 5.414-13.475 17.767-27.434 38.494-27.434 27.135.0 38.007 20.707 38.007 51.037v120.768H431zM123.448 88.722C97.774 88.722 81 105.601 81 127.724c0 21.658 16.264 39.002 41.455 39.002h.484c26.165.0 42.452-17.344 42.452-39.002-.485-22.092-16.241-38.954-41.943-39.002z"/></svg></a></li><li><a target=_blank rel="noopener noreferrer" aria-label="share Kubernetes低版本中内存泄漏问题 on reddit" href="https://reddit.com/submit?url=https%3a%2f%2fblog.mletter.cn%2ftech%2fkubernetes%2fmemory-leakage-analysis%2f&title=Kubernetes%e4%bd%8e%e7%89%88%e6%9c%ac%e4%b8%ad%e5%86%85%e5%ad%98%e6%b3%84%e6%bc%8f%e9%97%ae%e9%a2%98"><svg viewBox="0 0 512 512" height="30" width="30" fill="currentcolor"><path d="M449.446.0C483.971.0 512 28.03 512 62.554v386.892C512 483.97 483.97 512 449.446 512H62.554c-34.524.0-62.554-28.03-62.554-62.554V62.554c0-34.524 28.029-62.554 62.554-62.554h386.892zM446 265.638c0-22.964-18.616-41.58-41.58-41.58-11.211.0-21.361 4.457-28.841 11.666-28.424-20.508-67.586-33.757-111.204-35.278l18.941-89.121 61.884 13.157c.756 15.734 13.642 28.29 29.56 28.29 16.407.0 29.706-13.299 29.706-29.701.0-16.403-13.299-29.702-29.706-29.702-11.666.0-21.657 6.792-26.515 16.578l-69.105-14.69c-1.922-.418-3.939-.042-5.585 1.036-1.658 1.073-2.811 2.761-3.224 4.686l-21.152 99.438c-44.258 1.228-84.046 14.494-112.837 35.232-7.468-7.164-17.589-11.591-28.757-11.591-22.965.0-41.585 18.616-41.585 41.58.0 16.896 10.095 31.41 24.568 37.918-.639 4.135-.99 8.328-.99 12.576.0 63.977 74.469 115.836 166.33 115.836s166.334-51.859 166.334-115.836c0-4.218-.347-8.387-.977-12.493 14.564-6.47 24.735-21.034 24.735-38.001zM326.526 373.831c-20.27 20.241-59.115 21.816-70.534 21.816-11.428.0-50.277-1.575-70.522-21.82-3.007-3.008-3.007-7.882.0-10.889 3.003-2.999 7.882-3.003 10.885.0 12.777 12.781 40.11 17.317 59.637 17.317 19.522.0 46.86-4.536 59.657-17.321 3.016-2.999 7.886-2.995 10.885.008 3.008 3.011 3.003 7.882-.008 10.889zm-5.23-48.781c-16.373.0-29.701-13.324-29.701-29.698.0-16.381 13.328-29.714 29.701-29.714 16.378.0 29.706 13.333 29.706 29.714.0 16.374-13.328 29.698-29.706 29.698zM160.91 295.348c0-16.381 13.328-29.71 29.714-29.71 16.369.0 29.689 13.329 29.689 29.71.0 16.373-13.32 29.693-29.689 29.693-16.386.0-29.714-13.32-29.714-29.693z"/></svg></a></li><li><a target=_blank rel="noopener noreferrer" aria-label="share Kubernetes低版本中内存泄漏问题 on facebook" href="https://facebook.com/sharer/sharer.php?u=https%3a%2f%2fblog.mletter.cn%2ftech%2fkubernetes%2fmemory-leakage-analysis%2f"><svg viewBox="0 0 512 512" height="30" width="30" fill="currentcolor"><path d="M449.446.0C483.971.0 512 28.03 512 62.554v386.892C512 483.97 483.97 512 449.446 512H342.978V319.085h66.6l12.672-82.621h-79.272v-53.617c0-22.603 11.073-44.636 46.58-44.636H425.6v-70.34s-32.71-5.582-63.982-5.582c-65.288.0-107.96 39.569-107.96 111.204v62.971h-72.573v82.621h72.573V512h-191.104c-34.524.0-62.554-28.03-62.554-62.554V62.554c0-34.524 28.029-62.554 62.554-62.554h386.892z"/></svg></a></li><li><a target=_blank rel="noopener noreferrer" aria-label="share Kubernetes低版本中内存泄漏问题 on whatsapp" href="https://api.whatsapp.com/send?text=Kubernetes%e4%bd%8e%e7%89%88%e6%9c%ac%e4%b8%ad%e5%86%85%e5%ad%98%e6%b3%84%e6%bc%8f%e9%97%ae%e9%a2%98%20-%20https%3a%2f%2fblog.mletter.cn%2ftech%2fkubernetes%2fmemory-leakage-analysis%2f"><svg viewBox="0 0 512 512" height="30" width="30" fill="currentcolor"><path d="M449.446.0C483.971.0 512 28.03 512 62.554v386.892C512 483.97 483.97 512 449.446 512H62.554c-34.524.0-62.554-28.03-62.554-62.554V62.554c0-34.524 28.029-62.554 62.554-62.554h386.892zm-58.673 127.703c-33.842-33.881-78.847-52.548-126.798-52.568-98.799.0-179.21 80.405-179.249 179.234-.013 31.593 8.241 62.428 23.927 89.612l-25.429 92.884 95.021-24.925c26.181 14.28 55.659 21.807 85.658 21.816h.074c98.789.0 179.206-80.413 179.247-179.243.018-47.895-18.61-92.93-52.451-126.81zM263.976 403.485h-.06c-26.734-.01-52.954-7.193-75.828-20.767l-5.441-3.229-56.386 14.792 15.05-54.977-3.542-5.637c-14.913-23.72-22.791-51.136-22.779-79.287.033-82.142 66.867-148.971 149.046-148.971 39.793.014 77.199 15.531 105.329 43.692 28.128 28.16 43.609 65.592 43.594 105.4-.034 82.149-66.866 148.983-148.983 148.984zm81.721-111.581c-4.479-2.242-26.499-13.075-30.604-14.571-4.105-1.495-7.091-2.241-10.077 2.241-2.986 4.483-11.569 14.572-14.182 17.562-2.612 2.988-5.225 3.364-9.703 1.12-4.479-2.241-18.91-6.97-36.017-22.23C231.8 264.15 222.81 249.484 220.198 245s-.279-6.908 1.963-9.14c2.016-2.007 4.48-5.232 6.719-7.847 2.24-2.615 2.986-4.484 4.479-7.472 1.493-2.99.747-5.604-.374-7.846-1.119-2.241-10.077-24.288-13.809-33.256-3.635-8.733-7.327-7.55-10.077-7.688-2.609-.13-5.598-.158-8.583-.158-2.986.0-7.839 1.121-11.944 5.604-4.105 4.484-15.675 15.32-15.675 37.364.0 22.046 16.048 43.342 18.287 46.332 2.24 2.99 31.582 48.227 76.511 67.627 10.685 4.615 19.028 7.371 25.533 9.434 10.728 3.41 20.492 2.929 28.209 1.775 8.605-1.285 26.499-10.833 30.231-21.295 3.732-10.464 3.732-19.431 2.612-21.298-1.119-1.869-4.105-2.99-8.583-5.232z"/></svg></a></li><li><a target=_blank rel="noopener noreferrer" aria-label="share Kubernetes低版本中内存泄漏问题 on telegram" href="https://telegram.me/share/url?text=Kubernetes%e4%bd%8e%e7%89%88%e6%9c%ac%e4%b8%ad%e5%86%85%e5%ad%98%e6%b3%84%e6%bc%8f%e9%97%ae%e9%a2%98&amp;url=https%3a%2f%2fblog.mletter.cn%2ftech%2fkubernetes%2fmemory-leakage-analysis%2f"><svg viewBox="2 2 28 28" height="30" width="30" fill="currentcolor"><path d="M26.49 29.86H5.5a3.37 3.37.0 01-2.47-1 3.35 3.35.0 01-1-2.47V5.48A3.36 3.36.0 013 3 3.37 3.37.0 015.5 2h21A3.38 3.38.0 0129 3a3.36 3.36.0 011 2.46V26.37a3.35 3.35.0 01-1 2.47 3.38 3.38.0 01-2.51 1.02zm-5.38-6.71a.79.79.0 00.85-.66L24.73 9.24a.55.55.0 00-.18-.46.62.62.0 00-.41-.17q-.08.0-16.53 6.11a.59.59.0 00-.41.59.57.57.0 00.43.52l4 1.24 1.61 4.83a.62.62.0 00.63.43.56.56.0 00.4-.17L16.54 20l4.09 3A.9.9.0 0021.11 23.15zM13.8 20.71l-1.21-4q8.72-5.55 8.78-5.55c.15.0.23.0.23.16a.18.18.0 010 .06s-2.51 2.3-7.52 6.8z"/></svg></a></li><li><a target=_blank rel="noopener noreferrer" aria-label="share Kubernetes低版本中内存泄漏问题 on ycombinator" href="https://news.ycombinator.com/submitlink?t=Kubernetes%e4%bd%8e%e7%89%88%e6%9c%ac%e4%b8%ad%e5%86%85%e5%ad%98%e6%b3%84%e6%bc%8f%e9%97%ae%e9%a2%98&u=https%3a%2f%2fblog.mletter.cn%2ftech%2fkubernetes%2fmemory-leakage-analysis%2f"><svg width="30" height="30" viewBox="0 0 512 512" fill="currentcolor" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"><path d="M449.446.0C483.971.0 512 28.03 512 62.554V449.446C512 483.97 483.97 512 449.446 512H62.554C28.03 512 0 483.97.0 449.446V62.554C0 28.03 28.029.0 62.554.0H449.446zM183.8767 87.9921h-62.034L230.6673 292.4508V424.0079h50.6655V292.4508L390.1575 87.9921H328.1233L256 238.2489z"/></svg></a></li></ul></footer><div id=tcomment></div><script src=https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/twikoo/1.4.18/twikoo.all.min.js></script><script>twikoo.init({envId:"https://twikoo.mletter.cn/",el:"#tcomment"})</script></article></main><footer class=footer><span>&copy; 2025 <a href=https://blog.mletter.cn/>太阳可以是蓝色</a></span> ·
-<span>Powered by
-<a href=https://gohugo.io/ rel="noopener noreferrer" target=_blank>Hugo</a> &
-        <a href=https://github.com/adityatelange/hugo-PaperMod/ rel=noopener target=_blank>PaperMod</a></span><br><span id=span style=color:#101011></span>
-<script type=text/javascript>function runtime(){const a=new Date("12/07/2020 12:50:18"),r=new Date,c=r.getTime()-a.getTime(),l=24*60*60*1e3,e=c/l,t=Math.floor(e),n=(e-t)*24,s=Math.floor(n),o=(n-s)*60,i=Math.floor(o),d=Math.floor((o-i)*60);document.getElementById("span").innerHTML="已运行: "+t+"天"+s+"小时"+i+"分"+d+"秒"}runtime(),setInterval(runtime,1e3)</script><br><font color=#101011>本站由 <a href=https://www.netlify.com/ rel="noopener noreferrer nofollow" target=_blank>Netlify</a> 提供计算服务, 由 <a href=https://www.netlify.com/ rel="noopener noreferrer nofollow" target=_blank>Netlify</a> 提供全站加速服务。</font><br></footer><a href=#top aria-label="go to top" title="Go to Top (Alt + G)" class=top-link id=top-link accesskey=g><svg viewBox="0 0 12 6" fill="currentcolor"><path d="M12 6H0l6-6z"/></svg>
-</a><script>const menu=document.getElementById("menu");menu&&(menu.scrollLeft=localStorage.getItem("menu-scroll-position"),menu.onscroll=function(){localStorage.setItem("menu-scroll-position",menu.scrollLeft)}),document.querySelectorAll('a[href^="#"]').forEach(e=>{e.addEventListener("click",function(e){e.preventDefault();const t=this.getAttribute("href").substr(1),n=document.querySelector(`[id='${decodeURIComponent(t)}']`);window.matchMedia("(prefers-reduced-motion: reduce)").matches?n.scrollIntoView():n.scrollIntoView({behavior:"smooth"}),t==="top"?history.replaceState(null,null," "):history.pushState(null,null,`#${t}`)})})</script><script>const mybutton=document.getElementById("top-link");window.onscroll=function(){document.body.scrollTop>800||document.documentElement.scrollTop>800?(mybutton.style.visibility="visible",mybutton.style.opacity="1"):(mybutton.style.visibility="hidden",mybutton.style.opacity="0")}</script><script>document.getElementById("theme-toggle").addEventListener("click",()=>{document.body.classList.contains("dark")?(document.body.classList.remove("dark"),localStorage.setItem("pref-theme","light")):(document.body.classList.add("dark"),localStorage.setItem("pref-theme","dark"))})</script></body></html>
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='绝大多数的kubernetes集群都有这个隐患。只不过一般情况下，泄漏得比较慢，还没有表现出来而已。'>
+<title>Kubernetes低版本中内存泄漏问题</title>
+
+<link rel='canonical' href='https://blog.mletter.cn/tech/kubernetes/memory-leakage-analysis/'>
+
+<link rel="stylesheet" href="https://blog.mletter.cn/scss/style.min.2c3f3a6a02fe235acfd19dc07e83848e5bd9f7fd12e5b755e3f9d0c92e1059be.css"><meta property='og:title' content='Kubernetes低版本中内存泄漏问题'>
+<meta property='og:description' content='绝大多数的kubernetes集群都有这个隐患。只不过一般情况下，泄漏得比较慢，还没有表现出来而已。'>
+<meta property='og:url' content='https://blog.mletter.cn/tech/kubernetes/memory-leakage-analysis/'>
+<meta property='og:site_name' content='太阳可以是蓝色'>
+<meta property='og:type' content='article'><meta property='article:section' content='Posts' /><meta property='article:tag' content='kubernetes' /><meta property='article:published_time' content='2022-10-08T00:00:00&#43;00:00'/><meta property='article:modified_time' content='2022-10-08T00:00:00&#43;00:00'/><meta property='og:image' content='https://img14.360buyimg.com/ddimg/jfs/t1/164569/9/40677/14419/65bc6e4cFa1d8c0c3/5ccf7e6caadc9b83.jpg' />
+<meta name="twitter:title" content="Kubernetes低版本中内存泄漏问题">
+<meta name="twitter:description" content="绝大多数的kubernetes集群都有这个隐患。只不过一般情况下，泄漏得比较慢，还没有表现出来而已。"><meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content='https://img14.360buyimg.com/ddimg/jfs/t1/164569/9/40677/14419/65bc6e4cFa1d8c0c3/5ccf7e6caadc9b83.jpg' />
+    <link rel="shortcut icon" href="wechat.svg" />
+<style>
+  :root {
+       
+      --sys-font-family: -apple-system, "PingFang SC", Georgia, 'Nimbus Roman No9 L', 'Hiragino Sans GB', 'Noto Serif SC', 'Microsoft Yahei', 'WenQuanYi Micro Hei', 'ST Heiti', sans-serif;
+      --code-font-family: "JetBrains Mono", Menlo, Monaco, Consolas, "Courier New";
+      --article-font-family: -apple-system, "PingFang SC", var(--base-font-family);
+  }
+</style>
+
+
+
+
+
+
+<script src="https://blog.mletter.cn/view-image.min.js"></script>
+
+<script>
+  window.ViewImage && ViewImage.init('.article-content img');
+</script>
+
+
+
+<link rel="stylesheet" href="https://cdn.staticfile.net/highlight.js/11.9.0/styles/tokyo-night-dark.min.css">
+<script src="https://lf26-cdn-tos.bytecdntp.com/cdn/expire-1-M/highlight.js/11.4.0/highlight.min.js"></script>
+<script src="https://cdn.staticfile.net/highlight.js/11.9.0/es/languages/go.min.js"></script>
+
+<script>hljs.initHighlightingOnLoad();</script>
+<script>document.addEventListener('DOMContentLoaded', (event) => {document.querySelectorAll('pre code').forEach((el) => {hljs.highlightElement(el);});});</script>
+
+
+
+
+
+
+<script async src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+<script>
+    mermaid.init(undefined, '.language-mermaid');
+</script>
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="https://blog.mletter.cn/">
+                
+                    <img src="https://img14.360buyimg.com/ddimg/jfs/t1/77628/23/27254/26944/66bc1a36Fc596606a/d912965b8bba22af.jpg" width="300" height="300" class="site-logo" loading="lazy" alt="Avatar">
+                
+                </a>
+                
+                    <span class="emoji">🍥</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="https://blog.mletter.cn/">太阳可以是蓝色</a></h1>
+            <h2 class="site-description">Live and learn. 🌱</h2>
+        </div>
+    </header><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='https://blog.mletter.cn/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>搜索</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='https://blog.mletter.cn/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>首页</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='https://blog.mletter.cn/posts' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-inbox" width="24" height="24" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 4m0 2a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2z" /><path d="M4 13h3l3 3h4l3 -3h3" /></svg>
+                
+                <span>文章</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='https://blog.mletter.cn/archives' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>归档</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='https://mletter.cn' target="_blank">
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-health-recognition" width="24" height="24" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 8v-2a2 2 0 0 1 2 -2h2" /><path d="M4 16v2a2 2 0 0 0 2 2h2" /><path d="M16 4h2a2 2 0 0 1 2 2v2" /><path d="M16 20h2a2 2 0 0 0 2 -2v-2" /><path d="M8.603 9.61a2.04 2.04 0 0 1 2.912 0l.485 .39l.5 -.396a2.035 2.035 0 0 1 2.897 .007a2.104 2.104 0 0 1 0 2.949l-3.397 3.44l-3.397 -3.44a2.104 2.104 0 0 1 0 -2.95z" /></svg>
+                
+                <span>主页</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='https://pic.mletter.cn' target="_blank">
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-photo-cog" width="24" height="24" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M15 8h.01" /><path d="M12 21h-6a3 3 0 0 1 -3 -3v-12a3 3 0 0 1 3 -3h12a3 3 0 0 1 3 3v6" /><path d="M3 16l5 -5c.928 -.893 2.072 -.893 3 0l3 3" /><path d="M14 14l1 -1c.48 -.461 1.016 -.684 1.551 -.67" /><path d="M19.001 19m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" /><path d="M19.001 15.5v1.5" /><path d="M19.001 21v1.5" /><path d="M22.032 17.25l-1.299 .75" /><path d="M17.27 20l-1.3 .75" /><path d="M15.97 17.25l1.3 .75" /><path d="M20.733 20l1.3 .75" /></svg>
+                
+                <span>相册</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='https://blog.mletter.cn/friends' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>友联</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='https://blog.mletter.cn/about' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>关于</span>
+            </a>
+        </li>
+        
+
+        <div class="menu-bottom-section">
+                
+            
+            
+            
+                <li id="dark-mode-toggle">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                    <span>暗色模式</span>
+                </li>
+            
+        </div>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">目录</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ul>
+    <li><a href="#kubernetes中cgroup泄漏问题">Kubernetes中Cgroup泄漏问题</a></li>
+    <li><a href="#故障表现">故障表现</a></li>
+    <li><a href="#服务器配置信息">服务器配置信息</a></li>
+    <li><a href="#问题原因1">问题原因1</a></li>
+    <li><a href="#问题原因2">问题原因2</a></li>
+    <li><a href="#解决方案">解决方案</a>
+      <ul>
+        <li><a href="#解决方案一">解决方案一</a></li>
+        <li><a href="#解决方案2">解决方案2</a></li>
+        <li><a href="#解决方案3">解决方案3</a></li>
+        <li><a href="#影响范围">影响范围</a></li>
+      </ul>
+    </li>
+    <li><a href="#大概得原理理解">大概得原理理解</a>
+      <ul>
+        <li><a href="#keme是什么">keme是什么?</a></li>
+        <li><a href="#cgroup与kmem机制">cgroup与kmem机制</a></li>
+        <li><a href="#docker与k8s使用kmem">docker与k8s使用kmem</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="has-image main-article">
+    <header class="article-header">
+        <div class="article-image">
+            <a href="https://blog.mletter.cn/tech/kubernetes/memory-leakage-analysis/">
+                
+                    <img src="https://img14.360buyimg.com/ddimg/jfs/t1/164569/9/40677/14419/65bc6e4cFa1d8c0c3/5ccf7e6caadc9b83.jpg" loading="lazy" alt="Featured image of post Kubernetes低版本中内存泄漏问题" />
+                
+            </a>
+        </div>
+    
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="https://blog.mletter.cn/categories/kubernetes/" >
+                Kubernetes
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="https://blog.mletter.cn/tech/kubernetes/memory-leakage-analysis/">Kubernetes低版本中内存泄漏问题</a>
+        </h2>
+    
+        
+        <h3 class="article-subtitle">
+            绝大多数的kubernetes集群都有这个隐患。只不过一般情况下，泄漏得比较慢，还没有表现出来而已。
+        </h3>
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Oct 08, 2022</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    阅读时长: 6 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <h2 id="kubernetes中cgroup泄漏问题"></h>Kubernetes中Cgroup泄漏问题
+</h2><p>Cgorup文档: <a class="link" href="https://www.kernel.org/doc/Documentation/cgroup-v1/memory.txt"  target="_blank" rel="noopener"
+    >https://www.kernel.org/doc/Documentation/cgroup-v1/memory.txt</a></p>
+<p>绝大多数的kubernetes集群都有这个隐患。只不过一般情况下，泄漏得比较慢，还没有表现出来而已。</p>
+<p>一个pod可能泄漏两个memory cgroup数量配额。即使pod百分之百发生泄漏， 那也需要一个节点销毁过三万多个pod之后，才会造成后续pod创建失败。</p>
+<p>一旦表现出来，这个节点就彻底不可用了，必须重启才能恢复。</p>
+<h2 id="故障表现"></h>故障表现
+</h2><ul>
+<li>该内容的故障信息已经提交给Github: <a class="link" href="https://github.com/kubernetes/kubernetes/issues/112940"  target="_blank" rel="noopener"
+    >https://github.com/kubernetes/kubernetes/issues/112940</a></li>
+</ul>
+<p>我在服务器中更新Pod出现如下错误 <code>cannot allocate memory</code></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">unable to ensure pod container exists: failed to create container <span class="k">for</span> <span class="o">[</span>kubepods burstable podd5dafc96-2bcd-40db-90fd-c75758746a7a<span class="o">]</span> : mkdir /sys/fs/cgroup/memory/kubepods/burstable/podd5dafc96-2bcd-40db-90fd-c75758746a7a: cannot allocate memory
+</span></span></code></pre></div><p>使用<code>dmesg</code>查看系统日志的错误内容信息</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">SLUB: Unable to allocate memory on node -1
+</span></span></code></pre></div><h2 id="服务器配置信息"></h>服务器配置信息
+</h2><ul>
+<li>操作系统: <code>CentOS Linux release 7.9.2009 (Core)</code></li>
+<li>系统内核: <code>3.10.0-1160.el7.x86_64</code></li>
+<li>Kubernetes: <code>1.17.9</code></li>
+<li>dockerVersion: <code>20.10.7</code></li>
+</ul>
+<h2 id="问题原因1"></h>问题原因1
+</h2><p>Kubernetes在1.9版本开启了对kmem的支持,因此 1.9以后的所有版本都有该问题，但必须搭配3.x内核的机器才会出问题。一旦出现会导致新 pod 无法创建，已有 pod不受影响，但pod 漂移到有问题的节点就会失败，直接影响业务稳定性。因为是内存泄露，直接重启机器可以暂时解决，但还会再次出现。
+cgroup的kmem account特性在3.x 内核上有内存泄露问题，如果开启了kmem account特性会导致可分配内存越来越少，直到无法创建新 pod 或节点异常。</p>
+<ol>
+<li>kmem account 是cgroup 的一个扩展，全称CONFIG_MEMCG_KMEM，属于机器默认配置，本身没啥问题，只是该特性在 3.10 的内核上存在漏洞有内存泄露问题，4.x的内核修复了这个问题。</li>
+<li>因为 kmem account 是 cgroup 的扩展能力，因此runc、docker、k8s 层面也进行了该功能的支持，即默认都打开了kmem 属性。</li>
+<li>因为3.10 的内核已经明确提示 kmem 是实验性质，我们仍然使用该特性，所以这其实不算内核的问题，是 k8s 兼容问题。</li>
+</ol>
+<h2 id="问题原因2"></h>问题原因2
+</h2><p>memcg是 Linux 内核中用于管理 cgroup 内存的模块，整个生命周期应该是跟随 cgroup 的，但是在低版本内核中<code>(已知3.10)</code>，一旦给某个 memory cgroup 开启 kmem accounting 中的 memory.kmem.limit_in_bytes 就可能会导致不能彻底删除 memcg 和对应的 cssid，也就是说应用即使已经删除了 cgroup (/sys/fs/cgroup/memory 下对应的 cgroup 目录已经删除), 但在内核中没有释放 cssid，导致内核认为的 cgroup 的数量实际数量不一致，我们也无法得知内核认为的 cgroup 数量是多少。
+这个问题可能会导致创建容器失败，因为创建容器为其需要创建 cgroup 来做隔离，而低版本内核有个限制：允许创建的 cgroup 最大数量写死为 65535，如果节点上经常创建和销毁大量容器导致创建很多 cgroup，删除容器但没有彻底删除 cgroup 造成泄露(真实数量我们无法得知)，到达 65535 后再创建容器就会报创建 cgroup 失败并报错 no space left on device，使用 kubernetes 最直观的感受就是 pod 创建之后无法启动成功。</p>
+<h2 id="解决方案"></h>解决方案
+</h2><p>目前官方给出的解决方案如下:</p>
+<ol>
+<li>kernel upgrade to 4.0+: <a class="link" href="https://github.com/kubernetes/kubernetes/issues/61937#issuecomment-377585452"  target="_blank" rel="noopener"
+    >Update kernel</a></li>
+<li>rebuild the kubelet with nokmem args. See <a class="link" href="https://github.com/kubernetes/kubernetes/issues/96701#issuecomment-911061574"  target="_blank" rel="noopener"
+    >nokmem</a></li>
+<li>Set cgroup.memory=nokmem in grub: see <a class="link" href="https://github.com/kubernetes/kubernetes/issues/61937#issuecomment-567042968"  target="_blank" rel="noopener"
+    >grub</a></li>
+</ol>
+<h3 id="解决方案一"></h>解决方案一
+</h3><ul>
+<li>感谢提供的解决方案: <a class="link" href="https://cloud.tencent.com/developer/article/1739289"  target="_blank" rel="noopener"
+    >https://cloud.tencent.com/developer/article/1739289</a></li>
+<li><a class="link" href="https://github.com/torvalds/linux/commit/d6e0b7fa11862433773d986b5f995ffdf47ce672"  target="_blank" rel="noopener"
+    >https://github.com/torvalds/linux/commit/d6e0b7fa11862433773d986b5f995ffdf47ce672</a></li>
+<li><a class="link" href="https://support.mesosphere.com/s/article/Critical-Issue-KMEM-MSPH-2018-0006"  target="_blank" rel="noopener"
+    >https://support.mesosphere.com/s/article/Critical-Issue-KMEM-MSPH-2018-0006</a></li>
+</ul>
+<p>这种方式的缺点是：</p>
+<ul>
+<li>1、要升级所有节点，节点重启的话已有 pod 肯定要漂移，如果节点规模很大，这个升级操作会很繁琐，业务部门也会有意见，要事先沟通。</li>
+<li>2、这个问题归根结底是软件兼容问题，3.x 自己都说了不成熟，不建议你使用该特性，k8s、docker却 还要开启这个属性，那就不是内核的责任，因为我们是云上机器，想替换4.x 内核需要虚机团队做足够的测试和评审，因此这是个长期方案，不能立刻解决问题。</li>
+<li>3、已有业务在 3.x 运行正常，不代表可以在 4.x 也运行正常，即全量升级内核之前需要做足够的测试，尤其是有些业务需求对os做过定制。</li>
+</ul>
+<h3 id="解决方案2"></h>解决方案2
+</h3><p>修改虚机启动的引导项 grub 中的<code>cgroup.memory=nokmem</code>，让机器启动时直接禁用 cgroup的 kmem 属性</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">vim /etc/default/grub
+</span></span><span class="line"><span class="cl"><span class="nv">GRUB_TIMEOUT</span><span class="o">=</span><span class="m">5</span>
+</span></span><span class="line"><span class="cl"><span class="nv">GRUB_DISTRIBUTOR</span><span class="o">=</span><span class="s2">&#34;</span><span class="k">$(</span>sed <span class="s1">&#39;s, release .*$,,g&#39;</span> /etc/system-release<span class="k">)</span><span class="s2">&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="nv">GRUB_DEFAULT</span><span class="o">=</span>saved
+</span></span><span class="line"><span class="cl"><span class="nv">GRUB_DISABLE_SUBMENU</span><span class="o">=</span><span class="nb">true</span>
+</span></span><span class="line"><span class="cl"><span class="nv">GRUB_TERMINAL_OUTPUT</span><span class="o">=</span><span class="s2">&#34;console&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="nv">GRUB_CMDLINE_LINUX</span><span class="o">=</span><span class="s2">&#34;crashkernel=auto spectre_v2=retpoline rd.lvm.lv=centos/root rd.lvm.lv=centos/swap rhgb quiet cgroup.memory=nokmem&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="nv">GRUB_DISABLE_RECOVERY</span><span class="o">=</span><span class="s2">&#34;true&#34;</span>
+</span></span></code></pre></div><p>更改完成后你需要生成一下新的cgroup配置.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">/usr/sbin/grub2-mkconfig -o /boot/grub2/grub.cfg
+</span></span><span class="line"><span class="cl">reboot <span class="c1"># 重启服务器</span>
+</span></span></code></pre></div><h3 id="解决方案3"></h>解决方案3
+</h3><p>如果你想在Kubernetes中禁用该属性。issue 中一般建议修改 kubelet代码并重新编译。</p>
+<p>对于v1.13及其之前版本的kubelet，需要手动替换以下两个函数。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="nx">vendor</span><span class="o">/</span><span class="nx">github</span><span class="p">.</span><span class="nx">com</span><span class="o">/</span><span class="nx">opencontainers</span><span class="o">/</span><span class="nx">runc</span><span class="o">/</span><span class="nx">libcontainer</span><span class="o">/</span><span class="nx">cgroups</span><span class="o">/</span><span class="nx">fs</span><span class="o">/</span><span class="nx">memory</span><span class="p">.</span><span class="k">go</span>
+</span></span><span class="line"><span class="cl"><span class="kd">func</span> <span class="nf">EnableKernelMemoryAccounting</span><span class="p">(</span><span class="nx">path</span> <span class="kt">string</span><span class="p">)</span> <span class="kt">error</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="kc">nil</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="kd">func</span> <span class="nf">setKernelMemory</span><span class="p">(</span><span class="nx">path</span> <span class="kt">string</span><span class="p">,</span> <span class="nx">kernelMemoryLimit</span> <span class="kt">int64</span><span class="p">)</span> <span class="kt">error</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="kc">nil</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>重新编译并替换 <code>kubelet</code></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">make <span class="nv">WHAT</span><span class="o">=</span>cmd/kubelet <span class="nv">GOFLAGS</span><span class="o">=</span>-v <span class="nv">GOGCFLAGS</span><span class="o">=</span><span class="s2">&#34;-N -l&#34;</span>
+</span></span></code></pre></div><p>对于v1.14及其之后版本的kubelet,通过添加BUILDTAGS来禁止 kmem accounting.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">make <span class="nv">BUILDTAGS</span><span class="o">=</span><span class="s2">&#34;nokmem&#34;</span> <span class="nv">WHAT</span><span class="o">=</span>cmd/kubelet <span class="nv">GOFLAGS</span><span class="o">=</span>-v <span class="nv">GOGCFLAGS</span><span class="o">=</span><span class="s2">&#34;-N -l&#34;</span>
+</span></span></code></pre></div><p>遇到1.16 版本的BUILDTAGS=”nokmem“编译出来的 let 还是有问题，还是通过修改代码的方式使其生效</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="nx">vendor</span><span class="o">/</span><span class="nx">github</span><span class="p">.</span><span class="nx">com</span><span class="o">/</span><span class="nx">opencontainers</span><span class="o">/</span><span class="nx">runc</span><span class="o">/</span><span class="nx">libcontainer</span><span class="o">/</span><span class="nx">cgroups</span><span class="o">/</span><span class="nx">fs</span><span class="o">/</span><span class="nx">kmem</span><span class="p">.</span><span class="k">go</span>
+</span></span><span class="line"><span class="cl"><span class="kn">package</span> <span class="nx">fs</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="p">(</span>
+</span></span><span class="line"><span class="cl">    <span class="s">&#34;errors&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="kd">func</span> <span class="nf">EnableKernelMemoryAccounting</span><span class="p">(</span><span class="nx">path</span> <span class="kt">string</span><span class="p">)</span> <span class="kt">error</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="kc">nil</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="kd">func</span> <span class="nf">setKernelMemory</span><span class="p">(</span><span class="nx">path</span> <span class="kt">string</span><span class="p">,</span> <span class="nx">kernelMemoryLimit</span> <span class="kt">int64</span><span class="p">)</span> <span class="kt">error</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="nx">errors</span><span class="p">.</span><span class="nf">New</span><span class="p">(</span><span class="s">&#34;kernel memory accounting disabled in this runc build&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>编译前，可以编辑下文件 hack/lib/version.sh，将 <code>KUBE_GIT_TREE_STATE=&quot;dirty&quot;</code> 改为 <code>KUBE_GIT_TREE_STATE=&quot;clean&quot;</code>，确保版本号干净。</p>
+<h3 id="影响范围"></h>影响范围
+</h3><p>k8s在1.9版本开启了对kmem的支持，因此1.9以后的所有版本都有该问题,但必须搭配 3.x内核的机器才会出问题。一旦出现会导致新pod无法创建,已有 pod不受影响，但pod 漂移到有问题的节点就会失败，直接影响业务稳定性。因为是内存泄露，直接重启机器可以暂时解决，但还会再次出现。</p>
+<h2 id="大概得原理理解"></h>大概得原理理解
+</h2><h3 id="keme是什么"></h>keme是什么?
+</h3><p>kmem是Cgroup的一个扩展，全称CONFIG_MEMCG_KMEM，属于机器默认配置。</p>
+<p>内核内存与用户内存：</p>
+<p>内核内存：专用于Linux内核系统服务使用，是不可swap的，因而这部分内存非常宝贵的。但现实中存在很多针对内核内存资源的攻击，如不断地fork新进程从而耗尽系统资源，即所谓的“fork bomb”。</p>
+<p>为了防止这种攻击，社区中提议通过linux内核限制 cgroup中的kmem 容量，从而限制恶意进程的行为，即kernel memory accounting机制。</p>
+<p>使用如下命令查看KMEM是否打开：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">cat /boot/config-<span class="sb">`</span>uname -r<span class="sb">`</span><span class="p">|</span>grep CONFIG_MEMCG
+</span></span><span class="line"><span class="cl"><span class="nv">CONFIG_MEMCG</span><span class="o">=</span>y
+</span></span><span class="line"><span class="cl"><span class="nv">CONFIG_MEMCG_SWAP</span><span class="o">=</span>y
+</span></span><span class="line"><span class="cl"><span class="nv">CONFIG_MEMCG_SWAP_ENABLED</span><span class="o">=</span>y
+</span></span><span class="line"><span class="cl"><span class="nv">CONFIG_MEMCG_KMEM</span><span class="o">=</span>y
+</span></span></code></pre></div><h3 id="cgroup与kmem机制"></h>cgroup与kmem机制
+</h3><p>使用 cgroup 限制内存时，我们不但需要限制对用户内存的使用，也需要限制对内核内存的使用。kernel memory accounting 机制为 cgroup 的内存限制增加了 stack pages（例如新进程创建）、slab pages(SLAB/SLUB分配器使用的内存)、sockets memory pressure、tcp memory pressure等，以保证 kernel memory 不被滥用。</p>
+<p>当你开启了kmem 机制，具体体现在 memory.kmem.limit_in_bytes 这个文件上：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">/sys/fs/cgroup/memory/kubepods/pod632f736f-5ef2-11ea-ad9e-fa163e35f5d4/memory.kmem.limit_in_bytes
+</span></span></code></pre></div><p>实际使用中，我们一般将 memory.kmem.limit_in_bytes 设置成大于 memory.limit_in_bytes，从而只限制应用的总内存使用。</p>
+<h3 id="docker与k8s使用kmem"></h>docker与k8s使用kmem
+</h3><p>以上描述都是cgroup层面即机器层面，但是 runc 和 docker 发现有这个属性之后，在后来的版本中也支持了 kmem ，k8s 发现 docker支持，也在 1.9 版本开始支持。</p>
+<p>1.9版本及之后，kubelet 才开启 kmem 属性</p>
+<p>kubelet 的这部分代码位于：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">https://github.com/kubernetes/kubernetes/blob/release-1.12/vendor/github.com/opencontainers/runc/libcontainer/cgroups/fs/memory.go#L70-L106
+</span></span></code></pre></div><p>对于k8s、docker 而言，kmem 属性属于正常迭代和优化，至于3.x的内核上存在 bug 不能兼容，不是k8s 关心的问题。但 issue 中不断有人反馈，因此在 k8s 1.14 版本的 kubelet 中，增加了一个编译选项 make BUILDTAGS=“nokmem”，就可以编译 kubelet 时就禁用 kmem，避免掉这个问题。而1.8 到1.14 中间的版本，只能选择更改 kubelet 的代码。</p>
+
+</section>
+
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="https://blog.mletter.cn/tags/kubernetes/">Kubernetes</a>
+        
+    </section>
+
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">相关文章</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="has-image">
+    <a href="https://blog.mletter.cn/tech/kubernetes/sealos/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://img10.360buyimg.com/ddimg/jfs/t1/244560/31/7618/14121/661de12eFfa7f6ba5/0239fa873abb0bd5.jpg" loading="lazy" data-key="" data-hash="https://img10.360buyimg.com/ddimg/jfs/t1/244560/31/7618/14121/661de12eFfa7f6ba5/0239fa873abb0bd5.jpg"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">基于SealOS部署高可用的kubernetes集群</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="https://blog.mletter.cn/tech/kubernetes/install-efk/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://img14.360buyimg.com/ddimg/jfs/t1/177175/31/35833/30306/64cb08eeF5ba90f46/1da6311bbbec8921.jpg" loading="lazy" data-key="" data-hash="https://img14.360buyimg.com/ddimg/jfs/t1/177175/31/35833/30306/64cb08eeF5ba90f46/1da6311bbbec8921.jpg"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">kubernetes基于EFK的日志落地实现</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="https://blog.mletter.cn/tech/kubernetes/architectural-design/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://img13.360buyimg.com/ddimg/jfs/t1/164078/6/34165/22231/654ba81fFe1bf21d7/9d02bd791b795b3b.jpg" loading="lazy" data-key="" data-hash="https://img13.360buyimg.com/ddimg/jfs/t1/164078/6/34165/22231/654ba81fFe1bf21d7/9d02bd791b795b3b.jpg"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Kubernetes的架构设计和对象属性基本理解</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="https://blog.mletter.cn/tech/kubernetes/openebs/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://openebs.io/docs/assets/images/control-plane-overview-93c59878e3356a11f03029dd0fc1cd6b.svg" loading="lazy" data-key="" data-hash="https://openebs.io/docs/assets/images/control-plane-overview-93c59878e3356a11f03029dd0fc1cd6b.svg"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">OpenEBS存储的使用</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="https://blog.mletter.cn/tech/kubernetes/traefik/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://doc.traefik.io/traefik/assets/img/traefik-architecture.png" loading="lazy" data-key="" data-hash="https://doc.traefik.io/traefik/assets/img/traefik-architecture.png"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Traekfik基础使用指南</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    <script src="//lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/twikoo/1.4.18/twikoo.all.min.js"></script>
+<div id="tcomment"></div>
+<style>
+    .twikoo {
+        background-color: var(--card-background);
+        border-radius: var(--card-border-radius);
+        box-shadow: var(--shadow-l1);
+        padding: var(--card-padding);
+    }
+    :root[data-scheme="dark"] {
+        --twikoo-body-text-color-main: rgba(255, 255, 255, 0.9);
+        --twikoo-body-text-color: rgba(255, 255, 255, 0.7);
+    }
+    .twikoo .el-input-group__prepend,
+    .twikoo .tk-action-icon,
+    .twikoo .tk-submit-action-icon,
+    .twikoo .tk-time,
+    .twikoo .tk-comments-no,
+    .twikoo .tk-comments-count {
+        color: var(--twikoo-body-text-color);
+    }
+    .twikoo .el-input__inner,
+    .twikoo .el-textarea__inner,
+    .twikoo .tk-preview-container,
+    .twikoo .tk-content,
+    .twikoo .tk-nick,
+    .twikoo .tk-send {
+        color: var(--twikoo-body-text-color-main);
+    }
+    .twikoo .el-button{
+        color: var(--twikoo-body-text-color)!important;
+    }
+    .twikoo .el-input__count {
+        color: var(--twikoo-body-text-color) !important;
+    }
+    .OwO .OwO-body {
+        background-color: var(--body-background) !important;
+        color: var(--body-text-color) !important;
+    }
+</style><script>
+    twikoo.init({
+        envId: 'https:\/\/twikoo.mletter.cn\/',
+        el: '#tcomment',lang: 'zh-cn',})
+</script>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2020 - 
+        
+        2025 Live and learn. 🌱
+    </section>
+    
+    <section class="powerby">
+        Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo By Netlify</a> <br />
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.21.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://lf26-cdn-tos.bytecdntp.com/cdn/expire-1-M/photoswipe/4.1.3/photoswipe.min.js"crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://lf26-cdn-tos.bytecdntp.com/cdn/expire-1-M/photoswipe/4.1.3/photoswipe-ui-default.min.js"crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/photoswipe/4.1.3/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://lf26-cdn-tos.bytecdntp.com/cdn/expire-1-M/photoswipe/4.1.3/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://lf9-cdn-tos.bytecdntp.com/cdn/expire-1-M/vibrant.js/1.0.0/Vibrant.min.js"crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="https://blog.mletter.cn/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+<script src="https://lf26-cdn-tos.bytecdntp.com/cdn/expire-1-M/nprogress/0.2.0/nprogress.min.js" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://lf26-cdn-tos.bytecdntp.com/cdn/expire-1-M/nprogress/0.2.0/nprogress.css" crossorigin="anonymous" />
+<script>
+    NProgress.start();
+    document.addEventListener("readystatechange", () => {
+        if (document.readyState === "interactive") NProgress.inc(0.8);
+        if (document.readyState === "complete") NProgress.done();
+    });
+</script>
+    </body>
+</html>

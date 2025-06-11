@@ -1,227 +1,952 @@
-<!doctype html><html lang=zh dir=auto><head><meta charset=utf-8><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=robots content="index, follow"><title>kubernetes-离线部署Skywallking | 太阳可以是蓝色</title>
-<meta name=keywords content="kubernetes"><meta name=description content="离线状态的环境下如何去部署skywalking"><meta name=author content="iren."><link rel=canonical href=https://blog.mletter.cn/tech/kubernetes/skywallking/><link crossorigin=anonymous href=/assets/css/stylesheet.cc707ba415c88b815010bba5c5e0b1f11e11d905dfc1004752901e8d81c3fcf3.css integrity="sha256-zHB7pBXIi4FQELulxeCx8R4R2QXfwQBHUpAejYHD/PM=" rel="preload stylesheet" as=style><link rel=icon href=https://blog.mletter.cn/%3Clink%20/%20abs%20url%3E><link rel=icon type=image/png sizes=16x16 href=https://blog.mletter.cn/%3Clink%20/%20abs%20url%3E><link rel=icon type=image/png sizes=32x32 href=https://blog.mletter.cn/%3Clink%20/%20abs%20url%3E><link rel=apple-touch-icon href=https://blog.mletter.cn/%3Clink%20/%20abs%20url%3E><link rel=mask-icon href=https://blog.mletter.cn/%3Clink%20/%20abs%20url%3E><meta name=theme-color content="#2e2e33"><meta name=msapplication-TileColor content="#2e2e33"><link rel=alternate hreflang=zh href=https://blog.mletter.cn/tech/kubernetes/skywallking/><noscript><style>#theme-toggle,.top-link{display:none}</style><style>@media(prefers-color-scheme:dark){:root{--theme:rgb(29, 30, 32);--entry:rgb(46, 46, 51);--primary:rgb(218, 218, 219);--secondary:rgb(155, 156, 157);--tertiary:rgb(65, 66, 68);--content:rgb(196, 196, 197);--code-block-bg:rgb(46, 46, 51);--code-bg:rgb(55, 56, 62);--border:rgb(51, 51, 51)}.list{background:var(--theme)}.list:not(.dark)::-webkit-scrollbar-track{background:0 0}.list:not(.dark)::-webkit-scrollbar-thumb{border-color:var(--theme)}}</style></noscript><script src=/view-image.min.js></script><script>window.ViewImage&&ViewImage.init("img")</script><style>:root{--sys-font-family:-apple-system, "PingFang SC", Georgia, 'Nimbus Roman No9 L', 'Hiragino Sans GB', 'Noto Serif SC', 'Microsoft Yahei', 'WenQuanYi Micro Hei', 'ST Heiti', sans-serif;--code-font-family:"JetBrains Mono", Menlo, Monaco, Consolas, "Courier New";--article-font-family:-apple-system, "PingFang SC", var(--base-font-family)}</style><link rel=preconnect href=https://fonts.googleapis.com><link rel=preconnect href=https://fonts.gstatic.com crossorigin><meta property="og:url" content="https://blog.mletter.cn/tech/kubernetes/skywallking/"><meta property="og:site_name" content="太阳可以是蓝色"><meta property="og:title" content="kubernetes-离线部署Skywallking"><meta property="og:description" content="离线状态的环境下如何去部署skywalking"><meta property="og:locale" content="zh"><meta property="og:type" content="article"><meta property="article:section" content="posts"><meta property="article:published_time" content="2021-04-07T00:00:00+00:00"><meta property="article:modified_time" content="2021-04-07T00:00:00+00:00"><meta property="article:tag" content="Kubernetes"><meta property="og:image" content="https://img14.360buyimg.com/ddimg/jfs/t1/164569/9/40677/14419/65bc6e4cFa1d8c0c3/5ccf7e6caadc9b83.jpg"><meta name=twitter:card content="summary_large_image"><meta name=twitter:image content="https://img14.360buyimg.com/ddimg/jfs/t1/164569/9/40677/14419/65bc6e4cFa1d8c0c3/5ccf7e6caadc9b83.jpg"><meta name=twitter:title content="kubernetes-离线部署Skywallking"><meta name=twitter:description content="离线状态的环境下如何去部署skywalking"><script type=application/ld+json>{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"","item":"https://blog.mletter.cn/posts/"},{"@type":"ListItem","position":2,"name":"kubernetes-离线部署Skywallking","item":"https://blog.mletter.cn/tech/kubernetes/skywallking/"}]}</script><script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","headline":"kubernetes-离线部署Skywallking","name":"kubernetes-离线部署Skywallking","description":"离线状态的环境下如何去部署skywalking","keywords":["kubernetes"],"articleBody":" 注意：请各位记住把所有离线包全拿到本地…\n在线部署chartmuseum 直接使用最简单的 docker run 方式，使用local 本地存储方式，通过 -v 映射到宿主机 /opt/charts 更多支持安装方式见官网\nmkdir /opt/charts docker run -d \\ -p 8080:8080 \\ -e DEBUG=1 \\ -e STORAGE=local \\ -e STORAGE_LOCAL_ROOTDIR=/charts \\ -v /opt/charts:/charts \\ chartmuseum/chartmuseum:latest 下载Skywalking包 git clone https://github.com/apache/skywalking-kubernetes.git # 更换仓库 cd skywalking-kubernetes-master/chart/skywalking/ vim Chats.yaml dependencies: - name: elasticsearch version: ~7.12.1 # 官网的版本号为7.5.1 最新的elastic版本为7.12.1 repository: http://localhost:8080 # 修改为你本地的Repo地址 condition: elasticsearch.enabled 添加elasticsearch仓库 helm repo add elastic https://helm.elastic.co helm pull elastic/elasticsearch # 把elasticsearch内容拉下来 上传本地Helm 以防万一请先安装helmpush插件\nhttps://github.com/chartmuseum/helm-push\nhelm repo add chartmuseum http://localhost:8080 curl --data-binary \"@elasticsearch-7.12.1.tgz\" http://localhost:8080/api/charts helm push /root/skywalking-kubernetes-master/chart/skywalking/ chartmuseum helm repo update # 更新仓库 你可以尝试搜索一下\n保证仓库中存在elasticsarch和skywalking\n[root@k-master1 ~]# helm search repo NAME CHART VERSION APP VERSION DESCRIPTION chartmuseum/elasticsearch 7.12.1 7.12.1 Official Elastic helm chart for Elasticsearch chartmuseum/skywalking 4.0.0 Apache SkyWalking APM System 部署skywalking cd skywalking-kubernetes/chart helm dep up skywalking # change the release name according to your scenario export SKYWALKING_RELEASE_NAME=skywalking # change the namespace according to your scenario export SKYWALKING_RELEASE_NAMESPACE=default helm install \"${SKYWALKING_RELEASE_NAME}\" skywalking -n \"${SKYWALKING_RELEASE_NAMESPACE}\" \\ --set oap.image.tag=8.1.0-es7 \\ --set oap.storageType=elasticsearch7 \\ --set ui.image.tag=8.1.0 \\ --set elasticsearch.imageTag=7.5.1 helm uninstall skywalking # 卸载skywalking 准备离线镜像 busybox:1.30 docker.elastic.co/elasticsearch/elasticsearch:7.5.1 apache/skywalking-oap-server:8.1.0-es7 apache/skywalking-ui:8.1.0 chartmuseum/chartmuseum:latest Helm中的Elasticsearch可能会存在问题 你们也可以用我的这个elasticsearch配置 注意修改PVC\nkind: StatefulSet apiVersion: apps/v1 metadata: name: elasticsearch-master namespace: default labels: app: elasticsearch-master app.kubernetes.io/managed-by: Helm chart: elasticsearch heritage: Helm release: skywalking annotations: esMajorVersion: '7' meta.helm.sh/release-name: skywalking meta.helm.sh/release-namespace: default spec: replicas: 3 selector: matchLabels: app: elasticsearch-master template: metadata: name: elasticsearch-master creationTimestamp: null labels: app: elasticsearch-master chart: elasticsearch heritage: Helm release: skywalking spec: initContainers: - name: configure-sysctl image: 'docker.elastic.co/elasticsearch/elasticsearch:7.5.1' command: - sysctl - '-w' - vm.max_map_count=262144 resources: {} terminationMessagePath: /dev/termination-log terminationMessagePolicy: File imagePullPolicy: IfNotPresent securityContext: privileged: true runAsUser: 0 containers: - name: elasticsearch image: 'docker.elastic.co/elasticsearch/elasticsearch:7.5.1' ports: - name: http containerPort: 9200 protocol: TCP - name: transport containerPort: 9300 protocol: TCP volumeMounts: - name: datadir mountPath: /usr/share/elasticsearch/data env: - name: node.name valueFrom: fieldRef: apiVersion: v1 fieldPath: metadata.name - name: cluster.initial_master_nodes value: \u003e- elasticsearch-master-0,elasticsearch-master-1,elasticsearch-master-2, - name: discovery.seed_hosts value: elasticsearch-master-headless - name: cluster.name value: elasticsearch - name: network.host value: 0.0.0.0 - name: ES_JAVA_OPTS value: '-Xmx1g -Xms1g' - name: node.data value: 'true' - name: node.ingest value: 'true' - name: node.master value: 'true' resources: limits: cpu: '1' memory: 2Gi requests: cpu: 100m memory: 2Gi readinessProbe: exec: command: - sh - '-c' - \u003e #!/usr/bin/env bash -e # If the node is starting up wait for the cluster to be ready (request params: 'wait_for_status=green\u0026timeout=1s' ) # Once it has started only check that the node itself is responding START_FILE=/tmp/.es_start_file http () { local path=\"${1}\" if [ -n \"${ELASTIC_USERNAME}\" ] \u0026\u0026 [ -n \"${ELASTIC_PASSWORD}\" ]; then BASIC_AUTH=\"-u ${ELASTIC_USERNAME}:${ELASTIC_PASSWORD}\" else BASIC_AUTH='' fi curl -XGET -s -k --fail ${BASIC_AUTH} http://127.0.0.1:9200${path} } if [ -f \"${START_FILE}\" ]; then echo 'Elasticsearch is already running, lets check the node is healthy and there are master nodes available' http \"/_cluster/health?timeout=0s\" else echo 'Waiting for elasticsearch cluster to become cluster to be ready (request params: \"wait_for_status=green\u0026timeout=1s\" )' if http \"/_cluster/health?wait_for_status=green\u0026timeout=1s\" ; then touch ${START_FILE} exit 0 else echo 'Cluster is not yet ready (request params: \"wait_for_status=green\u0026timeout=1s\" )' exit 1 fi fi initialDelaySeconds: 10 timeoutSeconds: 5 periodSeconds: 10 successThreshold: 3 failureThreshold: 3 terminationMessagePath: /dev/termination-log terminationMessagePolicy: File imagePullPolicy: IfNotPresent securityContext: capabilities: drop: - ALL runAsUser: 1000 runAsNonRoot: true restartPolicy: Always terminationGracePeriodSeconds: 120 dnsPolicy: ClusterFirst securityContext: runAsUser: 1000 fsGroup: 1000 affinity: podAntiAffinity: requiredDuringSchedulingIgnoredDuringExecution: - labelSelector: matchExpressions: - key: app operator: In values: - elasticsearch-master topologyKey: kubernetes.io/hostname schedulerName: default-scheduler volumeClaimTemplates: - metadata: name: datadir annotations: volume.beta.kubernetes.io/storage-class: \"managed-nfs-storage-class\" spec: accessModes: [\"ReadWriteMany\"] resources: requests: storage: 10Gi serviceName: elasticsearch-master-headless podManagementPolicy: Parallel updateStrategy: type: RollingUpdate revisionHistoryLimit: 10 ","wordCount":"560","inLanguage":"zh","image":"https://img14.360buyimg.com/ddimg/jfs/t1/164569/9/40677/14419/65bc6e4cFa1d8c0c3/5ccf7e6caadc9b83.jpg","datePublished":"2021-04-07T00:00:00Z","dateModified":"2021-04-07T00:00:00Z","author":{"@type":"Person","name":"iren."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.mletter.cn/tech/kubernetes/skywallking/"},"publisher":{"@type":"Organization","name":"太阳可以是蓝色","logo":{"@type":"ImageObject","url":"https://blog.mletter.cn/%3Clink%20/%20abs%20url%3E"}}}</script></head><body id=top><script>localStorage.getItem("pref-theme")==="dark"?document.body.classList.add("dark"):localStorage.getItem("pref-theme")==="light"?document.body.classList.remove("dark"):window.matchMedia("(prefers-color-scheme: dark)").matches&&document.body.classList.add("dark")</script><header class=header><nav class=nav><div class=logo><a href=https://blog.mletter.cn/ accesskey=h title="太阳可以是蓝色 (Alt + H)">太阳可以是蓝色</a><div class=logo-switches><button id=theme-toggle accesskey=t title="(Alt + T)"><svg id="moon" width="24" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg><svg id="sun" width="24" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button></div></div><ul id=menu><li><a href=https://blog.mletter.cn/ title=主页><span>主页</span></a></li><li><a href=https://blog.mletter.cn/search/ title="搜索 (Alt + /)" accesskey=/><span>搜索</span></a></li><li><a href=https://blog.mletter.cn/posts/ title=文章><span>文章</span></a></li><li><a href=https://blog.mletter.cn/tags/ title=标签><span>标签</span></a></li><li><a href=https://blog.mletter.cn/friends/ title=友联><span>友联</span></a></li><li><a href=https://blog.mletter.cn/about title=关于><span>关于</span></a></li></ul></nav></header><main class=main><article class=post-single><header class=post-header><div class=breadcrumbs><a href=https://blog.mletter.cn/>主页</a>&nbsp;»&nbsp;<a href=https://blog.mletter.cn/posts/></a></div><h1 class="post-title entry-hint-parent">kubernetes-离线部署Skywallking</h1><div class=post-description>离线状态的环境下如何去部署skywalking</div><div class=post-meta><span title='2021-04-07 00:00:00 +0000 UTC'>四月 7, 2021</span>&nbsp;·&nbsp;3 分钟&nbsp;·&nbsp;iren.</div></header><div class=toc><details><summary accesskey=c title="(Alt + C)"><span class=details>目录</span></summary><div class=inner><nav id=TableOfContents><ul><li><a href=#在线部署chartmuseum>在线部署chartmuseum</a></li><li><a href=#下载skywalking包>下载Skywalking包</a><ul><li><a href=#添加elasticsearch仓库>添加elasticsearch仓库</a></li></ul></li><li><a href=#上传本地helm>上传本地Helm</a></li><li><a href=#部署skywalking>部署skywalking</a><ul><li><a href=#准备离线镜像>准备离线镜像</a></li></ul></li><li><a href=#helm中的elasticsearch可能会存在问题>Helm中的Elasticsearch可能会存在问题</a></li></ul></nav></div></details></div><div class=post-content><blockquote><p>注意：请各位记住把所有离线包全拿到本地…</p></blockquote><h2 id=在线部署chartmuseum>在线部署chartmuseum<a hidden class=anchor aria-hidden=true href=#在线部署chartmuseum>#</a></h2><p>直接使用最简单的 docker run 方式，使用local 本地存储方式，通过 -v 映射到宿主机 /opt/charts
-更多支持安装方式见官网</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>mkdir /opt/charts
-</span></span><span class=line><span class=cl>docker run -d <span class=se>\
-</span></span></span><span class=line><span class=cl><span class=se></span>  -p 8080:8080 <span class=se>\
-</span></span></span><span class=line><span class=cl><span class=se></span>  -e <span class=nv>DEBUG</span><span class=o>=</span><span class=m>1</span> <span class=se>\
-</span></span></span><span class=line><span class=cl><span class=se></span>  -e <span class=nv>STORAGE</span><span class=o>=</span><span class=nb>local</span> <span class=se>\
-</span></span></span><span class=line><span class=cl><span class=se></span>  -e <span class=nv>STORAGE_LOCAL_ROOTDIR</span><span class=o>=</span>/charts <span class=se>\
-</span></span></span><span class=line><span class=cl><span class=se></span>  -v /opt/charts:/charts <span class=se>\
-</span></span></span><span class=line><span class=cl><span class=se></span>  chartmuseum/chartmuseum:latest
-</span></span></code></pre></div><h2 id=下载skywalking包>下载Skywalking包<a hidden class=anchor aria-hidden=true href=#下载skywalking包>#</a></h2><div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>git clone https://github.com/apache/skywalking-kubernetes.git
-</span></span><span class=line><span class=cl><span class=c1># 更换仓库</span>
-</span></span><span class=line><span class=cl><span class=nb>cd</span> skywalking-kubernetes-master/chart/skywalking/
-</span></span><span class=line><span class=cl>vim Chats.yaml
-</span></span><span class=line><span class=cl>dependencies:
-</span></span><span class=line><span class=cl>  - name: elasticsearch
-</span></span><span class=line><span class=cl>    version: ~7.12.1  <span class=c1># 官网的版本号为7.5.1 最新的elastic版本为7.12.1</span>
-</span></span><span class=line><span class=cl>    repository: http://localhost:8080 <span class=c1># 修改为你本地的Repo地址</span>
-</span></span><span class=line><span class=cl>    condition: elasticsearch.enabled
-</span></span></code></pre></div><h3 id=添加elasticsearch仓库>添加elasticsearch仓库<a hidden class=anchor aria-hidden=true href=#添加elasticsearch仓库>#</a></h3><div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>helm repo add elastic https://helm.elastic.co
-</span></span><span class=line><span class=cl>helm pull elastic/elasticsearch  <span class=c1># 把elasticsearch内容拉下来</span>
-</span></span></code></pre></div><h2 id=上传本地helm>上传本地Helm<a hidden class=anchor aria-hidden=true href=#上传本地helm>#</a></h2><blockquote><p>以防万一请先安装helmpush插件</p><p><a class=link href=https://github.com/chartmuseum/helm-push target=_blank rel=noopener>https://github.com/chartmuseum/helm-push</a></p></blockquote><div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>helm repo add chartmuseum http://localhost:8080
-</span></span><span class=line><span class=cl>curl --data-binary <span class=s2>&#34;@elasticsearch-7.12.1.tgz&#34;</span> http://localhost:8080/api/charts
-</span></span><span class=line><span class=cl>helm push /root/skywalking-kubernetes-master/chart/skywalking/ chartmuseum
-</span></span><span class=line><span class=cl>helm repo update <span class=c1># 更新仓库</span>
-</span></span></code></pre></div><p><strong>你可以尝试搜索一下</strong></p><blockquote><p>保证仓库中存在elasticsarch和skywalking</p></blockquote><div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=o>[</span>root@k-master1 ~<span class=o>]</span><span class=c1># helm search repo</span>
-</span></span><span class=line><span class=cl>NAME                            CHART VERSION   APP VERSION     DESCRIPTION                                       
-</span></span><span class=line><span class=cl>chartmuseum/elasticsearch       7.12.1          7.12.1          Official Elastic helm chart <span class=k>for</span> Elasticsearch     
-</span></span><span class=line><span class=cl>chartmuseum/skywalking          4.0.0                           Apache SkyWalking APM System
-</span></span></code></pre></div><h2 id=部署skywalking>部署skywalking<a hidden class=anchor aria-hidden=true href=#部署skywalking>#</a></h2><div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=nb>cd</span> skywalking-kubernetes/chart
-</span></span><span class=line><span class=cl>helm dep up skywalking
-</span></span><span class=line><span class=cl><span class=c1># change the release name according to your scenario</span>
-</span></span><span class=line><span class=cl><span class=nb>export</span> <span class=nv>SKYWALKING_RELEASE_NAME</span><span class=o>=</span>skywalking
-</span></span><span class=line><span class=cl><span class=c1># change the namespace according to your scenario</span>
-</span></span><span class=line><span class=cl><span class=nb>export</span> <span class=nv>SKYWALKING_RELEASE_NAMESPACE</span><span class=o>=</span>default
-</span></span><span class=line><span class=cl>helm install <span class=s2>&#34;</span><span class=si>${</span><span class=nv>SKYWALKING_RELEASE_NAME</span><span class=si>}</span><span class=s2>&#34;</span> skywalking -n <span class=s2>&#34;</span><span class=si>${</span><span class=nv>SKYWALKING_RELEASE_NAMESPACE</span><span class=si>}</span><span class=s2>&#34;</span> <span class=se>\
-</span></span></span><span class=line><span class=cl><span class=se></span>  --set oap.image.tag<span class=o>=</span>8.1.0-es7 <span class=se>\
-</span></span></span><span class=line><span class=cl><span class=se></span>  --set oap.storageType<span class=o>=</span>elasticsearch7 <span class=se>\
-</span></span></span><span class=line><span class=cl><span class=se></span>  --set ui.image.tag<span class=o>=</span>8.1.0 <span class=se>\
-</span></span></span><span class=line><span class=cl><span class=se></span>  --set elasticsearch.imageTag<span class=o>=</span>7.5.1
-</span></span><span class=line><span class=cl>helm uninstall skywalking <span class=c1># 卸载skywalking</span>
-</span></span></code></pre></div><h3 id=准备离线镜像>准备离线镜像<a hidden class=anchor aria-hidden=true href=#准备离线镜像>#</a></h3><div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>busybox:1.30
-</span></span><span class=line><span class=cl>docker.elastic.co/elasticsearch/elasticsearch:7.5.1
-</span></span><span class=line><span class=cl>apache/skywalking-oap-server:8.1.0-es7
-</span></span><span class=line><span class=cl>apache/skywalking-ui:8.1.0
-</span></span><span class=line><span class=cl>chartmuseum/chartmuseum:latest
-</span></span></code></pre></div><h2 id=helm中的elasticsearch可能会存在问题>Helm中的Elasticsearch可能会存在问题<a hidden class=anchor aria-hidden=true href=#helm中的elasticsearch可能会存在问题>#</a></h2><blockquote><p>你们也可以用我的这个elasticsearch配置 注意修改PVC</p></blockquote><div class=highlight><pre tabindex=0 class=chroma><code class=language-yaml data-lang=yaml><span class=line><span class=cl><span class=nt>kind</span><span class=p>:</span><span class=w> </span><span class=l>StatefulSet</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>apiVersion</span><span class=p>:</span><span class=w> </span><span class=l>apps/v1</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>metadata</span><span class=p>:</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>elasticsearch-master</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>namespace</span><span class=p>:</span><span class=w> </span><span class=l>default</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>labels</span><span class=p>:</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>app</span><span class=p>:</span><span class=w> </span><span class=l>elasticsearch-master</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>app.kubernetes.io/managed-by</span><span class=p>:</span><span class=w> </span><span class=l>Helm</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>chart</span><span class=p>:</span><span class=w> </span><span class=l>elasticsearch</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>heritage</span><span class=p>:</span><span class=w> </span><span class=l>Helm</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>release</span><span class=p>:</span><span class=w> </span><span class=l>skywalking</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>annotations</span><span class=p>:</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>esMajorVersion</span><span class=p>:</span><span class=w> </span><span class=s1>&#39;7&#39;</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>meta.helm.sh/release-name</span><span class=p>:</span><span class=w> </span><span class=l>skywalking</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>meta.helm.sh/release-namespace</span><span class=p>:</span><span class=w> </span><span class=l>default</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>spec</span><span class=p>:</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>replicas</span><span class=p>:</span><span class=w> </span><span class=m>3</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>selector</span><span class=p>:</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>matchLabels</span><span class=p>:</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>app</span><span class=p>:</span><span class=w> </span><span class=l>elasticsearch-master</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>template</span><span class=p>:</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>metadata</span><span class=p>:</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>elasticsearch-master</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>creationTimestamp</span><span class=p>:</span><span class=w> </span><span class=kc>null</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>labels</span><span class=p>:</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=nt>app</span><span class=p>:</span><span class=w> </span><span class=l>elasticsearch-master</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=nt>chart</span><span class=p>:</span><span class=w> </span><span class=l>elasticsearch</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=nt>heritage</span><span class=p>:</span><span class=w> </span><span class=l>Helm</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=nt>release</span><span class=p>:</span><span class=w> </span><span class=l>skywalking</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>spec</span><span class=p>:</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>initContainers</span><span class=p>:</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>        </span>- <span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>configure-sysctl</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>          </span><span class=nt>image</span><span class=p>:</span><span class=w> </span><span class=s1>&#39;docker.elastic.co/elasticsearch/elasticsearch:7.5.1&#39;</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>          </span><span class=nt>command</span><span class=p>:</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>            </span>- <span class=l>sysctl</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>            </span>- <span class=s1>&#39;-w&#39;</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>            </span>- <span class=l>vm.max_map_count=262144</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>          </span><span class=nt>resources</span><span class=p>:</span><span class=w> </span>{}<span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>          </span><span class=nt>terminationMessagePath</span><span class=p>:</span><span class=w> </span><span class=l>/dev/termination-log</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>          </span><span class=nt>terminationMessagePolicy</span><span class=p>:</span><span class=w> </span><span class=l>File</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>          </span><span class=nt>imagePullPolicy</span><span class=p>:</span><span class=w> </span><span class=l>IfNotPresent</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>          </span><span class=nt>securityContext</span><span class=p>:</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=nt>privileged</span><span class=p>:</span><span class=w> </span><span class=kc>true</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=nt>runAsUser</span><span class=p>:</span><span class=w> </span><span class=m>0</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>containers</span><span class=p>:</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>        </span>- <span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>elasticsearch</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>          </span><span class=nt>image</span><span class=p>:</span><span class=w> </span><span class=s1>&#39;docker.elastic.co/elasticsearch/elasticsearch:7.5.1&#39;</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>          </span><span class=nt>ports</span><span class=p>:</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>            </span>- <span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>http</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>              </span><span class=nt>containerPort</span><span class=p>:</span><span class=w> </span><span class=m>9200</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>              </span><span class=nt>protocol</span><span class=p>:</span><span class=w> </span><span class=l>TCP</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>            </span>- <span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>transport</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>              </span><span class=nt>containerPort</span><span class=p>:</span><span class=w> </span><span class=m>9300</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>              </span><span class=nt>protocol</span><span class=p>:</span><span class=w> </span><span class=l>TCP</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>          </span><span class=nt>volumeMounts</span><span class=p>:</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>            </span>- <span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>datadir</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>              </span><span class=nt>mountPath</span><span class=p>:</span><span class=w> </span><span class=l>/usr/share/elasticsearch/data</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>          </span><span class=nt>env</span><span class=p>:</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>            </span>- <span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>node.name</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>              </span><span class=nt>valueFrom</span><span class=p>:</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>                </span><span class=nt>fieldRef</span><span class=p>:</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>                  </span><span class=nt>apiVersion</span><span class=p>:</span><span class=w> </span><span class=l>v1</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>                  </span><span class=nt>fieldPath</span><span class=p>:</span><span class=w> </span><span class=l>metadata.name</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>            </span>- <span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>cluster.initial_master_nodes</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>              </span><span class=nt>value</span><span class=p>:</span><span class=w> </span><span class=p>&gt;-</span><span class=sd>
-</span></span></span><span class=line><span class=cl><span class=sd>                elasticsearch-master-0,elasticsearch-master-1,elasticsearch-master-2,</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>            </span>- <span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>discovery.seed_hosts</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>              </span><span class=nt>value</span><span class=p>:</span><span class=w> </span><span class=l>elasticsearch-master-headless</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>            </span>- <span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>cluster.name</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>              </span><span class=nt>value</span><span class=p>:</span><span class=w> </span><span class=l>elasticsearch</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>            </span>- <span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>network.host</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>              </span><span class=nt>value</span><span class=p>:</span><span class=w> </span><span class=m>0.0.0.0</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>            </span>- <span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>ES_JAVA_OPTS</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>              </span><span class=nt>value</span><span class=p>:</span><span class=w> </span><span class=s1>&#39;-Xmx1g -Xms1g&#39;</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>            </span>- <span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>node.data</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>              </span><span class=nt>value</span><span class=p>:</span><span class=w> </span><span class=s1>&#39;true&#39;</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>            </span>- <span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>node.ingest</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>              </span><span class=nt>value</span><span class=p>:</span><span class=w> </span><span class=s1>&#39;true&#39;</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>            </span>- <span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>node.master</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>              </span><span class=nt>value</span><span class=p>:</span><span class=w> </span><span class=s1>&#39;true&#39;</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>          </span><span class=nt>resources</span><span class=p>:</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=nt>limits</span><span class=p>:</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>              </span><span class=nt>cpu</span><span class=p>:</span><span class=w> </span><span class=s1>&#39;1&#39;</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>              </span><span class=nt>memory</span><span class=p>:</span><span class=w> </span><span class=l>2Gi</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=nt>requests</span><span class=p>:</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>              </span><span class=nt>cpu</span><span class=p>:</span><span class=w> </span><span class=l>100m</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>              </span><span class=nt>memory</span><span class=p>:</span><span class=w> </span><span class=l>2Gi</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>          </span><span class=nt>readinessProbe</span><span class=p>:</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=nt>exec</span><span class=p>:</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>              </span><span class=nt>command</span><span class=p>:</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>                </span>- <span class=l>sh</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>                </span>- <span class=s1>&#39;-c&#39;</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>                </span>- <span class=p>&gt;</span><span class=sd>
-</span></span></span><span class=line><span class=cl><span class=sd>                  #!/usr/bin/env bash -e
-</span></span></span><span class=line><span class=cl><span class=sd>
-</span></span></span><span class=line><span class=cl><span class=sd>                  # If the node is starting up wait for the cluster to be ready
-</span></span></span><span class=line><span class=cl><span class=sd>                  (request params: &#39;wait_for_status=green&amp;timeout=1s&#39; )
-</span></span></span><span class=line><span class=cl><span class=sd>
-</span></span></span><span class=line><span class=cl><span class=sd>                  # Once it has started only check that the node itself is
-</span></span></span><span class=line><span class=cl><span class=sd>                  responding
-</span></span></span><span class=line><span class=cl><span class=sd>
-</span></span></span><span class=line><span class=cl><span class=sd>                  START_FILE=/tmp/.es_start_file
-</span></span></span><span class=line><span class=cl><span class=sd>
-</span></span></span><span class=line><span class=cl><span class=sd>
-</span></span></span><span class=line><span class=cl><span class=sd>                  http () {
-</span></span></span><span class=line><span class=cl><span class=sd>                      local path=&#34;${1}&#34;
-</span></span></span><span class=line><span class=cl><span class=sd>                      if [ -n &#34;${ELASTIC_USERNAME}&#34; ] &amp;&amp; [ -n &#34;${ELASTIC_PASSWORD}&#34; ]; then
-</span></span></span><span class=line><span class=cl><span class=sd>                        BASIC_AUTH=&#34;-u ${ELASTIC_USERNAME}:${ELASTIC_PASSWORD}&#34;
-</span></span></span><span class=line><span class=cl><span class=sd>                      else
-</span></span></span><span class=line><span class=cl><span class=sd>                        BASIC_AUTH=&#39;&#39;
-</span></span></span><span class=line><span class=cl><span class=sd>                      fi
-</span></span></span><span class=line><span class=cl><span class=sd>                      curl -XGET -s -k --fail ${BASIC_AUTH} http://127.0.0.1:9200${path}
-</span></span></span><span class=line><span class=cl><span class=sd>                  }
-</span></span></span><span class=line><span class=cl><span class=sd>
-</span></span></span><span class=line><span class=cl><span class=sd>
-</span></span></span><span class=line><span class=cl><span class=sd>                  if [ -f &#34;${START_FILE}&#34; ]; then
-</span></span></span><span class=line><span class=cl><span class=sd>                      echo &#39;Elasticsearch is already running, lets check the node is healthy and there are master nodes available&#39;
-</span></span></span><span class=line><span class=cl><span class=sd>                      http &#34;/_cluster/health?timeout=0s&#34;
-</span></span></span><span class=line><span class=cl><span class=sd>                  else
-</span></span></span><span class=line><span class=cl><span class=sd>                      echo &#39;Waiting for elasticsearch cluster to become cluster to be ready (request params: &#34;wait_for_status=green&amp;timeout=1s&#34; )&#39;
-</span></span></span><span class=line><span class=cl><span class=sd>                      if http &#34;/_cluster/health?wait_for_status=green&amp;timeout=1s&#34; ; then
-</span></span></span><span class=line><span class=cl><span class=sd>                          touch ${START_FILE}
-</span></span></span><span class=line><span class=cl><span class=sd>                          exit 0
-</span></span></span><span class=line><span class=cl><span class=sd>                      else
-</span></span></span><span class=line><span class=cl><span class=sd>                          echo &#39;Cluster is not yet ready (request params: &#34;wait_for_status=green&amp;timeout=1s&#34; )&#39;
-</span></span></span><span class=line><span class=cl><span class=sd>                          exit 1
-</span></span></span><span class=line><span class=cl><span class=sd>                      fi
-</span></span></span><span class=line><span class=cl><span class=sd>                  fi</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=nt>initialDelaySeconds</span><span class=p>:</span><span class=w> </span><span class=m>10</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=nt>timeoutSeconds</span><span class=p>:</span><span class=w> </span><span class=m>5</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=nt>periodSeconds</span><span class=p>:</span><span class=w> </span><span class=m>10</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=nt>successThreshold</span><span class=p>:</span><span class=w> </span><span class=m>3</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=nt>failureThreshold</span><span class=p>:</span><span class=w> </span><span class=m>3</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>          </span><span class=nt>terminationMessagePath</span><span class=p>:</span><span class=w> </span><span class=l>/dev/termination-log</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>          </span><span class=nt>terminationMessagePolicy</span><span class=p>:</span><span class=w> </span><span class=l>File</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>          </span><span class=nt>imagePullPolicy</span><span class=p>:</span><span class=w> </span><span class=l>IfNotPresent</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>          </span><span class=nt>securityContext</span><span class=p>:</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=nt>capabilities</span><span class=p>:</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>              </span><span class=nt>drop</span><span class=p>:</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>                </span>- <span class=l>ALL</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=nt>runAsUser</span><span class=p>:</span><span class=w> </span><span class=m>1000</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=nt>runAsNonRoot</span><span class=p>:</span><span class=w> </span><span class=kc>true</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>restartPolicy</span><span class=p>:</span><span class=w> </span><span class=l>Always</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>terminationGracePeriodSeconds</span><span class=p>:</span><span class=w> </span><span class=m>120</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>dnsPolicy</span><span class=p>:</span><span class=w> </span><span class=l>ClusterFirst</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>securityContext</span><span class=p>:</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=nt>runAsUser</span><span class=p>:</span><span class=w> </span><span class=m>1000</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=nt>fsGroup</span><span class=p>:</span><span class=w> </span><span class=m>1000</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>affinity</span><span class=p>:</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=nt>podAntiAffinity</span><span class=p>:</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>          </span><span class=nt>requiredDuringSchedulingIgnoredDuringExecution</span><span class=p>:</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>            </span>- <span class=nt>labelSelector</span><span class=p>:</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>                </span><span class=nt>matchExpressions</span><span class=p>:</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>                  </span>- <span class=nt>key</span><span class=p>:</span><span class=w> </span><span class=l>app</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>                    </span><span class=nt>operator</span><span class=p>:</span><span class=w> </span><span class=l>In</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>                    </span><span class=nt>values</span><span class=p>:</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>                      </span>- <span class=l>elasticsearch-master</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>              </span><span class=nt>topologyKey</span><span class=p>:</span><span class=w> </span><span class=l>kubernetes.io/hostname</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>schedulerName</span><span class=p>:</span><span class=w> </span><span class=l>default-scheduler</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>volumeClaimTemplates</span><span class=p>:</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>    </span>- <span class=nt>metadata</span><span class=p>:</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>datadir</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=nt>annotations</span><span class=p>:</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>          </span><span class=nt>volume.beta.kubernetes.io/storage-class</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;managed-nfs-storage-class&#34;</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>spec</span><span class=p>:</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=nt>accessModes</span><span class=p>:</span><span class=w> </span><span class=p>[</span><span class=s2>&#34;ReadWriteMany&#34;</span><span class=p>]</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=nt>resources</span><span class=p>:</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>          </span><span class=nt>requests</span><span class=p>:</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=nt>storage</span><span class=p>:</span><span class=w> </span><span class=l>10Gi</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>serviceName</span><span class=p>:</span><span class=w> </span><span class=l>elasticsearch-master-headless</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>podManagementPolicy</span><span class=p>:</span><span class=w> </span><span class=l>Parallel</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>updateStrategy</span><span class=p>:</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>type</span><span class=p>:</span><span class=w> </span><span class=l>RollingUpdate</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>revisionHistoryLimit</span><span class=p>:</span><span class=w> </span><span class=m>10</span><span class=w>
-</span></span></span></code></pre></div></div><footer class=post-footer><ul class=post-tags><li><a href=https://blog.mletter.cn/tags/kubernetes/>Kubernetes</a></li></ul><nav class=paginav><a class=prev href=https://blog.mletter.cn/tech/kubernetes/pod-scheduling-issues/><span class=title>« 上一页</span><br><span>有关于Kubernetes中影响Pod调度的问题</span>
-</a><a class=next href=https://blog.mletter.cn/tech/redis/install-redis-cluster/><span class=title>下一页 »</span><br><span>Redis集群搭建</span></a></nav><ul class=share-buttons><li><a target=_blank rel="noopener noreferrer" aria-label="share kubernetes-离线部署Skywallking on x" href="https://x.com/intent/tweet/?text=kubernetes-%e7%a6%bb%e7%ba%bf%e9%83%a8%e7%bd%b2Skywallking&amp;url=https%3a%2f%2fblog.mletter.cn%2ftech%2fkubernetes%2fskywallking%2f&amp;hashtags=kubernetes"><svg viewBox="0 0 512 512" height="30" width="30" fill="currentcolor"><path d="M512 62.554V449.446C512 483.97 483.97 512 449.446 512H62.554C28.03 512 0 483.97.0 449.446V62.554C0 28.03 28.029.0 62.554.0H449.446C483.971.0 512 28.03 512 62.554zM269.951 190.75 182.567 75.216H56L207.216 272.95 63.9 436.783h61.366L235.9 310.383l96.667 126.4H456L298.367 228.367l134-153.151H371.033zM127.633 110h36.468l219.38 290.065H349.5z"/></svg></a></li><li><a target=_blank rel="noopener noreferrer" aria-label="share kubernetes-离线部署Skywallking on linkedin" href="https://www.linkedin.com/shareArticle?mini=true&amp;url=https%3a%2f%2fblog.mletter.cn%2ftech%2fkubernetes%2fskywallking%2f&amp;title=kubernetes-%e7%a6%bb%e7%ba%bf%e9%83%a8%e7%bd%b2Skywallking&amp;summary=kubernetes-%e7%a6%bb%e7%ba%bf%e9%83%a8%e7%bd%b2Skywallking&amp;source=https%3a%2f%2fblog.mletter.cn%2ftech%2fkubernetes%2fskywallking%2f"><svg viewBox="0 0 512 512" height="30" width="30" fill="currentcolor"><path d="M449.446.0C483.971.0 512 28.03 512 62.554v386.892C512 483.97 483.97 512 449.446 512H62.554c-34.524.0-62.554-28.03-62.554-62.554V62.554c0-34.524 28.029-62.554 62.554-62.554h386.892zM160.461 423.278V197.561h-75.04v225.717h75.04zm270.539.0V293.839c0-69.333-37.018-101.586-86.381-101.586-39.804.0-57.634 21.891-67.617 37.266v-31.958h-75.021c.995 21.181.0 225.717.0 225.717h75.02V297.222c0-6.748.486-13.492 2.474-18.315 5.414-13.475 17.767-27.434 38.494-27.434 27.135.0 38.007 20.707 38.007 51.037v120.768H431zM123.448 88.722C97.774 88.722 81 105.601 81 127.724c0 21.658 16.264 39.002 41.455 39.002h.484c26.165.0 42.452-17.344 42.452-39.002-.485-22.092-16.241-38.954-41.943-39.002z"/></svg></a></li><li><a target=_blank rel="noopener noreferrer" aria-label="share kubernetes-离线部署Skywallking on reddit" href="https://reddit.com/submit?url=https%3a%2f%2fblog.mletter.cn%2ftech%2fkubernetes%2fskywallking%2f&title=kubernetes-%e7%a6%bb%e7%ba%bf%e9%83%a8%e7%bd%b2Skywallking"><svg viewBox="0 0 512 512" height="30" width="30" fill="currentcolor"><path d="M449.446.0C483.971.0 512 28.03 512 62.554v386.892C512 483.97 483.97 512 449.446 512H62.554c-34.524.0-62.554-28.03-62.554-62.554V62.554c0-34.524 28.029-62.554 62.554-62.554h386.892zM446 265.638c0-22.964-18.616-41.58-41.58-41.58-11.211.0-21.361 4.457-28.841 11.666-28.424-20.508-67.586-33.757-111.204-35.278l18.941-89.121 61.884 13.157c.756 15.734 13.642 28.29 29.56 28.29 16.407.0 29.706-13.299 29.706-29.701.0-16.403-13.299-29.702-29.706-29.702-11.666.0-21.657 6.792-26.515 16.578l-69.105-14.69c-1.922-.418-3.939-.042-5.585 1.036-1.658 1.073-2.811 2.761-3.224 4.686l-21.152 99.438c-44.258 1.228-84.046 14.494-112.837 35.232-7.468-7.164-17.589-11.591-28.757-11.591-22.965.0-41.585 18.616-41.585 41.58.0 16.896 10.095 31.41 24.568 37.918-.639 4.135-.99 8.328-.99 12.576.0 63.977 74.469 115.836 166.33 115.836s166.334-51.859 166.334-115.836c0-4.218-.347-8.387-.977-12.493 14.564-6.47 24.735-21.034 24.735-38.001zM326.526 373.831c-20.27 20.241-59.115 21.816-70.534 21.816-11.428.0-50.277-1.575-70.522-21.82-3.007-3.008-3.007-7.882.0-10.889 3.003-2.999 7.882-3.003 10.885.0 12.777 12.781 40.11 17.317 59.637 17.317 19.522.0 46.86-4.536 59.657-17.321 3.016-2.999 7.886-2.995 10.885.008 3.008 3.011 3.003 7.882-.008 10.889zm-5.23-48.781c-16.373.0-29.701-13.324-29.701-29.698.0-16.381 13.328-29.714 29.701-29.714 16.378.0 29.706 13.333 29.706 29.714.0 16.374-13.328 29.698-29.706 29.698zM160.91 295.348c0-16.381 13.328-29.71 29.714-29.71 16.369.0 29.689 13.329 29.689 29.71.0 16.373-13.32 29.693-29.689 29.693-16.386.0-29.714-13.32-29.714-29.693z"/></svg></a></li><li><a target=_blank rel="noopener noreferrer" aria-label="share kubernetes-离线部署Skywallking on facebook" href="https://facebook.com/sharer/sharer.php?u=https%3a%2f%2fblog.mletter.cn%2ftech%2fkubernetes%2fskywallking%2f"><svg viewBox="0 0 512 512" height="30" width="30" fill="currentcolor"><path d="M449.446.0C483.971.0 512 28.03 512 62.554v386.892C512 483.97 483.97 512 449.446 512H342.978V319.085h66.6l12.672-82.621h-79.272v-53.617c0-22.603 11.073-44.636 46.58-44.636H425.6v-70.34s-32.71-5.582-63.982-5.582c-65.288.0-107.96 39.569-107.96 111.204v62.971h-72.573v82.621h72.573V512h-191.104c-34.524.0-62.554-28.03-62.554-62.554V62.554c0-34.524 28.029-62.554 62.554-62.554h386.892z"/></svg></a></li><li><a target=_blank rel="noopener noreferrer" aria-label="share kubernetes-离线部署Skywallking on whatsapp" href="https://api.whatsapp.com/send?text=kubernetes-%e7%a6%bb%e7%ba%bf%e9%83%a8%e7%bd%b2Skywallking%20-%20https%3a%2f%2fblog.mletter.cn%2ftech%2fkubernetes%2fskywallking%2f"><svg viewBox="0 0 512 512" height="30" width="30" fill="currentcolor"><path d="M449.446.0C483.971.0 512 28.03 512 62.554v386.892C512 483.97 483.97 512 449.446 512H62.554c-34.524.0-62.554-28.03-62.554-62.554V62.554c0-34.524 28.029-62.554 62.554-62.554h386.892zm-58.673 127.703c-33.842-33.881-78.847-52.548-126.798-52.568-98.799.0-179.21 80.405-179.249 179.234-.013 31.593 8.241 62.428 23.927 89.612l-25.429 92.884 95.021-24.925c26.181 14.28 55.659 21.807 85.658 21.816h.074c98.789.0 179.206-80.413 179.247-179.243.018-47.895-18.61-92.93-52.451-126.81zM263.976 403.485h-.06c-26.734-.01-52.954-7.193-75.828-20.767l-5.441-3.229-56.386 14.792 15.05-54.977-3.542-5.637c-14.913-23.72-22.791-51.136-22.779-79.287.033-82.142 66.867-148.971 149.046-148.971 39.793.014 77.199 15.531 105.329 43.692 28.128 28.16 43.609 65.592 43.594 105.4-.034 82.149-66.866 148.983-148.983 148.984zm81.721-111.581c-4.479-2.242-26.499-13.075-30.604-14.571-4.105-1.495-7.091-2.241-10.077 2.241-2.986 4.483-11.569 14.572-14.182 17.562-2.612 2.988-5.225 3.364-9.703 1.12-4.479-2.241-18.91-6.97-36.017-22.23C231.8 264.15 222.81 249.484 220.198 245s-.279-6.908 1.963-9.14c2.016-2.007 4.48-5.232 6.719-7.847 2.24-2.615 2.986-4.484 4.479-7.472 1.493-2.99.747-5.604-.374-7.846-1.119-2.241-10.077-24.288-13.809-33.256-3.635-8.733-7.327-7.55-10.077-7.688-2.609-.13-5.598-.158-8.583-.158-2.986.0-7.839 1.121-11.944 5.604-4.105 4.484-15.675 15.32-15.675 37.364.0 22.046 16.048 43.342 18.287 46.332 2.24 2.99 31.582 48.227 76.511 67.627 10.685 4.615 19.028 7.371 25.533 9.434 10.728 3.41 20.492 2.929 28.209 1.775 8.605-1.285 26.499-10.833 30.231-21.295 3.732-10.464 3.732-19.431 2.612-21.298-1.119-1.869-4.105-2.99-8.583-5.232z"/></svg></a></li><li><a target=_blank rel="noopener noreferrer" aria-label="share kubernetes-离线部署Skywallking on telegram" href="https://telegram.me/share/url?text=kubernetes-%e7%a6%bb%e7%ba%bf%e9%83%a8%e7%bd%b2Skywallking&amp;url=https%3a%2f%2fblog.mletter.cn%2ftech%2fkubernetes%2fskywallking%2f"><svg viewBox="2 2 28 28" height="30" width="30" fill="currentcolor"><path d="M26.49 29.86H5.5a3.37 3.37.0 01-2.47-1 3.35 3.35.0 01-1-2.47V5.48A3.36 3.36.0 013 3 3.37 3.37.0 015.5 2h21A3.38 3.38.0 0129 3a3.36 3.36.0 011 2.46V26.37a3.35 3.35.0 01-1 2.47 3.38 3.38.0 01-2.51 1.02zm-5.38-6.71a.79.79.0 00.85-.66L24.73 9.24a.55.55.0 00-.18-.46.62.62.0 00-.41-.17q-.08.0-16.53 6.11a.59.59.0 00-.41.59.57.57.0 00.43.52l4 1.24 1.61 4.83a.62.62.0 00.63.43.56.56.0 00.4-.17L16.54 20l4.09 3A.9.9.0 0021.11 23.15zM13.8 20.71l-1.21-4q8.72-5.55 8.78-5.55c.15.0.23.0.23.16a.18.18.0 010 .06s-2.51 2.3-7.52 6.8z"/></svg></a></li><li><a target=_blank rel="noopener noreferrer" aria-label="share kubernetes-离线部署Skywallking on ycombinator" href="https://news.ycombinator.com/submitlink?t=kubernetes-%e7%a6%bb%e7%ba%bf%e9%83%a8%e7%bd%b2Skywallking&u=https%3a%2f%2fblog.mletter.cn%2ftech%2fkubernetes%2fskywallking%2f"><svg width="30" height="30" viewBox="0 0 512 512" fill="currentcolor" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"><path d="M449.446.0C483.971.0 512 28.03 512 62.554V449.446C512 483.97 483.97 512 449.446 512H62.554C28.03 512 0 483.97.0 449.446V62.554C0 28.03 28.029.0 62.554.0H449.446zM183.8767 87.9921h-62.034L230.6673 292.4508V424.0079h50.6655V292.4508L390.1575 87.9921H328.1233L256 238.2489z"/></svg></a></li></ul></footer><div id=tcomment></div><script src=https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/twikoo/1.4.18/twikoo.all.min.js></script><script>twikoo.init({envId:"https://twikoo.mletter.cn/",el:"#tcomment"})</script></article></main><footer class=footer><span>&copy; 2025 <a href=https://blog.mletter.cn/>太阳可以是蓝色</a></span> ·
-<span>Powered by
-<a href=https://gohugo.io/ rel="noopener noreferrer" target=_blank>Hugo</a> &
-        <a href=https://github.com/adityatelange/hugo-PaperMod/ rel=noopener target=_blank>PaperMod</a></span><br><span id=span style=color:#101011></span>
-<script type=text/javascript>function runtime(){const a=new Date("12/07/2020 12:50:18"),r=new Date,c=r.getTime()-a.getTime(),l=24*60*60*1e3,e=c/l,t=Math.floor(e),n=(e-t)*24,s=Math.floor(n),o=(n-s)*60,i=Math.floor(o),d=Math.floor((o-i)*60);document.getElementById("span").innerHTML="已运行: "+t+"天"+s+"小时"+i+"分"+d+"秒"}runtime(),setInterval(runtime,1e3)</script><br><font color=#101011>本站由 <a href=https://www.netlify.com/ rel="noopener noreferrer nofollow" target=_blank>Netlify</a> 提供计算服务, 由 <a href=https://www.netlify.com/ rel="noopener noreferrer nofollow" target=_blank>Netlify</a> 提供全站加速服务。</font><br></footer><a href=#top aria-label="go to top" title="Go to Top (Alt + G)" class=top-link id=top-link accesskey=g><svg viewBox="0 0 12 6" fill="currentcolor"><path d="M12 6H0l6-6z"/></svg>
-</a><script>const menu=document.getElementById("menu");menu&&(menu.scrollLeft=localStorage.getItem("menu-scroll-position"),menu.onscroll=function(){localStorage.setItem("menu-scroll-position",menu.scrollLeft)}),document.querySelectorAll('a[href^="#"]').forEach(e=>{e.addEventListener("click",function(e){e.preventDefault();const t=this.getAttribute("href").substr(1),n=document.querySelector(`[id='${decodeURIComponent(t)}']`);window.matchMedia("(prefers-reduced-motion: reduce)").matches?n.scrollIntoView():n.scrollIntoView({behavior:"smooth"}),t==="top"?history.replaceState(null,null," "):history.pushState(null,null,`#${t}`)})})</script><script>const mybutton=document.getElementById("top-link");window.onscroll=function(){document.body.scrollTop>800||document.documentElement.scrollTop>800?(mybutton.style.visibility="visible",mybutton.style.opacity="1"):(mybutton.style.visibility="hidden",mybutton.style.opacity="0")}</script><script>document.getElementById("theme-toggle").addEventListener("click",()=>{document.body.classList.contains("dark")?(document.body.classList.remove("dark"),localStorage.setItem("pref-theme","light")):(document.body.classList.add("dark"),localStorage.setItem("pref-theme","dark"))})</script></body></html>
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='离线状态的环境下如何去部署skywalking'>
+<title>kubernetes-离线部署Skywallking</title>
+
+<link rel='canonical' href='https://blog.mletter.cn/tech/kubernetes/skywallking/'>
+
+<link rel="stylesheet" href="https://blog.mletter.cn/scss/style.min.2c3f3a6a02fe235acfd19dc07e83848e5bd9f7fd12e5b755e3f9d0c92e1059be.css"><meta property='og:title' content='kubernetes-离线部署Skywallking'>
+<meta property='og:description' content='离线状态的环境下如何去部署skywalking'>
+<meta property='og:url' content='https://blog.mletter.cn/tech/kubernetes/skywallking/'>
+<meta property='og:site_name' content='太阳可以是蓝色'>
+<meta property='og:type' content='article'><meta property='article:section' content='Posts' /><meta property='article:tag' content='kubernetes' /><meta property='article:published_time' content='2021-04-07T00:00:00&#43;00:00'/><meta property='article:modified_time' content='2021-04-07T00:00:00&#43;00:00'/><meta property='og:image' content='https://img14.360buyimg.com/ddimg/jfs/t1/164569/9/40677/14419/65bc6e4cFa1d8c0c3/5ccf7e6caadc9b83.jpg' />
+<meta name="twitter:title" content="kubernetes-离线部署Skywallking">
+<meta name="twitter:description" content="离线状态的环境下如何去部署skywalking"><meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content='https://img14.360buyimg.com/ddimg/jfs/t1/164569/9/40677/14419/65bc6e4cFa1d8c0c3/5ccf7e6caadc9b83.jpg' />
+    <link rel="shortcut icon" href="wechat.svg" />
+<style>
+  :root {
+       
+      --sys-font-family: -apple-system, "PingFang SC", Georgia, 'Nimbus Roman No9 L', 'Hiragino Sans GB', 'Noto Serif SC', 'Microsoft Yahei', 'WenQuanYi Micro Hei', 'ST Heiti', sans-serif;
+      --code-font-family: "JetBrains Mono", Menlo, Monaco, Consolas, "Courier New";
+      --article-font-family: -apple-system, "PingFang SC", var(--base-font-family);
+  }
+</style>
+
+
+
+
+
+
+<script src="https://blog.mletter.cn/view-image.min.js"></script>
+
+<script>
+  window.ViewImage && ViewImage.init('.article-content img');
+</script>
+
+
+
+<link rel="stylesheet" href="https://cdn.staticfile.net/highlight.js/11.9.0/styles/tokyo-night-dark.min.css">
+<script src="https://lf26-cdn-tos.bytecdntp.com/cdn/expire-1-M/highlight.js/11.4.0/highlight.min.js"></script>
+<script src="https://cdn.staticfile.net/highlight.js/11.9.0/es/languages/go.min.js"></script>
+
+<script>hljs.initHighlightingOnLoad();</script>
+<script>document.addEventListener('DOMContentLoaded', (event) => {document.querySelectorAll('pre code').forEach((el) => {hljs.highlightElement(el);});});</script>
+
+
+
+
+
+
+<script async src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+<script>
+    mermaid.init(undefined, '.language-mermaid');
+</script>
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="https://blog.mletter.cn/">
+                
+                    <img src="https://img14.360buyimg.com/ddimg/jfs/t1/77628/23/27254/26944/66bc1a36Fc596606a/d912965b8bba22af.jpg" width="300" height="300" class="site-logo" loading="lazy" alt="Avatar">
+                
+                </a>
+                
+                    <span class="emoji">🍥</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="https://blog.mletter.cn/">太阳可以是蓝色</a></h1>
+            <h2 class="site-description">Live and learn. 🌱</h2>
+        </div>
+    </header><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='https://blog.mletter.cn/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>搜索</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='https://blog.mletter.cn/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>首页</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='https://blog.mletter.cn/posts' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-inbox" width="24" height="24" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 4m0 2a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2z" /><path d="M4 13h3l3 3h4l3 -3h3" /></svg>
+                
+                <span>文章</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='https://blog.mletter.cn/archives' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>归档</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='https://mletter.cn' target="_blank">
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-health-recognition" width="24" height="24" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 8v-2a2 2 0 0 1 2 -2h2" /><path d="M4 16v2a2 2 0 0 0 2 2h2" /><path d="M16 4h2a2 2 0 0 1 2 2v2" /><path d="M16 20h2a2 2 0 0 0 2 -2v-2" /><path d="M8.603 9.61a2.04 2.04 0 0 1 2.912 0l.485 .39l.5 -.396a2.035 2.035 0 0 1 2.897 .007a2.104 2.104 0 0 1 0 2.949l-3.397 3.44l-3.397 -3.44a2.104 2.104 0 0 1 0 -2.95z" /></svg>
+                
+                <span>主页</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='https://pic.mletter.cn' target="_blank">
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-photo-cog" width="24" height="24" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M15 8h.01" /><path d="M12 21h-6a3 3 0 0 1 -3 -3v-12a3 3 0 0 1 3 -3h12a3 3 0 0 1 3 3v6" /><path d="M3 16l5 -5c.928 -.893 2.072 -.893 3 0l3 3" /><path d="M14 14l1 -1c.48 -.461 1.016 -.684 1.551 -.67" /><path d="M19.001 19m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" /><path d="M19.001 15.5v1.5" /><path d="M19.001 21v1.5" /><path d="M22.032 17.25l-1.299 .75" /><path d="M17.27 20l-1.3 .75" /><path d="M15.97 17.25l1.3 .75" /><path d="M20.733 20l1.3 .75" /></svg>
+                
+                <span>相册</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='https://blog.mletter.cn/friends' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>友联</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='https://blog.mletter.cn/about' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>关于</span>
+            </a>
+        </li>
+        
+
+        <div class="menu-bottom-section">
+                
+            
+            
+            
+                <li id="dark-mode-toggle">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                    <span>暗色模式</span>
+                </li>
+            
+        </div>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">目录</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ul>
+    <li><a href="#在线部署chartmuseum">在线部署chartmuseum</a></li>
+    <li><a href="#下载skywalking包">下载Skywalking包</a>
+      <ul>
+        <li><a href="#添加elasticsearch仓库">添加elasticsearch仓库</a></li>
+      </ul>
+    </li>
+    <li><a href="#上传本地helm">上传本地Helm</a></li>
+    <li><a href="#部署skywalking">部署skywalking</a>
+      <ul>
+        <li><a href="#准备离线镜像">准备离线镜像</a></li>
+      </ul>
+    </li>
+    <li><a href="#helm中的elasticsearch可能会存在问题">Helm中的Elasticsearch可能会存在问题</a></li>
+  </ul>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="has-image main-article">
+    <header class="article-header">
+        <div class="article-image">
+            <a href="https://blog.mletter.cn/tech/kubernetes/skywallking/">
+                
+                    <img src="https://img14.360buyimg.com/ddimg/jfs/t1/164569/9/40677/14419/65bc6e4cFa1d8c0c3/5ccf7e6caadc9b83.jpg" loading="lazy" alt="Featured image of post kubernetes-离线部署Skywallking" />
+                
+            </a>
+        </div>
+    
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="https://blog.mletter.cn/categories/kubernetes/" >
+                Kubernetes
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="https://blog.mletter.cn/tech/kubernetes/skywallking/">kubernetes-离线部署Skywallking</a>
+        </h2>
+    
+        
+        <h3 class="article-subtitle">
+            离线状态的环境下如何去部署skywalking
+        </h3>
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Apr 07, 2021</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    阅读时长: 2 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <blockquote>
+<p>注意：请各位记住把所有离线包全拿到本地…</p></blockquote>
+<h2 id="在线部署chartmuseum"></h>在线部署chartmuseum
+</h2><p>直接使用最简单的 docker run 方式，使用local 本地存储方式，通过 -v 映射到宿主机 /opt/charts
+更多支持安装方式见官网</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">mkdir /opt/charts
+</span></span><span class="line"><span class="cl">docker run -d <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>  -p 8080:8080 <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>  -e <span class="nv">DEBUG</span><span class="o">=</span><span class="m">1</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>  -e <span class="nv">STORAGE</span><span class="o">=</span><span class="nb">local</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>  -e <span class="nv">STORAGE_LOCAL_ROOTDIR</span><span class="o">=</span>/charts <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>  -v /opt/charts:/charts <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>  chartmuseum/chartmuseum:latest
+</span></span></code></pre></div><h2 id="下载skywalking包"></h>下载Skywalking包
+</h2><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">git clone https://github.com/apache/skywalking-kubernetes.git
+</span></span><span class="line"><span class="cl"><span class="c1"># 更换仓库</span>
+</span></span><span class="line"><span class="cl"><span class="nb">cd</span> skywalking-kubernetes-master/chart/skywalking/
+</span></span><span class="line"><span class="cl">vim Chats.yaml
+</span></span><span class="line"><span class="cl">dependencies:
+</span></span><span class="line"><span class="cl">  - name: elasticsearch
+</span></span><span class="line"><span class="cl">    version: ~7.12.1  <span class="c1"># 官网的版本号为7.5.1 最新的elastic版本为7.12.1</span>
+</span></span><span class="line"><span class="cl">    repository: http://localhost:8080 <span class="c1"># 修改为你本地的Repo地址</span>
+</span></span><span class="line"><span class="cl">    condition: elasticsearch.enabled
+</span></span></code></pre></div><h3 id="添加elasticsearch仓库"></h>添加elasticsearch仓库
+</h3><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">helm repo add elastic https://helm.elastic.co
+</span></span><span class="line"><span class="cl">helm pull elastic/elasticsearch  <span class="c1"># 把elasticsearch内容拉下来</span>
+</span></span></code></pre></div><h2 id="上传本地helm"></h>上传本地Helm
+</h2><blockquote>
+<p>以防万一请先安装helmpush插件</p>
+<p><a class="link" href="https://github.com/chartmuseum/helm-push"  target="_blank" rel="noopener"
+    >https://github.com/chartmuseum/helm-push</a></p></blockquote>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">helm repo add chartmuseum http://localhost:8080
+</span></span><span class="line"><span class="cl">curl --data-binary <span class="s2">&#34;@elasticsearch-7.12.1.tgz&#34;</span> http://localhost:8080/api/charts
+</span></span><span class="line"><span class="cl">helm push /root/skywalking-kubernetes-master/chart/skywalking/ chartmuseum
+</span></span><span class="line"><span class="cl">helm repo update <span class="c1"># 更新仓库</span>
+</span></span></code></pre></div><p><strong>你可以尝试搜索一下</strong></p>
+<blockquote>
+<p>保证仓库中存在elasticsarch和skywalking</p></blockquote>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">[</span>root@k-master1 ~<span class="o">]</span><span class="c1"># helm search repo</span>
+</span></span><span class="line"><span class="cl">NAME                            CHART VERSION   APP VERSION     DESCRIPTION                                       
+</span></span><span class="line"><span class="cl">chartmuseum/elasticsearch       7.12.1          7.12.1          Official Elastic helm chart <span class="k">for</span> Elasticsearch     
+</span></span><span class="line"><span class="cl">chartmuseum/skywalking          4.0.0                           Apache SkyWalking APM System
+</span></span></code></pre></div><h2 id="部署skywalking"></h>部署skywalking
+</h2><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="nb">cd</span> skywalking-kubernetes/chart
+</span></span><span class="line"><span class="cl">helm dep up skywalking
+</span></span><span class="line"><span class="cl"><span class="c1"># change the release name according to your scenario</span>
+</span></span><span class="line"><span class="cl"><span class="nb">export</span> <span class="nv">SKYWALKING_RELEASE_NAME</span><span class="o">=</span>skywalking
+</span></span><span class="line"><span class="cl"><span class="c1"># change the namespace according to your scenario</span>
+</span></span><span class="line"><span class="cl"><span class="nb">export</span> <span class="nv">SKYWALKING_RELEASE_NAMESPACE</span><span class="o">=</span>default
+</span></span><span class="line"><span class="cl">helm install <span class="s2">&#34;</span><span class="si">${</span><span class="nv">SKYWALKING_RELEASE_NAME</span><span class="si">}</span><span class="s2">&#34;</span> skywalking -n <span class="s2">&#34;</span><span class="si">${</span><span class="nv">SKYWALKING_RELEASE_NAMESPACE</span><span class="si">}</span><span class="s2">&#34;</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>  --set oap.image.tag<span class="o">=</span>8.1.0-es7 <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>  --set oap.storageType<span class="o">=</span>elasticsearch7 <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>  --set ui.image.tag<span class="o">=</span>8.1.0 <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>  --set elasticsearch.imageTag<span class="o">=</span>7.5.1
+</span></span><span class="line"><span class="cl">helm uninstall skywalking <span class="c1"># 卸载skywalking</span>
+</span></span></code></pre></div><h3 id="准备离线镜像"></h>准备离线镜像
+</h3><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">busybox:1.30
+</span></span><span class="line"><span class="cl">docker.elastic.co/elasticsearch/elasticsearch:7.5.1
+</span></span><span class="line"><span class="cl">apache/skywalking-oap-server:8.1.0-es7
+</span></span><span class="line"><span class="cl">apache/skywalking-ui:8.1.0
+</span></span><span class="line"><span class="cl">chartmuseum/chartmuseum:latest
+</span></span></code></pre></div><h2 id="helm中的elasticsearch可能会存在问题"></h>Helm中的Elasticsearch可能会存在问题
+</h2><blockquote>
+<p>你们也可以用我的这个elasticsearch配置 注意修改PVC</p></blockquote>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">StatefulSet</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">apps/v1</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">metadata</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">elasticsearch-master</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l">default</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">labels</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">app</span><span class="p">:</span><span class="w"> </span><span class="l">elasticsearch-master</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">app.kubernetes.io/managed-by</span><span class="p">:</span><span class="w"> </span><span class="l">Helm</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">chart</span><span class="p">:</span><span class="w"> </span><span class="l">elasticsearch</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">heritage</span><span class="p">:</span><span class="w"> </span><span class="l">Helm</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">release</span><span class="p">:</span><span class="w"> </span><span class="l">skywalking</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">annotations</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">esMajorVersion</span><span class="p">:</span><span class="w"> </span><span class="s1">&#39;7&#39;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">meta.helm.sh/release-name</span><span class="p">:</span><span class="w"> </span><span class="l">skywalking</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">meta.helm.sh/release-namespace</span><span class="p">:</span><span class="w"> </span><span class="l">default</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">spec</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">replicas</span><span class="p">:</span><span class="w"> </span><span class="m">3</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">selector</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">matchLabels</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">app</span><span class="p">:</span><span class="w"> </span><span class="l">elasticsearch-master</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">template</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">metadata</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">elasticsearch-master</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">creationTimestamp</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">labels</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">app</span><span class="p">:</span><span class="w"> </span><span class="l">elasticsearch-master</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">chart</span><span class="p">:</span><span class="w"> </span><span class="l">elasticsearch</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">heritage</span><span class="p">:</span><span class="w"> </span><span class="l">Helm</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">release</span><span class="p">:</span><span class="w"> </span><span class="l">skywalking</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">spec</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">initContainers</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">configure-sysctl</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="s1">&#39;docker.elastic.co/elasticsearch/elasticsearch:7.5.1&#39;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">command</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span>- <span class="l">sysctl</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span>- <span class="s1">&#39;-w&#39;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span>- <span class="l">vm.max_map_count=262144</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">resources</span><span class="p">:</span><span class="w"> </span>{}<span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">terminationMessagePath</span><span class="p">:</span><span class="w"> </span><span class="l">/dev/termination-log</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">terminationMessagePolicy</span><span class="p">:</span><span class="w"> </span><span class="l">File</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">imagePullPolicy</span><span class="p">:</span><span class="w"> </span><span class="l">IfNotPresent</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">securityContext</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="nt">privileged</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="nt">runAsUser</span><span class="p">:</span><span class="w"> </span><span class="m">0</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">containers</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">elasticsearch</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="s1">&#39;docker.elastic.co/elasticsearch/elasticsearch:7.5.1&#39;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">ports</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">http</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">              </span><span class="nt">containerPort</span><span class="p">:</span><span class="w"> </span><span class="m">9200</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">              </span><span class="nt">protocol</span><span class="p">:</span><span class="w"> </span><span class="l">TCP</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">transport</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">              </span><span class="nt">containerPort</span><span class="p">:</span><span class="w"> </span><span class="m">9300</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">              </span><span class="nt">protocol</span><span class="p">:</span><span class="w"> </span><span class="l">TCP</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">volumeMounts</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">datadir</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">              </span><span class="nt">mountPath</span><span class="p">:</span><span class="w"> </span><span class="l">/usr/share/elasticsearch/data</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">env</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">node.name</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">              </span><span class="nt">valueFrom</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="nt">fieldRef</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                  </span><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">v1</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                  </span><span class="nt">fieldPath</span><span class="p">:</span><span class="w"> </span><span class="l">metadata.name</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">cluster.initial_master_nodes</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">              </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="p">&gt;-</span><span class="sd">
+</span></span></span><span class="line"><span class="cl"><span class="sd">                elasticsearch-master-0,elasticsearch-master-1,elasticsearch-master-2,</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">discovery.seed_hosts</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">              </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="l">elasticsearch-master-headless</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">cluster.name</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">              </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="l">elasticsearch</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">network.host</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">              </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="m">0.0.0.0</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">ES_JAVA_OPTS</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">              </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="s1">&#39;-Xmx1g -Xms1g&#39;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">node.data</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">              </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="s1">&#39;true&#39;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">node.ingest</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">              </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="s1">&#39;true&#39;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">node.master</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">              </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="s1">&#39;true&#39;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">resources</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="nt">limits</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">              </span><span class="nt">cpu</span><span class="p">:</span><span class="w"> </span><span class="s1">&#39;1&#39;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">              </span><span class="nt">memory</span><span class="p">:</span><span class="w"> </span><span class="l">2Gi</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="nt">requests</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">              </span><span class="nt">cpu</span><span class="p">:</span><span class="w"> </span><span class="l">100m</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">              </span><span class="nt">memory</span><span class="p">:</span><span class="w"> </span><span class="l">2Gi</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">readinessProbe</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="nt">exec</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">              </span><span class="nt">command</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                </span>- <span class="l">sh</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                </span>- <span class="s1">&#39;-c&#39;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                </span>- <span class="p">&gt;</span><span class="sd">
+</span></span></span><span class="line"><span class="cl"><span class="sd">                  #!/usr/bin/env bash -e
+</span></span></span><span class="line"><span class="cl"><span class="sd">
+</span></span></span><span class="line"><span class="cl"><span class="sd">                  # If the node is starting up wait for the cluster to be ready
+</span></span></span><span class="line"><span class="cl"><span class="sd">                  (request params: &#39;wait_for_status=green&amp;timeout=1s&#39; )
+</span></span></span><span class="line"><span class="cl"><span class="sd">
+</span></span></span><span class="line"><span class="cl"><span class="sd">                  # Once it has started only check that the node itself is
+</span></span></span><span class="line"><span class="cl"><span class="sd">                  responding
+</span></span></span><span class="line"><span class="cl"><span class="sd">
+</span></span></span><span class="line"><span class="cl"><span class="sd">                  START_FILE=/tmp/.es_start_file
+</span></span></span><span class="line"><span class="cl"><span class="sd">
+</span></span></span><span class="line"><span class="cl"><span class="sd">
+</span></span></span><span class="line"><span class="cl"><span class="sd">                  http () {
+</span></span></span><span class="line"><span class="cl"><span class="sd">                      local path=&#34;${1}&#34;
+</span></span></span><span class="line"><span class="cl"><span class="sd">                      if [ -n &#34;${ELASTIC_USERNAME}&#34; ] &amp;&amp; [ -n &#34;${ELASTIC_PASSWORD}&#34; ]; then
+</span></span></span><span class="line"><span class="cl"><span class="sd">                        BASIC_AUTH=&#34;-u ${ELASTIC_USERNAME}:${ELASTIC_PASSWORD}&#34;
+</span></span></span><span class="line"><span class="cl"><span class="sd">                      else
+</span></span></span><span class="line"><span class="cl"><span class="sd">                        BASIC_AUTH=&#39;&#39;
+</span></span></span><span class="line"><span class="cl"><span class="sd">                      fi
+</span></span></span><span class="line"><span class="cl"><span class="sd">                      curl -XGET -s -k --fail ${BASIC_AUTH} http://127.0.0.1:9200${path}
+</span></span></span><span class="line"><span class="cl"><span class="sd">                  }
+</span></span></span><span class="line"><span class="cl"><span class="sd">
+</span></span></span><span class="line"><span class="cl"><span class="sd">
+</span></span></span><span class="line"><span class="cl"><span class="sd">                  if [ -f &#34;${START_FILE}&#34; ]; then
+</span></span></span><span class="line"><span class="cl"><span class="sd">                      echo &#39;Elasticsearch is already running, lets check the node is healthy and there are master nodes available&#39;
+</span></span></span><span class="line"><span class="cl"><span class="sd">                      http &#34;/_cluster/health?timeout=0s&#34;
+</span></span></span><span class="line"><span class="cl"><span class="sd">                  else
+</span></span></span><span class="line"><span class="cl"><span class="sd">                      echo &#39;Waiting for elasticsearch cluster to become cluster to be ready (request params: &#34;wait_for_status=green&amp;timeout=1s&#34; )&#39;
+</span></span></span><span class="line"><span class="cl"><span class="sd">                      if http &#34;/_cluster/health?wait_for_status=green&amp;timeout=1s&#34; ; then
+</span></span></span><span class="line"><span class="cl"><span class="sd">                          touch ${START_FILE}
+</span></span></span><span class="line"><span class="cl"><span class="sd">                          exit 0
+</span></span></span><span class="line"><span class="cl"><span class="sd">                      else
+</span></span></span><span class="line"><span class="cl"><span class="sd">                          echo &#39;Cluster is not yet ready (request params: &#34;wait_for_status=green&amp;timeout=1s&#34; )&#39;
+</span></span></span><span class="line"><span class="cl"><span class="sd">                          exit 1
+</span></span></span><span class="line"><span class="cl"><span class="sd">                      fi
+</span></span></span><span class="line"><span class="cl"><span class="sd">                  fi</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="nt">initialDelaySeconds</span><span class="p">:</span><span class="w"> </span><span class="m">10</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="nt">timeoutSeconds</span><span class="p">:</span><span class="w"> </span><span class="m">5</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="nt">periodSeconds</span><span class="p">:</span><span class="w"> </span><span class="m">10</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="nt">successThreshold</span><span class="p">:</span><span class="w"> </span><span class="m">3</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="nt">failureThreshold</span><span class="p">:</span><span class="w"> </span><span class="m">3</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">terminationMessagePath</span><span class="p">:</span><span class="w"> </span><span class="l">/dev/termination-log</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">terminationMessagePolicy</span><span class="p">:</span><span class="w"> </span><span class="l">File</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">imagePullPolicy</span><span class="p">:</span><span class="w"> </span><span class="l">IfNotPresent</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">securityContext</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="nt">capabilities</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">              </span><span class="nt">drop</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                </span>- <span class="l">ALL</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="nt">runAsUser</span><span class="p">:</span><span class="w"> </span><span class="m">1000</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="nt">runAsNonRoot</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">restartPolicy</span><span class="p">:</span><span class="w"> </span><span class="l">Always</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">terminationGracePeriodSeconds</span><span class="p">:</span><span class="w"> </span><span class="m">120</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">dnsPolicy</span><span class="p">:</span><span class="w"> </span><span class="l">ClusterFirst</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">securityContext</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">runAsUser</span><span class="p">:</span><span class="w"> </span><span class="m">1000</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">fsGroup</span><span class="p">:</span><span class="w"> </span><span class="m">1000</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">affinity</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">podAntiAffinity</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">requiredDuringSchedulingIgnoredDuringExecution</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span>- <span class="nt">labelSelector</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="nt">matchExpressions</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                  </span>- <span class="nt">key</span><span class="p">:</span><span class="w"> </span><span class="l">app</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                    </span><span class="nt">operator</span><span class="p">:</span><span class="w"> </span><span class="l">In</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                    </span><span class="nt">values</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                      </span>- <span class="l">elasticsearch-master</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">              </span><span class="nt">topologyKey</span><span class="p">:</span><span class="w"> </span><span class="l">kubernetes.io/hostname</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">schedulerName</span><span class="p">:</span><span class="w"> </span><span class="l">default-scheduler</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">volumeClaimTemplates</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span>- <span class="nt">metadata</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">datadir</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">annotations</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">volume.beta.kubernetes.io/storage-class</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;managed-nfs-storage-class&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">spec</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">accessModes</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&#34;ReadWriteMany&#34;</span><span class="p">]</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">resources</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">requests</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="nt">storage</span><span class="p">:</span><span class="w"> </span><span class="l">10Gi</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">serviceName</span><span class="p">:</span><span class="w"> </span><span class="l">elasticsearch-master-headless</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">podManagementPolicy</span><span class="p">:</span><span class="w"> </span><span class="l">Parallel</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">updateStrategy</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l">RollingUpdate</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">revisionHistoryLimit</span><span class="p">:</span><span class="w"> </span><span class="m">10</span><span class="w">
+</span></span></span></code></pre></div>
+</section>
+
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="https://blog.mletter.cn/tags/kubernetes/">Kubernetes</a>
+        
+    </section>
+
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">相关文章</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="has-image">
+    <a href="https://blog.mletter.cn/tech/kubernetes/sealos/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://img10.360buyimg.com/ddimg/jfs/t1/244560/31/7618/14121/661de12eFfa7f6ba5/0239fa873abb0bd5.jpg" loading="lazy" data-key="" data-hash="https://img10.360buyimg.com/ddimg/jfs/t1/244560/31/7618/14121/661de12eFfa7f6ba5/0239fa873abb0bd5.jpg"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">基于SealOS部署高可用的kubernetes集群</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="https://blog.mletter.cn/tech/kubernetes/install-efk/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://img14.360buyimg.com/ddimg/jfs/t1/177175/31/35833/30306/64cb08eeF5ba90f46/1da6311bbbec8921.jpg" loading="lazy" data-key="" data-hash="https://img14.360buyimg.com/ddimg/jfs/t1/177175/31/35833/30306/64cb08eeF5ba90f46/1da6311bbbec8921.jpg"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">kubernetes基于EFK的日志落地实现</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="https://blog.mletter.cn/tech/kubernetes/architectural-design/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://img13.360buyimg.com/ddimg/jfs/t1/164078/6/34165/22231/654ba81fFe1bf21d7/9d02bd791b795b3b.jpg" loading="lazy" data-key="" data-hash="https://img13.360buyimg.com/ddimg/jfs/t1/164078/6/34165/22231/654ba81fFe1bf21d7/9d02bd791b795b3b.jpg"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Kubernetes的架构设计和对象属性基本理解</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="https://blog.mletter.cn/tech/kubernetes/openebs/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://openebs.io/docs/assets/images/control-plane-overview-93c59878e3356a11f03029dd0fc1cd6b.svg" loading="lazy" data-key="" data-hash="https://openebs.io/docs/assets/images/control-plane-overview-93c59878e3356a11f03029dd0fc1cd6b.svg"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">OpenEBS存储的使用</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="https://blog.mletter.cn/tech/kubernetes/traefik/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://doc.traefik.io/traefik/assets/img/traefik-architecture.png" loading="lazy" data-key="" data-hash="https://doc.traefik.io/traefik/assets/img/traefik-architecture.png"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Traekfik基础使用指南</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    <script src="//lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/twikoo/1.4.18/twikoo.all.min.js"></script>
+<div id="tcomment"></div>
+<style>
+    .twikoo {
+        background-color: var(--card-background);
+        border-radius: var(--card-border-radius);
+        box-shadow: var(--shadow-l1);
+        padding: var(--card-padding);
+    }
+    :root[data-scheme="dark"] {
+        --twikoo-body-text-color-main: rgba(255, 255, 255, 0.9);
+        --twikoo-body-text-color: rgba(255, 255, 255, 0.7);
+    }
+    .twikoo .el-input-group__prepend,
+    .twikoo .tk-action-icon,
+    .twikoo .tk-submit-action-icon,
+    .twikoo .tk-time,
+    .twikoo .tk-comments-no,
+    .twikoo .tk-comments-count {
+        color: var(--twikoo-body-text-color);
+    }
+    .twikoo .el-input__inner,
+    .twikoo .el-textarea__inner,
+    .twikoo .tk-preview-container,
+    .twikoo .tk-content,
+    .twikoo .tk-nick,
+    .twikoo .tk-send {
+        color: var(--twikoo-body-text-color-main);
+    }
+    .twikoo .el-button{
+        color: var(--twikoo-body-text-color)!important;
+    }
+    .twikoo .el-input__count {
+        color: var(--twikoo-body-text-color) !important;
+    }
+    .OwO .OwO-body {
+        background-color: var(--body-background) !important;
+        color: var(--body-text-color) !important;
+    }
+</style><script>
+    twikoo.init({
+        envId: 'https:\/\/twikoo.mletter.cn\/',
+        el: '#tcomment',lang: 'zh-cn',})
+</script>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2020 - 
+        
+        2025 Live and learn. 🌱
+    </section>
+    
+    <section class="powerby">
+        Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo By Netlify</a> <br />
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.21.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://lf26-cdn-tos.bytecdntp.com/cdn/expire-1-M/photoswipe/4.1.3/photoswipe.min.js"crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://lf26-cdn-tos.bytecdntp.com/cdn/expire-1-M/photoswipe/4.1.3/photoswipe-ui-default.min.js"crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/photoswipe/4.1.3/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://lf26-cdn-tos.bytecdntp.com/cdn/expire-1-M/photoswipe/4.1.3/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://lf9-cdn-tos.bytecdntp.com/cdn/expire-1-M/vibrant.js/1.0.0/Vibrant.min.js"crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="https://blog.mletter.cn/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+<script src="https://lf26-cdn-tos.bytecdntp.com/cdn/expire-1-M/nprogress/0.2.0/nprogress.min.js" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://lf26-cdn-tos.bytecdntp.com/cdn/expire-1-M/nprogress/0.2.0/nprogress.css" crossorigin="anonymous" />
+<script>
+    NProgress.start();
+    document.addEventListener("readystatechange", () => {
+        if (document.readyState === "interactive") NProgress.inc(0.8);
+        if (document.readyState === "complete") NProgress.done();
+    });
+</script>
+    </body>
+</html>

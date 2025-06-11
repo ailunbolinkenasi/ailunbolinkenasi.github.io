@@ -1,276 +1,631 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
-  <channel>
-    <title>随笔 on 太阳可以是蓝色</title>
-    <link>https://blog.mletter.cn/tags/%E9%9A%8F%E7%AC%94/</link>
-    <description>Recent content in 随笔 on 太阳可以是蓝色</description>
-    <image>
-      <title>太阳可以是蓝色</title>
-      <url>https://blog.mletter.cn/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</url>
-      <link>https://blog.mletter.cn/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</link>
-    </image>
-    <generator>Hugo -- 0.145.0</generator>
-    <language>zh</language>
-    <lastBuildDate>Wed, 01 Jan 2025 00:00:00 +0000</lastBuildDate>
-    <atom:link href="https://blog.mletter.cn/tags/%E9%9A%8F%E7%AC%94/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>2024年终总结</title>
-      <link>https://blog.mletter.cn/life-story/end-2024/</link>
-      <pubDate>Wed, 01 Jan 2025 00:00:00 +0000</pubDate>
-      <guid>https://blog.mletter.cn/life-story/end-2024/</guid>
-      <description>仅以此篇文章记录我在2024活过的那些日子</description>
-      <content:encoded><![CDATA[<h1 id="2024年年终总结">2024年：年终总结</h1>
-<p>随着2024年的落幕，我站在这个崭新的起点上，回首过去一年的点点滴滴。有欢笑，有泪水，有收获，也亦有遗憾。</p>
-<h2 id="学习成长">学习成长</h2>
-<p>学习是我一直不曾懈怠的事情，2024年更是如此。其实在2024年在学习投入到更多地部分在于技术的学习吧，这一年学习倾向于深入的<code>Go</code>语言方向以及<code>kubernetes</code>领域方向的学习。以至于我在这一年实际上有一说一，有点贪玩的成分在里面。</p>
-<p>这一年在学习成长的道路上，我也意识到自己有时候过于贪多求全，导致每个学习任务分配的时间不够合理，有些内容没能学得很深入，这是我需要在来年改进的地方，要学会聚焦重点，把知识真正学透。</p>
-<p>下面是我希望在2025年实现完成的一些大饼计划：</p>
-<ul>
-<li><input disabled="" type="checkbox"> 维扣图元项目1.0版本发布(Go语言的深入学习)</li>
-<li><input disabled="" type="checkbox"> 自己在2025年4月和2025年10乐的考核通过</li>
-<li><input disabled="" type="checkbox"> <code>kubernetes</code>的相关内容继续研究深入</li>
-<li><input disabled="" type="checkbox"> 认真读完三本书(一次性读几十本对我来说不太现实，量力而行了!)</li>
-</ul>
-<blockquote>
-<p>学如逆水行舟，不进则退。</p></blockquote>
-<h2 id="工作内容">工作内容</h2>
-<p>工作内容就不多说了，本身也没什么好说的，大多数是一些鸡毛蒜皮的小事情。</p>
-<!doctype html>
-<html lang="en">
-    <head>
-        <meta
-            name="viewport"
-            content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1"
-        />
-        <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/jquery/3.6.0/jquery.min.js"></script>
-        <link
-            href="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/nanogallery2/3.0.5/css/nanogallery2.min.css"
-            rel="stylesheet"
-        />
-        <script src="https://lf9-cdn-tos.bytecdntp.com/cdn/expire-1-M/nanogallery2/3.0.5/jquery.nanogallery2.min.js"></script>
-    </head>
-    <body>
-        <div
-            data-nanogallery2='{
-    "itemsBaseURL":               "https://nanogallery2.nanostudio.org/samples",
-    "thumbnailDisplayTransition":          "slideUp2",
-	"thumbnailHeight":    200,
-    "thumbnailWidth":     200,
-    "thumbnailAlignment": "fillWidth",
-    "thumbnailOpenInLightox": true,
-    "breadcrumbOnlyCurrentLevel": true,
-    "thumbnailLabel":     { "valign": "bottom", "position": "overImage", "hideIcons": true },
-    "galleryMosaic" :   [
-      { "c": 1, "r": 1, "w": 2, "h": 2 },
-      { "c": 3, "r": 1, "w": 1, "h": 1 },
-      { "c": 3, "r": 2, "w": 1, "h": 1 },
-      { "c": 4, "r": 1, "w": 1, "h": 1 },
-      { "c": 4, "r": 2, "w": 1, "h": 1 }
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>随笔 on 太阳可以是蓝色</title>
+        <link>https://blog.mletter.cn/tags/%E9%9A%8F%E7%AC%94/</link>
+        <description>Recent content in 随笔 on 太阳可以是蓝色</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>en-us</language>
+        <copyright>Live and learn. 🌱</copyright>
+        <lastBuildDate>Wed, 01 Jan 2025 00:00:00 +0000</lastBuildDate><atom:link href="https://blog.mletter.cn/tags/%E9%9A%8F%E7%AC%94/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>2024年终总结</title>
+        <link>https://blog.mletter.cn/life-story/end-2024/</link>
+        <pubDate>Wed, 01 Jan 2025 00:00:00 +0000</pubDate>
+        
+        <guid>https://blog.mletter.cn/life-story/end-2024/</guid>
+        <description>&lt;h1 id=&#34;2024年年终总结&#34;&gt;&lt;/h&gt;2024年：年终总结
+&lt;/h1&gt;&lt;p&gt;随着2024年的落幕，我站在这个崭新的起点上，回首过去一年的点点滴滴。有欢笑，有泪水，有收获，也亦有遗憾。&lt;/p&gt;
+&lt;h2 id=&#34;学习成长&#34;&gt;&lt;/h&gt;学习成长
+&lt;/h2&gt;&lt;p&gt;学习是我一直不曾懈怠的事情，2024年更是如此。其实在2024年在学习投入到更多地部分在于技术的学习吧，这一年学习倾向于深入的&lt;code&gt;Go&lt;/code&gt;语言方向以及&lt;code&gt;kubernetes&lt;/code&gt;领域方向的学习。以至于我在这一年实际上有一说一，有点贪玩的成分在里面。&lt;/p&gt;
+&lt;p&gt;这一年在学习成长的道路上，我也意识到自己有时候过于贪多求全，导致每个学习任务分配的时间不够合理，有些内容没能学得很深入，这是我需要在来年改进的地方，要学会聚焦重点，把知识真正学透。&lt;/p&gt;
+&lt;p&gt;下面是我希望在2025年实现完成的一些大饼计划：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;input disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; 维扣图元项目1.0版本发布(Go语言的深入学习)&lt;/li&gt;
+&lt;li&gt;&lt;input disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; 自己在2025年4月和2025年10乐的考核通过&lt;/li&gt;
+&lt;li&gt;&lt;input disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; &lt;code&gt;kubernetes&lt;/code&gt;的相关内容继续研究深入&lt;/li&gt;
+&lt;li&gt;&lt;input disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; 认真读完三本书(一次性读几十本对我来说不太现实，量力而行了!)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;blockquote&gt;
+&lt;p&gt;学如逆水行舟，不进则退。&lt;/p&gt;&lt;/blockquote&gt;
+&lt;h2 id=&#34;工作内容&#34;&gt;&lt;/h&gt;工作内容
+&lt;/h2&gt;&lt;p&gt;工作内容就不多说了，本身也没什么好说的，大多数是一些鸡毛蒜皮的小事情。&lt;/p&gt;
+&lt;!doctype html&gt;
+&lt;html lang=&#34;en&#34;&gt;
+    &lt;head&gt;
+        &lt;meta
+            name=&#34;viewport&#34;
+            content=&#34;user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1&#34;
+        /&gt;
+        &lt;script src=&#34;https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/jquery/3.6.0/jquery.min.js&#34;&gt;&lt;/script&gt;
+        &lt;link
+            href=&#34;https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/nanogallery2/3.0.5/css/nanogallery2.min.css&#34;
+            rel=&#34;stylesheet&#34;
+        /&gt;
+        &lt;script src=&#34;https://lf9-cdn-tos.bytecdntp.com/cdn/expire-1-M/nanogallery2/3.0.5/jquery.nanogallery2.min.js&#34;&gt;&lt;/script&gt;
+    &lt;/head&gt;
+    &lt;body&gt;
+        &lt;div
+            data-nanogallery2=&#39;{
+    &#34;itemsBaseURL&#34;:               &#34;https://nanogallery2.nanostudio.org/samples&#34;,
+    &#34;thumbnailDisplayTransition&#34;:          &#34;slideUp2&#34;,
+	&#34;thumbnailHeight&#34;:    200,
+    &#34;thumbnailWidth&#34;:     200,
+    &#34;thumbnailAlignment&#34;: &#34;fillWidth&#34;,
+    &#34;thumbnailOpenInLightox&#34;: true,
+    &#34;breadcrumbOnlyCurrentLevel&#34;: true,
+    &#34;thumbnailLabel&#34;:     { &#34;valign&#34;: &#34;bottom&#34;, &#34;position&#34;: &#34;overImage&#34;, &#34;hideIcons&#34;: true },
+    &#34;galleryMosaic&#34; :   [
+      { &#34;c&#34;: 1, &#34;r&#34;: 1, &#34;w&#34;: 2, &#34;h&#34;: 2 },
+      { &#34;c&#34;: 3, &#34;r&#34;: 1, &#34;w&#34;: 1, &#34;h&#34;: 1 },
+      { &#34;c&#34;: 3, &#34;r&#34;: 2, &#34;w&#34;: 1, &#34;h&#34;: 1 },
+      { &#34;c&#34;: 4, &#34;r&#34;: 1, &#34;w&#34;: 1, &#34;h&#34;: 1 },
+      { &#34;c&#34;: 4, &#34;r&#34;: 2, &#34;w&#34;: 1, &#34;h&#34;: 1 }
     ],
-    "galleryLastRowFull" : true,
-     "thumbnailDisplayTransitionDuration":  500,
-     "thumbnailDisplayInterval":            30,
-     "galleryDisplayTransition":            "rotateX",
-     "galleryDisplayTransitionDuration":    500,
-     "galleryDisplayMode": "rows",
-     "thumbnailDisplayOutsideScreen": "true",
-     "eventsDebounceDelay": 10,
-     "thumbnailL1BorderHorizontal": 0,
-     "thumbnailL1BorderVertical": 0,
-     "thumbnailLabel": {
-        "titleFontSize": "0.6em"
+    &#34;galleryLastRowFull&#34; : true,
+     &#34;thumbnailDisplayTransitionDuration&#34;:  500,
+     &#34;thumbnailDisplayInterval&#34;:            30,
+     &#34;galleryDisplayTransition&#34;:            &#34;rotateX&#34;,
+     &#34;galleryDisplayTransitionDuration&#34;:    500,
+     &#34;galleryDisplayMode&#34;: &#34;rows&#34;,
+     &#34;thumbnailDisplayOutsideScreen&#34;: &#34;true&#34;,
+     &#34;eventsDebounceDelay&#34;: 10,
+     &#34;thumbnailL1BorderHorizontal&#34;: 0,
+     &#34;thumbnailL1BorderVertical&#34;: 0,
+     &#34;thumbnailLabel&#34;: {
+        &#34;titleFontSize&#34;: &#34;0.6em&#34;
      },
-     "thumbnailHoverEffect2": "image_scale_1.00_1.10|label_backgroundColor_rgba(0,0,0,0)_rgba(255,255,255,0)",
-     "galleryTheme": {
-        "thumbnail": {
-            "borderRadius": "8px"
+     &#34;thumbnailHoverEffect2&#34;: &#34;image_scale_1.00_1.10|label_backgroundColor_rgba(0,0,0,0)_rgba(255,255,255,0)&#34;,
+     &#34;galleryTheme&#34;: {
+        &#34;thumbnail&#34;: {
+            &#34;borderRadius&#34;: &#34;8px&#34;
         }
      },
-     "thumbnailToolbarImage": {
-        "topLeft": "",
-        "topRight": "",
-        "bottomLeft": "",
-        "bottomRight": ""
+     &#34;thumbnailToolbarImage&#34;: {
+        &#34;topLeft&#34;: &#34;&#34;,
+        &#34;topRight&#34;: &#34;&#34;,
+        &#34;bottomLeft&#34;: &#34;&#34;,
+        &#34;bottomRight&#34;: &#34;&#34;
      },
-     "viewerToolbar":   {
-        "display": true,
-        "standard": "label"
+     &#34;viewerToolbar&#34;:   {
+        &#34;display&#34;: true,
+        &#34;standard&#34;: &#34;label&#34;
      },
-     "viewerTools":     {
-        "topLeft":    "pageCounter, playPauseButton",
-        "topRight":   "downloadButton, rotateLeft, zoomButton, fullscreenButton, closeButton"
+     &#34;viewerTools&#34;:     {
+        &#34;topLeft&#34;:    &#34;pageCounter, playPauseButton&#34;,
+        &#34;topRight&#34;:   &#34;downloadButton, rotateLeft, zoomButton, fullscreenButton, closeButton&#34;
      },
-     "viewerGalleryTWidth": 40,
-     "viewerGalleryTHeight": 40
-}'
-        >
+     &#34;viewerGalleryTWidth&#34;: 40,
+     &#34;viewerGalleryTHeight&#34;: 40
+}&#39;
+        &gt;
             
 
-<a href="https://img12.360buyimg.com/ddimg/jfs/t1/262758/32/6287/22431/67760ea3F99ac1bbb/0d51085b001962b0.jpg" data-ngThumb="https://img12.360buyimg.com/ddimg/jfs/t1/262758/32/6287/22431/67760ea3F99ac1bbb/0d51085b001962b0.jpg">消息总数</a>
+&lt;a href=&#34;https://img12.360buyimg.com/ddimg/jfs/t1/262758/32/6287/22431/67760ea3F99ac1bbb/0d51085b001962b0.jpg&#34; data-ngThumb=&#34;https://img12.360buyimg.com/ddimg/jfs/t1/262758/32/6287/22431/67760ea3F99ac1bbb/0d51085b001962b0.jpg&#34;&gt;消息总数&lt;/a&gt;
 
 
-<a href="https://img14.360buyimg.com/ddimg/jfs/t1/256783/3/7132/22234/67760ed4Fd7fe1f50/08d94b50bfa145db.jpg" data-ngThumb="https://img14.360buyimg.com/ddimg/jfs/t1/256783/3/7132/22234/67760ed4Fd7fe1f50/08d94b50bfa145db.jpg">会议时长</a>
+&lt;a href=&#34;https://img14.360buyimg.com/ddimg/jfs/t1/256783/3/7132/22234/67760ed4Fd7fe1f50/08d94b50bfa145db.jpg&#34; data-ngThumb=&#34;https://img14.360buyimg.com/ddimg/jfs/t1/256783/3/7132/22234/67760ed4Fd7fe1f50/08d94b50bfa145db.jpg&#34;&gt;会议时长&lt;/a&gt;
 
 
-<a href="https://img14.360buyimg.com/ddimg/jfs/t1/265136/35/6814/23751/67760ee5Fe95908bd/1fae31e8097fd938.jpg" data-ngThumb="https://img14.360buyimg.com/ddimg/jfs/t1/265136/35/6814/23751/67760ee5Fe95908bd/1fae31e8097fd938.jpg">夜猫子</a>
+&lt;a href=&#34;https://img14.360buyimg.com/ddimg/jfs/t1/265136/35/6814/23751/67760ee5Fe95908bd/1fae31e8097fd938.jpg&#34; data-ngThumb=&#34;https://img14.360buyimg.com/ddimg/jfs/t1/265136/35/6814/23751/67760ee5Fe95908bd/1fae31e8097fd938.jpg&#34;&gt;夜猫子&lt;/a&gt;
 
 
 
-        </div>
-    </body>
-</html>
+        &lt;/div&gt;
+    &lt;/body&gt;
+&lt;/html&gt;
 
-<h2 id="生活感悟">生活感悟</h2>
-<p>生活是工作的调味剂，这一年我也努力平衡二者。坚持隔一段时间就出门转转，放松放松自己疲惫的心情。</p>
-<p>这一年我走过了[广州、秦皇岛、张北、天津、东莞、深圳、江门]等多个城市，漫步在异地街头，感受不同风土人情。</p>
-<p>并且计划在 2025 年购买一本《中国国家地理》，从第一座城市的第一个地理位置开始新的旅程。</p>
-<ul>
-<li><a class="link" href="http://www.dili360.com/Cng/"  target="_blank" rel="noopener"
-    >中国国家地理</a></li>
-<li><a class="link" href="https://blog.mletter.cn/tourists/qinhuangdao/"  target="_blank" rel="noopener"
-    >秦皇岛</a></li>
-<li>更多攻略请站内浏览&hellip;</li>
-</ul>
-<blockquote>
-<p>人生归途，替我自由，替你自由。</p></blockquote>
-<h2 id="娱乐事项">娱乐事项</h2>
-<p>游戏世界同样留下了我的足迹，从紧张刺激的竞技手游，到策略烧脑的单机大作，我在虚拟的天地里尽情驰骋。与队友并肩作战、攻克难关的过程中，培养了默契，也收获了胜利的喜悦。</p>
-<ol>
-<li>一个氪金的SLG游戏【三国·谋定天下】</li>
-</ol>
-<p>玩儿这个游戏的时候冲了不少钱，然后当了一段时间主播，也有了一定不小的人气，大概粉丝已经到达400+左右了，对于我一个从来没有涉猎过此行业的人来讲算是一个不错的开始。后来因为学习的一些问题，放弃了继续做游戏主播的这个行业。</p>
-<ol start="2">
-<li>燕云十六声</li>
-</ol>
-<p>一个年底才发布的游戏，看了一下宣传片还是感觉很不错的，游戏优先上线了PC端版本。手机端应该会延迟一点，游戏大小大概在100G左右，总体体验下来还是不错的，氪金点的部分在于时装方面，对战力提升目前看来不是很大。当让推荐这种游戏还是在PC端体验会更好一些</p>
-<h2 id="展望为2025年画下大饼">展望为2025年画下大饼</h2>
-<p>诚然，复盘这一年，亦有遗憾留存。展望未来，我还打算开启一场别样的探索之旅。2025年，我计划走得更远、看得更多，一本《中国国家地理》已被我列入必购清单。待新书入手，我便会翻开第一页，从那开篇所提及的第一座城市、第一个地理位置启程，跟随它的指引，穿梭于祖国的山川湖海、城市乡村，用脚步丈量大地，用心灵感受自然与人文的交融之美。</p>
-<p>在这里订立一下2025年的小目标</p>
-<ul>
-<li><input disabled="" type="checkbox"> 攒钱10万+</li>
-<li><input disabled="" type="checkbox"> 拿下驾照</li>
-<li><input disabled="" type="checkbox"> 到达城市<code>重庆</code>、<code>杭州</code>、<code>苏州</code></li>
-<li><input disabled="" type="checkbox"> 深入学习(kubernetes、golang)等方向相关内容</li>
-</ul>
-]]></content:encoded>
-    </item>
-    <item>
-      <title>再观纪录片-人生第一次-告别</title>
-      <link>https://blog.mletter.cn/documentary/valedictory/1/</link>
-      <pubDate>Sun, 15 Dec 2024 00:00:00 +0000</pubDate>
-      <guid>https://blog.mletter.cn/documentary/valedictory/1/</guid>
-      <description>本主题内容题材取自bilibili-人生第一次(告别)</description>
-      <content:encoded><![CDATA[<p>本主题内容题材取自bilibili-人生第一次(告别)</p>
-<h2 id="漫长的告别">漫长的告别</h2>
-<p>忘记我，也没事…
-2019年12月9日</p>
-<p><img style="max-width: 100%; height: auto;" loading="lazy" loading="lazy" src="https://img10.360buyimg.com/ddimg/jfs/t1/189969/25/35859/38863/64d4cfeeF0f1583bd/c39025d53945f7b4.jpg">
-巢文臻，73岁，四年前，老伴聂爱荣被确诊为阿尔兹海默症。</p>
-<p>随着老伴的病越来越严重…从一开始的忘记事情，到后来的忘记人…</p>
-<p><img style="max-width: 100%; height: auto;" loading="lazy" loading="lazy" src="https://img13.360buyimg.com/ddimg/jfs/t1/223152/40/34455/53067/64d4d002F03b12afb/1065739308163d4d.jpg"></p>
-<p>巢文臻在墙上的这块板子从来没有摘下。
+&lt;h2 id=&#34;生活感悟&#34;&gt;&lt;/h&gt;生活感悟
+&lt;/h2&gt;&lt;p&gt;生活是工作的调味剂，这一年我也努力平衡二者。坚持隔一段时间就出门转转，放松放松自己疲惫的心情。&lt;/p&gt;
+&lt;p&gt;这一年我走过了[广州、秦皇岛、张北、天津、东莞、深圳、江门]等多个城市，漫步在异地街头，感受不同风土人情。&lt;/p&gt;
+&lt;p&gt;并且计划在 2025 年购买一本《中国国家地理》，从第一座城市的第一个地理位置开始新的旅程。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;http://www.dili360.com/Cng/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;中国国家地理&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://blog.mletter.cn/tourists/qinhuangdao/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;秦皇岛&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;更多攻略请站内浏览&amp;hellip;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;blockquote&gt;
+&lt;p&gt;人生归途，替我自由，替你自由。&lt;/p&gt;&lt;/blockquote&gt;
+&lt;h2 id=&#34;娱乐事项&#34;&gt;&lt;/h&gt;娱乐事项
+&lt;/h2&gt;&lt;p&gt;游戏世界同样留下了我的足迹，从紧张刺激的竞技手游，到策略烧脑的单机大作，我在虚拟的天地里尽情驰骋。与队友并肩作战、攻克难关的过程中，培养了默契，也收获了胜利的喜悦。&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;一个氪金的SLG游戏【三国·谋定天下】&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;玩儿这个游戏的时候冲了不少钱，然后当了一段时间主播，也有了一定不小的人气，大概粉丝已经到达400+左右了，对于我一个从来没有涉猎过此行业的人来讲算是一个不错的开始。后来因为学习的一些问题，放弃了继续做游戏主播的这个行业。&lt;/p&gt;
+&lt;ol start=&#34;2&#34;&gt;
+&lt;li&gt;燕云十六声&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;一个年底才发布的游戏，看了一下宣传片还是感觉很不错的，游戏优先上线了PC端版本。手机端应该会延迟一点，游戏大小大概在100G左右，总体体验下来还是不错的，氪金点的部分在于时装方面，对战力提升目前看来不是很大。当让推荐这种游戏还是在PC端体验会更好一些&lt;/p&gt;
+&lt;h2 id=&#34;展望为2025年画下大饼&#34;&gt;&lt;/h&gt;展望为2025年画下大饼
+&lt;/h2&gt;&lt;p&gt;诚然，复盘这一年，亦有遗憾留存。展望未来，我还打算开启一场别样的探索之旅。2025年，我计划走得更远、看得更多，一本《中国国家地理》已被我列入必购清单。待新书入手，我便会翻开第一页，从那开篇所提及的第一座城市、第一个地理位置启程，跟随它的指引，穿梭于祖国的山川湖海、城市乡村，用脚步丈量大地，用心灵感受自然与人文的交融之美。&lt;/p&gt;
+&lt;p&gt;在这里订立一下2025年的小目标&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;input disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; 攒钱10万+&lt;/li&gt;
+&lt;li&gt;&lt;input disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; 拿下驾照&lt;/li&gt;
+&lt;li&gt;&lt;input disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; 到达城市&lt;code&gt;重庆&lt;/code&gt;、&lt;code&gt;杭州&lt;/code&gt;、&lt;code&gt;苏州&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;input disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; 深入学习(kubernetes、golang)等方向相关内容&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        </item>
+        <item>
+        <title>再观纪录片-人生第一次-告别</title>
+        <link>https://blog.mletter.cn/documentary/valedictory/1/</link>
+        <pubDate>Sun, 15 Dec 2024 00:00:00 +0000</pubDate>
+        
+        <guid>https://blog.mletter.cn/documentary/valedictory/1/</guid>
+        <description>&lt;img src="https://img12.360buyimg.com/ddimg/jfs/t1/192726/25/35567/27205/64d4df78Ff9979209/ecdcae14b5eefcd1.jpg" alt="Featured image of post 再观纪录片-人生第一次-告别" /&gt;&lt;p&gt;本主题内容题材取自bilibili-人生第一次(告别)&lt;/p&gt;
+&lt;h2 id=&#34;漫长的告别&#34;&gt;&lt;/h&gt;漫长的告别
+&lt;/h2&gt;&lt;p&gt;忘记我，也没事…
+2019年12月9日&lt;/p&gt;
+&lt;p&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  &lt;picture&gt;
+  &lt;img class=&#34;img-fluid&#34; src=&#34;https://img10.360buyimg.com/ddimg/jfs/t1/189969/25/35859/38863/64d4cfeeF0f1583bd/c39025d53945f7b4.jpg&#34; alt=&#34;&#34; loading=&#34;lazy&#34; /&gt;
+&lt;/picture&gt;
+
+巢文臻，73岁，四年前，老伴聂爱荣被确诊为阿尔兹海默症。&lt;/p&gt;
+&lt;p&gt;随着老伴的病越来越严重…从一开始的忘记事情，到后来的忘记人…&lt;/p&gt;
+&lt;p&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  &lt;picture&gt;
+  &lt;img class=&#34;img-fluid&#34; src=&#34;https://img13.360buyimg.com/ddimg/jfs/t1/223152/40/34455/53067/64d4d002F03b12afb/1065739308163d4d.jpg&#34; alt=&#34;&#34; loading=&#34;lazy&#34; /&gt;
+&lt;/picture&gt;
+&lt;/p&gt;
+&lt;p&gt;巢文臻在墙上的这块板子从来没有摘下。
 而他也有在白板上，给自己写了一句大大的提示语：
-“别发火！”</p>
-<p><img style="max-width: 100%; height: auto;" loading="lazy" loading="lazy" src="https://img11.360buyimg.com/ddimg/jfs/t1/108225/25/43161/155304/64d4d084Fb9ca431d/13ebdf94c4ac9d07.jpg"></p>
-<p>巢文臻看着熟睡的妻子，终于松了口气。</p>
-<p>他走进厨房，开始准备午餐。</p>
-<p>拿起菜刀的瞬间，他脑海中便浮现妻子曾经在厨房忙碌的身影。</p>
-<p>眼泪，止不住地从两颊滑落下来。</p>
-<p><img style="max-width: 100%; height: auto;" loading="lazy" loading="lazy" src="https://img14.360buyimg.com/ddimg/jfs/t1/213474/21/30257/91415/64d4d147Ffeb8ffbb/428ff6bf7e6ac567.jpg"></p>
-<p>从家到养护院，11站地铁，4站公交，步行800米。这样的路程老巢每周要走上四五次。</p>
-<p>路上的老巢，像是再赴一场甜蜜的约会。</p>
-<p><img style="max-width: 100%; height: auto;" loading="lazy" loading="lazy" src="https://img14.360buyimg.com/ddimg/jfs/t1/98502/4/42560/156562/64d4d20dFfa2ef3de/1853b13a719f0889.jpg"></p>
-<p>“聂爱荣” 我叫什么名字?</p>
-<p><img style="max-width: 100%; height: auto;" loading="lazy" loading="lazy" src="https://img14.360buyimg.com/ddimg/jfs/t1/206133/14/32307/59612/64d4e169F80220d28/d4917da8dd2c7901.jpg"></p>
-<p>从聂爱荣嘴里回答出的这句：“巢文臻”</p>
-<p><img style="max-width: 100%; height: auto;" loading="lazy" loading="lazy" src="https://img12.360buyimg.com/ddimg/jfs/t1/90393/22/39865/37445/64d4d2daF59c703e4/ab1e7a68cb8e69f5.jpg"></p>
-<p>对于他来说，妻子回答的“巢文臻”三个字，便是世上最美的三字情书。</p>
-<p>“认识我！认识我真的非常开心”</p>
-<p>每当妻子说对了名字，巢文臻都会将她抱上许久，舍不得松手。</p>
-<p>妻子生病后，曾经内敛的巢文臻，变得越来越不吝啬于表达心中的爱意。</p>
-<p>只要见到她，便再也不放开紧握的手。</p>
-<p><img style="max-width: 100%; height: auto;" loading="lazy" alt="5401691669343_.pic.jpg" loading="lazy" src="https://img10.360buyimg.com/ddimg/jfs/t1/161429/35/39379/41316/64d4d368F7dad3562/d5b9f47fddb8fd0e.jpg"></p>
-<p>老伴有骨质疏松，巢文臻每天都会带着聂爱荣慢慢的在院里散步。</p>
-<p>战友聚会、朋友聚会、巢文臻一概不去。</p>
-<p>他说：“我去了也不定心。”</p>
-<p>导演：“你这样不就没个人的生活了吗？”</p>
-<p>他说：“我这样也是一种开心，我没有觉得爱荣是我的负担。”</p>
-<p><img style="max-width: 100%; height: auto;" loading="lazy" loading="lazy" src="https://img12.360buyimg.com/ddimg/jfs/t1/172602/4/35850/53499/64d4d489Fa112945c/2f2f1b8925bc1d90.jpg"></p>
-<h2 id="我应如何爱你">我应如何爱你</h2>
-<p>照顾完聂爱荣后，老巢便回到了家。</p>
-<p>回到家后的老巢，沉默了许多。</p>
-<p>老伴离开了家，老巢就变成了&quot;空巢&quot;。</p>
-<blockquote>
-<p>千般难舍千般舍，万事不甩万事甩。</p></blockquote>
-<p><img style="max-width: 100%; height: auto;" loading="lazy" loading="lazy" src="https://img10.360buyimg.com/ddimg/jfs/t1/195018/4/35375/61471/64d4d56fFde129821/7d43ad4eca00699a.jpg"></p>
-<p>2019年12月27日</p>
-<p>老巢病倒了…医生告诉他他的前列腺上有肿瘤</p>
-<p>老伴的身体每一天都比前一天更差，老巢说：“有一些事他要想到前面。”</p>
-<p>老巢去了中华遗嘱库，他要立下一些遗嘱，为以后做安排。</p>
-<p>立遗嘱，要自愿，头脑清晰，有表达能力，且不能有错别字，所以巢文臻只能一个人前来，既代表自己，也代表妻子。</p>
-<p>截止2019年底，中华遗嘱库已经保管了16.5万份遗嘱。</p>
-<p><img style="max-width: 100%; height: auto;" loading="lazy" loading="lazy" src="https://img14.360buyimg.com/ddimg/jfs/t1/60621/29/26554/55177/64d4d69fFcb653390/6119a13de7248b6a.jpg"></p>
-<p>这些立遗嘱的人，就像是小学生一样，趴在课桌上写着自己人生的作业。</p>
-<p>不能有一个错别字。</p>
-<p><img style="max-width: 100%; height: auto;" loading="lazy" loading="lazy" src="https://img11.360buyimg.com/ddimg/jfs/t1/123444/34/41525/90839/64d4d7a0F15d63c84/23601bf75b75ebec.jpg"></p>
-<p>这是巢文臻入伍五十年以来留下的感言</p>
-<p>半个世纪，感慨万千。</p>
-<p>如有来生，再续前缘？</p>
-<p>他不知道有没有来生。</p>
-<p><img style="max-width: 100%; height: auto;" loading="lazy" loading="lazy" src="https://img14.360buyimg.com/ddimg/jfs/t1/111386/30/40031/45459/64d4d97cFbf4a4225/9939e4fccf57a8f5.jpg"></p>
-<p>在立遗嘱时，别的老人都是写给子女一番话，而巢文臻提起笔后，则是思考再三，写下了一首告别诗：</p>
-<p>天堂之门向我开，不尽思绪滚滚来；</p>
-<p>千般难舍千般舍，万事不甩万事甩。</p>
-<p>幸喜寒门志不衰，频遇艰困仰众爱；</p>
-<p>愿把皮囊献杏林，魂归父母应节哀。</p>
-<h2 id="请记住我">请记住我</h2>
-<p>2020年，聂爱荣再次摔倒了。</p>
-<p>而且，是两次。</p>
-<p>巢文臻无法如往常一般去养老院，他整日魂不守舍，开始胡思乱想。</p>
-<p>他害怕，妻子摔倒后是否能正常生活；他害怕，妻子一日三餐饮食不规律。</p>
-<p>他更怕，下一次见面，妻子已经不记得他了。</p>
-<p>2020年初，新冠疫情大爆发。巢文臻已经两个月没有见到妻子聂爱荣了。</p>
-<p>为了缓解思念，巢文臻开始给妻子写信。</p>
-<p>因为妻子已经不识字，他只能对着手机录制视频，然后发给护士给妻子看这一封封饱含思念的“电子信”。
-信上说：</p>
-<p>“爱荣啊…从年初至今已有两个月未能与你见面，心中十分想念。</p>
-<p>回想我们结婚以来的四十多年，同甘苦共患难，经历了八次搬家。</p>
-<p>其中有八年，你都是（跟我）睡在地板上的，但你从无怨言。</p>
-<p>在家里你是标准的贤妻良母，相夫教子，到老了没享多少福，你就生病了…”</p>
-<p>说到这里，巢文臻拿信的手已经开始颤抖，他强忍着情绪读完了信件。</p>
-<p><img style="max-width: 100%; height: auto;" loading="lazy" loading="lazy" src="https://img11.360buyimg.com/ddimg/jfs/t1/170502/37/39789/76036/64d4dce4F2e603f09/2f6ddf6daf7104c2.jpg"></p>
-<p>巢文臻一直有件事情瞒着家人。</p>
-<p>自从妻子患病之后，他也得了抑郁症，在这期间，他四处寻药，想尽一切办法不让自己倒下。</p>
-<p>因为他深知，只有自己不倒，才能减轻孩子的负担，妻子才能生活的更好一些。</p>
-<p>这些年，有九个字概括了他全部的生活：</p>
-<p>“睹物思人，魂不守舍，肝肠寸断。”</p>
-<p><img style="max-width: 100%; height: auto;" loading="lazy" loading="lazy" src="https://img13.360buyimg.com/ddimg/jfs/t1/155589/12/39361/41165/64d4dd9aFad07f848/48427b16efc95c9e.jpg"></p>
-<p>他说：“这真的是生离死别，我根本不想放开她”</p>
-<p>“没办法，我知道后面会发生什么”</p>
-<p><img style="max-width: 100%; height: auto;" loading="lazy" loading="lazy" src="https://img13.360buyimg.com/ddimg/jfs/t1/171146/31/39573/84458/64d4de0aF72234953/e9eced8fc37b1a04.jpg"></p>
-<p>或许，生的对立面并不是死亡，而是遗忘。</p>
-<p>纪录片的最后，巢文臻表示希望未来妻子比自己先走。</p>
-<p>这样，他就能照顾她一辈子了。</p>
-<p>截止2022年，我国阿尔茨海默病患者约1000万人，居全球之首！</p>
-<p>预计到2050年将突破4000万人。</p>
-<p>这些冰冷的数字背后，是一个个无比痛苦的家庭。</p>
-<p>作为普通人，我们无法阻止死亡的到来，但是正如皮克斯电影《寻梦环游记》插曲里唱到的一般：</p>
-<p><strong>请记得我，虽然再见必须说。</strong></p>
-<p><img style="max-width: 100%; height: auto;" loading="lazy" loading="lazy" src="https://img11.360buyimg.com/ddimg/jfs/t1/90070/19/39987/22184/64d4df58F453e53cf/f98ed26a5a2c0921.jpg"></p>
-<p>那或者又是…“当你老到忘了世界 我用什么来爱你。”</p>
-<p><img style="max-width: 100%; height: auto;" loading="lazy" loading="lazy" src="https://img12.360buyimg.com/ddimg/jfs/t1/192726/25/35567/27205/64d4df78Ff9979209/ecdcae14b5eefcd1.jpg"></p>
-]]></content:encoded>
-    </item>
-    <item>
-      <title>近期现状</title>
-      <link>https://blog.mletter.cn/life-story/1/</link>
-      <pubDate>Mon, 15 Jul 2024 00:00:00 +0000</pubDate>
-      <guid>https://blog.mletter.cn/life-story/1/</guid>
-      <description>&lt;h2 id=&#34;近期日常&#34;&gt;近期日常&lt;/h2&gt;
-&lt;p&gt;最近的日子，就像一部没有剧本的电影，情节跌宕起伏，让人应接不暇。&lt;/p&gt;
+“别发火！”&lt;/p&gt;
+&lt;p&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  &lt;picture&gt;
+  &lt;img class=&#34;img-fluid&#34; src=&#34;https://img11.360buyimg.com/ddimg/jfs/t1/108225/25/43161/155304/64d4d084Fb9ca431d/13ebdf94c4ac9d07.jpg&#34; alt=&#34;&#34; loading=&#34;lazy&#34; /&gt;
+&lt;/picture&gt;
+&lt;/p&gt;
+&lt;p&gt;巢文臻看着熟睡的妻子，终于松了口气。&lt;/p&gt;
+&lt;p&gt;他走进厨房，开始准备午餐。&lt;/p&gt;
+&lt;p&gt;拿起菜刀的瞬间，他脑海中便浮现妻子曾经在厨房忙碌的身影。&lt;/p&gt;
+&lt;p&gt;眼泪，止不住地从两颊滑落下来。&lt;/p&gt;
+&lt;p&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  &lt;picture&gt;
+  &lt;img class=&#34;img-fluid&#34; src=&#34;https://img14.360buyimg.com/ddimg/jfs/t1/213474/21/30257/91415/64d4d147Ffeb8ffbb/428ff6bf7e6ac567.jpg&#34; alt=&#34;&#34; loading=&#34;lazy&#34; /&gt;
+&lt;/picture&gt;
+&lt;/p&gt;
+&lt;p&gt;从家到养护院，11站地铁，4站公交，步行800米。这样的路程老巢每周要走上四五次。&lt;/p&gt;
+&lt;p&gt;路上的老巢，像是再赴一场甜蜜的约会。&lt;/p&gt;
+&lt;p&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  &lt;picture&gt;
+  &lt;img class=&#34;img-fluid&#34; src=&#34;https://img14.360buyimg.com/ddimg/jfs/t1/98502/4/42560/156562/64d4d20dFfa2ef3de/1853b13a719f0889.jpg&#34; alt=&#34;&#34; loading=&#34;lazy&#34; /&gt;
+&lt;/picture&gt;
+&lt;/p&gt;
+&lt;p&gt;“聂爱荣” 我叫什么名字?&lt;/p&gt;
+&lt;p&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  &lt;picture&gt;
+  &lt;img class=&#34;img-fluid&#34; src=&#34;https://img14.360buyimg.com/ddimg/jfs/t1/206133/14/32307/59612/64d4e169F80220d28/d4917da8dd2c7901.jpg&#34; alt=&#34;&#34; loading=&#34;lazy&#34; /&gt;
+&lt;/picture&gt;
+&lt;/p&gt;
+&lt;p&gt;从聂爱荣嘴里回答出的这句：“巢文臻”&lt;/p&gt;
+&lt;p&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  &lt;picture&gt;
+  &lt;img class=&#34;img-fluid&#34; src=&#34;https://img12.360buyimg.com/ddimg/jfs/t1/90393/22/39865/37445/64d4d2daF59c703e4/ab1e7a68cb8e69f5.jpg&#34; alt=&#34;&#34; loading=&#34;lazy&#34; /&gt;
+&lt;/picture&gt;
+&lt;/p&gt;
+&lt;p&gt;对于他来说，妻子回答的“巢文臻”三个字，便是世上最美的三字情书。&lt;/p&gt;
+&lt;p&gt;“认识我！认识我真的非常开心”&lt;/p&gt;
+&lt;p&gt;每当妻子说对了名字，巢文臻都会将她抱上许久，舍不得松手。&lt;/p&gt;
+&lt;p&gt;妻子生病后，曾经内敛的巢文臻，变得越来越不吝啬于表达心中的爱意。&lt;/p&gt;
+&lt;p&gt;只要见到她，便再也不放开紧握的手。&lt;/p&gt;
+&lt;p&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  &lt;picture&gt;
+  &lt;img class=&#34;img-fluid&#34; src=&#34;https://img10.360buyimg.com/ddimg/jfs/t1/161429/35/39379/41316/64d4d368F7dad3562/d5b9f47fddb8fd0e.jpg&#34; alt=&#34;5401691669343_.pic.jpg&#34; loading=&#34;lazy&#34; /&gt;
+&lt;/picture&gt;
+&lt;/p&gt;
+&lt;p&gt;老伴有骨质疏松，巢文臻每天都会带着聂爱荣慢慢的在院里散步。&lt;/p&gt;
+&lt;p&gt;战友聚会、朋友聚会、巢文臻一概不去。&lt;/p&gt;
+&lt;p&gt;他说：“我去了也不定心。”&lt;/p&gt;
+&lt;p&gt;导演：“你这样不就没个人的生活了吗？”&lt;/p&gt;
+&lt;p&gt;他说：“我这样也是一种开心，我没有觉得爱荣是我的负担。”&lt;/p&gt;
+&lt;p&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  &lt;picture&gt;
+  &lt;img class=&#34;img-fluid&#34; src=&#34;https://img12.360buyimg.com/ddimg/jfs/t1/172602/4/35850/53499/64d4d489Fa112945c/2f2f1b8925bc1d90.jpg&#34; alt=&#34;&#34; loading=&#34;lazy&#34; /&gt;
+&lt;/picture&gt;
+&lt;/p&gt;
+&lt;h2 id=&#34;我应如何爱你&#34;&gt;&lt;/h&gt;我应如何爱你
+&lt;/h2&gt;&lt;p&gt;照顾完聂爱荣后，老巢便回到了家。&lt;/p&gt;
+&lt;p&gt;回到家后的老巢，沉默了许多。&lt;/p&gt;
+&lt;p&gt;老伴离开了家，老巢就变成了&amp;quot;空巢&amp;quot;。&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;千般难舍千般舍，万事不甩万事甩。&lt;/p&gt;&lt;/blockquote&gt;
+&lt;p&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  &lt;picture&gt;
+  &lt;img class=&#34;img-fluid&#34; src=&#34;https://img10.360buyimg.com/ddimg/jfs/t1/195018/4/35375/61471/64d4d56fFde129821/7d43ad4eca00699a.jpg&#34; alt=&#34;&#34; loading=&#34;lazy&#34; /&gt;
+&lt;/picture&gt;
+&lt;/p&gt;
+&lt;p&gt;2019年12月27日&lt;/p&gt;
+&lt;p&gt;老巢病倒了…医生告诉他他的前列腺上有肿瘤&lt;/p&gt;
+&lt;p&gt;老伴的身体每一天都比前一天更差，老巢说：“有一些事他要想到前面。”&lt;/p&gt;
+&lt;p&gt;老巢去了中华遗嘱库，他要立下一些遗嘱，为以后做安排。&lt;/p&gt;
+&lt;p&gt;立遗嘱，要自愿，头脑清晰，有表达能力，且不能有错别字，所以巢文臻只能一个人前来，既代表自己，也代表妻子。&lt;/p&gt;
+&lt;p&gt;截止2019年底，中华遗嘱库已经保管了16.5万份遗嘱。&lt;/p&gt;
+&lt;p&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  &lt;picture&gt;
+  &lt;img class=&#34;img-fluid&#34; src=&#34;https://img14.360buyimg.com/ddimg/jfs/t1/60621/29/26554/55177/64d4d69fFcb653390/6119a13de7248b6a.jpg&#34; alt=&#34;&#34; loading=&#34;lazy&#34; /&gt;
+&lt;/picture&gt;
+&lt;/p&gt;
+&lt;p&gt;这些立遗嘱的人，就像是小学生一样，趴在课桌上写着自己人生的作业。&lt;/p&gt;
+&lt;p&gt;不能有一个错别字。&lt;/p&gt;
+&lt;p&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  &lt;picture&gt;
+  &lt;img class=&#34;img-fluid&#34; src=&#34;https://img11.360buyimg.com/ddimg/jfs/t1/123444/34/41525/90839/64d4d7a0F15d63c84/23601bf75b75ebec.jpg&#34; alt=&#34;&#34; loading=&#34;lazy&#34; /&gt;
+&lt;/picture&gt;
+&lt;/p&gt;
+&lt;p&gt;这是巢文臻入伍五十年以来留下的感言&lt;/p&gt;
+&lt;p&gt;半个世纪，感慨万千。&lt;/p&gt;
+&lt;p&gt;如有来生，再续前缘？&lt;/p&gt;
+&lt;p&gt;他不知道有没有来生。&lt;/p&gt;
+&lt;p&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  &lt;picture&gt;
+  &lt;img class=&#34;img-fluid&#34; src=&#34;https://img14.360buyimg.com/ddimg/jfs/t1/111386/30/40031/45459/64d4d97cFbf4a4225/9939e4fccf57a8f5.jpg&#34; alt=&#34;&#34; loading=&#34;lazy&#34; /&gt;
+&lt;/picture&gt;
+&lt;/p&gt;
+&lt;p&gt;在立遗嘱时，别的老人都是写给子女一番话，而巢文臻提起笔后，则是思考再三，写下了一首告别诗：&lt;/p&gt;
+&lt;p&gt;天堂之门向我开，不尽思绪滚滚来；&lt;/p&gt;
+&lt;p&gt;千般难舍千般舍，万事不甩万事甩。&lt;/p&gt;
+&lt;p&gt;幸喜寒门志不衰，频遇艰困仰众爱；&lt;/p&gt;
+&lt;p&gt;愿把皮囊献杏林，魂归父母应节哀。&lt;/p&gt;
+&lt;h2 id=&#34;请记住我&#34;&gt;&lt;/h&gt;请记住我
+&lt;/h2&gt;&lt;p&gt;2020年，聂爱荣再次摔倒了。&lt;/p&gt;
+&lt;p&gt;而且，是两次。&lt;/p&gt;
+&lt;p&gt;巢文臻无法如往常一般去养老院，他整日魂不守舍，开始胡思乱想。&lt;/p&gt;
+&lt;p&gt;他害怕，妻子摔倒后是否能正常生活；他害怕，妻子一日三餐饮食不规律。&lt;/p&gt;
+&lt;p&gt;他更怕，下一次见面，妻子已经不记得他了。&lt;/p&gt;
+&lt;p&gt;2020年初，新冠疫情大爆发。巢文臻已经两个月没有见到妻子聂爱荣了。&lt;/p&gt;
+&lt;p&gt;为了缓解思念，巢文臻开始给妻子写信。&lt;/p&gt;
+&lt;p&gt;因为妻子已经不识字，他只能对着手机录制视频，然后发给护士给妻子看这一封封饱含思念的“电子信”。
+信上说：&lt;/p&gt;
+&lt;p&gt;“爱荣啊…从年初至今已有两个月未能与你见面，心中十分想念。&lt;/p&gt;
+&lt;p&gt;回想我们结婚以来的四十多年，同甘苦共患难，经历了八次搬家。&lt;/p&gt;
+&lt;p&gt;其中有八年，你都是（跟我）睡在地板上的，但你从无怨言。&lt;/p&gt;
+&lt;p&gt;在家里你是标准的贤妻良母，相夫教子，到老了没享多少福，你就生病了…”&lt;/p&gt;
+&lt;p&gt;说到这里，巢文臻拿信的手已经开始颤抖，他强忍着情绪读完了信件。&lt;/p&gt;
+&lt;p&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  &lt;picture&gt;
+  &lt;img class=&#34;img-fluid&#34; src=&#34;https://img11.360buyimg.com/ddimg/jfs/t1/170502/37/39789/76036/64d4dce4F2e603f09/2f6ddf6daf7104c2.jpg&#34; alt=&#34;&#34; loading=&#34;lazy&#34; /&gt;
+&lt;/picture&gt;
+&lt;/p&gt;
+&lt;p&gt;巢文臻一直有件事情瞒着家人。&lt;/p&gt;
+&lt;p&gt;自从妻子患病之后，他也得了抑郁症，在这期间，他四处寻药，想尽一切办法不让自己倒下。&lt;/p&gt;
+&lt;p&gt;因为他深知，只有自己不倒，才能减轻孩子的负担，妻子才能生活的更好一些。&lt;/p&gt;
+&lt;p&gt;这些年，有九个字概括了他全部的生活：&lt;/p&gt;
+&lt;p&gt;“睹物思人，魂不守舍，肝肠寸断。”&lt;/p&gt;
+&lt;p&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  &lt;picture&gt;
+  &lt;img class=&#34;img-fluid&#34; src=&#34;https://img13.360buyimg.com/ddimg/jfs/t1/155589/12/39361/41165/64d4dd9aFad07f848/48427b16efc95c9e.jpg&#34; alt=&#34;&#34; loading=&#34;lazy&#34; /&gt;
+&lt;/picture&gt;
+&lt;/p&gt;
+&lt;p&gt;他说：“这真的是生离死别，我根本不想放开她”&lt;/p&gt;
+&lt;p&gt;“没办法，我知道后面会发生什么”&lt;/p&gt;
+&lt;p&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  &lt;picture&gt;
+  &lt;img class=&#34;img-fluid&#34; src=&#34;https://img13.360buyimg.com/ddimg/jfs/t1/171146/31/39573/84458/64d4de0aF72234953/e9eced8fc37b1a04.jpg&#34; alt=&#34;&#34; loading=&#34;lazy&#34; /&gt;
+&lt;/picture&gt;
+&lt;/p&gt;
+&lt;p&gt;或许，生的对立面并不是死亡，而是遗忘。&lt;/p&gt;
+&lt;p&gt;纪录片的最后，巢文臻表示希望未来妻子比自己先走。&lt;/p&gt;
+&lt;p&gt;这样，他就能照顾她一辈子了。&lt;/p&gt;
+&lt;p&gt;截止2022年，我国阿尔茨海默病患者约1000万人，居全球之首！&lt;/p&gt;
+&lt;p&gt;预计到2050年将突破4000万人。&lt;/p&gt;
+&lt;p&gt;这些冰冷的数字背后，是一个个无比痛苦的家庭。&lt;/p&gt;
+&lt;p&gt;作为普通人，我们无法阻止死亡的到来，但是正如皮克斯电影《寻梦环游记》插曲里唱到的一般：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;请记得我，虽然再见必须说。&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  &lt;picture&gt;
+  &lt;img class=&#34;img-fluid&#34; src=&#34;https://img11.360buyimg.com/ddimg/jfs/t1/90070/19/39987/22184/64d4df58F453e53cf/f98ed26a5a2c0921.jpg&#34; alt=&#34;&#34; loading=&#34;lazy&#34; /&gt;
+&lt;/picture&gt;
+&lt;/p&gt;
+&lt;p&gt;那或者又是…“当你老到忘了世界 我用什么来爱你。”&lt;/p&gt;
+&lt;p&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  &lt;picture&gt;
+  &lt;img class=&#34;img-fluid&#34; src=&#34;https://img12.360buyimg.com/ddimg/jfs/t1/192726/25/35567/27205/64d4df78Ff9979209/ecdcae14b5eefcd1.jpg&#34; alt=&#34;&#34; loading=&#34;lazy&#34; /&gt;
+&lt;/picture&gt;
+&lt;/p&gt;
+</description>
+        </item>
+        <item>
+        <title>近期现状</title>
+        <link>https://blog.mletter.cn/life-story/1/</link>
+        <pubDate>Mon, 15 Jul 2024 00:00:00 +0000</pubDate>
+        
+        <guid>https://blog.mletter.cn/life-story/1/</guid>
+        <description>&lt;h2 id=&#34;近期日常&#34;&gt;&lt;/h&gt;近期日常
+&lt;/h2&gt;&lt;p&gt;最近的日子，就像一部没有剧本的电影，情节跌宕起伏，让人应接不暇。&lt;/p&gt;
 &lt;p&gt;可谓是 “匆匆忙忙”&lt;/p&gt;
-&lt;h2 id=&#34;聊聊工作&#34;&gt;聊聊工作&lt;/h2&gt;
-&lt;p&gt;工作上，依旧充满了挑战和机遇。项目的推进虽然遇到了一些小波折，但团队成员们齐心协力，总能找到解决问题的办法。每一次的头脑风暴，每一次的方案修改，每一次的信创内容适配工作都让我抓耳挠腮。&lt;/p&gt;
+&lt;h2 id=&#34;聊聊工作&#34;&gt;&lt;/h&gt;聊聊工作
+&lt;/h2&gt;&lt;p&gt;工作上，依旧充满了挑战和机遇。项目的推进虽然遇到了一些小波折，但团队成员们齐心协力，总能找到解决问题的办法。每一次的头脑风暴，每一次的方案修改，每一次的信创内容适配工作都让我抓耳挠腮。&lt;/p&gt;
 &lt;p&gt;平日里，我颇为喜欢运用&lt;code&gt;Docker&lt;/code&gt;来处理一些繁杂的单机部署问题。然而，最近实在是不巧，常用的镜像居然被屏蔽了。个中缘由，在此也就不多赘述。&lt;/p&gt;
 &lt;p&gt;随之而来的，便是我踏上了寻觅镜像源的漫漫征程。起初，我尝试了中科大、清华、阿里云的源，可基本上都不太顺遂，时不时就会碰到无法解析的状况。最终，在尝试了华为云的源之后，问题得以完美解决。在此声明，并非为任何厂商打广告，只要能切实解决咱们的问题，那就是好的！&lt;/p&gt;
 &lt;p&gt;更新一下最新可用的镜像源：&lt;/p&gt;
@@ -280,8 +635,8 @@
 &lt;/ul&gt;
 &lt;blockquote&gt;
 &lt;p&gt;虽然华为在手机方面总是不尽人意，但是在技术方面我愿称之为“中华有为”！！！&lt;/p&gt;&lt;/blockquote&gt;
-&lt;h2 id=&#34;聊聊游戏&#34;&gt;聊聊游戏&lt;/h2&gt;
-&lt;p&gt;工作之余，游戏无疑成为了我放松身心的绝佳途径。近来，我迷上了一款策略游戏，名曰《三国·谋定天下》。想必大家一听这名字，心里就大概有个底，这确实是一款饱受争议、槽点满满的游戏。
+&lt;h2 id=&#34;聊聊游戏&#34;&gt;&lt;/h&gt;聊聊游戏
+&lt;/h2&gt;&lt;p&gt;工作之余，游戏无疑成为了我放松身心的绝佳途径。近来，我迷上了一款策略游戏，名曰《三国·谋定天下》。想必大家一听这名字，心里就大概有个底，这确实是一款饱受争议、槽点满满的游戏。
 这是一款策略类的 SLG 游戏，其游戏背景以三国为蓝本展开，各州府的玩家们纷纷登场，群雄逐鹿，目标直指洛阳。&lt;/p&gt;
 &lt;p&gt;称得上是一款让玩家&lt;code&gt;氪服困难&lt;/code&gt;的一款SLG游戏，但是咱也不骂了都知道SLG就这样，事实上是比隔壁率土良心多了。&lt;/p&gt;
 &lt;p&gt;总的来讲，我在这个游戏里小充值了8000+。体验方面还算可以，但抽卡环节就不那么尽如人意了，总有种被锁卡的感觉。不得不提的是，这个游戏的策划似乎有些摸不着头脑，不晓得该如何规划这款游戏。也许吧，每个策划都有着自己独特的想法。毕竟开服首月签到200金币，次月签到100金币，没点脑子的策划是想不出来的。&lt;/p&gt;
@@ -294,8 +649,8 @@
 &lt;p&gt;肝度：⭐️⭐️⭐️⭐️⭐️⭐️&lt;/p&gt;
 &lt;blockquote&gt;
 &lt;p&gt;实在是闲得无聊想去试试SLG的小伙伴可以试试，玩儿这种游戏各位一定要理性氪金！&lt;/p&gt;&lt;/blockquote&gt;
-&lt;h2 id=&#34;新入手机&#34;&gt;新入手机&lt;/h2&gt;
-&lt;p&gt;手机对于我来说其实并不是一个强烈必需品，买这个手机的原因在于之前拍照都是背着相机包出去拍照，实在是有些麻烦和沉重。但是现在我觉得，手机摄影的功能越来越强大，让我有了新的选择。&lt;/p&gt;
+&lt;h2 id=&#34;新入手机&#34;&gt;&lt;/h&gt;新入手机
+&lt;/h2&gt;&lt;p&gt;手机对于我来说其实并不是一个强烈必需品，买这个手机的原因在于之前拍照都是背着相机包出去拍照，实在是有些麻烦和沉重。但是现在我觉得，手机摄影的功能越来越强大，让我有了新的选择。&lt;/p&gt;
 &lt;p&gt;&lt;!doctype html&gt;
 &lt;html lang=&#34;en&#34;&gt;
     &lt;head&gt;
@@ -375,791 +730,683 @@
 
 其实我个人其实在影像方面是比较偏向于&lt;code&gt;OPPO&lt;/code&gt;的成像的，但是由于OPPO没有发布24年的新款机型，大家都说等等党很吃香，随之而来的就是Vivo映入眼帘
 Vivo在影像技术上的投入一直以来也很出色，它所呈现出的画面质感、色彩饱和度以及细节捕捉能力，其实在同行里都算是不错的。
-在我心里的大概排行是：&lt;/p&gt;</description>
-      <content:encoded><![CDATA[<h2 id="近期日常">近期日常</h2>
-<p>最近的日子，就像一部没有剧本的电影，情节跌宕起伏，让人应接不暇。</p>
-<p>可谓是 “匆匆忙忙”</p>
-<h2 id="聊聊工作">聊聊工作</h2>
-<p>工作上，依旧充满了挑战和机遇。项目的推进虽然遇到了一些小波折，但团队成员们齐心协力，总能找到解决问题的办法。每一次的头脑风暴，每一次的方案修改，每一次的信创内容适配工作都让我抓耳挠腮。</p>
-<p>平日里，我颇为喜欢运用<code>Docker</code>来处理一些繁杂的单机部署问题。然而，最近实在是不巧，常用的镜像居然被屏蔽了。个中缘由，在此也就不多赘述。</p>
-<p>随之而来的，便是我踏上了寻觅镜像源的漫漫征程。起初，我尝试了中科大、清华、阿里云的源，可基本上都不太顺遂，时不时就会碰到无法解析的状况。最终，在尝试了华为云的源之后，问题得以完美解决。在此声明，并非为任何厂商打广告，只要能切实解决咱们的问题，那就是好的！</p>
-<p>更新一下最新可用的镜像源：</p>
-<ul>
-<li><a class="link" href="https://mirrors.huaweicloud.com/home"  target="_blank" rel="noopener"
-    >HuaWeiCloud</a></li>
-</ul>
-<blockquote>
-<p>虽然华为在手机方面总是不尽人意，但是在技术方面我愿称之为“中华有为”！！！</p></blockquote>
-<h2 id="聊聊游戏">聊聊游戏</h2>
-<p>工作之余，游戏无疑成为了我放松身心的绝佳途径。近来，我迷上了一款策略游戏，名曰《三国·谋定天下》。想必大家一听这名字，心里就大概有个底，这确实是一款饱受争议、槽点满满的游戏。
-这是一款策略类的 SLG 游戏，其游戏背景以三国为蓝本展开，各州府的玩家们纷纷登场，群雄逐鹿，目标直指洛阳。</p>
-<p>称得上是一款让玩家<code>氪服困难</code>的一款SLG游戏，但是咱也不骂了都知道SLG就这样，事实上是比隔壁率土良心多了。</p>
-<p>总的来讲，我在这个游戏里小充值了8000+。体验方面还算可以，但抽卡环节就不那么尽如人意了，总有种被锁卡的感觉。不得不提的是，这个游戏的策划似乎有些摸不着头脑，不晓得该如何规划这款游戏。也许吧，每个策划都有着自己独特的想法。毕竟开服首月签到200金币，次月签到100金币，没点脑子的策划是想不出来的。</p>
-<ul>
-<li><a class="link" href="https://game.bilibili.com/nslg/"  target="_blank" rel="noopener"
-    >三国·谋定天下</a></li>
-</ul>
-<p>可玩性：⭐️⭐️⭐️⭐️⭐️</p>
-<p>氪金度：⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐️</p>
-<p>肝度：⭐️⭐️⭐️⭐️⭐️⭐️</p>
-<blockquote>
-<p>实在是闲得无聊想去试试SLG的小伙伴可以试试，玩儿这种游戏各位一定要理性氪金！</p></blockquote>
-<h2 id="新入手机">新入手机</h2>
-<p>手机对于我来说其实并不是一个强烈必需品，买这个手机的原因在于之前拍照都是背着相机包出去拍照，实在是有些麻烦和沉重。但是现在我觉得，手机摄影的功能越来越强大，让我有了新的选择。</p>
-<p><!doctype html>
-<html lang="en">
-    <head>
-        <meta
-            name="viewport"
-            content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1"
-        />
-        <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/jquery/3.6.0/jquery.min.js"></script>
-        <link
-            href="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/nanogallery2/3.0.5/css/nanogallery2.min.css"
-            rel="stylesheet"
-        />
-        <script src="https://lf9-cdn-tos.bytecdntp.com/cdn/expire-1-M/nanogallery2/3.0.5/jquery.nanogallery2.min.js"></script>
-    </head>
-    <body>
-        <div
-            data-nanogallery2='{
-    "itemsBaseURL":               "https://nanogallery2.nanostudio.org/samples",
-    "thumbnailDisplayTransition":          "slideUp2",
-	"thumbnailHeight":    200,
-    "thumbnailWidth":     200,
-    "thumbnailAlignment": "fillWidth",
-    "thumbnailOpenInLightox": true,
-    "breadcrumbOnlyCurrentLevel": true,
-    "thumbnailLabel":     { "valign": "bottom", "position": "overImage", "hideIcons": true },
-    "galleryMosaic" :   [
-      { "c": 1, "r": 1, "w": 2, "h": 2 },
-      { "c": 3, "r": 1, "w": 1, "h": 1 },
-      { "c": 3, "r": 2, "w": 1, "h": 1 },
-      { "c": 4, "r": 1, "w": 1, "h": 1 },
-      { "c": 4, "r": 2, "w": 1, "h": 1 }
+在我心里的大概排行是：&lt;/p&gt;
+&lt;p&gt;OPPO&amp;gt;Vivo&amp;gt;XiaoMi&amp;gt;HUAWEI&amp;gt;MEIZU&lt;/p&gt;
+&lt;p&gt;“遥遥领先”在价格上确实是遥遥领先了，或许是由于其硬件配置较高等原因所致。然而，强调性价比的用户而言，“遥遥领先”可能真的不符合选择的原则。毕竟，价格在很大程度上会影响消费者的购买决策。&lt;/p&gt;
+&lt;p&gt;至于魅族，黄章时代我曾特别看好它，也使用过不少魅族的手机。真的非常喜欢 Flyme 的系统体验和设计，简洁流畅、独具匠心的UI设计，但令人惋惜的是，渐渐地魅族在激烈的市场竞争中失去了往日的辉煌，逐渐淡出了人们的视野。曾经备受瞩目的品牌如今面临这样的境遇，不禁让人感叹市场的残酷和多变，特别是魅族还不肯去大胆的出一款真材实料的Phone！&lt;/p&gt;
+&lt;p&gt;所谓的 “长焦悬日”好评
+&lt;!doctype html&gt;
+&lt;html lang=&#34;en&#34;&gt;
+    &lt;head&gt;
+        &lt;meta
+            name=&#34;viewport&#34;
+            content=&#34;user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1&#34;
+        /&gt;
+        &lt;script src=&#34;https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/jquery/3.6.0/jquery.min.js&#34;&gt;&lt;/script&gt;
+        &lt;link
+            href=&#34;https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/nanogallery2/3.0.5/css/nanogallery2.min.css&#34;
+            rel=&#34;stylesheet&#34;
+        /&gt;
+        &lt;script src=&#34;https://lf9-cdn-tos.bytecdntp.com/cdn/expire-1-M/nanogallery2/3.0.5/jquery.nanogallery2.min.js&#34;&gt;&lt;/script&gt;
+    &lt;/head&gt;
+    &lt;body&gt;
+        &lt;div
+            data-nanogallery2=&#39;{
+    &#34;itemsBaseURL&#34;:               &#34;https://nanogallery2.nanostudio.org/samples&#34;,
+    &#34;thumbnailDisplayTransition&#34;:          &#34;slideUp2&#34;,
+	&#34;thumbnailHeight&#34;:    200,
+    &#34;thumbnailWidth&#34;:     200,
+    &#34;thumbnailAlignment&#34;: &#34;fillWidth&#34;,
+    &#34;thumbnailOpenInLightox&#34;: true,
+    &#34;breadcrumbOnlyCurrentLevel&#34;: true,
+    &#34;thumbnailLabel&#34;:     { &#34;valign&#34;: &#34;bottom&#34;, &#34;position&#34;: &#34;overImage&#34;, &#34;hideIcons&#34;: true },
+    &#34;galleryMosaic&#34; :   [
+      { &#34;c&#34;: 1, &#34;r&#34;: 1, &#34;w&#34;: 2, &#34;h&#34;: 2 },
+      { &#34;c&#34;: 3, &#34;r&#34;: 1, &#34;w&#34;: 1, &#34;h&#34;: 1 },
+      { &#34;c&#34;: 3, &#34;r&#34;: 2, &#34;w&#34;: 1, &#34;h&#34;: 1 },
+      { &#34;c&#34;: 4, &#34;r&#34;: 1, &#34;w&#34;: 1, &#34;h&#34;: 1 },
+      { &#34;c&#34;: 4, &#34;r&#34;: 2, &#34;w&#34;: 1, &#34;h&#34;: 1 }
     ],
-    "galleryLastRowFull" : true,
-     "thumbnailDisplayTransitionDuration":  500,
-     "thumbnailDisplayInterval":            30,
-     "galleryDisplayTransition":            "rotateX",
-     "galleryDisplayTransitionDuration":    500,
-     "galleryDisplayMode": "rows",
-     "thumbnailDisplayOutsideScreen": "true",
-     "eventsDebounceDelay": 10,
-     "thumbnailL1BorderHorizontal": 0,
-     "thumbnailL1BorderVertical": 0,
-     "thumbnailLabel": {
-        "titleFontSize": "0.6em"
+    &#34;galleryLastRowFull&#34; : true,
+     &#34;thumbnailDisplayTransitionDuration&#34;:  500,
+     &#34;thumbnailDisplayInterval&#34;:            30,
+     &#34;galleryDisplayTransition&#34;:            &#34;rotateX&#34;,
+     &#34;galleryDisplayTransitionDuration&#34;:    500,
+     &#34;galleryDisplayMode&#34;: &#34;rows&#34;,
+     &#34;thumbnailDisplayOutsideScreen&#34;: &#34;true&#34;,
+     &#34;eventsDebounceDelay&#34;: 10,
+     &#34;thumbnailL1BorderHorizontal&#34;: 0,
+     &#34;thumbnailL1BorderVertical&#34;: 0,
+     &#34;thumbnailLabel&#34;: {
+        &#34;titleFontSize&#34;: &#34;0.6em&#34;
      },
-     "thumbnailHoverEffect2": "image_scale_1.00_1.10|label_backgroundColor_rgba(0,0,0,0)_rgba(255,255,255,0)",
-     "galleryTheme": {
-        "thumbnail": {
-            "borderRadius": "8px"
+     &#34;thumbnailHoverEffect2&#34;: &#34;image_scale_1.00_1.10|label_backgroundColor_rgba(0,0,0,0)_rgba(255,255,255,0)&#34;,
+     &#34;galleryTheme&#34;: {
+        &#34;thumbnail&#34;: {
+            &#34;borderRadius&#34;: &#34;8px&#34;
         }
      },
-     "thumbnailToolbarImage": {
-        "topLeft": "",
-        "topRight": "",
-        "bottomLeft": "",
-        "bottomRight": ""
+     &#34;thumbnailToolbarImage&#34;: {
+        &#34;topLeft&#34;: &#34;&#34;,
+        &#34;topRight&#34;: &#34;&#34;,
+        &#34;bottomLeft&#34;: &#34;&#34;,
+        &#34;bottomRight&#34;: &#34;&#34;
      },
-     "viewerToolbar":   {
-        "display": true,
-        "standard": "label"
+     &#34;viewerToolbar&#34;:   {
+        &#34;display&#34;: true,
+        &#34;standard&#34;: &#34;label&#34;
      },
-     "viewerTools":     {
-        "topLeft":    "pageCounter, playPauseButton",
-        "topRight":   "downloadButton, rotateLeft, zoomButton, fullscreenButton, closeButton"
+     &#34;viewerTools&#34;:     {
+        &#34;topLeft&#34;:    &#34;pageCounter, playPauseButton&#34;,
+        &#34;topRight&#34;:   &#34;downloadButton, rotateLeft, zoomButton, fullscreenButton, closeButton&#34;
      },
-     "viewerGalleryTWidth": 40,
-     "viewerGalleryTHeight": 40
-}'
-        >
+     &#34;viewerGalleryTWidth&#34;: 40,
+     &#34;viewerGalleryTHeight&#34;: 40
+}&#39;
+        &gt;
             
-<a href="https://wwwstatic.vivo.com.cn/vivoportal/files/image/detail/20240321/92c3d3954ccda4218535bc130acdaf71.png" data-ngThumb="https://wwwstatic.vivo.com.cn/vivoportal/files/image/detail/20240321/92c3d3954ccda4218535bc130acdaf71.png">Vivo X Fold3 Pro</a>
+&lt;a href=&#34;https://wwwstatic.vivo.com.cn/vivoportal/files/resource/product/1716878588321/images/pc/longfocussample.jpg.webp&#34; data-ngThumb=&#34;https://wwwstatic.vivo.com.cn/vivoportal/files/resource/product/1716878588321/images/pc/longfocussample.jpg.webp&#34;&gt;长焦悬日&lt;/a&gt;
 
 
-        </div>
-    </body>
-</html>
-
-其实我个人其实在影像方面是比较偏向于<code>OPPO</code>的成像的，但是由于OPPO没有发布24年的新款机型，大家都说等等党很吃香，随之而来的就是Vivo映入眼帘
-Vivo在影像技术上的投入一直以来也很出色，它所呈现出的画面质感、色彩饱和度以及细节捕捉能力，其实在同行里都算是不错的。
-在我心里的大概排行是：</p>
-<p>OPPO&gt;Vivo&gt;XiaoMi&gt;HUAWEI&gt;MEIZU</p>
-<p>“遥遥领先”在价格上确实是遥遥领先了，或许是由于其硬件配置较高等原因所致。然而，强调性价比的用户而言，“遥遥领先”可能真的不符合选择的原则。毕竟，价格在很大程度上会影响消费者的购买决策。</p>
-<p>至于魅族，黄章时代我曾特别看好它，也使用过不少魅族的手机。真的非常喜欢 Flyme 的系统体验和设计，简洁流畅、独具匠心的UI设计，但令人惋惜的是，渐渐地魅族在激烈的市场竞争中失去了往日的辉煌，逐渐淡出了人们的视野。曾经备受瞩目的品牌如今面临这样的境遇，不禁让人感叹市场的残酷和多变，特别是魅族还不肯去大胆的出一款真材实料的Phone！</p>
-<p>所谓的 “长焦悬日”好评
-<!doctype html>
-<html lang="en">
-    <head>
-        <meta
-            name="viewport"
-            content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1"
-        />
-        <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/jquery/3.6.0/jquery.min.js"></script>
-        <link
-            href="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/nanogallery2/3.0.5/css/nanogallery2.min.css"
-            rel="stylesheet"
-        />
-        <script src="https://lf9-cdn-tos.bytecdntp.com/cdn/expire-1-M/nanogallery2/3.0.5/jquery.nanogallery2.min.js"></script>
-    </head>
-    <body>
-        <div
-            data-nanogallery2='{
-    "itemsBaseURL":               "https://nanogallery2.nanostudio.org/samples",
-    "thumbnailDisplayTransition":          "slideUp2",
-	"thumbnailHeight":    200,
-    "thumbnailWidth":     200,
-    "thumbnailAlignment": "fillWidth",
-    "thumbnailOpenInLightox": true,
-    "breadcrumbOnlyCurrentLevel": true,
-    "thumbnailLabel":     { "valign": "bottom", "position": "overImage", "hideIcons": true },
-    "galleryMosaic" :   [
-      { "c": 1, "r": 1, "w": 2, "h": 2 },
-      { "c": 3, "r": 1, "w": 1, "h": 1 },
-      { "c": 3, "r": 2, "w": 1, "h": 1 },
-      { "c": 4, "r": 1, "w": 1, "h": 1 },
-      { "c": 4, "r": 2, "w": 1, "h": 1 }
-    ],
-    "galleryLastRowFull" : true,
-     "thumbnailDisplayTransitionDuration":  500,
-     "thumbnailDisplayInterval":            30,
-     "galleryDisplayTransition":            "rotateX",
-     "galleryDisplayTransitionDuration":    500,
-     "galleryDisplayMode": "rows",
-     "thumbnailDisplayOutsideScreen": "true",
-     "eventsDebounceDelay": 10,
-     "thumbnailL1BorderHorizontal": 0,
-     "thumbnailL1BorderVertical": 0,
-     "thumbnailLabel": {
-        "titleFontSize": "0.6em"
-     },
-     "thumbnailHoverEffect2": "image_scale_1.00_1.10|label_backgroundColor_rgba(0,0,0,0)_rgba(255,255,255,0)",
-     "galleryTheme": {
-        "thumbnail": {
-            "borderRadius": "8px"
-        }
-     },
-     "thumbnailToolbarImage": {
-        "topLeft": "",
-        "topRight": "",
-        "bottomLeft": "",
-        "bottomRight": ""
-     },
-     "viewerToolbar":   {
-        "display": true,
-        "standard": "label"
-     },
-     "viewerTools":     {
-        "topLeft":    "pageCounter, playPauseButton",
-        "topRight":   "downloadButton, rotateLeft, zoomButton, fullscreenButton, closeButton"
-     },
-     "viewerGalleryTWidth": 40,
-     "viewerGalleryTHeight": 40
-}'
-        >
-            
-<a href="https://wwwstatic.vivo.com.cn/vivoportal/files/resource/product/1716878588321/images/pc/longfocussample.jpg.webp" data-ngThumb="https://wwwstatic.vivo.com.cn/vivoportal/files/resource/product/1716878588321/images/pc/longfocussample.jpg.webp">长焦悬日</a>
-
-
-        </div>
-    </body>
-</html>
-</p>
-<h2 id="谈谈网站">谈谈网站</h2>
-<p>最近修改了一下自己的摄影网站，之前称之为 xxx 图库，在我想了想看来倒不如称之为我的作品集。
+        &lt;/div&gt;
+    &lt;/body&gt;
+&lt;/html&gt;
+&lt;/p&gt;
+&lt;h2 id=&#34;谈谈网站&#34;&gt;&lt;/h&gt;谈谈网站
+&lt;/h2&gt;&lt;p&gt;最近修改了一下自己的摄影网站，之前称之为 xxx 图库，在我想了想看来倒不如称之为我的作品集。
 一方面原因是我多年来摄影成果的集中展示，另一方面是我摄影之路的见证和记录。
-每一张照片背后都有一个故事，都凝聚着我在特定时刻的情感、思考和创意。同时也希望访问者感受到我对摄影的热爱与执着。</p>
-<!doctype html>
-<html lang="en">
-    <head>
-        <meta
-            name="viewport"
-            content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1"
-        />
-        <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/jquery/3.6.0/jquery.min.js"></script>
-        <link
-            href="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/nanogallery2/3.0.5/css/nanogallery2.min.css"
-            rel="stylesheet"
-        />
-        <script src="https://lf9-cdn-tos.bytecdntp.com/cdn/expire-1-M/nanogallery2/3.0.5/jquery.nanogallery2.min.js"></script>
-    </head>
-    <body>
-        <div
-            data-nanogallery2='{
-    "itemsBaseURL":               "https://nanogallery2.nanostudio.org/samples",
-    "thumbnailDisplayTransition":          "slideUp2",
-	"thumbnailHeight":    200,
-    "thumbnailWidth":     200,
-    "thumbnailAlignment": "fillWidth",
-    "thumbnailOpenInLightox": true,
-    "breadcrumbOnlyCurrentLevel": true,
-    "thumbnailLabel":     { "valign": "bottom", "position": "overImage", "hideIcons": true },
-    "galleryMosaic" :   [
-      { "c": 1, "r": 1, "w": 2, "h": 2 },
-      { "c": 3, "r": 1, "w": 1, "h": 1 },
-      { "c": 3, "r": 2, "w": 1, "h": 1 },
-      { "c": 4, "r": 1, "w": 1, "h": 1 },
-      { "c": 4, "r": 2, "w": 1, "h": 1 }
+每一张照片背后都有一个故事，都凝聚着我在特定时刻的情感、思考和创意。同时也希望访问者感受到我对摄影的热爱与执着。&lt;/p&gt;
+&lt;!doctype html&gt;
+&lt;html lang=&#34;en&#34;&gt;
+    &lt;head&gt;
+        &lt;meta
+            name=&#34;viewport&#34;
+            content=&#34;user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1&#34;
+        /&gt;
+        &lt;script src=&#34;https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/jquery/3.6.0/jquery.min.js&#34;&gt;&lt;/script&gt;
+        &lt;link
+            href=&#34;https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/nanogallery2/3.0.5/css/nanogallery2.min.css&#34;
+            rel=&#34;stylesheet&#34;
+        /&gt;
+        &lt;script src=&#34;https://lf9-cdn-tos.bytecdntp.com/cdn/expire-1-M/nanogallery2/3.0.5/jquery.nanogallery2.min.js&#34;&gt;&lt;/script&gt;
+    &lt;/head&gt;
+    &lt;body&gt;
+        &lt;div
+            data-nanogallery2=&#39;{
+    &#34;itemsBaseURL&#34;:               &#34;https://nanogallery2.nanostudio.org/samples&#34;,
+    &#34;thumbnailDisplayTransition&#34;:          &#34;slideUp2&#34;,
+	&#34;thumbnailHeight&#34;:    200,
+    &#34;thumbnailWidth&#34;:     200,
+    &#34;thumbnailAlignment&#34;: &#34;fillWidth&#34;,
+    &#34;thumbnailOpenInLightox&#34;: true,
+    &#34;breadcrumbOnlyCurrentLevel&#34;: true,
+    &#34;thumbnailLabel&#34;:     { &#34;valign&#34;: &#34;bottom&#34;, &#34;position&#34;: &#34;overImage&#34;, &#34;hideIcons&#34;: true },
+    &#34;galleryMosaic&#34; :   [
+      { &#34;c&#34;: 1, &#34;r&#34;: 1, &#34;w&#34;: 2, &#34;h&#34;: 2 },
+      { &#34;c&#34;: 3, &#34;r&#34;: 1, &#34;w&#34;: 1, &#34;h&#34;: 1 },
+      { &#34;c&#34;: 3, &#34;r&#34;: 2, &#34;w&#34;: 1, &#34;h&#34;: 1 },
+      { &#34;c&#34;: 4, &#34;r&#34;: 1, &#34;w&#34;: 1, &#34;h&#34;: 1 },
+      { &#34;c&#34;: 4, &#34;r&#34;: 2, &#34;w&#34;: 1, &#34;h&#34;: 1 }
     ],
-    "galleryLastRowFull" : true,
-     "thumbnailDisplayTransitionDuration":  500,
-     "thumbnailDisplayInterval":            30,
-     "galleryDisplayTransition":            "rotateX",
-     "galleryDisplayTransitionDuration":    500,
-     "galleryDisplayMode": "rows",
-     "thumbnailDisplayOutsideScreen": "true",
-     "eventsDebounceDelay": 10,
-     "thumbnailL1BorderHorizontal": 0,
-     "thumbnailL1BorderVertical": 0,
-     "thumbnailLabel": {
-        "titleFontSize": "0.6em"
+    &#34;galleryLastRowFull&#34; : true,
+     &#34;thumbnailDisplayTransitionDuration&#34;:  500,
+     &#34;thumbnailDisplayInterval&#34;:            30,
+     &#34;galleryDisplayTransition&#34;:            &#34;rotateX&#34;,
+     &#34;galleryDisplayTransitionDuration&#34;:    500,
+     &#34;galleryDisplayMode&#34;: &#34;rows&#34;,
+     &#34;thumbnailDisplayOutsideScreen&#34;: &#34;true&#34;,
+     &#34;eventsDebounceDelay&#34;: 10,
+     &#34;thumbnailL1BorderHorizontal&#34;: 0,
+     &#34;thumbnailL1BorderVertical&#34;: 0,
+     &#34;thumbnailLabel&#34;: {
+        &#34;titleFontSize&#34;: &#34;0.6em&#34;
      },
-     "thumbnailHoverEffect2": "image_scale_1.00_1.10|label_backgroundColor_rgba(0,0,0,0)_rgba(255,255,255,0)",
-     "galleryTheme": {
-        "thumbnail": {
-            "borderRadius": "8px"
+     &#34;thumbnailHoverEffect2&#34;: &#34;image_scale_1.00_1.10|label_backgroundColor_rgba(0,0,0,0)_rgba(255,255,255,0)&#34;,
+     &#34;galleryTheme&#34;: {
+        &#34;thumbnail&#34;: {
+            &#34;borderRadius&#34;: &#34;8px&#34;
         }
      },
-     "thumbnailToolbarImage": {
-        "topLeft": "",
-        "topRight": "",
-        "bottomLeft": "",
-        "bottomRight": ""
+     &#34;thumbnailToolbarImage&#34;: {
+        &#34;topLeft&#34;: &#34;&#34;,
+        &#34;topRight&#34;: &#34;&#34;,
+        &#34;bottomLeft&#34;: &#34;&#34;,
+        &#34;bottomRight&#34;: &#34;&#34;
      },
-     "viewerToolbar":   {
-        "display": true,
-        "standard": "label"
+     &#34;viewerToolbar&#34;:   {
+        &#34;display&#34;: true,
+        &#34;standard&#34;: &#34;label&#34;
      },
-     "viewerTools":     {
-        "topLeft":    "pageCounter, playPauseButton",
-        "topRight":   "downloadButton, rotateLeft, zoomButton, fullscreenButton, closeButton"
+     &#34;viewerTools&#34;:     {
+        &#34;topLeft&#34;:    &#34;pageCounter, playPauseButton&#34;,
+        &#34;topRight&#34;:   &#34;downloadButton, rotateLeft, zoomButton, fullscreenButton, closeButton&#34;
      },
-     "viewerGalleryTWidth": 40,
-     "viewerGalleryTHeight": 40
-}'
-        >
+     &#34;viewerGalleryTWidth&#34;: 40,
+     &#34;viewerGalleryTHeight&#34;: 40
+}&#39;
+        &gt;
             
-<a href="https://img10.360buyimg.com/ddimg/jfs/t1/237792/32/22019/57336/6694dd39F68eea515/2aecc63e5f14f08e.jpg" data-ngThumb="https://img10.360buyimg.com/ddimg/jfs/t1/237792/32/22019/57336/6694dd39F68eea515/2aecc63e5f14f08e.jpg">太阳可以是蓝色 の 作品集</a>
+&lt;a href=&#34;https://img10.360buyimg.com/ddimg/jfs/t1/237792/32/22019/57336/6694dd39F68eea515/2aecc63e5f14f08e.jpg&#34; data-ngThumb=&#34;https://img10.360buyimg.com/ddimg/jfs/t1/237792/32/22019/57336/6694dd39F68eea515/2aecc63e5f14f08e.jpg&#34;&gt;太阳可以是蓝色 の 作品集&lt;/a&gt;
 
 
-        </div>
-    </body>
-</html>
+        &lt;/div&gt;
+    &lt;/body&gt;
+&lt;/html&gt;
 
-<p>摄影拍摄内容大致分成了：</p>
-<ul>
-<li>风光摄影：收纳了我在山川湖海间捕捉到的壮丽景色</li>
-<li>生活日常：则记录了那些平凡却又温馨的瞬间。可能是清晨一杯热气腾腾的咖啡，可能是午后慵懒的猫咪在阳光下打盹，也可能是家人相聚时那一张张灿烂的笑脸。</li>
-<li>人文摄影：在我看来大概就是街头巷尾的艺人专注表演的神情、集市中人们讨价还价的热闹场景、巷子里传承百年的传统技艺……</li>
-</ul>
-<blockquote>
-<p>好啦，本期的碎碎念就更新到这里。在这段随心而发的倾诉中，我把近期的点滴思绪都分享给了大家。接下来的日子要开始认真学习技术咯！有缘再见。</p></blockquote>
-]]></content:encoded>
-    </item>
-    <item>
-      <title>手机摄影碎片 | 01</title>
-      <link>https://blog.mletter.cn/life-story/5/</link>
-      <pubDate>Wed, 12 Jun 2024 00:00:00 +0000</pubDate>
-      <guid>https://blog.mletter.cn/life-story/5/</guid>
-      <description>手机摄影碎片 | 01 | 天津站</description>
-      <content:encoded><![CDATA[<p>生活的本意是开心 </br>
-The original intention of life is happiness</p>
-<p>摄影：Samsung Galaxy S23 Ultra</p>
-<p>后期：VSCO</p>
-<p>日期：2024-06-10</p>
-<!doctype html>
-<html lang="en">
-    <head>
-        <meta
-            name="viewport"
-            content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1"
-        />
-        <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/jquery/3.6.0/jquery.min.js"></script>
-        <link
-            href="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/nanogallery2/3.0.5/css/nanogallery2.min.css"
-            rel="stylesheet"
-        />
-        <script src="https://lf9-cdn-tos.bytecdntp.com/cdn/expire-1-M/nanogallery2/3.0.5/jquery.nanogallery2.min.js"></script>
-    </head>
-    <body>
-        <div
-            data-nanogallery2='{
-    "itemsBaseURL":               "https://nanogallery2.nanostudio.org/samples",
-    "thumbnailDisplayTransition":          "slideUp2",
-	"thumbnailHeight":    200,
-    "thumbnailWidth":     200,
-    "thumbnailAlignment": "fillWidth",
-    "thumbnailOpenInLightox": true,
-    "breadcrumbOnlyCurrentLevel": true,
-    "thumbnailLabel":     { "valign": "bottom", "position": "overImage", "hideIcons": true },
-    "galleryMosaic" :   [
-      { "c": 1, "r": 1, "w": 2, "h": 2 },
-      { "c": 3, "r": 1, "w": 1, "h": 1 },
-      { "c": 3, "r": 2, "w": 1, "h": 1 },
-      { "c": 4, "r": 1, "w": 1, "h": 1 },
-      { "c": 4, "r": 2, "w": 1, "h": 1 }
+&lt;p&gt;摄影拍摄内容大致分成了：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;风光摄影：收纳了我在山川湖海间捕捉到的壮丽景色&lt;/li&gt;
+&lt;li&gt;生活日常：则记录了那些平凡却又温馨的瞬间。可能是清晨一杯热气腾腾的咖啡，可能是午后慵懒的猫咪在阳光下打盹，也可能是家人相聚时那一张张灿烂的笑脸。&lt;/li&gt;
+&lt;li&gt;人文摄影：在我看来大概就是街头巷尾的艺人专注表演的神情、集市中人们讨价还价的热闹场景、巷子里传承百年的传统技艺……&lt;/li&gt;
+&lt;/ul&gt;
+&lt;blockquote&gt;
+&lt;p&gt;好啦，本期的碎碎念就更新到这里。在这段随心而发的倾诉中，我把近期的点滴思绪都分享给了大家。接下来的日子要开始认真学习技术咯！有缘再见。&lt;/p&gt;&lt;/blockquote&gt;
+</description>
+        </item>
+        <item>
+        <title>手机摄影碎片 | 01</title>
+        <link>https://blog.mletter.cn/life-story/5/</link>
+        <pubDate>Wed, 12 Jun 2024 00:00:00 +0000</pubDate>
+        
+        <guid>https://blog.mletter.cn/life-story/5/</guid>
+        <description>&lt;img src="https://img11.360buyimg.com/ddimg/jfs/t1/176088/29/41764/143863/6668229fF3fa2f05b/3476ea55873317a3.jpg" alt="Featured image of post 手机摄影碎片 | 01" /&gt;&lt;blockquote&gt;
+    &lt;p&gt;生活的本意是开心 &lt;/br&gt;
+The original intention of life is happiness&lt;/p&gt;&lt;span class=&#34;cite&#34;&gt;&lt;span&gt;― &lt;/span&gt;&lt;span&gt;Powery By, &lt;/span&gt;&lt;a href=&#34;https://pic.mletter.cn&#34;&gt;&lt;cite&gt;春日心动日记&lt;/cite&gt;&lt;/a&gt;&lt;/span&gt;&lt;/blockquote&gt;
+&lt;p&gt;摄影：Samsung Galaxy S23 Ultra&lt;/p&gt;
+&lt;p&gt;后期：VSCO&lt;/p&gt;
+&lt;p&gt;日期：2024-06-10&lt;/p&gt;
+&lt;!doctype html&gt;
+&lt;html lang=&#34;en&#34;&gt;
+    &lt;head&gt;
+        &lt;meta
+            name=&#34;viewport&#34;
+            content=&#34;user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1&#34;
+        /&gt;
+        &lt;script src=&#34;https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/jquery/3.6.0/jquery.min.js&#34;&gt;&lt;/script&gt;
+        &lt;link
+            href=&#34;https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/nanogallery2/3.0.5/css/nanogallery2.min.css&#34;
+            rel=&#34;stylesheet&#34;
+        /&gt;
+        &lt;script src=&#34;https://lf9-cdn-tos.bytecdntp.com/cdn/expire-1-M/nanogallery2/3.0.5/jquery.nanogallery2.min.js&#34;&gt;&lt;/script&gt;
+    &lt;/head&gt;
+    &lt;body&gt;
+        &lt;div
+            data-nanogallery2=&#39;{
+    &#34;itemsBaseURL&#34;:               &#34;https://nanogallery2.nanostudio.org/samples&#34;,
+    &#34;thumbnailDisplayTransition&#34;:          &#34;slideUp2&#34;,
+	&#34;thumbnailHeight&#34;:    200,
+    &#34;thumbnailWidth&#34;:     200,
+    &#34;thumbnailAlignment&#34;: &#34;fillWidth&#34;,
+    &#34;thumbnailOpenInLightox&#34;: true,
+    &#34;breadcrumbOnlyCurrentLevel&#34;: true,
+    &#34;thumbnailLabel&#34;:     { &#34;valign&#34;: &#34;bottom&#34;, &#34;position&#34;: &#34;overImage&#34;, &#34;hideIcons&#34;: true },
+    &#34;galleryMosaic&#34; :   [
+      { &#34;c&#34;: 1, &#34;r&#34;: 1, &#34;w&#34;: 2, &#34;h&#34;: 2 },
+      { &#34;c&#34;: 3, &#34;r&#34;: 1, &#34;w&#34;: 1, &#34;h&#34;: 1 },
+      { &#34;c&#34;: 3, &#34;r&#34;: 2, &#34;w&#34;: 1, &#34;h&#34;: 1 },
+      { &#34;c&#34;: 4, &#34;r&#34;: 1, &#34;w&#34;: 1, &#34;h&#34;: 1 },
+      { &#34;c&#34;: 4, &#34;r&#34;: 2, &#34;w&#34;: 1, &#34;h&#34;: 1 }
     ],
-    "galleryLastRowFull" : true,
-     "thumbnailDisplayTransitionDuration":  500,
-     "thumbnailDisplayInterval":            30,
-     "galleryDisplayTransition":            "rotateX",
-     "galleryDisplayTransitionDuration":    500,
-     "galleryDisplayMode": "rows",
-     "thumbnailDisplayOutsideScreen": "true",
-     "eventsDebounceDelay": 10,
-     "thumbnailL1BorderHorizontal": 0,
-     "thumbnailL1BorderVertical": 0,
-     "thumbnailLabel": {
-        "titleFontSize": "0.6em"
+    &#34;galleryLastRowFull&#34; : true,
+     &#34;thumbnailDisplayTransitionDuration&#34;:  500,
+     &#34;thumbnailDisplayInterval&#34;:            30,
+     &#34;galleryDisplayTransition&#34;:            &#34;rotateX&#34;,
+     &#34;galleryDisplayTransitionDuration&#34;:    500,
+     &#34;galleryDisplayMode&#34;: &#34;rows&#34;,
+     &#34;thumbnailDisplayOutsideScreen&#34;: &#34;true&#34;,
+     &#34;eventsDebounceDelay&#34;: 10,
+     &#34;thumbnailL1BorderHorizontal&#34;: 0,
+     &#34;thumbnailL1BorderVertical&#34;: 0,
+     &#34;thumbnailLabel&#34;: {
+        &#34;titleFontSize&#34;: &#34;0.6em&#34;
      },
-     "thumbnailHoverEffect2": "image_scale_1.00_1.10|label_backgroundColor_rgba(0,0,0,0)_rgba(255,255,255,0)",
-     "galleryTheme": {
-        "thumbnail": {
-            "borderRadius": "8px"
+     &#34;thumbnailHoverEffect2&#34;: &#34;image_scale_1.00_1.10|label_backgroundColor_rgba(0,0,0,0)_rgba(255,255,255,0)&#34;,
+     &#34;galleryTheme&#34;: {
+        &#34;thumbnail&#34;: {
+            &#34;borderRadius&#34;: &#34;8px&#34;
         }
      },
-     "thumbnailToolbarImage": {
-        "topLeft": "",
-        "topRight": "",
-        "bottomLeft": "",
-        "bottomRight": ""
+     &#34;thumbnailToolbarImage&#34;: {
+        &#34;topLeft&#34;: &#34;&#34;,
+        &#34;topRight&#34;: &#34;&#34;,
+        &#34;bottomLeft&#34;: &#34;&#34;,
+        &#34;bottomRight&#34;: &#34;&#34;
      },
-     "viewerToolbar":   {
-        "display": true,
-        "standard": "label"
+     &#34;viewerToolbar&#34;:   {
+        &#34;display&#34;: true,
+        &#34;standard&#34;: &#34;label&#34;
      },
-     "viewerTools":     {
-        "topLeft":    "pageCounter, playPauseButton",
-        "topRight":   "downloadButton, rotateLeft, zoomButton, fullscreenButton, closeButton"
+     &#34;viewerTools&#34;:     {
+        &#34;topLeft&#34;:    &#34;pageCounter, playPauseButton&#34;,
+        &#34;topRight&#34;:   &#34;downloadButton, rotateLeft, zoomButton, fullscreenButton, closeButton&#34;
      },
-     "viewerGalleryTWidth": 40,
-     "viewerGalleryTHeight": 40
-}'
-        >
+     &#34;viewerGalleryTWidth&#34;: 40,
+     &#34;viewerGalleryTHeight&#34;: 40
+}&#39;
+        &gt;
             
-<a href="https://img13.360buyimg.com/ddimg/jfs/t1/208373/17/41538/161272/666821caF04dfa9bc/e5cfae8299eb8be8.jpg" data-ngThumb="https://img13.360buyimg.com/ddimg/jfs/t1/208373/17/41538/161272/666821caF04dfa9bc/e5cfae8299eb8be8.jpg"></a>
+&lt;a href=&#34;https://img13.360buyimg.com/ddimg/jfs/t1/208373/17/41538/161272/666821caF04dfa9bc/e5cfae8299eb8be8.jpg&#34; data-ngThumb=&#34;https://img13.360buyimg.com/ddimg/jfs/t1/208373/17/41538/161272/666821caF04dfa9bc/e5cfae8299eb8be8.jpg&#34;&gt;&lt;/a&gt;
 
-<a href="https://img12.360buyimg.com/ddimg/jfs/t1/218470/35/42278/106760/6668228fF39291ece/5423eefa96663576.jpg" data-ngThumb="https://img12.360buyimg.com/ddimg/jfs/t1/218470/35/42278/106760/6668228fF39291ece/5423eefa96663576.jpg"></a>
+&lt;a href=&#34;https://img12.360buyimg.com/ddimg/jfs/t1/218470/35/42278/106760/6668228fF39291ece/5423eefa96663576.jpg&#34; data-ngThumb=&#34;https://img12.360buyimg.com/ddimg/jfs/t1/218470/35/42278/106760/6668228fF39291ece/5423eefa96663576.jpg&#34;&gt;&lt;/a&gt;
 
-<a href="https://img12.360buyimg.com/ddimg/jfs/t1/223079/8/42972/148106/66682290F15c1bb2a/4f341572c32ba853.jpg" data-ngThumb="https://img12.360buyimg.com/ddimg/jfs/t1/223079/8/42972/148106/66682290F15c1bb2a/4f341572c32ba853.jpg"></a>
+&lt;a href=&#34;https://img12.360buyimg.com/ddimg/jfs/t1/223079/8/42972/148106/66682290F15c1bb2a/4f341572c32ba853.jpg&#34; data-ngThumb=&#34;https://img12.360buyimg.com/ddimg/jfs/t1/223079/8/42972/148106/66682290F15c1bb2a/4f341572c32ba853.jpg&#34;&gt;&lt;/a&gt;
 
-<a href="https://img12.360buyimg.com/ddimg/jfs/t1/62854/1/21198/150613/66682295F3ad37a3d/daa6dc0da5707262.jpg" data-ngThumb="https://img12.360buyimg.com/ddimg/jfs/t1/62854/1/21198/150613/66682295F3ad37a3d/daa6dc0da5707262.jpg"></a>
+&lt;a href=&#34;https://img12.360buyimg.com/ddimg/jfs/t1/62854/1/21198/150613/66682295F3ad37a3d/daa6dc0da5707262.jpg&#34; data-ngThumb=&#34;https://img12.360buyimg.com/ddimg/jfs/t1/62854/1/21198/150613/66682295F3ad37a3d/daa6dc0da5707262.jpg&#34;&gt;&lt;/a&gt;
 
-<a href="https://img13.360buyimg.com/ddimg/jfs/t1/185034/15/46238/211828/66682299F1cbe243e/74b06272476564b5.jpg" data-ngThumb="https://img13.360buyimg.com/ddimg/jfs/t1/185034/15/46238/211828/66682299F1cbe243e/74b06272476564b5.jpg"></a>
+&lt;a href=&#34;https://img13.360buyimg.com/ddimg/jfs/t1/185034/15/46238/211828/66682299F1cbe243e/74b06272476564b5.jpg&#34; data-ngThumb=&#34;https://img13.360buyimg.com/ddimg/jfs/t1/185034/15/46238/211828/66682299F1cbe243e/74b06272476564b5.jpg&#34;&gt;&lt;/a&gt;
 
-<a href="https://img13.360buyimg.com/ddimg/jfs/t1/228835/39/19973/144366/6668229eF33d34c5d/8d5c90d3902c73a8.jpg" data-ngThumb="https://img13.360buyimg.com/ddimg/jfs/t1/228835/39/19973/144366/6668229eF33d34c5d/8d5c90d3902c73a8.jpg"></a>
+&lt;a href=&#34;https://img13.360buyimg.com/ddimg/jfs/t1/228835/39/19973/144366/6668229eF33d34c5d/8d5c90d3902c73a8.jpg&#34; data-ngThumb=&#34;https://img13.360buyimg.com/ddimg/jfs/t1/228835/39/19973/144366/6668229eF33d34c5d/8d5c90d3902c73a8.jpg&#34;&gt;&lt;/a&gt;
 
-<a href="https://img11.360buyimg.com/ddimg/jfs/t1/176088/29/41764/143863/6668229fF3fa2f05b/3476ea55873317a3.jpg" data-ngThumb="https://img11.360buyimg.com/ddimg/jfs/t1/176088/29/41764/143863/6668229fF3fa2f05b/3476ea55873317a3.jpg"></a>
+&lt;a href=&#34;https://img11.360buyimg.com/ddimg/jfs/t1/176088/29/41764/143863/6668229fF3fa2f05b/3476ea55873317a3.jpg&#34; data-ngThumb=&#34;https://img11.360buyimg.com/ddimg/jfs/t1/176088/29/41764/143863/6668229fF3fa2f05b/3476ea55873317a3.jpg&#34;&gt;&lt;/a&gt;
 
-<a href="https://img10.360buyimg.com/ddimg/jfs/t1/157581/4/43978/137624/666822a6Fee0f1f47/419bdcad896f416c.jpg" data-ngThumb="https://img10.360buyimg.com/ddimg/jfs/t1/157581/4/43978/137624/666822a6Fee0f1f47/419bdcad896f416c.jpg"></a>
+&lt;a href=&#34;https://img10.360buyimg.com/ddimg/jfs/t1/157581/4/43978/137624/666822a6Fee0f1f47/419bdcad896f416c.jpg&#34; data-ngThumb=&#34;https://img10.360buyimg.com/ddimg/jfs/t1/157581/4/43978/137624/666822a6Fee0f1f47/419bdcad896f416c.jpg&#34;&gt;&lt;/a&gt;
 
-<a href="https://img12.360buyimg.com/ddimg/jfs/t1/238798/5/10040/72130/666822a6F620f1f98/67054d80ca4e32a2.jpg" data-ngThumb="https://img12.360buyimg.com/ddimg/jfs/t1/238798/5/10040/72130/666822a6F620f1f98/67054d80ca4e32a2.jpg"></a>
+&lt;a href=&#34;https://img12.360buyimg.com/ddimg/jfs/t1/238798/5/10040/72130/666822a6F620f1f98/67054d80ca4e32a2.jpg&#34; data-ngThumb=&#34;https://img12.360buyimg.com/ddimg/jfs/t1/238798/5/10040/72130/666822a6F620f1f98/67054d80ca4e32a2.jpg&#34;&gt;&lt;/a&gt;
 
 
 
-        </div>
-    </body>
-</html>
+        &lt;/div&gt;
+    &lt;/body&gt;
+&lt;/html&gt;
 
-<blockquote>
-<p>喜欢的话麻烦辛苦给个评论吧!</p></blockquote>
-]]></content:encoded>
-    </item>
-    <item>
-      <title>日记-又开始怀念夏天</title>
-      <link>https://blog.mletter.cn/life-story/4/</link>
-      <pubDate>Sun, 17 Mar 2024 00:00:00 +0000</pubDate>
-      <guid>https://blog.mletter.cn/life-story/4/</guid>
-      <description>那个夏天，我们的梦想如同翅膀般展开，带我们飞向更高的天空。</description>
-      <content:encoded><![CDATA[<p>那一年，午后的阳光总是那么炽热，仿佛能将一切都融化。课间的操场上，同学们的欢声笑语此起彼伏，汗水在他们的额头上闪耀着光芒。我们在这里挥洒着青春，每一次奔跑都是对生活的热爱和对未来的追逐。</p>
-<p>放学后的路上，几个好朋友们一边走一边讨论着今天学到的新知识。我们的谈话中充满了好奇和探索，每一步都踏在充满希望的道路上。夏天的风，带着甜甜的花香，也带着哥几个对彼此的鼓励和笑声。</p>
-<p>这让我觉得青春是一首永不褪色的歌，而夏天，正是这首歌最美的高潮。在这个季节里，我将用我的笔，记录下每一刻的感动，用心去感受生活的每一分热度。这是我曾经学生时代，是我的青春篇章。</p>
-<p>是的，时间的车轮总是单向前行，带走了我们生命中的许多日子，留下了回忆和成长的痕迹。上学的的夏天，那些无忧无虑的日子，仿佛是一段美好的旅程，虽然无法再次经历，但它们在我心中留下了深刻的印记。</p>
-<h2 id="摄影">摄影</h2>
-<blockquote>
-<p>希望这个夏天可以给我带来更加美好的回忆吧</p></blockquote>
-<!doctype html>
-<html lang="en">
-    <head>
-        <meta
-            name="viewport"
-            content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1"
-        />
-        <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/jquery/3.6.0/jquery.min.js"></script>
-        <link
-            href="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/nanogallery2/3.0.5/css/nanogallery2.min.css"
-            rel="stylesheet"
-        />
-        <script src="https://lf9-cdn-tos.bytecdntp.com/cdn/expire-1-M/nanogallery2/3.0.5/jquery.nanogallery2.min.js"></script>
-    </head>
-    <body>
-        <div
-            data-nanogallery2='{
-    "itemsBaseURL":               "https://nanogallery2.nanostudio.org/samples",
-    "thumbnailDisplayTransition":          "slideUp2",
-	"thumbnailHeight":    200,
-    "thumbnailWidth":     200,
-    "thumbnailAlignment": "fillWidth",
-    "thumbnailOpenInLightox": true,
-    "breadcrumbOnlyCurrentLevel": true,
-    "thumbnailLabel":     { "valign": "bottom", "position": "overImage", "hideIcons": true },
-    "galleryMosaic" :   [
-      { "c": 1, "r": 1, "w": 2, "h": 2 },
-      { "c": 3, "r": 1, "w": 1, "h": 1 },
-      { "c": 3, "r": 2, "w": 1, "h": 1 },
-      { "c": 4, "r": 1, "w": 1, "h": 1 },
-      { "c": 4, "r": 2, "w": 1, "h": 1 }
+&lt;blockquote&gt;
+&lt;p&gt;喜欢的话麻烦辛苦给个评论吧!&lt;/p&gt;&lt;/blockquote&gt;
+</description>
+        </item>
+        <item>
+        <title>日记-又开始怀念夏天</title>
+        <link>https://blog.mletter.cn/life-story/4/</link>
+        <pubDate>Sun, 17 Mar 2024 00:00:00 +0000</pubDate>
+        
+        <guid>https://blog.mletter.cn/life-story/4/</guid>
+        <description>&lt;img src="https://img13.360buyimg.com/ddimg/jfs/t1/227509/9/15108/245995/65f6f6e1F8dfc4427/2fce5d471f06a599.jpg" alt="Featured image of post 日记-又开始怀念夏天" /&gt;&lt;p&gt;那一年，午后的阳光总是那么炽热，仿佛能将一切都融化。课间的操场上，同学们的欢声笑语此起彼伏，汗水在他们的额头上闪耀着光芒。我们在这里挥洒着青春，每一次奔跑都是对生活的热爱和对未来的追逐。&lt;/p&gt;
+&lt;p&gt;放学后的路上，几个好朋友们一边走一边讨论着今天学到的新知识。我们的谈话中充满了好奇和探索，每一步都踏在充满希望的道路上。夏天的风，带着甜甜的花香，也带着哥几个对彼此的鼓励和笑声。&lt;/p&gt;
+&lt;p&gt;这让我觉得青春是一首永不褪色的歌，而夏天，正是这首歌最美的高潮。在这个季节里，我将用我的笔，记录下每一刻的感动，用心去感受生活的每一分热度。这是我曾经学生时代，是我的青春篇章。&lt;/p&gt;
+&lt;p&gt;是的，时间的车轮总是单向前行，带走了我们生命中的许多日子，留下了回忆和成长的痕迹。上学的的夏天，那些无忧无虑的日子，仿佛是一段美好的旅程，虽然无法再次经历，但它们在我心中留下了深刻的印记。&lt;/p&gt;
+&lt;h2 id=&#34;摄影&#34;&gt;&lt;/h&gt;摄影
+&lt;/h2&gt;&lt;blockquote&gt;
+&lt;p&gt;希望这个夏天可以给我带来更加美好的回忆吧&lt;/p&gt;&lt;/blockquote&gt;
+&lt;!doctype html&gt;
+&lt;html lang=&#34;en&#34;&gt;
+    &lt;head&gt;
+        &lt;meta
+            name=&#34;viewport&#34;
+            content=&#34;user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1&#34;
+        /&gt;
+        &lt;script src=&#34;https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/jquery/3.6.0/jquery.min.js&#34;&gt;&lt;/script&gt;
+        &lt;link
+            href=&#34;https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/nanogallery2/3.0.5/css/nanogallery2.min.css&#34;
+            rel=&#34;stylesheet&#34;
+        /&gt;
+        &lt;script src=&#34;https://lf9-cdn-tos.bytecdntp.com/cdn/expire-1-M/nanogallery2/3.0.5/jquery.nanogallery2.min.js&#34;&gt;&lt;/script&gt;
+    &lt;/head&gt;
+    &lt;body&gt;
+        &lt;div
+            data-nanogallery2=&#39;{
+    &#34;itemsBaseURL&#34;:               &#34;https://nanogallery2.nanostudio.org/samples&#34;,
+    &#34;thumbnailDisplayTransition&#34;:          &#34;slideUp2&#34;,
+	&#34;thumbnailHeight&#34;:    200,
+    &#34;thumbnailWidth&#34;:     200,
+    &#34;thumbnailAlignment&#34;: &#34;fillWidth&#34;,
+    &#34;thumbnailOpenInLightox&#34;: true,
+    &#34;breadcrumbOnlyCurrentLevel&#34;: true,
+    &#34;thumbnailLabel&#34;:     { &#34;valign&#34;: &#34;bottom&#34;, &#34;position&#34;: &#34;overImage&#34;, &#34;hideIcons&#34;: true },
+    &#34;galleryMosaic&#34; :   [
+      { &#34;c&#34;: 1, &#34;r&#34;: 1, &#34;w&#34;: 2, &#34;h&#34;: 2 },
+      { &#34;c&#34;: 3, &#34;r&#34;: 1, &#34;w&#34;: 1, &#34;h&#34;: 1 },
+      { &#34;c&#34;: 3, &#34;r&#34;: 2, &#34;w&#34;: 1, &#34;h&#34;: 1 },
+      { &#34;c&#34;: 4, &#34;r&#34;: 1, &#34;w&#34;: 1, &#34;h&#34;: 1 },
+      { &#34;c&#34;: 4, &#34;r&#34;: 2, &#34;w&#34;: 1, &#34;h&#34;: 1 }
     ],
-    "galleryLastRowFull" : true,
-     "thumbnailDisplayTransitionDuration":  500,
-     "thumbnailDisplayInterval":            30,
-     "galleryDisplayTransition":            "rotateX",
-     "galleryDisplayTransitionDuration":    500,
-     "galleryDisplayMode": "rows",
-     "thumbnailDisplayOutsideScreen": "true",
-     "eventsDebounceDelay": 10,
-     "thumbnailL1BorderHorizontal": 0,
-     "thumbnailL1BorderVertical": 0,
-     "thumbnailLabel": {
-        "titleFontSize": "0.6em"
+    &#34;galleryLastRowFull&#34; : true,
+     &#34;thumbnailDisplayTransitionDuration&#34;:  500,
+     &#34;thumbnailDisplayInterval&#34;:            30,
+     &#34;galleryDisplayTransition&#34;:            &#34;rotateX&#34;,
+     &#34;galleryDisplayTransitionDuration&#34;:    500,
+     &#34;galleryDisplayMode&#34;: &#34;rows&#34;,
+     &#34;thumbnailDisplayOutsideScreen&#34;: &#34;true&#34;,
+     &#34;eventsDebounceDelay&#34;: 10,
+     &#34;thumbnailL1BorderHorizontal&#34;: 0,
+     &#34;thumbnailL1BorderVertical&#34;: 0,
+     &#34;thumbnailLabel&#34;: {
+        &#34;titleFontSize&#34;: &#34;0.6em&#34;
      },
-     "thumbnailHoverEffect2": "image_scale_1.00_1.10|label_backgroundColor_rgba(0,0,0,0)_rgba(255,255,255,0)",
-     "galleryTheme": {
-        "thumbnail": {
-            "borderRadius": "8px"
+     &#34;thumbnailHoverEffect2&#34;: &#34;image_scale_1.00_1.10|label_backgroundColor_rgba(0,0,0,0)_rgba(255,255,255,0)&#34;,
+     &#34;galleryTheme&#34;: {
+        &#34;thumbnail&#34;: {
+            &#34;borderRadius&#34;: &#34;8px&#34;
         }
      },
-     "thumbnailToolbarImage": {
-        "topLeft": "",
-        "topRight": "",
-        "bottomLeft": "",
-        "bottomRight": ""
+     &#34;thumbnailToolbarImage&#34;: {
+        &#34;topLeft&#34;: &#34;&#34;,
+        &#34;topRight&#34;: &#34;&#34;,
+        &#34;bottomLeft&#34;: &#34;&#34;,
+        &#34;bottomRight&#34;: &#34;&#34;
      },
-     "viewerToolbar":   {
-        "display": true,
-        "standard": "label"
+     &#34;viewerToolbar&#34;:   {
+        &#34;display&#34;: true,
+        &#34;standard&#34;: &#34;label&#34;
      },
-     "viewerTools":     {
-        "topLeft":    "pageCounter, playPauseButton",
-        "topRight":   "downloadButton, rotateLeft, zoomButton, fullscreenButton, closeButton"
+     &#34;viewerTools&#34;:     {
+        &#34;topLeft&#34;:    &#34;pageCounter, playPauseButton&#34;,
+        &#34;topRight&#34;:   &#34;downloadButton, rotateLeft, zoomButton, fullscreenButton, closeButton&#34;
      },
-     "viewerGalleryTWidth": 40,
-     "viewerGalleryTHeight": 40
-}'
-        >
+     &#34;viewerGalleryTWidth&#34;: 40,
+     &#34;viewerGalleryTHeight&#34;: 40
+}&#39;
+        &gt;
             
 
-<a href="https://img10.360buyimg.com/ddimg/jfs/t1/183056/32/43258/170868/65f6f6d9F78199e87/8bb72ff12b455ec1.jpg?width=580px&amp;height=240px" data-ngThumb="https://img10.360buyimg.com/ddimg/jfs/t1/183056/32/43258/170868/65f6f6d9F78199e87/8bb72ff12b455ec1.jpg?width=580px&amp;height=240px"></a>
+&lt;a href=&#34;https://img10.360buyimg.com/ddimg/jfs/t1/183056/32/43258/170868/65f6f6d9F78199e87/8bb72ff12b455ec1.jpg?width=580px&amp;amp;height=240px&#34; data-ngThumb=&#34;https://img10.360buyimg.com/ddimg/jfs/t1/183056/32/43258/170868/65f6f6d9F78199e87/8bb72ff12b455ec1.jpg?width=580px&amp;amp;height=240px&#34;&gt;&lt;/a&gt;
 
 
-<a href="https://img14.360buyimg.com/ddimg/jfs/t1/167600/31/23041/185091/65f6f6dbFd907055b/ec5b817f0b902739.jpg?width=580px&amp;height=240px" data-ngThumb="https://img14.360buyimg.com/ddimg/jfs/t1/167600/31/23041/185091/65f6f6dbFd907055b/ec5b817f0b902739.jpg?width=580px&amp;height=240px"></a>
+&lt;a href=&#34;https://img14.360buyimg.com/ddimg/jfs/t1/167600/31/23041/185091/65f6f6dbFd907055b/ec5b817f0b902739.jpg?width=580px&amp;amp;height=240px&#34; data-ngThumb=&#34;https://img14.360buyimg.com/ddimg/jfs/t1/167600/31/23041/185091/65f6f6dbFd907055b/ec5b817f0b902739.jpg?width=580px&amp;amp;height=240px&#34;&gt;&lt;/a&gt;
 
 
-<a href="https://img13.360buyimg.com/ddimg/jfs/t1/227509/9/15108/245995/65f6f6e1F8dfc4427/2fce5d471f06a599.jpg?width=580px&amp;height=240px" data-ngThumb="https://img13.360buyimg.com/ddimg/jfs/t1/227509/9/15108/245995/65f6f6e1F8dfc4427/2fce5d471f06a599.jpg?width=580px&amp;height=240px"></a>
+&lt;a href=&#34;https://img13.360buyimg.com/ddimg/jfs/t1/227509/9/15108/245995/65f6f6e1F8dfc4427/2fce5d471f06a599.jpg?width=580px&amp;amp;height=240px&#34; data-ngThumb=&#34;https://img13.360buyimg.com/ddimg/jfs/t1/227509/9/15108/245995/65f6f6e1F8dfc4427/2fce5d471f06a599.jpg?width=580px&amp;amp;height=240px&#34;&gt;&lt;/a&gt;
 
 
-<a href="https://img11.360buyimg.com/ddimg/jfs/t1/244233/22/5846/159855/65f6f6e6F1c4967f5/bb4aa44a315475c5.jpg?width=580px&amp;height=240px" data-ngThumb="https://img11.360buyimg.com/ddimg/jfs/t1/244233/22/5846/159855/65f6f6e6F1c4967f5/bb4aa44a315475c5.jpg?width=580px&amp;height=240px"></a>
+&lt;a href=&#34;https://img11.360buyimg.com/ddimg/jfs/t1/244233/22/5846/159855/65f6f6e6F1c4967f5/bb4aa44a315475c5.jpg?width=580px&amp;amp;height=240px&#34; data-ngThumb=&#34;https://img11.360buyimg.com/ddimg/jfs/t1/244233/22/5846/159855/65f6f6e6F1c4967f5/bb4aa44a315475c5.jpg?width=580px&amp;amp;height=240px&#34;&gt;&lt;/a&gt;
 
 
-<a href="https://img12.360buyimg.com/ddimg/jfs/t1/233423/16/14152/138417/65f6f6eaFd036267f/b389cd7202e7e358.jpg?width=580px&amp;height=240px" data-ngThumb="https://img12.360buyimg.com/ddimg/jfs/t1/233423/16/14152/138417/65f6f6eaFd036267f/b389cd7202e7e358.jpg?width=580px&amp;height=240px"></a>
+&lt;a href=&#34;https://img12.360buyimg.com/ddimg/jfs/t1/233423/16/14152/138417/65f6f6eaFd036267f/b389cd7202e7e358.jpg?width=580px&amp;amp;height=240px&#34; data-ngThumb=&#34;https://img12.360buyimg.com/ddimg/jfs/t1/233423/16/14152/138417/65f6f6eaFd036267f/b389cd7202e7e358.jpg?width=580px&amp;amp;height=240px&#34;&gt;&lt;/a&gt;
 
 
-<a href="https://img13.360buyimg.com/ddimg/jfs/t1/221445/3/37089/178783/65f6f6eeF97aa269b/cb258ad854ec2cde.jpg?width=580px&amp;height=240px" data-ngThumb="https://img13.360buyimg.com/ddimg/jfs/t1/221445/3/37089/178783/65f6f6eeF97aa269b/cb258ad854ec2cde.jpg?width=580px&amp;height=240px"></a>
+&lt;a href=&#34;https://img13.360buyimg.com/ddimg/jfs/t1/221445/3/37089/178783/65f6f6eeF97aa269b/cb258ad854ec2cde.jpg?width=580px&amp;amp;height=240px&#34; data-ngThumb=&#34;https://img13.360buyimg.com/ddimg/jfs/t1/221445/3/37089/178783/65f6f6eeF97aa269b/cb258ad854ec2cde.jpg?width=580px&amp;amp;height=240px&#34;&gt;&lt;/a&gt;
 
 
 
-        </div>
-    </body>
-</html>
+        &lt;/div&gt;
+    &lt;/body&gt;
+&lt;/html&gt;
 
-<p>需要原图联系: <a class="link" href="mailto:beilanzhisen@163.com" >beilanzhisen@163.com</a></p>
-]]></content:encoded>
-    </item>
-    <item>
-      <title>新春的序章</title>
-      <link>https://blog.mletter.cn/life-story/2/</link>
-      <pubDate>Tue, 13 Feb 2024 00:00:00 +0000</pubDate>
-      <guid>https://blog.mletter.cn/life-story/2/</guid>
-      <description>新年新气象啦</description>
-      <content:encoded><![CDATA[<h2 id="新的一年">新的一年</h2>
-<p>时间过得真快啊，一转眼就是2024年了，窗外的鞭炮声断断续续的传来，似乎在诉说着新春来临的喜悦。</p>
-<p>我想这也是&quot;年&quot;带给人们最朴素和最深刻的记忆吧。</p>
-<p>我不由自主地回忆起童年欢度春节的情景。虽然人们常说现在的年味渐淡，变得简约而平淡，但仔细深思，其实变的不是年味，而是我们——从孩童成长为成人的我们。</p>
-<p>为什么我们会如此怀念儿时的年味？那是因为那时的年是家的团聚，是亲戚间热闹非凡的聚会；是母亲在厨房里忙碌的身影，烹饪出色香俱佳的年夜饭；是父亲和叔叔们门前贴春联、悬挂红灯笼的热闹景象；是我们穿着崭新的衣服，心怀期待地迎接新年；是街头小伙伴点燃的&quot;黑蜘蛛炮&quot;，以及深夜空中绚丽夺目的烟花秀。</p>
-<p>如今，尽管我们每个人或许都沉浸在各自生活的喧嚣中，春节的传统习俗可能也随着时间悄然发生了变化，但那份对美好事物的追求和渴望永远不会消失。我们仍然会在春节期间寻找那份年味，那份属于家的温暖和喜悦。</p>
-<p>在这个新春之际，我想我们都可以找到属于自己的庆祝方式，无论是与家人围坐一起，还是与朋友欢聚一堂，抑或是独自品味一本好书、听一曲悠扬的音乐。每一个细微的瞬间都是我们生命中的一部分，值得我们去珍惜和纪念。</p>
-<p>这一路遇上了很多风景我很喜欢下面看看照片咯</p>
-<p>这是在姨姥家门口的村头日落，就拍了两张没多拍哈哈哈</p>
-<!doctype html>
-<html lang="en">
-    <head>
-        <meta
-            name="viewport"
-            content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1"
-        />
-        <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/jquery/3.6.0/jquery.min.js"></script>
-        <link
-            href="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/nanogallery2/3.0.5/css/nanogallery2.min.css"
-            rel="stylesheet"
-        />
-        <script src="https://lf9-cdn-tos.bytecdntp.com/cdn/expire-1-M/nanogallery2/3.0.5/jquery.nanogallery2.min.js"></script>
-    </head>
-    <body>
-        <div
-            data-nanogallery2='{
-    "itemsBaseURL":               "https://nanogallery2.nanostudio.org/samples",
-    "thumbnailDisplayTransition":          "slideUp2",
-	"thumbnailHeight":    200,
-    "thumbnailWidth":     200,
-    "thumbnailAlignment": "fillWidth",
-    "thumbnailOpenInLightox": true,
-    "breadcrumbOnlyCurrentLevel": true,
-    "thumbnailLabel":     { "valign": "bottom", "position": "overImage", "hideIcons": true },
-    "galleryMosaic" :   [
-      { "c": 1, "r": 1, "w": 2, "h": 2 },
-      { "c": 3, "r": 1, "w": 1, "h": 1 },
-      { "c": 3, "r": 2, "w": 1, "h": 1 },
-      { "c": 4, "r": 1, "w": 1, "h": 1 },
-      { "c": 4, "r": 2, "w": 1, "h": 1 }
+&lt;p&gt;需要原图联系: &lt;a class=&#34;link&#34; href=&#34;mailto:beilanzhisen@163.com&#34; &gt;beilanzhisen@163.com&lt;/a&gt;&lt;/p&gt;
+</description>
+        </item>
+        <item>
+        <title>新春的序章</title>
+        <link>https://blog.mletter.cn/life-story/2/</link>
+        <pubDate>Tue, 13 Feb 2024 00:00:00 +0000</pubDate>
+        
+        <guid>https://blog.mletter.cn/life-story/2/</guid>
+        <description>&lt;h2 id=&#34;新的一年&#34;&gt;&lt;/h&gt;新的一年
+&lt;/h2&gt;&lt;p&gt;时间过得真快啊，一转眼就是2024年了，窗外的鞭炮声断断续续的传来，似乎在诉说着新春来临的喜悦。&lt;/p&gt;
+&lt;p&gt;我想这也是&amp;quot;年&amp;quot;带给人们最朴素和最深刻的记忆吧。&lt;/p&gt;
+&lt;p&gt;我不由自主地回忆起童年欢度春节的情景。虽然人们常说现在的年味渐淡，变得简约而平淡，但仔细深思，其实变的不是年味，而是我们——从孩童成长为成人的我们。&lt;/p&gt;
+&lt;p&gt;为什么我们会如此怀念儿时的年味？那是因为那时的年是家的团聚，是亲戚间热闹非凡的聚会；是母亲在厨房里忙碌的身影，烹饪出色香俱佳的年夜饭；是父亲和叔叔们门前贴春联、悬挂红灯笼的热闹景象；是我们穿着崭新的衣服，心怀期待地迎接新年；是街头小伙伴点燃的&amp;quot;黑蜘蛛炮&amp;quot;，以及深夜空中绚丽夺目的烟花秀。&lt;/p&gt;
+&lt;p&gt;如今，尽管我们每个人或许都沉浸在各自生活的喧嚣中，春节的传统习俗可能也随着时间悄然发生了变化，但那份对美好事物的追求和渴望永远不会消失。我们仍然会在春节期间寻找那份年味，那份属于家的温暖和喜悦。&lt;/p&gt;
+&lt;p&gt;在这个新春之际，我想我们都可以找到属于自己的庆祝方式，无论是与家人围坐一起，还是与朋友欢聚一堂，抑或是独自品味一本好书、听一曲悠扬的音乐。每一个细微的瞬间都是我们生命中的一部分，值得我们去珍惜和纪念。&lt;/p&gt;
+&lt;p&gt;这一路遇上了很多风景我很喜欢下面看看照片咯&lt;/p&gt;
+&lt;p&gt;这是在姨姥家门口的村头日落，就拍了两张没多拍哈哈哈&lt;/p&gt;
+&lt;!doctype html&gt;
+&lt;html lang=&#34;en&#34;&gt;
+    &lt;head&gt;
+        &lt;meta
+            name=&#34;viewport&#34;
+            content=&#34;user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1&#34;
+        /&gt;
+        &lt;script src=&#34;https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/jquery/3.6.0/jquery.min.js&#34;&gt;&lt;/script&gt;
+        &lt;link
+            href=&#34;https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/nanogallery2/3.0.5/css/nanogallery2.min.css&#34;
+            rel=&#34;stylesheet&#34;
+        /&gt;
+        &lt;script src=&#34;https://lf9-cdn-tos.bytecdntp.com/cdn/expire-1-M/nanogallery2/3.0.5/jquery.nanogallery2.min.js&#34;&gt;&lt;/script&gt;
+    &lt;/head&gt;
+    &lt;body&gt;
+        &lt;div
+            data-nanogallery2=&#39;{
+    &#34;itemsBaseURL&#34;:               &#34;https://nanogallery2.nanostudio.org/samples&#34;,
+    &#34;thumbnailDisplayTransition&#34;:          &#34;slideUp2&#34;,
+	&#34;thumbnailHeight&#34;:    200,
+    &#34;thumbnailWidth&#34;:     200,
+    &#34;thumbnailAlignment&#34;: &#34;fillWidth&#34;,
+    &#34;thumbnailOpenInLightox&#34;: true,
+    &#34;breadcrumbOnlyCurrentLevel&#34;: true,
+    &#34;thumbnailLabel&#34;:     { &#34;valign&#34;: &#34;bottom&#34;, &#34;position&#34;: &#34;overImage&#34;, &#34;hideIcons&#34;: true },
+    &#34;galleryMosaic&#34; :   [
+      { &#34;c&#34;: 1, &#34;r&#34;: 1, &#34;w&#34;: 2, &#34;h&#34;: 2 },
+      { &#34;c&#34;: 3, &#34;r&#34;: 1, &#34;w&#34;: 1, &#34;h&#34;: 1 },
+      { &#34;c&#34;: 3, &#34;r&#34;: 2, &#34;w&#34;: 1, &#34;h&#34;: 1 },
+      { &#34;c&#34;: 4, &#34;r&#34;: 1, &#34;w&#34;: 1, &#34;h&#34;: 1 },
+      { &#34;c&#34;: 4, &#34;r&#34;: 2, &#34;w&#34;: 1, &#34;h&#34;: 1 }
     ],
-    "galleryLastRowFull" : true,
-     "thumbnailDisplayTransitionDuration":  500,
-     "thumbnailDisplayInterval":            30,
-     "galleryDisplayTransition":            "rotateX",
-     "galleryDisplayTransitionDuration":    500,
-     "galleryDisplayMode": "rows",
-     "thumbnailDisplayOutsideScreen": "true",
-     "eventsDebounceDelay": 10,
-     "thumbnailL1BorderHorizontal": 0,
-     "thumbnailL1BorderVertical": 0,
-     "thumbnailLabel": {
-        "titleFontSize": "0.6em"
+    &#34;galleryLastRowFull&#34; : true,
+     &#34;thumbnailDisplayTransitionDuration&#34;:  500,
+     &#34;thumbnailDisplayInterval&#34;:            30,
+     &#34;galleryDisplayTransition&#34;:            &#34;rotateX&#34;,
+     &#34;galleryDisplayTransitionDuration&#34;:    500,
+     &#34;galleryDisplayMode&#34;: &#34;rows&#34;,
+     &#34;thumbnailDisplayOutsideScreen&#34;: &#34;true&#34;,
+     &#34;eventsDebounceDelay&#34;: 10,
+     &#34;thumbnailL1BorderHorizontal&#34;: 0,
+     &#34;thumbnailL1BorderVertical&#34;: 0,
+     &#34;thumbnailLabel&#34;: {
+        &#34;titleFontSize&#34;: &#34;0.6em&#34;
      },
-     "thumbnailHoverEffect2": "image_scale_1.00_1.10|label_backgroundColor_rgba(0,0,0,0)_rgba(255,255,255,0)",
-     "galleryTheme": {
-        "thumbnail": {
-            "borderRadius": "8px"
+     &#34;thumbnailHoverEffect2&#34;: &#34;image_scale_1.00_1.10|label_backgroundColor_rgba(0,0,0,0)_rgba(255,255,255,0)&#34;,
+     &#34;galleryTheme&#34;: {
+        &#34;thumbnail&#34;: {
+            &#34;borderRadius&#34;: &#34;8px&#34;
         }
      },
-     "thumbnailToolbarImage": {
-        "topLeft": "",
-        "topRight": "",
-        "bottomLeft": "",
-        "bottomRight": ""
+     &#34;thumbnailToolbarImage&#34;: {
+        &#34;topLeft&#34;: &#34;&#34;,
+        &#34;topRight&#34;: &#34;&#34;,
+        &#34;bottomLeft&#34;: &#34;&#34;,
+        &#34;bottomRight&#34;: &#34;&#34;
      },
-     "viewerToolbar":   {
-        "display": true,
-        "standard": "label"
+     &#34;viewerToolbar&#34;:   {
+        &#34;display&#34;: true,
+        &#34;standard&#34;: &#34;label&#34;
      },
-     "viewerTools":     {
-        "topLeft":    "pageCounter, playPauseButton",
-        "topRight":   "downloadButton, rotateLeft, zoomButton, fullscreenButton, closeButton"
+     &#34;viewerTools&#34;:     {
+        &#34;topLeft&#34;:    &#34;pageCounter, playPauseButton&#34;,
+        &#34;topRight&#34;:   &#34;downloadButton, rotateLeft, zoomButton, fullscreenButton, closeButton&#34;
      },
-     "viewerGalleryTWidth": 40,
-     "viewerGalleryTHeight": 40
-}'
-        >
+     &#34;viewerGalleryTWidth&#34;: 40,
+     &#34;viewerGalleryTHeight&#34;: 40
+}&#39;
+        &gt;
             
 
-<a href="https://img12.360buyimg.com/ddimg/jfs/t1/168052/22/37891/82207/65ccb958Fa2667100/adca896d87e12693.jpg" data-ngThumb="https://img12.360buyimg.com/ddimg/jfs/t1/168052/22/37891/82207/65ccb958Fa2667100/adca896d87e12693.jpg"></a>
+&lt;a href=&#34;https://img12.360buyimg.com/ddimg/jfs/t1/168052/22/37891/82207/65ccb958Fa2667100/adca896d87e12693.jpg&#34; data-ngThumb=&#34;https://img12.360buyimg.com/ddimg/jfs/t1/168052/22/37891/82207/65ccb958Fa2667100/adca896d87e12693.jpg&#34;&gt;&lt;/a&gt;
 
-<a href="https://img10.360buyimg.com/ddimg/jfs/t1/155325/25/41298/59121/65ccbb6bFe1acb788/970e5c671d7ed63a.jpg" data-ngThumb="https://img10.360buyimg.com/ddimg/jfs/t1/155325/25/41298/59121/65ccbb6bFe1acb788/970e5c671d7ed63a.jpg"></a>
+&lt;a href=&#34;https://img10.360buyimg.com/ddimg/jfs/t1/155325/25/41298/59121/65ccbb6bFe1acb788/970e5c671d7ed63a.jpg&#34; data-ngThumb=&#34;https://img10.360buyimg.com/ddimg/jfs/t1/155325/25/41298/59121/65ccbb6bFe1acb788/970e5c671d7ed63a.jpg&#34;&gt;&lt;/a&gt;
 
-<a href="https://img11.360buyimg.com/ddimg/jfs/t1/101902/12/46556/151889/65ccbefcFd4e60f65/788879132e12ebba.jpg" data-ngThumb="https://img11.360buyimg.com/ddimg/jfs/t1/101902/12/46556/151889/65ccbefcFd4e60f65/788879132e12ebba.jpg"></a>
+&lt;a href=&#34;https://img11.360buyimg.com/ddimg/jfs/t1/101902/12/46556/151889/65ccbefcFd4e60f65/788879132e12ebba.jpg&#34; data-ngThumb=&#34;https://img11.360buyimg.com/ddimg/jfs/t1/101902/12/46556/151889/65ccbefcFd4e60f65/788879132e12ebba.jpg&#34;&gt;&lt;/a&gt;
 
 
 
-        </div>
-    </body>
-</html>
+        &lt;/div&gt;
+    &lt;/body&gt;
+&lt;/html&gt;
 
-<p>当然了，还有两只超级可爱的咩咩羊,不知道小羊羔子现在是不是被宰了&hellip;&hellip;</p>
-<div align="center">
-<img src="https://img14.360buyimg.com/ddimg/jfs/t1/176644/3/39792/87615/65ccbebfFec317c78/84479710013652c0.jpg" alt="家里还卷了两只咩咩🐑" width="350" height="150">
-</div>
-<p>村口居然能看见雪山 但是不知道是什么山</p>
-<p><!doctype html>
-<html lang="en">
-    <head>
-        <meta
-            name="viewport"
-            content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1"
-        />
-        <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/jquery/3.6.0/jquery.min.js"></script>
-        <link
-            href="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/nanogallery2/3.0.5/css/nanogallery2.min.css"
-            rel="stylesheet"
-        />
-        <script src="https://lf9-cdn-tos.bytecdntp.com/cdn/expire-1-M/nanogallery2/3.0.5/jquery.nanogallery2.min.js"></script>
-    </head>
-    <body>
-        <div
-            data-nanogallery2='{
-    "itemsBaseURL":               "https://nanogallery2.nanostudio.org/samples",
-    "thumbnailDisplayTransition":          "slideUp2",
-	"thumbnailHeight":    200,
-    "thumbnailWidth":     200,
-    "thumbnailAlignment": "fillWidth",
-    "thumbnailOpenInLightox": true,
-    "breadcrumbOnlyCurrentLevel": true,
-    "thumbnailLabel":     { "valign": "bottom", "position": "overImage", "hideIcons": true },
-    "galleryMosaic" :   [
-      { "c": 1, "r": 1, "w": 2, "h": 2 },
-      { "c": 3, "r": 1, "w": 1, "h": 1 },
-      { "c": 3, "r": 2, "w": 1, "h": 1 },
-      { "c": 4, "r": 1, "w": 1, "h": 1 },
-      { "c": 4, "r": 2, "w": 1, "h": 1 }
+&lt;p&gt;当然了，还有两只超级可爱的咩咩羊,不知道小羊羔子现在是不是被宰了&amp;hellip;&amp;hellip;&lt;/p&gt;
+&lt;div align=&#34;center&#34;&gt;
+&lt;img src=&#34;https://img14.360buyimg.com/ddimg/jfs/t1/176644/3/39792/87615/65ccbebfFec317c78/84479710013652c0.jpg&#34; alt=&#34;家里还卷了两只咩咩🐑&#34; width=&#34;350&#34; height=&#34;150&#34;&gt;
+&lt;/div&gt;
+&lt;p&gt;村口居然能看见雪山 但是不知道是什么山&lt;/p&gt;
+&lt;p&gt;&lt;!doctype html&gt;
+&lt;html lang=&#34;en&#34;&gt;
+    &lt;head&gt;
+        &lt;meta
+            name=&#34;viewport&#34;
+            content=&#34;user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1&#34;
+        /&gt;
+        &lt;script src=&#34;https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/jquery/3.6.0/jquery.min.js&#34;&gt;&lt;/script&gt;
+        &lt;link
+            href=&#34;https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/nanogallery2/3.0.5/css/nanogallery2.min.css&#34;
+            rel=&#34;stylesheet&#34;
+        /&gt;
+        &lt;script src=&#34;https://lf9-cdn-tos.bytecdntp.com/cdn/expire-1-M/nanogallery2/3.0.5/jquery.nanogallery2.min.js&#34;&gt;&lt;/script&gt;
+    &lt;/head&gt;
+    &lt;body&gt;
+        &lt;div
+            data-nanogallery2=&#39;{
+    &#34;itemsBaseURL&#34;:               &#34;https://nanogallery2.nanostudio.org/samples&#34;,
+    &#34;thumbnailDisplayTransition&#34;:          &#34;slideUp2&#34;,
+	&#34;thumbnailHeight&#34;:    200,
+    &#34;thumbnailWidth&#34;:     200,
+    &#34;thumbnailAlignment&#34;: &#34;fillWidth&#34;,
+    &#34;thumbnailOpenInLightox&#34;: true,
+    &#34;breadcrumbOnlyCurrentLevel&#34;: true,
+    &#34;thumbnailLabel&#34;:     { &#34;valign&#34;: &#34;bottom&#34;, &#34;position&#34;: &#34;overImage&#34;, &#34;hideIcons&#34;: true },
+    &#34;galleryMosaic&#34; :   [
+      { &#34;c&#34;: 1, &#34;r&#34;: 1, &#34;w&#34;: 2, &#34;h&#34;: 2 },
+      { &#34;c&#34;: 3, &#34;r&#34;: 1, &#34;w&#34;: 1, &#34;h&#34;: 1 },
+      { &#34;c&#34;: 3, &#34;r&#34;: 2, &#34;w&#34;: 1, &#34;h&#34;: 1 },
+      { &#34;c&#34;: 4, &#34;r&#34;: 1, &#34;w&#34;: 1, &#34;h&#34;: 1 },
+      { &#34;c&#34;: 4, &#34;r&#34;: 2, &#34;w&#34;: 1, &#34;h&#34;: 1 }
     ],
-    "galleryLastRowFull" : true,
-     "thumbnailDisplayTransitionDuration":  500,
-     "thumbnailDisplayInterval":            30,
-     "galleryDisplayTransition":            "rotateX",
-     "galleryDisplayTransitionDuration":    500,
-     "galleryDisplayMode": "rows",
-     "thumbnailDisplayOutsideScreen": "true",
-     "eventsDebounceDelay": 10,
-     "thumbnailL1BorderHorizontal": 0,
-     "thumbnailL1BorderVertical": 0,
-     "thumbnailLabel": {
-        "titleFontSize": "0.6em"
+    &#34;galleryLastRowFull&#34; : true,
+     &#34;thumbnailDisplayTransitionDuration&#34;:  500,
+     &#34;thumbnailDisplayInterval&#34;:            30,
+     &#34;galleryDisplayTransition&#34;:            &#34;rotateX&#34;,
+     &#34;galleryDisplayTransitionDuration&#34;:    500,
+     &#34;galleryDisplayMode&#34;: &#34;rows&#34;,
+     &#34;thumbnailDisplayOutsideScreen&#34;: &#34;true&#34;,
+     &#34;eventsDebounceDelay&#34;: 10,
+     &#34;thumbnailL1BorderHorizontal&#34;: 0,
+     &#34;thumbnailL1BorderVertical&#34;: 0,
+     &#34;thumbnailLabel&#34;: {
+        &#34;titleFontSize&#34;: &#34;0.6em&#34;
      },
-     "thumbnailHoverEffect2": "image_scale_1.00_1.10|label_backgroundColor_rgba(0,0,0,0)_rgba(255,255,255,0)",
-     "galleryTheme": {
-        "thumbnail": {
-            "borderRadius": "8px"
+     &#34;thumbnailHoverEffect2&#34;: &#34;image_scale_1.00_1.10|label_backgroundColor_rgba(0,0,0,0)_rgba(255,255,255,0)&#34;,
+     &#34;galleryTheme&#34;: {
+        &#34;thumbnail&#34;: {
+            &#34;borderRadius&#34;: &#34;8px&#34;
         }
      },
-     "thumbnailToolbarImage": {
-        "topLeft": "",
-        "topRight": "",
-        "bottomLeft": "",
-        "bottomRight": ""
+     &#34;thumbnailToolbarImage&#34;: {
+        &#34;topLeft&#34;: &#34;&#34;,
+        &#34;topRight&#34;: &#34;&#34;,
+        &#34;bottomLeft&#34;: &#34;&#34;,
+        &#34;bottomRight&#34;: &#34;&#34;
      },
-     "viewerToolbar":   {
-        "display": true,
-        "standard": "label"
+     &#34;viewerToolbar&#34;:   {
+        &#34;display&#34;: true,
+        &#34;standard&#34;: &#34;label&#34;
      },
-     "viewerTools":     {
-        "topLeft":    "pageCounter, playPauseButton",
-        "topRight":   "downloadButton, rotateLeft, zoomButton, fullscreenButton, closeButton"
+     &#34;viewerTools&#34;:     {
+        &#34;topLeft&#34;:    &#34;pageCounter, playPauseButton&#34;,
+        &#34;topRight&#34;:   &#34;downloadButton, rotateLeft, zoomButton, fullscreenButton, closeButton&#34;
      },
-     "viewerGalleryTWidth": 40,
-     "viewerGalleryTHeight": 40
-}'
-        >
+     &#34;viewerGalleryTWidth&#34;: 40,
+     &#34;viewerGalleryTHeight&#34;: 40
+}&#39;
+        &gt;
             
 
-<a href="https://img14.360buyimg.com/ddimg/jfs/t1/167248/37/23421/95501/65ccbf36F957fce01/32187e0e2160f396.jpg" data-ngThumb="https://img14.360buyimg.com/ddimg/jfs/t1/167248/37/23421/95501/65ccbf36F957fce01/32187e0e2160f396.jpg"></a>
+&lt;a href=&#34;https://img14.360buyimg.com/ddimg/jfs/t1/167248/37/23421/95501/65ccbf36F957fce01/32187e0e2160f396.jpg&#34; data-ngThumb=&#34;https://img14.360buyimg.com/ddimg/jfs/t1/167248/37/23421/95501/65ccbf36F957fce01/32187e0e2160f396.jpg&#34;&gt;&lt;/a&gt;
 
-<a href="https://img11.360buyimg.com/ddimg/jfs/t1/160944/13/42057/95501/65ccbf3bFc34dd0b0/8e2be0b173bb9e01.jpg" data-ngThumb="https://img11.360buyimg.com/ddimg/jfs/t1/160944/13/42057/95501/65ccbf3bFc34dd0b0/8e2be0b173bb9e01.jpg"></a>
+&lt;a href=&#34;https://img11.360buyimg.com/ddimg/jfs/t1/160944/13/42057/95501/65ccbf3bFc34dd0b0/8e2be0b173bb9e01.jpg&#34; data-ngThumb=&#34;https://img11.360buyimg.com/ddimg/jfs/t1/160944/13/42057/95501/65ccbf3bFc34dd0b0/8e2be0b173bb9e01.jpg&#34;&gt;&lt;/a&gt;
 
-<a href="https://img11.360buyimg.com/ddimg/jfs/t1/160944/13/42057/95501/65ccbf3bFc34dd0b0/8e2be0b173bb9e01.jpg" data-ngThumb="https://img11.360buyimg.com/ddimg/jfs/t1/160944/13/42057/95501/65ccbf3bFc34dd0b0/8e2be0b173bb9e01.jpg"></a>
+&lt;a href=&#34;https://img11.360buyimg.com/ddimg/jfs/t1/160944/13/42057/95501/65ccbf3bFc34dd0b0/8e2be0b173bb9e01.jpg&#34; data-ngThumb=&#34;https://img11.360buyimg.com/ddimg/jfs/t1/160944/13/42057/95501/65ccbf3bFc34dd0b0/8e2be0b173bb9e01.jpg&#34;&gt;&lt;/a&gt;
 
 
 
-        </div>
-    </body>
-</html>
+        &lt;/div&gt;
+    &lt;/body&gt;
+&lt;/html&gt;
 
-实际上今年一点都不开心，我姥爷的身体不是很好，可能也熬不过今年了。</p>
-<p>姥爷对我真的很好，可是真的没有办法，体会到了那种无奈的无力感。</p>
-<p>所以无论如何，时间会继续前行，岁月会留下印记，而我们所经历的每个春节都将成为我们回忆中最宝贵的一部分。
-新的一年里面继续加油吧！！！</p>
-]]></content:encoded>
-    </item>
-    <item>
-      <title>摄影日记-颐和园</title>
-      <link>https://blog.mletter.cn/life-story/6/</link>
-      <pubDate>Fri, 10 Mar 2023 00:00:00 +0000</pubDate>
-      <guid>https://blog.mletter.cn/life-story/6/</guid>
-      <description>本次摄影来自小王-颐和园环游记</description>
-      <content:encoded><![CDATA[<!doctype html>
-<html lang="en">
-    <head>
-        <meta
-            name="viewport"
-            content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1"
-        />
-        <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/jquery/3.6.0/jquery.min.js"></script>
-        <link
-            href="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/nanogallery2/3.0.5/css/nanogallery2.min.css"
-            rel="stylesheet"
-        />
-        <script src="https://lf9-cdn-tos.bytecdntp.com/cdn/expire-1-M/nanogallery2/3.0.5/jquery.nanogallery2.min.js"></script>
-    </head>
-    <body>
-        <div
-            data-nanogallery2='{
-    "itemsBaseURL":               "https://nanogallery2.nanostudio.org/samples",
-    "thumbnailDisplayTransition":          "slideUp2",
-	"thumbnailHeight":    200,
-    "thumbnailWidth":     200,
-    "thumbnailAlignment": "fillWidth",
-    "thumbnailOpenInLightox": true,
-    "breadcrumbOnlyCurrentLevel": true,
-    "thumbnailLabel":     { "valign": "bottom", "position": "overImage", "hideIcons": true },
-    "galleryMosaic" :   [
-      { "c": 1, "r": 1, "w": 2, "h": 2 },
-      { "c": 3, "r": 1, "w": 1, "h": 1 },
-      { "c": 3, "r": 2, "w": 1, "h": 1 },
-      { "c": 4, "r": 1, "w": 1, "h": 1 },
-      { "c": 4, "r": 2, "w": 1, "h": 1 }
+实际上今年一点都不开心，我姥爷的身体不是很好，可能也熬不过今年了。&lt;/p&gt;
+&lt;p&gt;姥爷对我真的很好，可是真的没有办法，体会到了那种无奈的无力感。&lt;/p&gt;
+&lt;p&gt;所以无论如何，时间会继续前行，岁月会留下印记，而我们所经历的每个春节都将成为我们回忆中最宝贵的一部分。
+新的一年里面继续加油吧！！！&lt;/p&gt;
+</description>
+        </item>
+        <item>
+        <title>摄影日记-颐和园</title>
+        <link>https://blog.mletter.cn/life-story/6/</link>
+        <pubDate>Fri, 10 Mar 2023 00:00:00 +0000</pubDate>
+        
+        <guid>https://blog.mletter.cn/life-story/6/</guid>
+        <description>&lt;img src="https://img11.360buyimg.com/ddimg/jfs/t1/170852/25/36092/117643/640ad741Fe576192d/3f596893cbcf93a4.jpg" alt="Featured image of post 摄影日记-颐和园" /&gt;&lt;!doctype html&gt;
+&lt;html lang=&#34;en&#34;&gt;
+    &lt;head&gt;
+        &lt;meta
+            name=&#34;viewport&#34;
+            content=&#34;user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1&#34;
+        /&gt;
+        &lt;script src=&#34;https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/jquery/3.6.0/jquery.min.js&#34;&gt;&lt;/script&gt;
+        &lt;link
+            href=&#34;https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/nanogallery2/3.0.5/css/nanogallery2.min.css&#34;
+            rel=&#34;stylesheet&#34;
+        /&gt;
+        &lt;script src=&#34;https://lf9-cdn-tos.bytecdntp.com/cdn/expire-1-M/nanogallery2/3.0.5/jquery.nanogallery2.min.js&#34;&gt;&lt;/script&gt;
+    &lt;/head&gt;
+    &lt;body&gt;
+        &lt;div
+            data-nanogallery2=&#39;{
+    &#34;itemsBaseURL&#34;:               &#34;https://nanogallery2.nanostudio.org/samples&#34;,
+    &#34;thumbnailDisplayTransition&#34;:          &#34;slideUp2&#34;,
+	&#34;thumbnailHeight&#34;:    200,
+    &#34;thumbnailWidth&#34;:     200,
+    &#34;thumbnailAlignment&#34;: &#34;fillWidth&#34;,
+    &#34;thumbnailOpenInLightox&#34;: true,
+    &#34;breadcrumbOnlyCurrentLevel&#34;: true,
+    &#34;thumbnailLabel&#34;:     { &#34;valign&#34;: &#34;bottom&#34;, &#34;position&#34;: &#34;overImage&#34;, &#34;hideIcons&#34;: true },
+    &#34;galleryMosaic&#34; :   [
+      { &#34;c&#34;: 1, &#34;r&#34;: 1, &#34;w&#34;: 2, &#34;h&#34;: 2 },
+      { &#34;c&#34;: 3, &#34;r&#34;: 1, &#34;w&#34;: 1, &#34;h&#34;: 1 },
+      { &#34;c&#34;: 3, &#34;r&#34;: 2, &#34;w&#34;: 1, &#34;h&#34;: 1 },
+      { &#34;c&#34;: 4, &#34;r&#34;: 1, &#34;w&#34;: 1, &#34;h&#34;: 1 },
+      { &#34;c&#34;: 4, &#34;r&#34;: 2, &#34;w&#34;: 1, &#34;h&#34;: 1 }
     ],
-    "galleryLastRowFull" : true,
-     "thumbnailDisplayTransitionDuration":  500,
-     "thumbnailDisplayInterval":            30,
-     "galleryDisplayTransition":            "rotateX",
-     "galleryDisplayTransitionDuration":    500,
-     "galleryDisplayMode": "rows",
-     "thumbnailDisplayOutsideScreen": "true",
-     "eventsDebounceDelay": 10,
-     "thumbnailL1BorderHorizontal": 0,
-     "thumbnailL1BorderVertical": 0,
-     "thumbnailLabel": {
-        "titleFontSize": "0.6em"
+    &#34;galleryLastRowFull&#34; : true,
+     &#34;thumbnailDisplayTransitionDuration&#34;:  500,
+     &#34;thumbnailDisplayInterval&#34;:            30,
+     &#34;galleryDisplayTransition&#34;:            &#34;rotateX&#34;,
+     &#34;galleryDisplayTransitionDuration&#34;:    500,
+     &#34;galleryDisplayMode&#34;: &#34;rows&#34;,
+     &#34;thumbnailDisplayOutsideScreen&#34;: &#34;true&#34;,
+     &#34;eventsDebounceDelay&#34;: 10,
+     &#34;thumbnailL1BorderHorizontal&#34;: 0,
+     &#34;thumbnailL1BorderVertical&#34;: 0,
+     &#34;thumbnailLabel&#34;: {
+        &#34;titleFontSize&#34;: &#34;0.6em&#34;
      },
-     "thumbnailHoverEffect2": "image_scale_1.00_1.10|label_backgroundColor_rgba(0,0,0,0)_rgba(255,255,255,0)",
-     "galleryTheme": {
-        "thumbnail": {
-            "borderRadius": "8px"
+     &#34;thumbnailHoverEffect2&#34;: &#34;image_scale_1.00_1.10|label_backgroundColor_rgba(0,0,0,0)_rgba(255,255,255,0)&#34;,
+     &#34;galleryTheme&#34;: {
+        &#34;thumbnail&#34;: {
+            &#34;borderRadius&#34;: &#34;8px&#34;
         }
      },
-     "thumbnailToolbarImage": {
-        "topLeft": "",
-        "topRight": "",
-        "bottomLeft": "",
-        "bottomRight": ""
+     &#34;thumbnailToolbarImage&#34;: {
+        &#34;topLeft&#34;: &#34;&#34;,
+        &#34;topRight&#34;: &#34;&#34;,
+        &#34;bottomLeft&#34;: &#34;&#34;,
+        &#34;bottomRight&#34;: &#34;&#34;
      },
-     "viewerToolbar":   {
-        "display": true,
-        "standard": "label"
+     &#34;viewerToolbar&#34;:   {
+        &#34;display&#34;: true,
+        &#34;standard&#34;: &#34;label&#34;
      },
-     "viewerTools":     {
-        "topLeft":    "pageCounter, playPauseButton",
-        "topRight":   "downloadButton, rotateLeft, zoomButton, fullscreenButton, closeButton"
+     &#34;viewerTools&#34;:     {
+        &#34;topLeft&#34;:    &#34;pageCounter, playPauseButton&#34;,
+        &#34;topRight&#34;:   &#34;downloadButton, rotateLeft, zoomButton, fullscreenButton, closeButton&#34;
      },
-     "viewerGalleryTWidth": 40,
-     "viewerGalleryTHeight": 40
-}'
-        >
+     &#34;viewerGalleryTWidth&#34;: 40,
+     &#34;viewerGalleryTHeight&#34;: 40
+}&#39;
+        &gt;
             
 
-<a href="https://img11.360buyimg.com/ddimg/jfs/t1/170852/25/36092/117643/640ad741Fe576192d/3f596893cbcf93a4.jpg" data-ngThumb="https://img11.360buyimg.com/ddimg/jfs/t1/170852/25/36092/117643/640ad741Fe576192d/3f596893cbcf93a4.jpg">十七孔桥1</a>
+&lt;a href=&#34;https://img11.360buyimg.com/ddimg/jfs/t1/170852/25/36092/117643/640ad741Fe576192d/3f596893cbcf93a4.jpg&#34; data-ngThumb=&#34;https://img11.360buyimg.com/ddimg/jfs/t1/170852/25/36092/117643/640ad741Fe576192d/3f596893cbcf93a4.jpg&#34;&gt;十七孔桥1&lt;/a&gt;
 
-<a href="https://img11.360buyimg.com/ddimg/jfs/t1/207367/38/26496/154966/640ad788F0a08d02e/004f33fa85cdf74e.jpg" data-ngThumb="https://img11.360buyimg.com/ddimg/jfs/t1/207367/38/26496/154966/640ad788F0a08d02e/004f33fa85cdf74e.jpg">十七孔桥</a>
+&lt;a href=&#34;https://img11.360buyimg.com/ddimg/jfs/t1/207367/38/26496/154966/640ad788F0a08d02e/004f33fa85cdf74e.jpg&#34; data-ngThumb=&#34;https://img11.360buyimg.com/ddimg/jfs/t1/207367/38/26496/154966/640ad788F0a08d02e/004f33fa85cdf74e.jpg&#34;&gt;十七孔桥&lt;/a&gt;
 
-<a href="https://img11.360buyimg.com/ddimg/jfs/t1/165304/15/34467/161329/640ad7a4F5460f588/378198b7f09f7480.jpg" data-ngThumb="https://img11.360buyimg.com/ddimg/jfs/t1/165304/15/34467/161329/640ad7a4F5460f588/378198b7f09f7480.jpg">嘎嘎牛快艇1</a>
+&lt;a href=&#34;https://img11.360buyimg.com/ddimg/jfs/t1/165304/15/34467/161329/640ad7a4F5460f588/378198b7f09f7480.jpg&#34; data-ngThumb=&#34;https://img11.360buyimg.com/ddimg/jfs/t1/165304/15/34467/161329/640ad7a4F5460f588/378198b7f09f7480.jpg&#34;&gt;嘎嘎牛快艇1&lt;/a&gt;
 
-<a href="https://img10.360buyimg.com/ddimg/jfs/t1/224008/1/20506/177983/640ad7d6Fad34df06/bb7663f81e33b922.jpg" data-ngThumb="https://img10.360buyimg.com/ddimg/jfs/t1/224008/1/20506/177983/640ad7d6Fad34df06/bb7663f81e33b922.jpg">嘎嘎牛快艇2</a>
+&lt;a href=&#34;https://img10.360buyimg.com/ddimg/jfs/t1/224008/1/20506/177983/640ad7d6Fad34df06/bb7663f81e33b922.jpg&#34; data-ngThumb=&#34;https://img10.360buyimg.com/ddimg/jfs/t1/224008/1/20506/177983/640ad7d6Fad34df06/bb7663f81e33b922.jpg&#34;&gt;嘎嘎牛快艇2&lt;/a&gt;
 
 
-        </div>
-    </body>
-</html>
+        &lt;/div&gt;
+    &lt;/body&gt;
+&lt;/html&gt;
 
-]]></content:encoded>
-    </item>
-  </channel>
+</description>
+        </item>
+        
+    </channel>
 </rss>

@@ -1,69 +1,715 @@
-<!doctype html><html lang=zh dir=auto><head><meta charset=utf-8><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=robots content="index, follow"><title>Kubernetes | 太阳可以是蓝色</title>
-<meta name=keywords content><meta name=description content="ExampleSite description"><meta name=author content="iren."><link rel=canonical href=https://blog.mletter.cn/tags/kubernetes/><link crossorigin=anonymous href=/assets/css/stylesheet.cc707ba415c88b815010bba5c5e0b1f11e11d905dfc1004752901e8d81c3fcf3.css integrity="sha256-zHB7pBXIi4FQELulxeCx8R4R2QXfwQBHUpAejYHD/PM=" rel="preload stylesheet" as=style><link rel=icon href=https://blog.mletter.cn/%3Clink%20/%20abs%20url%3E><link rel=icon type=image/png sizes=16x16 href=https://blog.mletter.cn/%3Clink%20/%20abs%20url%3E><link rel=icon type=image/png sizes=32x32 href=https://blog.mletter.cn/%3Clink%20/%20abs%20url%3E><link rel=apple-touch-icon href=https://blog.mletter.cn/%3Clink%20/%20abs%20url%3E><link rel=mask-icon href=https://blog.mletter.cn/%3Clink%20/%20abs%20url%3E><meta name=theme-color content="#2e2e33"><meta name=msapplication-TileColor content="#2e2e33"><link rel=alternate type=application/rss+xml href=https://blog.mletter.cn/tags/kubernetes/index.xml><link rel=alternate hreflang=zh href=https://blog.mletter.cn/tags/kubernetes/><noscript><style>#theme-toggle,.top-link{display:none}</style><style>@media(prefers-color-scheme:dark){:root{--theme:rgb(29, 30, 32);--entry:rgb(46, 46, 51);--primary:rgb(218, 218, 219);--secondary:rgb(155, 156, 157);--tertiary:rgb(65, 66, 68);--content:rgb(196, 196, 197);--code-block-bg:rgb(46, 46, 51);--code-bg:rgb(55, 56, 62);--border:rgb(51, 51, 51)}.list{background:var(--theme)}.list:not(.dark)::-webkit-scrollbar-track{background:0 0}.list:not(.dark)::-webkit-scrollbar-thumb{border-color:var(--theme)}}</style></noscript><script src=/view-image.min.js></script><script>window.ViewImage&&ViewImage.init("img")</script><style>:root{--sys-font-family:-apple-system, "PingFang SC", Georgia, 'Nimbus Roman No9 L', 'Hiragino Sans GB', 'Noto Serif SC', 'Microsoft Yahei', 'WenQuanYi Micro Hei', 'ST Heiti', sans-serif;--code-font-family:"JetBrains Mono", Menlo, Monaco, Consolas, "Courier New";--article-font-family:-apple-system, "PingFang SC", var(--base-font-family)}</style><link rel=preconnect href=https://fonts.googleapis.com><link rel=preconnect href=https://fonts.gstatic.com crossorigin><meta property="og:url" content="https://blog.mletter.cn/tags/kubernetes/"><meta property="og:site_name" content="太阳可以是蓝色"><meta property="og:title" content="Kubernetes"><meta property="og:description" content="ExampleSite description"><meta property="og:locale" content="zh"><meta property="og:type" content="website"><meta property="og:image" content="https://blog.mletter.cn/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E"><meta name=twitter:card content="summary_large_image"><meta name=twitter:image content="https://blog.mletter.cn/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E"><meta name=twitter:title content="Kubernetes"><meta name=twitter:description content="ExampleSite description"></head><body class=list id=top><script>localStorage.getItem("pref-theme")==="dark"?document.body.classList.add("dark"):localStorage.getItem("pref-theme")==="light"?document.body.classList.remove("dark"):window.matchMedia("(prefers-color-scheme: dark)").matches&&document.body.classList.add("dark")</script><header class=header><nav class=nav><div class=logo><a href=https://blog.mletter.cn/ accesskey=h title="太阳可以是蓝色 (Alt + H)">太阳可以是蓝色</a><div class=logo-switches><button id=theme-toggle accesskey=t title="(Alt + T)"><svg id="moon" width="24" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg><svg id="sun" width="24" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button></div></div><ul id=menu><li><a href=https://blog.mletter.cn/ title=主页><span>主页</span></a></li><li><a href=https://blog.mletter.cn/search/ title="搜索 (Alt + /)" accesskey=/><span>搜索</span></a></li><li><a href=https://blog.mletter.cn/posts/ title=文章><span>文章</span></a></li><li><a href=https://blog.mletter.cn/tags/ title=标签><span>标签</span></a></li><li><a href=https://blog.mletter.cn/friends/ title=友联><span>友联</span></a></li><li><a href=https://blog.mletter.cn/about title=关于><span>关于</span></a></li></ul></nav></header><main class=main><header class=page-header><div class=breadcrumbs><a href=https://blog.mletter.cn/>主页</a>&nbsp;»&nbsp;<a href=https://blog.mletter.cn/tags/>Tags</a></div><h1>Kubernetes
-<a href=/tags/kubernetes/index.xml title=RSS aria-label=RSS><svg viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" height="23"><path d="M4 11a9 9 0 019 9"/><path d="M4 4a16 16 0 0116 16"/><circle cx="5" cy="19" r="1"/></svg></a></h1></header><article class="post-entry tag-entry"><figure class=entry-cover><img loading=lazy src=https://img10.360buyimg.com/ddimg/jfs/t1/244560/31/7618/14121/661de12eFfa7f6ba5/0239fa873abb0bd5.jpg alt></figure><header class=entry-header><h2 class=entry-hint-parent>基于SealOS部署高可用的kubernetes集群</h2></header><div class=entry-content><p>配套Bilibili视频已经更新：点我观看
-准备SealOS 机器信息如下：
-服务器名称 IP Role ready-kubernetes-master1 10.1.11.100 Control-Plane ready-kubernetes-master2 10.1.11.101 Control-Plane ready-kubernetes-master3 10.1.11.102 Control-Plane ready-kubernetes-node1 10.1.11.103 Node ready-kubernetes-node2 10.1.11.104 Node ready-kubernetes-node3 10.1.11.105 Node 通过SealOS部署的前提条件 SealOS For Kubernetes
-每个集群节点应该有不同的主机名。主机名不要带下划线。
-所有节点的时间需要同步。
-需要在 K8s 集群的第一个 master 节点上运行 sealos run 命令，目前集群外的节点不支持集群安装。
-建议使用干净的操作系统来创建集群。不要自己装 Docker！
-支持大多数 Linux 发行版，例如：Ubuntu、CentOS、Rocky linux。
-支持 Docker Hub 中的所有 Kubernetes 版本。
-支持使用 Containerd 作为容器运行时。
-在公有云上安装请使用私有 IP。
-获取当前稳定版本的SealOS列表 # 获取非beta版本 curl --silent "https://api.github.com/repos/labring/sealos/releases" | jq -r 'map(select(.tag_name | test("beta"; "i") | not)) | .[].tag_name' 下载最新稳定版本的SealOS，版本号为v4.3.7 # 在一台主机上执行就行了 VERSION=v4.3.7 wget https://mirror.ghproxy.com/https://github.com/labring/sealos/releases/download/${VERSION}/sealos_${VERSION#v}_linux_amd64.tar.gz \ && tar zxvf sealos_${VERSION#v}_linux_amd64.tar.gz sealos && chmod +x sealos && mv sealos /usr/bin 验证SealOS是否安装完成 [root@localhost ~]# sealos version SealosVersion: buildDate: "2023-10-30T16:19:05Z" compiler: gc gitCommit: f39b2339 gitVersion: 4.3.7 goVersion: go1.20.10 platform: linux/amd64 正常能显示出来版本号信息就表示安装正常。
-...</p></div><footer class=entry-footer><span title='2024-04-15 00:00:00 +0000 UTC'>四月 15, 2024</span>&nbsp;·&nbsp;2 分钟&nbsp;·&nbsp;iren.</footer><a class=entry-link aria-label="post link to 基于SealOS部署高可用的kubernetes集群" href=https://blog.mletter.cn/tech/kubernetes/sealos/></a></article><article class="post-entry tag-entry"><figure class=entry-cover><img loading=lazy src=https://img14.360buyimg.com/ddimg/jfs/t1/177175/31/35833/30306/64cb08eeF5ba90f46/1da6311bbbec8921.jpg alt></figure><header class=entry-header><h2 class=entry-hint-parent>kubernetes基于EFK的日志落地实现</h2></header><div class=entry-content><p>Kubernetes 中比较流行的日志收集解决方案是 Elasticsearch、Fluentd 和 Kibana（EFK）技术栈，也是官方现在比较推荐的一种方案。
-Elasticsearch 是一个实时的、分布式的可扩展的搜索引擎，允许进行全文、结构化搜索，它通常用于索引和搜索大量日志数据，也可用于搜索许多不同类型的文档。
-Elasticsearch 通常与 Kibana 一起部署，Kibana 是 Elasticsearch 的一个功能强大的数据可视化 Dashboard，Kibana 允许你通过 web 界面来浏览Elasticsearch 日志数据。
-Fluentd是一个流行的开源数据收集器，我们将在 Kubernetes 集群节点上安装 Fluentd，通过获取容器日志文件、过滤和转换日志数据，然后将数据传递到 Elasticsearch 集群，在该集群中对其进行索引和存储。
-我们先来配置启动一个可扩展的 Elasticsearch 集群，然后在 Kubernetes 集群中创建一个 Kibana 应用，最后通过 DaemonSet 来运行 Fluentd，以便它在每个 Kubernetes 工作节点上都可以运行一个 Pod。
-安装 Elasticsearch 集群 先创建一个命名空间，我们将在其中安装所有日志相关的资源对象。
-kubectl create ns kube-logging 环境准备 ElasticSearch 安装有最低安装要求，如果安装后 Pod 无法正常启动，请检查是否符合最低要求的配置，要求如下：
-节点 CPU最低要求 内存最低要求 elasticsearch-master 核心数>2 内存>2G elasticsearch-data 核心数>1 内存>2G elasticsearch-client 核心数>1 内存>2G 集群节点信息
-集群 节点类型 副本数目 存储大小 网络模式 描述 elasticsearch master 3 5Gi ClusterIP 主节点 elasticsearch-data data 3 50Gi ClusterIP 数据节点 elasticsearch-client client 2 无 NodePort 负责处理用户请求 建议使用 StorageClass 来做持久化存储，当然如果你是线上环境建议使用 Local PV 或者 Ceph RBD 之类的存储来持久化 Elasticsearch 的数据。
-...</p></div><footer class=entry-footer><span title='2023-12-08 00:00:00 +0000 UTC'>十二月 8, 2023</span>&nbsp;·&nbsp;8 分钟&nbsp;·&nbsp;iren.</footer><a class=entry-link aria-label="post link to kubernetes基于EFK的日志落地实现" href=https://blog.mletter.cn/tech/kubernetes/install-efk/></a></article><article class="post-entry tag-entry"><figure class=entry-cover><img loading=lazy src=https://img13.360buyimg.com/ddimg/jfs/t1/164078/6/34165/22231/654ba81fFe1bf21d7/9d02bd791b795b3b.jpg alt></figure><header class=entry-header><h2 class=entry-hint-parent>Kubernetes的架构设计和对象属性基本理解</h2></header><div class=entry-content><p>为什么需要kubernetes？ 大规模多节点容器调度 快速扩缩容 故障自愈 弹性伸缩 技术趋势 一致性、不锁定 早期型多的一些服务都属于单体服务、单节点、单进程的一种单体服务架构，后续随着技术的发展衍生出了容器技术。容器技术其实也不能满足我们的多节点、分布式的应用架构体系，从而衍生出了kubernetes容器编排引擎。 那么我们来看一下早期单体容器架构
-其实对于容器化技术带来了那些优势呢?
-其实我觉得容器化带来的最大的优势就是交付和部署的优势 &lt;!doctype html> 容器单点架构流程图 那么随之而来带来的问题是:
-...</p></div><footer class=entry-footer><span title='2023-11-07 00:00:00 +0000 UTC'>十一月 7, 2023</span>&nbsp;·&nbsp;3 分钟&nbsp;·&nbsp;iren.</footer><a class=entry-link aria-label="post link to Kubernetes的架构设计和对象属性基本理解" href=https://blog.mletter.cn/tech/kubernetes/architectural-design/></a></article><article class="post-entry tag-entry"><figure class=entry-cover><img loading=lazy src=https://openebs.io/docs/assets/images/control-plane-overview-93c59878e3356a11f03029dd0fc1cd6b.svg alt></figure><header class=entry-header><h2 class=entry-hint-parent>OpenEBS存储的使用</h2></header><div class=entry-content><p>OpenEBS存储使用 OpenEBS 是一种模拟了 AWS 的 EBS、阿里云的云盘等块存储实现的基于容器的存储开源软件。OpenEBS 是一种基于 CAS(Container Attached Storage) 理念的容器解决方案，其核心理念是存储和应用一样采用微服务架构，并通过 Kubernetes 来做资源编排。其架构实现上，每个卷的 Controller 都是一个单独的 Pod，且与应用 Pod 在同一个节点，卷的数据使用多个 Pod 进行管理。
-OpenEBS 有很多组件，可以分为以下几类：
-控制平面组件 - 管理 OpenEBS 卷容器，通常会用到容器编排软件的功能 数据平面组件 - 为应用程序提供数据存储，包含 Jiva 和 cStor 两个存储后端 节点磁盘管理器 - 发现、监控和管理连接到 Kubernetes 节点的媒体 与云原生工具的整合 - 与 Prometheus、Grafana、Fluentd 和 Jaeger 进行整合。 控制平面 OpenEBS 上下文中的控制平面是指部署在集群中的一组工具或组件，它们负责：
-管理 kubernetes 工作节点上可用的存储 配置和管理数据引擎 与 CSI 接口以管理卷的生命周期 与 CSI 和其他工具进行接口，执行快照、克隆、调整大小、备份、恢复等操作。 集成到其他工具中，如 Prometheus/Grafana 以进行遥测和监控 集成到其他工具中进行调试、故障排除或日志管理 OpenEBS 控制平面由一组微服务组成，这些微服务本身由 Kubernetes 管理，使 OpenEBS 真正成为 Kubernetes 原生的。由 OpenEBS 控制平面管理的配置被保存为 Kubernetes 自定义资源。控制平面的功能可以分解为以下各个阶段：
-...</p></div><footer class=entry-footer><span title='2023-05-14 00:00:00 +0000 UTC'>五月 14, 2023</span>&nbsp;·&nbsp;3 分钟&nbsp;·&nbsp;iren.</footer><a class=entry-link aria-label="post link to OpenEBS存储的使用" href=https://blog.mletter.cn/tech/kubernetes/openebs/></a></article><article class="post-entry tag-entry"><figure class=entry-cover><img loading=lazy src=https://doc.traefik.io/traefik/assets/img/traefik-architecture.png alt></figure><header class=entry-header><h2 class=entry-hint-parent>Traekfik基础使用指南</h2></header><div class=entry-content><p>Traekfik是什么 Traefik 是一种开源 边缘路由器，它使您发布服务成为一种有趣而轻松的体验。它代表您的系统接收请求并找出哪些组件负责处理它们。
-Traefik 的与众不同之处在于，除了它的许多功能之外，它还可以自动为您的服务发现正确的配置。当 Traefik 检查您的基础架构时，奇迹就会发生，它会在其中找到相关信息并发现哪个服务服务于哪个请求。
-Traefik 原生兼容所有主要的集群技术，例如 Kubernetes、Docker、Docker Swarm、AWS、Mesos、Marathon，等等；并且可以同时处理很多。（它甚至适用于在裸机上运行的遗留软件。）
-使用 Traefik，无需维护和同步单独的配置文件：一切都自动实时发生（无需重启，无连接中断）。使用 Traefik，您可以花时间为系统开发和部署新功能，而不是配置和维护其工作状态。
-边缘路由器 Traefik 是一个Edge Router，这意味着它是您平台的大门，它拦截并路由每个传入请求：它知道确定哪些服务处理哪些请求的所有逻辑和每条规则（基于path，host，标头，等等…）。
-自动服务发现 传统上边缘路由器（或反向代理）需要一个配置文件，其中包含到您的服务的每条可能路径，Traefik 从服务本身获取它们。部署您的服务，您附加信息告诉 Traefik 服务可以处理的请求的特征。
-首先，当启动 Traefik 时，需要定义 entrypoints（入口点），然后，根据连接到这些 entrypoints 的路由来分析传入的请求，来查看他们是否与一组规则相匹配，如果匹配，则路由可能会将请求通过一系列中间件转换过后再转发到你的服务上去。在了解 Traefik 之前有几个核心概念我们必须要了解：
-Providers 用来自动发现平台上的服务，可以是编排工具、容器引擎或者 key-value 存储等，比如 Docker、Kubernetes、File Entrypoints 监听传入的流量（端口等…），是网络入口点，它们定义了接收请求的端口（HTTP 或者 TCP）。 Routers 分析请求（host, path, headers, SSL, …），负责将传入请求连接到可以处理这些请求的服务上去。 Services 将请求转发给你的应用（load balancing, …），负责配置如何获取最终将处理传入请求的实际服务。 Middlewares 中间件，用来修改请求或者根据请求来做出一些判断（authentication, rate limiting, headers, …），中间件被附件到路由上，是一种在请求发送到你的服务之前（或者在服务的响应发送到客户端之前）调整请求的一种方法。 部署Traefik Traefik的配置可以使用两种方式：静态配置和动态配置
-...</p></div><footer class=entry-footer><span title='2023-04-07 00:00:00 +0000 UTC'>四月 7, 2023</span>&nbsp;·&nbsp;6 分钟&nbsp;·&nbsp;iren.</footer><a class=entry-link aria-label="post link to Traekfik基础使用指南" href=https://blog.mletter.cn/tech/kubernetes/traefik/></a></article><article class="post-entry tag-entry"><figure class=entry-cover><img loading=lazy src=https://img14.360buyimg.com/ddimg/jfs/t1/164569/9/40677/14419/65bc6e4cFa1d8c0c3/5ccf7e6caadc9b83.jpg alt></figure><header class=entry-header><h2 class=entry-hint-parent>Kubernetes-本地存储</h2></header><div class=entry-content><p>本地存储 前面我们有通过 hostPath 或者 emptyDir 的方式来持久化我们的数据，但是显然我们还需要更加可靠的存储来保存应用的持久化数据，这样容器在重建后，依然可以使用之前的数据。但是存储资源和 CPU 资源以及内存资源有很大不同，为了屏蔽底层的技术实现细节，让用户更加方便的使用，Kubernetes 便引入了 PV 和 PVC 两个重要的资源对象来实现对存储的管理。
-PersistentVolume PV 的全称是：PersistentVolume（持久化卷），是对底层共享存储的一种抽象，PV 由管理员进行创建和配置，它和具体的底层的共享存储技术的实现方式有关，比如 Ceph、GlusterFS、NFS、hostPath 等，都是通过插件机制完成与共享存储的对接。
-PersistentVolumeClaim PVC 的全称是：PersistentVolumeClaim（持久化卷声明），PVC 是用户存储的一种声明，PVC 和 Pod 比较类似，Pod 消耗的是节点，PVC 消耗的是 PV 资源，Pod 可以请求 CPU 和内存，而 PVC 可以请求特定的存储空间和访问模式。对于真正使用存储的用户不需要关心底层的存储实现细节，只需要直接使用 PVC 即可。
-但是通过 PVC 请求到一定的存储空间也很有可能不足以满足应用对于存储设备的各种需求，而且不同的应用程序对于存储性能的要求可能也不尽相同，比如读写速度、并发性能等，为了解决这一问题，Kubernetes 又为我们引入了一个新的资源对象：StorageClass，通过 StorageClass 的定义，管理员可以将存储资源定义为某种类型的资源，比如快速存储、慢速存储等，用户根据 StorageClass 的描述就可以非常直观的知道各种存储资源的具体特性了，这样就可以根据应用的特性去申请合适的存储资源了，此外 StorageClass 还可以为我们自动生成 PV，免去了每次手动创建的麻烦。
-HostPath 我们上面提到了 PV 是对底层存储技术的一种抽象，PV 一般都是由管理员来创建和配置的，我们首先来创建一个 hostPath 类型的 PersistentVolume。Kubernetes 支持 hostPath 类型的 PersistentVolume 使用节点上的文件或目录来模拟附带网络的存储，但是需要注意的是在生产集群中，我们不会使用 hostPath，集群管理员会提供网络存储资源，比如 NFS 共享卷或 Ceph 存储卷，集群管理员还可以使用 StorageClasses 来设置动态提供存储。因为 Pod 并不是始终固定在某个节点上面的，所以要使用 hostPath 的话我们就需要将 Pod 固定在某个节点上，这样显然就大大降低了应用的容错性。
-...</p></div><footer class=entry-footer><span title='2023-03-22 00:00:00 +0000 UTC'>三月 22, 2023</span>&nbsp;·&nbsp;4 分钟&nbsp;·&nbsp;iren.</footer><a class=entry-link aria-label="post link to Kubernetes-本地存储" href=https://blog.mletter.cn/tech/kubernetes/local-storage/></a></article><article class="post-entry tag-entry"><figure class=entry-cover><img loading=lazy src=https://d33wubrfki0l68.cloudfront.net/4f01eaec32889ff16ee255e97822b6d165b633f0/a54b4/zh-cn/docs/images/ingress.svg alt></figure><header class=entry-header><h2 class=entry-hint-parent>Ingress的简单使用</h2></header><div class=entry-content><p>什么是Ingress Ingress 是对集群中服务的外部访问进行管理的 API 对象，典型的访问方式是 HTTP。
-Ingress 可以提供负载均衡、SSL 终结和基于名称的虚拟托管。
-Ingress 公开从集群外部到集群内服务的 HTTP 和 HTTPS 路由。 流量路由由 Ingress 资源上定义的规则控制。
-下面是一个将所有流量都发送到同一 Service 的简单 Ingress 示例：
-Ingress 其实就是从 Kuberenets 集群外部访问集群的一个入口，将外部的请求转发到集群内不同的 Service 上，其实就相当于 nginx、haproxy 等负载均衡代理服务器，可能你会觉得我们直接使用 nginx 就实现了，但是只使用 nginx 这种方式有很大缺陷，每次有新服务加入的时候怎么改 Nginx 配置？不可能让我们去手动更改或者滚动更新前端的 Nginx Pod 吧？那我们再加上一个服务发现的工具比如 consul 如何？貌似是可以，对吧？Ingress 实际上就是这样实现的，只是服务发现的功能自己实现了，不需要使用第三方的服务了，然后再加上一个域名规则定义，路由信息的刷新依靠 Ingress Controller 来提供。
-Ingress Controller 可以理解为一个监听器，通过不断地监听 kube-apiserver，实时的感知后端 Service、Pod 的变化，当得到这些信息变化后，Ingress Controller 再结合 Ingress 的配置，更新反向代理负载均衡器，达到服务发现的作用。其实这点和服务发现工具 consul、 consul-template 非常类似。
-现在可以供大家使用的 Ingress Controller 有很多，比如 traefik、nginx-controller、Kubernetes Ingress Controller for Kong、HAProxy Ingress controller，当然你也可以自己实现一个 Ingress Controller，现在普遍用得较多的是 traefik 和 nginx-controller，traefik 的性能较 nginx-controller 差，但是配置使用要简单许多，我们这里会重点给大家介绍 nginx-controller 以及 traefik 的使用。
-...</p></div><footer class=entry-footer><span title='2023-03-08 00:00:00 +0000 UTC'>三月 8, 2023</span>&nbsp;·&nbsp;11 分钟&nbsp;·&nbsp;iren.</footer><a class=entry-link aria-label="post link to Ingress的简单使用" href=https://blog.mletter.cn/tech/kubernetes/nginx-ingress/></a></article><article class="post-entry tag-entry"><figure class=entry-cover><img loading=lazy src=https://d33wubrfki0l68.cloudfront.net/bf8e5eaac697bac89c5b36a0edb8855c860bfb45/6944f/images/docs/nodelocaldns.svg alt></figure><header class=entry-header><h2 class=entry-hint-parent>CacheDNS和DNS缓存</h2></header><div class=entry-content><p>如果在集群规模较大并发较高的情况下我们仍然需要对 DNS 进行优化，典型的就是大家比较熟悉的 CoreDNS 会出现超时5s的情况。
-超时原因 在 iptables 模式下（默认情况下），每个服务的 kube-proxy 在主机网络名称空间的 nat 表中创建一些 iptables 规则。 比如在集群中具有两个 DNS 服务器实例的 kube-dns 服务，其相关规则大致如下所示：
-(1) -A PREROUTING -m comment --comment "kubernetes service portals" -j KUBE-SERVICES &lt;...> (2) -A KUBE-SERVICES -d 10.96.0.10/32 -p udp -m comment --comment "kube-system/kube-dns:dns cluster IP" -m udp --dport 53 -j KUBE-SVC-TCOU7JCQXEZGVUNU &lt;...> (3) -A KUBE-SVC-TCOU7JCQXEZGVUNU -m comment --comment "kube-system/kube-dns:dns" -m statistic --mode random --probability 0.50000000000 -j KUBE-SEP-LLLB6FGXBLX6PZF7 (4) -A KUBE-SVC-TCOU7JCQXEZGVUNU -m comment --comment "kube-system/kube-dns:dns" -j KUBE-SEP-LRVEW52VMYCOUSMZ &lt;...> (5) -A KUBE-SEP-LLLB6FGXBLX6PZF7 -p udp -m comment --comment "kube-system/kube-dns:dns" -m udp -j DNAT --to-destination 10.32.0.6:53 &lt;...> (6) -A KUBE-SEP-LRVEW52VMYCOUSMZ -p udp -m comment --comment "kube-system/kube-dns:dns" -m udp -j DNAT --to-destination 10.32.0.7:53 我们知道每个 Pod 的 /etc/resolv.conf 文件中都有填充的 nameserver 10.96.0.10 这个条目。所以来自 Pod 的 DNS 查找请求将发送到 10.96.0.10，这是 kube-dns 服务的 ClusterIP 地址。 由于 (1) 请求进入 KUBE-SERVICE 链，然后匹配规则 (2)，最后根据 (3) 的 random 随机模式，跳转到 (5) 或 (6) 条目，将请求 UDP 数据包的目标 IP 地址修改为 DNS 服务器的实际 IP 地址，这是通过 DNAT 完成的。其中 10.32.0.6 和 10.32.0.7 是我们集群中 CoreDNS 的两个 Pod 副本的 IP 地址。
-...</p></div><footer class=entry-footer><span title='2023-02-26 00:00:00 +0000 UTC'>二月 26, 2023</span>&nbsp;·&nbsp;5 分钟&nbsp;·&nbsp;iren.</footer><a class=entry-link aria-label="post link to CacheDNS和DNS缓存" href=https://blog.mletter.cn/tech/kubernetes/nodelocaldns/></a></article><article class="post-entry tag-entry"><figure class=entry-cover><img loading=lazy src=https://img.linux.net.cn/data/attachment/album/201501/29/141718izklanww82qm888k.png alt></figure><header class=entry-header><h2 class=entry-hint-parent>使用Kubeadm创建一个高可用的ETCD集群</h2></header><div class=entry-content><p>使用Kubeadm创建一个高可用的Etcd集群 默认情况下，kubeadm 在每个控制平面节点上运行一个本地 etcd 实例。也可以使用外部的 etcd 集群，并在不同的主机上提供 etcd 实例。 这两种方法的区别在 高可用拓扑的选项 页面中阐述。
-这个任务将指导你创建一个由三个成员组成的高可用外部 etcd 集群，该集群在创建过程中可被 kubeadm 使用。
-准备开始 三个可以通过 2379 和 2380 端口相互通信的主机。本文档使用这些作为默认端口。不过，它们可以通过 kubeadm 的配置文件进行自定义。 每个主机必须安装 systemd 和 bash 兼容的 shell。 每台主机必须安装有容器运行时、kubelet 和 kubeadm 每个主机都应该能够访问 Kubernetes 容器镜像仓库 (registry.k8s.io)， 或者使用 kubeadm config images list/pull 列出/拉取所需的 etcd 镜像。 本指南将把 etcd 实例设置为由 kubelet 管理的静态 Pod。 一些可以用来在主机间复制文件的基础设施。例如 ssh 和 scp 就可以满足需求。 本次容器运行时采用Containerd作为Runtime
-将Kubelet配置为Etcd的服务启动管理器 你必须在要运行 etcd 的所有主机上执行此操作。
-cat &lt;&lt; EOF > /usr/lib/systemd/system/kubelet.service.d/20-etcd-service-manager.conf [Service] ExecStart= ExecStart=/usr/bin/kubelet --address=127.0.0.1 --pod-manifest-path=/etc/kubernetes/manifests --cgroup-driver=systemd --container-runtime=remote --container-runtime-endpoint=unix:///run/containerd/containerd.sock Restart=always EOF 启动kubelet
-...</p></div><footer class=entry-footer><span title='2023-02-26 00:00:00 +0000 UTC'>二月 26, 2023</span>&nbsp;·&nbsp;3 分钟&nbsp;·&nbsp;iren.</footer><a class=entry-link aria-label="post link to 使用Kubeadm创建一个高可用的ETCD集群" href=https://blog.mletter.cn/tech/kubernetes/install-etcd-ha/></a></article><article class="post-entry tag-entry"><figure class=entry-cover><img loading=lazy src=https://img14.360buyimg.com/ddimg/jfs/t1/164569/9/40677/14419/65bc6e4cFa1d8c0c3/5ccf7e6caadc9b83.jpg alt></figure><header class=entry-header><h2 class=entry-hint-parent>ConfigMap和Secret的使用</h2></header><div class=entry-content><p>ConfigMap ConfigMap 是一种 API 对象，用来将非机密性的数据保存到键值对中。使用时， Pods 可以将其用作环境变量、命令行参数或者存储卷中的配置文件。
-ConfigMap 将你的环境配置信息和 容器镜像 解耦，便于应用配置的修改。 ConfigMap 在设计上不是用来保存大量数据的。在 ConfigMap 中保存的数据不可超过1MiB(这其实是ETCD的要求哈哈哈)。如果你需要保存超出此尺寸限制的数据，你可能希望考虑挂载存储卷 或者使用独立的数据库或者文件服务。
-这是一个 ConfigMap 的示例，它的一些键只有一个值，其他键的值看起来像是 配置的片段格式。
-通过Key和Value这种键值对来进行写入数据 apiVersion: v1 kind: ConfigMap metadata: name: game-demo data: # 类属性键；每一个键都映射到一个简单的值 player_initial_lives: "3" ui_properties_file_name: "user-interface.properties" # 类文件键,一般用来保存一个文件到指定目录 game.properties: | enemy.types=aliens,monsters player.maximum-lives=5 user-interface.properties: | color.good=purple color.bad=yellow allow.textmode=true 你可以使用四种方式来使用 ConfigMap 配置 Pod 中的容器：
-在容器命令和参数内 容器的环境变量 在只读卷里面添加一个文件，让应用来读取 编写代码在 Pod 中运行，使用 Kubernetes API 来读取 ConfigMap 通过环境变量的方式使用ConfigMap 首先我们创建一个Deployment然后通过Env环境变量的方式进行使用ConfigMap
-...</p></div><footer class=entry-footer><span title='2023-02-14 00:00:00 +0000 UTC'>二月 14, 2023</span>&nbsp;·&nbsp;4 分钟&nbsp;·&nbsp;iren.</footer><a class=entry-link aria-label="post link to ConfigMap和Secret的使用" href=https://blog.mletter.cn/tech/kubernetes/configmap-or-service/></a></article><footer class=page-footer><nav class=pagination><a class=next href=https://blog.mletter.cn/tags/kubernetes/page/2/>下一页&nbsp;&nbsp;»</a></nav></footer></main><footer class=footer><span>&copy; 2025 <a href=https://blog.mletter.cn/>太阳可以是蓝色</a></span> ·
-<span>Powered by
-<a href=https://gohugo.io/ rel="noopener noreferrer" target=_blank>Hugo</a> &
-        <a href=https://github.com/adityatelange/hugo-PaperMod/ rel=noopener target=_blank>PaperMod</a></span><br><span id=span style=color:#101011></span>
-<script type=text/javascript>function runtime(){const a=new Date("12/07/2020 12:50:18"),r=new Date,c=r.getTime()-a.getTime(),l=24*60*60*1e3,e=c/l,t=Math.floor(e),n=(e-t)*24,s=Math.floor(n),o=(n-s)*60,i=Math.floor(o),d=Math.floor((o-i)*60);document.getElementById("span").innerHTML="已运行: "+t+"天"+s+"小时"+i+"分"+d+"秒"}runtime(),setInterval(runtime,1e3)</script><br><font color=#101011>本站由 <a href=https://www.netlify.com/ rel="noopener noreferrer nofollow" target=_blank>Netlify</a> 提供计算服务, 由 <a href=https://www.netlify.com/ rel="noopener noreferrer nofollow" target=_blank>Netlify</a> 提供全站加速服务。</font><br></footer><a href=#top aria-label="go to top" title="Go to Top (Alt + G)" class=top-link id=top-link accesskey=g><svg viewBox="0 0 12 6" fill="currentcolor"><path d="M12 6H0l6-6z"/></svg>
-</a><script>const menu=document.getElementById("menu");menu&&(menu.scrollLeft=localStorage.getItem("menu-scroll-position"),menu.onscroll=function(){localStorage.setItem("menu-scroll-position",menu.scrollLeft)}),document.querySelectorAll('a[href^="#"]').forEach(e=>{e.addEventListener("click",function(e){e.preventDefault();const t=this.getAttribute("href").substr(1),n=document.querySelector(`[id='${decodeURIComponent(t)}']`);window.matchMedia("(prefers-reduced-motion: reduce)").matches?n.scrollIntoView():n.scrollIntoView({behavior:"smooth"}),t==="top"?history.replaceState(null,null," "):history.pushState(null,null,`#${t}`)})})</script><script>const mybutton=document.getElementById("top-link");window.onscroll=function(){document.body.scrollTop>800||document.documentElement.scrollTop>800?(mybutton.style.visibility="visible",mybutton.style.opacity="1"):(mybutton.style.visibility="hidden",mybutton.style.opacity="0")}</script><script>document.getElementById("theme-toggle").addEventListener("click",()=>{document.body.classList.contains("dark")?(document.body.classList.remove("dark"),localStorage.setItem("pref-theme","light")):(document.body.classList.add("dark"),localStorage.setItem("pref-theme","dark"))})</script></body></html>
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='Live and learn. 🌱'>
+<title>Tag: Kubernetes - 太阳可以是蓝色</title>
+
+<link rel='canonical' href='https://blog.mletter.cn/tags/kubernetes/'>
+
+<link rel="stylesheet" href="https://blog.mletter.cn/scss/style.min.2c3f3a6a02fe235acfd19dc07e83848e5bd9f7fd12e5b755e3f9d0c92e1059be.css"><meta property='og:title' content='Tag: Kubernetes - 太阳可以是蓝色'>
+<meta property='og:description' content='Live and learn. 🌱'>
+<meta property='og:url' content='https://blog.mletter.cn/tags/kubernetes/'>
+<meta property='og:site_name' content='太阳可以是蓝色'>
+<meta property='og:type' content='website'><meta property='og:updated_time' content=' 2025-03-24T00:00:00&#43;00:00 '/>
+<meta name="twitter:title" content="Tag: Kubernetes - 太阳可以是蓝色">
+<meta name="twitter:description" content="Live and learn. 🌱"><link rel="alternate" type="application/rss&#43;xml" href="https://blog.mletter.cn/tags/kubernetes/index.xml">
+    <link rel="shortcut icon" href="wechat.svg" />
+<style>
+  :root {
+       
+      --sys-font-family: -apple-system, "PingFang SC", Georgia, 'Nimbus Roman No9 L', 'Hiragino Sans GB', 'Noto Serif SC', 'Microsoft Yahei', 'WenQuanYi Micro Hei', 'ST Heiti', sans-serif;
+      --code-font-family: "JetBrains Mono", Menlo, Monaco, Consolas, "Courier New";
+      --article-font-family: -apple-system, "PingFang SC", var(--base-font-family);
+  }
+</style>
+
+
+
+
+
+
+<script src="https://blog.mletter.cn/view-image.min.js"></script>
+
+<script>
+  window.ViewImage && ViewImage.init('.article-content img');
+</script>
+
+
+
+<link rel="stylesheet" href="https://cdn.staticfile.net/highlight.js/11.9.0/styles/tokyo-night-dark.min.css">
+<script src="https://lf26-cdn-tos.bytecdntp.com/cdn/expire-1-M/highlight.js/11.4.0/highlight.min.js"></script>
+<script src="https://cdn.staticfile.net/highlight.js/11.9.0/es/languages/go.min.js"></script>
+
+<script>hljs.initHighlightingOnLoad();</script>
+<script>document.addEventListener('DOMContentLoaded', (event) => {document.querySelectorAll('pre code').forEach((el) => {hljs.highlightElement(el);});});</script>
+
+
+
+
+
+
+<script async src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+<script>
+    mermaid.init(undefined, '.language-mermaid');
+</script>
+    </head>
+    <body class="">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="https://blog.mletter.cn/">
+                
+                    <img src="https://img14.360buyimg.com/ddimg/jfs/t1/77628/23/27254/26944/66bc1a36Fc596606a/d912965b8bba22af.jpg" width="300" height="300" class="site-logo" loading="lazy" alt="Avatar">
+                
+                </a>
+                
+                    <span class="emoji">🍥</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="https://blog.mletter.cn/">太阳可以是蓝色</a></h1>
+            <h2 class="site-description">Live and learn. 🌱</h2>
+        </div>
+    </header><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='https://blog.mletter.cn/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>搜索</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='https://blog.mletter.cn/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>首页</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='https://blog.mletter.cn/posts' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-inbox" width="24" height="24" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 4m0 2a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2z" /><path d="M4 13h3l3 3h4l3 -3h3" /></svg>
+                
+                <span>文章</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='https://blog.mletter.cn/archives' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>归档</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='https://mletter.cn' target="_blank">
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-health-recognition" width="24" height="24" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 8v-2a2 2 0 0 1 2 -2h2" /><path d="M4 16v2a2 2 0 0 0 2 2h2" /><path d="M16 4h2a2 2 0 0 1 2 2v2" /><path d="M16 20h2a2 2 0 0 0 2 -2v-2" /><path d="M8.603 9.61a2.04 2.04 0 0 1 2.912 0l.485 .39l.5 -.396a2.035 2.035 0 0 1 2.897 .007a2.104 2.104 0 0 1 0 2.949l-3.397 3.44l-3.397 -3.44a2.104 2.104 0 0 1 0 -2.95z" /></svg>
+                
+                <span>主页</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='https://pic.mletter.cn' target="_blank">
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-photo-cog" width="24" height="24" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M15 8h.01" /><path d="M12 21h-6a3 3 0 0 1 -3 -3v-12a3 3 0 0 1 3 -3h12a3 3 0 0 1 3 3v6" /><path d="M3 16l5 -5c.928 -.893 2.072 -.893 3 0l3 3" /><path d="M14 14l1 -1c.48 -.461 1.016 -.684 1.551 -.67" /><path d="M19.001 19m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" /><path d="M19.001 15.5v1.5" /><path d="M19.001 21v1.5" /><path d="M22.032 17.25l-1.299 .75" /><path d="M17.27 20l-1.3 .75" /><path d="M15.97 17.25l1.3 .75" /><path d="M20.733 20l1.3 .75" /></svg>
+                
+                <span>相册</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='https://blog.mletter.cn/friends' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>友联</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='https://blog.mletter.cn/about' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>关于</span>
+            </a>
+        </li>
+        
+
+        <div class="menu-bottom-section">
+                
+            
+            
+            
+                <li id="dark-mode-toggle">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                    <span>暗色模式</span>
+                </li>
+            
+        </div>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                <form action="https://blog.mletter.cn/search/" class="search-form widget" >
+        <p>
+            <label>搜索</label>
+            <input name="keyword" required placeholder="输入关键词..." />
+        
+            <button title="搜索">
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+            </button>
+        </p>
+    </form>
+            
+        
+            
+                <section class="widget archives">
+        <h2 class="widget-title section-title">日期归档</h2>
+
+        
+        
+        
+        
+        
+        <div class="widget-archive--list">
+            <div class="archives-year">
+                    <a href="https://blog.mletter.cn/archives/#2025">
+                        
+                            <span class="year">2025</span>
+                            <span class="count">2</span>
+                        
+                    </a> 
+                </div>
+            <div class="archives-year">
+                    <a href="https://blog.mletter.cn/archives/#2024">
+                        
+                            <span class="year">2024</span>
+                            <span class="count">14</span>
+                        
+                    </a> 
+                </div>
+            <div class="archives-year">
+                    <a href="https://blog.mletter.cn/archives/#2023">
+                        
+                            <span class="year">2023</span>
+                            <span class="count">16</span>
+                        
+                    </a> 
+                </div>
+            <div class="archives-year">
+                    <a href="https://blog.mletter.cn/archives/#2022">
+                        
+                            <span class="year">2022</span>
+                            <span class="count">10</span>
+                        
+                    </a> 
+                </div>
+            <div class="archives-year">
+                    <a href="https://blog.mletter.cn/archives/#2021">
+                        
+                            <span class="year">2021</span>
+                            <span class="count">3</span>
+                        
+                    </a> 
+                </div>
+            <div class="archives-year">
+                    <a href="https://blog.mletter.cn/archives/#2020">
+                        
+                            <span class="year">2020</span>
+                            <span class="count">3</span>
+                        
+                    </a> 
+                </div>
+            
+        </div>
+    </section>
+            
+        
+            
+                <section class="widget tagCloud">
+    <h2 class="widget-title section-title">分类</h2>
+
+    <div class="tagCloud-tags">
+        
+            <a href="https://blog.mletter.cn/categories/kubernetes/" class="font_size_21">
+                Kubernetes
+            </a>
+        
+            <a href="https://blog.mletter.cn/categories/%E6%97%A5%E8%AE%B0/" class="font_size_11">
+                日记
+            </a>
+        
+            <a href="https://blog.mletter.cn/categories/docker/" class="font_size_4">
+                Docker
+            </a>
+        
+            <a href="https://blog.mletter.cn/categories/ansible/" class="font_size_3">
+                Ansible
+            </a>
+        
+            <a href="https://blog.mletter.cn/categories/aiops/" class="font_size_1">
+                AIOPS
+            </a>
+        
+            <a href="https://blog.mletter.cn/categories/mysql/" class="font_size_1">
+                Mysql
+            </a>
+        
+            <a href="https://blog.mletter.cn/categories/nginx/" class="font_size_1">
+                Nginx
+            </a>
+        
+            <a href="https://blog.mletter.cn/categories/redis/" class="font_size_1">
+                Redis
+            </a>
+        
+            <a href="https://blog.mletter.cn/categories/tech/" class="font_size_1">
+                Tech
+            </a>
+        
+            <a href="https://blog.mletter.cn/categories/%E4%B8%AA%E4%BA%BA%E9%A1%B9%E7%9B%AE/" class="font_size_1">
+                个人项目
+            </a>
+        
+    </div>
+</section>
+
+            
+        
+            
+                <section class="widget tagCloud">
+    <h2 class="widget-title section-title">标签云</h2>
+
+    <div class="tagCloud-tags">
+        
+            <a href="https://blog.mletter.cn/tags/kubernetes/" class="font_size_21">
+                Kubernetes
+            </a>
+        
+            <a href="https://blog.mletter.cn/tags/%E9%9A%8F%E7%AC%94/" class="font_size_7">
+                随笔
+            </a>
+        
+            <a href="https://blog.mletter.cn/tags/ansible/" class="font_size_3">
+                Ansible
+            </a>
+        
+            <a href="https://blog.mletter.cn/tags/docker/" class="font_size_3">
+                Docker
+            </a>
+        
+            <a href="https://blog.mletter.cn/tags/%E6%97%85%E6%B8%B8/" class="font_size_2">
+                旅游
+            </a>
+        
+            <a href="https://blog.mletter.cn/tags/ai/" class="font_size_1">
+                AI
+            </a>
+        
+            <a href="https://blog.mletter.cn/tags/aiops/" class="font_size_1">
+                AIOPS
+            </a>
+        
+            <a href="https://blog.mletter.cn/tags/api%E6%8E%A5%E5%8F%A3%E5%B7%A5%E5%85%B7/" class="font_size_1">
+                API接口工具
+            </a>
+        
+            <a href="https://blog.mletter.cn/tags/etcd/" class="font_size_1">
+                Etcd
+            </a>
+        
+            <a href="https://blog.mletter.cn/tags/gin/" class="font_size_1">
+                Gin
+            </a>
+        
+    </div>
+</section>
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <header>
+        <h3 class="section-title">
+            
+                Tags
+            
+        </h3>
+
+        <div class="section-card">
+            <div class="section-details">
+                <h3 class="section-count"></h3>
+                <h1 class="section-term">Kubernetes</h1>
+                
+            </div>
+        </div>
+    </header>
+    
+    <section class="article-list--compact">
+        
+            <article>
+    <a href="https://blog.mletter.cn/tech/kubernetes/sealos/">
+        <div class="article-details">
+            <h2 class="article-title">基于SealOS部署高可用的kubernetes集群</h2>
+            <footer class="article-time">
+                <time datetime='2024-04-15T00:00:00Z'>Apr 15, 2024</time>
+            </footer>
+        </div>
+            <div class="article-image">
+                
+                    <img src="https://img10.360buyimg.com/ddimg/jfs/t1/244560/31/7618/14121/661de12eFfa7f6ba5/0239fa873abb0bd5.jpg" loading="lazy" alt="Featured image of post 基于SealOS部署高可用的kubernetes集群" />
+                
+            </div>
+        
+    </a>
+</article>
+        
+            <article>
+    <a href="https://blog.mletter.cn/tech/kubernetes/install-efk/">
+        <div class="article-details">
+            <h2 class="article-title">kubernetes基于EFK的日志落地实现</h2>
+            <footer class="article-time">
+                <time datetime='2023-12-08T00:00:00Z'>Dec 08, 2023</time>
+            </footer>
+        </div>
+            <div class="article-image">
+                
+                    <img src="https://img14.360buyimg.com/ddimg/jfs/t1/177175/31/35833/30306/64cb08eeF5ba90f46/1da6311bbbec8921.jpg" loading="lazy" alt="Featured image of post kubernetes基于EFK的日志落地实现" />
+                
+            </div>
+        
+    </a>
+</article>
+        
+            <article>
+    <a href="https://blog.mletter.cn/tech/kubernetes/architectural-design/">
+        <div class="article-details">
+            <h2 class="article-title">Kubernetes的架构设计和对象属性基本理解</h2>
+            <footer class="article-time">
+                <time datetime='2023-11-07T00:00:00Z'>Nov 07, 2023</time>
+            </footer>
+        </div>
+            <div class="article-image">
+                
+                    <img src="https://img13.360buyimg.com/ddimg/jfs/t1/164078/6/34165/22231/654ba81fFe1bf21d7/9d02bd791b795b3b.jpg" loading="lazy" alt="Featured image of post Kubernetes的架构设计和对象属性基本理解" />
+                
+            </div>
+        
+    </a>
+</article>
+        
+            <article>
+    <a href="https://blog.mletter.cn/tech/kubernetes/openebs/">
+        <div class="article-details">
+            <h2 class="article-title">OpenEBS存储的使用</h2>
+            <footer class="article-time">
+                <time datetime='2023-05-14T00:00:00Z'>May 14, 2023</time>
+            </footer>
+        </div>
+            <div class="article-image">
+                
+                    <img src="https://openebs.io/docs/assets/images/control-plane-overview-93c59878e3356a11f03029dd0fc1cd6b.svg" loading="lazy" alt="Featured image of post OpenEBS存储的使用" />
+                
+            </div>
+        
+    </a>
+</article>
+        
+            <article>
+    <a href="https://blog.mletter.cn/tech/kubernetes/traefik/">
+        <div class="article-details">
+            <h2 class="article-title">Traekfik基础使用指南</h2>
+            <footer class="article-time">
+                <time datetime='2023-04-07T00:00:00Z'>Apr 07, 2023</time>
+            </footer>
+        </div>
+            <div class="article-image">
+                
+                    <img src="https://doc.traefik.io/traefik/assets/img/traefik-architecture.png" loading="lazy" alt="Featured image of post Traekfik基础使用指南" />
+                
+            </div>
+        
+    </a>
+</article>
+        
+            <article>
+    <a href="https://blog.mletter.cn/tech/kubernetes/local-storage/">
+        <div class="article-details">
+            <h2 class="article-title">Kubernetes-本地存储</h2>
+            <footer class="article-time">
+                <time datetime='2023-03-22T00:00:00Z'>Mar 22, 2023</time>
+            </footer>
+        </div>
+            <div class="article-image">
+                
+                    <img src="https://img14.360buyimg.com/ddimg/jfs/t1/164569/9/40677/14419/65bc6e4cFa1d8c0c3/5ccf7e6caadc9b83.jpg" loading="lazy" alt="Featured image of post Kubernetes-本地存储" />
+                
+            </div>
+        
+    </a>
+</article>
+        
+            <article>
+    <a href="https://blog.mletter.cn/tech/kubernetes/nginx-ingress/">
+        <div class="article-details">
+            <h2 class="article-title">Ingress的简单使用</h2>
+            <footer class="article-time">
+                <time datetime='2023-03-08T00:00:00Z'>Mar 08, 2023</time>
+            </footer>
+        </div>
+            <div class="article-image">
+                
+                    <img src="https://d33wubrfki0l68.cloudfront.net/4f01eaec32889ff16ee255e97822b6d165b633f0/a54b4/zh-cn/docs/images/ingress.svg" loading="lazy" alt="Featured image of post Ingress的简单使用" />
+                
+            </div>
+        
+    </a>
+</article>
+        
+            <article>
+    <a href="https://blog.mletter.cn/tech/kubernetes/nodelocaldns/">
+        <div class="article-details">
+            <h2 class="article-title">CacheDNS和DNS缓存</h2>
+            <footer class="article-time">
+                <time datetime='2023-02-26T00:00:00Z'>Feb 26, 2023</time>
+            </footer>
+        </div>
+            <div class="article-image">
+                
+                    <img src="https://d33wubrfki0l68.cloudfront.net/bf8e5eaac697bac89c5b36a0edb8855c860bfb45/6944f/images/docs/nodelocaldns.svg" loading="lazy" alt="Featured image of post CacheDNS和DNS缓存" />
+                
+            </div>
+        
+    </a>
+</article>
+        
+            <article>
+    <a href="https://blog.mletter.cn/tech/kubernetes/install-etcd-ha/">
+        <div class="article-details">
+            <h2 class="article-title">使用Kubeadm创建一个高可用的ETCD集群</h2>
+            <footer class="article-time">
+                <time datetime='2023-02-26T00:00:00Z'>Feb 26, 2023</time>
+            </footer>
+        </div>
+            <div class="article-image">
+                
+                    <img src="https://img.linux.net.cn/data/attachment/album/201501/29/141718izklanww82qm888k.png" loading="lazy" alt="Featured image of post 使用Kubeadm创建一个高可用的ETCD集群" />
+                
+            </div>
+        
+    </a>
+</article>
+        
+            <article>
+    <a href="https://blog.mletter.cn/tech/kubernetes/configmap-or-service/">
+        <div class="article-details">
+            <h2 class="article-title">ConfigMap和Secret的使用</h2>
+            <footer class="article-time">
+                <time datetime='2023-02-14T00:00:00Z'>Feb 14, 2023</time>
+            </footer>
+        </div>
+            <div class="article-image">
+                
+                    <img src="https://img14.360buyimg.com/ddimg/jfs/t1/164569/9/40677/14419/65bc6e4cFa1d8c0c3/5ccf7e6caadc9b83.jpg" loading="lazy" alt="Featured image of post ConfigMap和Secret的使用" />
+                
+            </div>
+        
+    </a>
+</article>
+        
+    </section>
+    <nav class='pagination'>
+        
+        
+
+        
+            
+                <span class='page-link current'>1</span>
+                
+            
+            
+                    <a class='page-link' href='https://blog.mletter.cn/tags/kubernetes/page/2/'>2</a>
+                
+            
+            
+                    <a class='page-link' href='https://blog.mletter.cn/tags/kubernetes/page/3/'>3</a>
+                
+            
+    </nav>
+
+<footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2020 - 
+        
+        2025 Live and learn. 🌱
+    </section>
+    
+    <section class="powerby">
+        Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo By Netlify</a> <br />
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.21.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+    </section>
+</footer>
+
+
+            </main>
+        </div>
+        <script 
+                src="https://lf9-cdn-tos.bytecdntp.com/cdn/expire-1-M/vibrant.js/1.0.0/Vibrant.min.js"crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="https://blog.mletter.cn/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+<script src="https://lf26-cdn-tos.bytecdntp.com/cdn/expire-1-M/nprogress/0.2.0/nprogress.min.js" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://lf26-cdn-tos.bytecdntp.com/cdn/expire-1-M/nprogress/0.2.0/nprogress.css" crossorigin="anonymous" />
+<script>
+    NProgress.start();
+    document.addEventListener("readystatechange", () => {
+        if (document.readyState === "interactive") NProgress.inc(0.8);
+        if (document.readyState === "complete") NProgress.done();
+    });
+</script>
+    </body>
+</html>

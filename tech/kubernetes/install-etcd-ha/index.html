@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!doctype html><html lang=zh dir=auto><head><meta charset=utf-8><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=robots content="index, follow"><title>使用Kubeadm创建一个高可用的ETCD集群 | Heartbeat Diary</title>
 <meta name=keywords content="kubernetes,etcd"><meta name=description content="默认情况下，kubeadm 在每个控制平面节点上运行一个本地 etcd 实例。也可以使用外部的 etcd 集群，并在不同的主机上提供 etcd 实例。 这两种方法的区别在 高可用拓扑的选项 页面中阐述。这个任务将指导你创建一个由三个成员组成的高可用外部 etcd 集群，该集群在创建过程中可被 kubeadm 使用。"><meta name=author content="iren."><link rel=canonical href=https://blog.mletter.cn/tech/kubernetes/install-etcd-ha/><link crossorigin=anonymous href=/assets/css/stylesheet.8a45bf3109af523fe28e4543131ec0279b94176fadabc87578224e0f3b623ba4.css integrity="sha256-ikW/MQmvUj/ijkVDEx7AJ5uUF2+tq8h1eCJODztiO6Q=" rel="preload stylesheet" as=style><link rel=icon href=https://blog.mletter.cn/%3Clink%20/%20abs%20url%3E><link rel=icon type=image/png sizes=16x16 href=https://blog.mletter.cn/%3Clink%20/%20abs%20url%3E><link rel=icon type=image/png sizes=32x32 href=https://blog.mletter.cn/%3Clink%20/%20abs%20url%3E><link rel=apple-touch-icon href=https://blog.mletter.cn/%3Clink%20/%20abs%20url%3E><link rel=mask-icon href=https://blog.mletter.cn/%3Clink%20/%20abs%20url%3E><meta name=theme-color content="#2e2e33"><meta name=msapplication-TileColor content="#2e2e33"><link rel=alternate hreflang=zh href=https://blog.mletter.cn/tech/kubernetes/install-etcd-ha/><noscript><style>#theme-toggle,.top-link{display:none}</style><style>@media(prefers-color-scheme:dark){:root{--theme:rgb(29, 30, 32);--entry:rgb(46, 46, 51);--primary:rgb(218, 218, 219);--secondary:rgb(155, 156, 157);--tertiary:rgb(65, 66, 68);--content:rgb(196, 196, 197);--code-block-bg:rgb(46, 46, 51);--code-bg:rgb(55, 56, 62);--border:rgb(51, 51, 51)}.list{background:var(--theme)}.list:not(.dark)::-webkit-scrollbar-track{background:0 0}.list:not(.dark)::-webkit-scrollbar-thumb{border-color:var(--theme)}}</style></noscript><script async src=https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/mermaid/8.14.0/mermaid.min.js></script><script>mermaid.init(void 0,".language-mermaid")</script><meta property="og:url" content="https://blog.mletter.cn/tech/kubernetes/install-etcd-ha/"><meta property="og:site_name" content="Heartbeat Diary"><meta property="og:title" content="使用Kubeadm创建一个高可用的ETCD集群"><meta property="og:description" content="默认情况下，kubeadm 在每个控制平面节点上运行一个本地 etcd 实例。也可以使用外部的 etcd 集群，并在不同的主机上提供 etcd 实例。 这两种方法的区别在 高可用拓扑的选项 页面中阐述。这个任务将指导你创建一个由三个成员组成的高可用外部 etcd 集群，该集群在创建过程中可被 kubeadm 使用。"><meta property="og:locale" content="zh"><meta property="og:type" content="article"><meta property="article:section" content="posts"><meta property="article:published_time" content="2023-02-26T00:00:00+00:00"><meta property="article:modified_time" content="2023-02-26T00:00:00+00:00"><meta property="article:tag" content="Kubernetes"><meta property="article:tag" content="Etcd"><meta property="og:image" content="https://img.linux.net.cn/data/attachment/album/201501/29/141718izklanww82qm888k.png"><meta name=twitter:card content="summary_large_image"><meta name=twitter:image content="https://img.linux.net.cn/data/attachment/album/201501/29/141718izklanww82qm888k.png"><meta name=twitter:title content="使用Kubeadm创建一个高可用的ETCD集群"><meta name=twitter:description content="默认情况下，kubeadm 在每个控制平面节点上运行一个本地 etcd 实例。也可以使用外部的 etcd 集群，并在不同的主机上提供 etcd 实例。 这两种方法的区别在 高可用拓扑的选项 页面中阐述。这个任务将指导你创建一个由三个成员组成的高可用外部 etcd 集群，该集群在创建过程中可被 kubeadm 使用。"><script type=application/ld+json>{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"","item":"https://blog.mletter.cn/posts/"},{"@type":"ListItem","position":2,"name":"使用Kubeadm创建一个高可用的ETCD集群","item":"https://blog.mletter.cn/tech/kubernetes/install-etcd-ha/"}]}</script><script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","headline":"使用Kubeadm创建一个高可用的ETCD集群","name":"使用Kubeadm创建一个高可用的ETCD集群","description":"默认情况下，kubeadm 在每个控制平面节点上运行一个本地 etcd 实例。也可以使用外部的 etcd 集群，并在不同的主机上提供 etcd 实例。 这两种方法的区别在 高可用拓扑的选项 页面中阐述。这个任务将指导你创建一个由三个成员组成的高可用外部 etcd 集群，该集群在创建过程中可被 kubeadm 使用。","keywords":["kubernetes","etcd"],"articleBody":"使用Kubeadm创建一个高可用的Etcd集群 默认情况下，kubeadm 在每个控制平面节点上运行一个本地 etcd 实例。也可以使用外部的 etcd 集群，并在不同的主机上提供 etcd 实例。 这两种方法的区别在 高可用拓扑的选项 页面中阐述。\n这个任务将指导你创建一个由三个成员组成的高可用外部 etcd 集群，该集群在创建过程中可被 kubeadm 使用。\n准备开始 三个可以通过 2379 和 2380 端口相互通信的主机。本文档使用这些作为默认端口。不过，它们可以通过 kubeadm 的配置文件进行自定义。 每个主机必须安装 systemd 和 bash 兼容的 shell。 每台主机必须安装有容器运行时、kubelet 和 kubeadm 每个主机都应该能够访问 Kubernetes 容器镜像仓库 (registry.k8s.io)， 或者使用 kubeadm config images list/pull 列出/拉取所需的 etcd 镜像。 本指南将把 etcd 实例设置为由 kubelet 管理的静态 Pod。 一些可以用来在主机间复制文件的基础设施。例如 ssh 和 scp 就可以满足需求。 本次容器运行时采用Containerd作为Runtime\n将Kubelet配置为Etcd的服务启动管理器 你必须在要运行 etcd 的所有主机上执行此操作。\ncat \u003c\u003c EOF \u003e /usr/lib/systemd/system/kubelet.service.d/20-etcd-service-manager.conf [Service] ExecStart= ExecStart=/usr/bin/kubelet --address=127.0.0.1 --pod-manifest-path=/etc/kubernetes/manifests --cgroup-driver=systemd --container-runtime=remote --container-runtime-endpoint=unix:///run/containerd/containerd.sock Restart=always EOF 启动kubelet\nsystemctl daemon-reload systemctl restart kubelet 注意: 请执行完毕后务必确保kubelet处于running状态。\n为Kubeadm创建配置文件 # 使用你的主机 IP 替换 HOST0、HOST1 和 HOST2 的 IP 地址 export HOST0=10.1.6.48 export HOST1=10.1.6.24 export HOST2=10.1.6.45 # 使用你的主机名更新 NAME0、NAME1 和 NAME2 export NAME0=\"containerd-master1\" export NAME1=\"containerd-master2\" export NAME2=\"containerd-master3\" # 创建临时目录来存储将被分发到其它主机上的文件 mkdir -p /tmp/${HOST0}/ /tmp/${HOST1}/ /tmp/${HOST2}/ HOSTS=(${HOST0} ${HOST1} ${HOST2}) NAMES=(${NAME0} ${NAME1} ${NAME2}) for i in \"${!HOSTS[@]}\"; do HOST=${HOSTS[$i]} NAME=${NAMES[$i]} cat \u003c\u003c EOF \u003e /tmp/${HOST}/kubeadmcfg.yaml --- apiVersion: \"kubeadm.k8s.io/v1beta3\" kind: InitConfiguration nodeRegistration: name: ${NAME} localAPIEndpoint: advertiseAddress: ${HOST} --- apiVersion: \"kubeadm.k8s.io/v1beta3\" kind: ClusterConfiguration etcd: local: dataDir: /var/lib/etcds serverCertSANs: - \"${HOST}\" peerCertSANs: - \"${HOST}\" extraArgs: initial-cluster: ${NAMES[0]}=https://${HOSTS[0]}:2380,${NAMES[1]}=https://${HOSTS[1]}:2380,${NAMES[2]}=https://${HOSTS[2]}:2380 initial-cluster-state: new name: ${NAME} listen-peer-urls: https://${HOST}:2380 listen-client-urls: https://${HOST}:2379 advertise-client-urls: https://${HOST}:2379 initial-advertise-peer-urls: https://${HOST}:2380 imageRepository: registry.aliyuncs.com/google_containers EOF done 生成证书颁发机构 如果你还没有 CA，则在 $HOST0（你为 kubeadm 生成配置文件的位置）上运行此命令。\nkubeadm init phase certs etcd-ca 这一操作将会生成 /etc/kubernetes/pki/etcd/ca.crt /etc/kubernetes/pki/etcd/ca.key 为每个成员创建证书 kubeadm init phase certs etcd-server --config=/tmp/${HOST2}/kubeadmcfg.yaml kubeadm init phase certs etcd-peer --config=/tmp/${HOST2}/kubeadmcfg.yaml kubeadm init phase certs etcd-healthcheck-client --config=/tmp/${HOST2}/kubeadmcfg.yaml kubeadm init phase certs apiserver-etcd-client --config=/tmp/${HOST2}/kubeadmcfg.yaml cp -R /etc/kubernetes/pki /tmp/${HOST2}/ # 清理不可重复使用的证书 find /etc/kubernetes/pki -not -name ca.crt -not -name ca.key -type f -delete kubeadm init phase certs etcd-server --config=/tmp/${HOST1}/kubeadmcfg.yaml kubeadm init phase certs etcd-peer --config=/tmp/${HOST1}/kubeadmcfg.yaml kubeadm init phase certs etcd-healthcheck-client --config=/tmp/${HOST1}/kubeadmcfg.yaml kubeadm init phase certs apiserver-etcd-client --config=/tmp/${HOST1}/kubeadmcfg.yaml cp -R /etc/kubernetes/pki /tmp/${HOST1}/ find /etc/kubernetes/pki -not -name ca.crt -not -name ca.key -type f -delete # HOST0不需要进行移动 kubeadm init phase certs etcd-server --config=/tmp/${HOST0}/kubeadmcfg.yaml kubeadm init phase certs etcd-peer --config=/tmp/${HOST0}/kubeadmcfg.yaml kubeadm init phase certs etcd-healthcheck-client --config=/tmp/${HOST0}/kubeadmcfg.yaml kubeadm init phase certs apiserver-etcd-client --config=/tmp/${HOST0}/kubeadmcfg.yaml 复制证书和 kubeadm 配置 scp -r /tmp/${HOST1}/* root@${HOST1}: scp -r /tmp/${HOST2}/* root@${HOST2}: chown -R root:root pki/ mv pki /etc/kubernetes/ 请检查证书文件是否都存在 检查$HOST0\n[root@containerd-master1 ~]# tree /etc/kubernetes/pki/ /etc/kubernetes/pki/ ├── apiserver-etcd-client.crt ├── apiserver-etcd-client.key └── etcd ├── ca.crt ├── ca.key ├── healthcheck-client.crt ├── healthcheck-client.key ├── peer.crt ├── peer.key ├── server.crt └── server.key 1 directory, 10 files 检查$HOST1\n[root@containerd-master2 ~]# tree /etc/kubernetes/pki/ /etc/kubernetes/pki/ ├── apiserver-etcd-client.crt ├── apiserver-etcd-client.key └── etcd ├── ca.crt ├── healthcheck-client.crt ├── healthcheck-client.key ├── peer.crt ├── peer.key ├── server.crt └── server.key 1 directory, 9 files 检查$HOST2\n[root@containerd-master3 ~]# tree /etc/kubernetes/pki/ /etc/kubernetes/pki/ ├── apiserver-etcd-client.crt ├── apiserver-etcd-client.key └── etcd ├── ca.crt ├── healthcheck-client.crt ├── healthcheck-client.key ├── peer.crt ├── peer.key ├── server.crt └── server.key 1 directory, 9 files 创建Etcd的Pod清单 请在$HOST0进行执行\nkubeadm init phase etcd local --config=/tmp/${HOST0}/kubeadmcfg.yaml 请在$HOST1进行执行\nkubeadm init phase etcd local --config=$HOME/kubeadmcfg.yaml 请在$HOST2进行执行\nkubeadm init phase etcd local --config=$HOME/kubeadmcfg.yaml 检查Etcd的Pod是否运行 三台Etcd主机全部使用crictl ps -a 进行查看EtcdPod是否处于running状态 [root@containerd-master1 ~]# crictl ps -a CONTAINER IMAGE CREATED STATE NAME ATTEMPT POD ID POD 0a183925d2542 0048118155842 52 seconds ago Running ","wordCount":"462","inLanguage":"zh","image":"https://img.linux.net.cn/data/attachment/album/201501/29/141718izklanww82qm888k.png","datePublished":"2023-02-26T00:00:00Z","dateModified":"2023-02-26T00:00:00Z","author":{"@type":"Person","name":"iren."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.mletter.cn/tech/kubernetes/install-etcd-ha/"},"publisher":{"@type":"Organization","name":"Heartbeat Diary","logo":{"@type":"ImageObject","url":"https://blog.mletter.cn/%3Clink%20/%20abs%20url%3E"}}}</script></head><body id=top><script>localStorage.getItem("pref-theme")==="dark"?document.body.classList.add("dark"):localStorage.getItem("pref-theme")==="light"?document.body.classList.remove("dark"):window.matchMedia("(prefers-color-scheme: dark)").matches&&document.body.classList.add("dark")</script><header class=header><nav class=nav><div class=logo><a href=https://blog.mletter.cn/ accesskey=h title="Heartbeat Diary (Alt + H)">Heartbeat Diary</a><div class=logo-switches><button id=theme-toggle accesskey=t title="(Alt + T)" aria-label="Toggle theme"><svg id="moon" width="24" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg><svg id="sun" width="24" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button></div></div><ul id=menu><li><a href=https://blog.mletter.cn/ title=主页><span>主页</span></a></li><li><a href=https://blog.mletter.cn/search/ title="搜索 (Alt + /)" accesskey=/><span>搜索</span></a></li><li><a href=https://blog.mletter.cn/posts/ title=文章><span>文章</span></a></li><li><a href=https://blog.mletter.cn/tags/ title=标签><span>标签</span></a></li><li><a href=https://blog.mletter.cn/friends/ title=友联><span>友联</span></a></li><li><a href=https://blog.mletter.cn/about title=关于><span>关于</span></a></li></ul></nav></header><main class=main><article class=post-single><header class=post-header><div class=breadcrumbs><a href=https://blog.mletter.cn/>主页</a>&nbsp;»&nbsp;<a href=https://blog.mletter.cn/posts/></a></div><h1 class="post-title entry-hint-parent">使用Kubeadm创建一个高可用的ETCD集群</h1><div class=post-description>默认情况下，kubeadm 在每个控制平面节点上运行一个本地 etcd 实例。也可以使用外部的 etcd 集群，并在不同的主机上提供 etcd 实例。 这两种方法的区别在 高可用拓扑的选项 页面中阐述。这个任务将指导你创建一个由三个成员组成的高可用外部 etcd 集群，该集群在创建过程中可被 kubeadm 使用。</div><div class=post-meta><span title='2023-02-26 00:00:00 +0000 UTC'>二月 26, 2023</span>&nbsp;·&nbsp;3 分钟&nbsp;·&nbsp;iren.</div></header><div class=toc><details><summary accesskey=c title="(Alt + C)"><span class=details>目录</span></summary><div class=inner><nav id=TableOfContents><ul><li><a href=#使用kubeadm创建一个高可用的etcd集群>使用Kubeadm创建一个高可用的Etcd集群</a></li><li><a href=#准备开始>准备开始</a><ul><li><a href=#将kubelet配置为etcd的服务启动管理器>将Kubelet配置为Etcd的服务启动管理器</a></li><li><a href=#为kubeadm创建配置文件>为Kubeadm创建配置文件</a></li><li><a href=#生成证书颁发机构>生成证书颁发机构</a></li><li><a href=#为每个成员创建证书>为每个成员创建证书</a></li><li><a href=#复制证书和-kubeadm-配置>复制证书和 kubeadm 配置</a></li><li><a href=#请检查证书文件是否都存在>请检查证书文件是否都存在</a></li><li><a href=#创建etcd的pod清单>创建Etcd的Pod清单</a></li><li><a href=#检查etcd的pod是否运行>检查Etcd的Pod是否运行</a></li></ul></li></ul></nav></div></details></div><div class=post-content><h2 id=使用kubeadm创建一个高可用的etcd集群>使用Kubeadm创建一个高可用的Etcd集群<a hidden class=anchor aria-hidden=true href=#使用kubeadm创建一个高可用的etcd集群>#</a></h2><p>默认情况下，kubeadm 在每个控制平面节点上运行一个本地 etcd 实例。也可以使用外部的 etcd 集群，并在不同的主机上提供 etcd 实例。 这两种方法的区别在 高可用拓扑的选项 页面中阐述。</p><p>这个任务将指导你创建一个由三个成员组成的高可用外部 etcd 集群，该集群在创建过程中可被 kubeadm 使用。</p><h2 id=准备开始>准备开始<a hidden class=anchor aria-hidden=true href=#准备开始>#</a></h2><ul><li>三个可以通过 2379 和 2380 端口相互通信的主机。本文档使用这些作为默认端口。不过，它们可以通过 kubeadm 的配置文件进行自定义。</li><li>每个主机必须安装 systemd 和 bash 兼容的 shell。</li><li>每台主机必须安装<code>有容器运行时</code>、<code>kubelet</code> 和 <code>kubeadm</code></li><li>每个主机都应该能够访问 Kubernetes 容器镜像仓库 (<a href=http://registry.k8s.io/>registry.k8s.io</a>)， 或者使用 kubeadm config images list/pull 列出/拉取所需的 etcd 镜像。 本指南将把 etcd 实例设置为由 kubelet 管理的静态 Pod。</li><li>一些可以用来在主机间复制文件的基础设施。例如 ssh 和 scp 就可以满足需求。</li></ul><blockquote><p>本次容器运行时采用<code>Containerd</code>作为Runtime</p></blockquote><h3 id=将kubelet配置为etcd的服务启动管理器>将Kubelet配置为Etcd的服务启动管理器<a hidden class=anchor aria-hidden=true href=#将kubelet配置为etcd的服务启动管理器>#</a></h3><blockquote><p>你必须在要运行 etcd 的所有主机上执行此操作。</p></blockquote><div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>cat <span class=s>&lt;&lt; EOF &gt; /usr/lib/systemd/system/kubelet.service.d/20-etcd-service-manager.conf 
 </span></span></span><span class=line><span class=cl><span class=s>[Service]
@@ -133,3 +134,894 @@
 <a href=https://gohugo.io/ rel="noopener noreferrer" target=_blank>Hugo</a> &
         <a href=https://github.com/adityatelange/hugo-PaperMod/ rel=noopener target=_blank>PaperMod</a></span></footer><a href=#top aria-label="go to top" title="Go to Top (Alt + G)" class=top-link id=top-link accesskey=g><svg viewBox="0 0 12 6" fill="currentcolor"><path d="M12 6H0l6-6z"/></svg>
 </a><script>let menu=document.getElementById("menu");menu&&(menu.scrollLeft=localStorage.getItem("menu-scroll-position"),menu.onscroll=function(){localStorage.setItem("menu-scroll-position",menu.scrollLeft)}),document.querySelectorAll('a[href^="#"]').forEach(e=>{e.addEventListener("click",function(e){e.preventDefault();var t=this.getAttribute("href").substr(1);window.matchMedia("(prefers-reduced-motion: reduce)").matches?document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView():document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView({behavior:"smooth"}),t==="top"?history.replaceState(null,null," "):history.pushState(null,null,`#${t}`)})})</script><script>var mybutton=document.getElementById("top-link");window.onscroll=function(){document.body.scrollTop>800||document.documentElement.scrollTop>800?(mybutton.style.visibility="visible",mybutton.style.opacity="1"):(mybutton.style.visibility="hidden",mybutton.style.opacity="0")}</script><script>document.getElementById("theme-toggle").addEventListener("click",()=>{document.body.className.includes("dark")?(document.body.classList.remove("dark"),localStorage.setItem("pref-theme","light")):(document.body.classList.add("dark"),localStorage.setItem("pref-theme","dark"))})</script></body></html>
+=======
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='默认情况下，kubeadm 在每个控制平面节点上运行一个本地 etcd 实例。也可以使用外部的 etcd 集群，并在不同的主机上提供 etcd 实例。 这两种方法的区别在 高可用拓扑的选项 页面中阐述。这个任务将指导你创建一个由三个成员组成的高可用外部 etcd 集群，该集群在创建过程中可被 kubeadm 使用。'>
+<title>使用Kubeadm创建一个高可用的ETCD集群</title>
+
+<link rel='canonical' href='https://blog.mletter.cn/tech/kubernetes/install-etcd-ha/'>
+
+<link rel="stylesheet" href="https://blog.mletter.cn/scss/style.min.2c3f3a6a02fe235acfd19dc07e83848e5bd9f7fd12e5b755e3f9d0c92e1059be.css"><meta property='og:title' content='使用Kubeadm创建一个高可用的ETCD集群'>
+<meta property='og:description' content='默认情况下，kubeadm 在每个控制平面节点上运行一个本地 etcd 实例。也可以使用外部的 etcd 集群，并在不同的主机上提供 etcd 实例。 这两种方法的区别在 高可用拓扑的选项 页面中阐述。这个任务将指导你创建一个由三个成员组成的高可用外部 etcd 集群，该集群在创建过程中可被 kubeadm 使用。'>
+<meta property='og:url' content='https://blog.mletter.cn/tech/kubernetes/install-etcd-ha/'>
+<meta property='og:site_name' content='太阳可以是蓝色'>
+<meta property='og:type' content='article'><meta property='article:section' content='Posts' /><meta property='article:tag' content='kubernetes' /><meta property='article:tag' content='etcd' /><meta property='article:published_time' content='2023-02-26T00:00:00&#43;00:00'/><meta property='article:modified_time' content='2023-02-26T00:00:00&#43;00:00'/><meta property='og:image' content='https://img.linux.net.cn/data/attachment/album/201501/29/141718izklanww82qm888k.png' />
+<meta name="twitter:title" content="使用Kubeadm创建一个高可用的ETCD集群">
+<meta name="twitter:description" content="默认情况下，kubeadm 在每个控制平面节点上运行一个本地 etcd 实例。也可以使用外部的 etcd 集群，并在不同的主机上提供 etcd 实例。 这两种方法的区别在 高可用拓扑的选项 页面中阐述。这个任务将指导你创建一个由三个成员组成的高可用外部 etcd 集群，该集群在创建过程中可被 kubeadm 使用。"><meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content='https://img.linux.net.cn/data/attachment/album/201501/29/141718izklanww82qm888k.png' />
+    <link rel="shortcut icon" href="wechat.svg" />
+<style>
+  :root {
+       
+      --sys-font-family: -apple-system, "PingFang SC", Georgia, 'Nimbus Roman No9 L', 'Hiragino Sans GB', 'Noto Serif SC', 'Microsoft Yahei', 'WenQuanYi Micro Hei', 'ST Heiti', sans-serif;
+      --code-font-family: "JetBrains Mono", Menlo, Monaco, Consolas, "Courier New";
+      --article-font-family: -apple-system, "PingFang SC", var(--base-font-family);
+  }
+</style>
+
+
+
+
+
+
+<script src="https://blog.mletter.cn/view-image.min.js"></script>
+
+<script>
+  window.ViewImage && ViewImage.init('.article-content img');
+</script>
+
+
+
+<link rel="stylesheet" href="https://cdn.staticfile.net/highlight.js/11.9.0/styles/tokyo-night-dark.min.css">
+<script src="https://lf26-cdn-tos.bytecdntp.com/cdn/expire-1-M/highlight.js/11.4.0/highlight.min.js"></script>
+<script src="https://cdn.staticfile.net/highlight.js/11.9.0/es/languages/go.min.js"></script>
+
+<script>hljs.initHighlightingOnLoad();</script>
+<script>document.addEventListener('DOMContentLoaded', (event) => {document.querySelectorAll('pre code').forEach((el) => {hljs.highlightElement(el);});});</script>
+
+
+
+
+
+
+<script async src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+<script>
+    mermaid.init(undefined, '.language-mermaid');
+</script>
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="https://blog.mletter.cn/">
+                
+                    <img src="https://img14.360buyimg.com/ddimg/jfs/t1/77628/23/27254/26944/66bc1a36Fc596606a/d912965b8bba22af.jpg" width="300" height="300" class="site-logo" loading="lazy" alt="Avatar">
+                
+                </a>
+                
+                    <span class="emoji">🍥</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="https://blog.mletter.cn/">太阳可以是蓝色</a></h1>
+            <h2 class="site-description">Live and learn. 🌱</h2>
+        </div>
+    </header><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='https://blog.mletter.cn/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>搜索</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='https://blog.mletter.cn/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>首页</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='https://blog.mletter.cn/posts' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-inbox" width="24" height="24" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 4m0 2a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2z" /><path d="M4 13h3l3 3h4l3 -3h3" /></svg>
+                
+                <span>文章</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='https://blog.mletter.cn/archives' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>归档</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='https://mletter.cn' target="_blank">
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-health-recognition" width="24" height="24" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 8v-2a2 2 0 0 1 2 -2h2" /><path d="M4 16v2a2 2 0 0 0 2 2h2" /><path d="M16 4h2a2 2 0 0 1 2 2v2" /><path d="M16 20h2a2 2 0 0 0 2 -2v-2" /><path d="M8.603 9.61a2.04 2.04 0 0 1 2.912 0l.485 .39l.5 -.396a2.035 2.035 0 0 1 2.897 .007a2.104 2.104 0 0 1 0 2.949l-3.397 3.44l-3.397 -3.44a2.104 2.104 0 0 1 0 -2.95z" /></svg>
+                
+                <span>主页</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='https://pic.mletter.cn' target="_blank">
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-photo-cog" width="24" height="24" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M15 8h.01" /><path d="M12 21h-6a3 3 0 0 1 -3 -3v-12a3 3 0 0 1 3 -3h12a3 3 0 0 1 3 3v6" /><path d="M3 16l5 -5c.928 -.893 2.072 -.893 3 0l3 3" /><path d="M14 14l1 -1c.48 -.461 1.016 -.684 1.551 -.67" /><path d="M19.001 19m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" /><path d="M19.001 15.5v1.5" /><path d="M19.001 21v1.5" /><path d="M22.032 17.25l-1.299 .75" /><path d="M17.27 20l-1.3 .75" /><path d="M15.97 17.25l1.3 .75" /><path d="M20.733 20l1.3 .75" /></svg>
+                
+                <span>相册</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='https://blog.mletter.cn/friends' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>友联</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='https://blog.mletter.cn/about' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>关于</span>
+            </a>
+        </li>
+        
+
+        <div class="menu-bottom-section">
+                
+            
+            
+            
+                <li id="dark-mode-toggle">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                    <span>暗色模式</span>
+                </li>
+            
+        </div>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">目录</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ul>
+    <li><a href="#使用kubeadm创建一个高可用的etcd集群">使用Kubeadm创建一个高可用的Etcd集群</a></li>
+    <li><a href="#准备开始">准备开始</a>
+      <ul>
+        <li><a href="#将kubelet配置为etcd的服务启动管理器">将Kubelet配置为Etcd的服务启动管理器</a></li>
+        <li><a href="#为kubeadm创建配置文件">为Kubeadm创建配置文件</a></li>
+        <li><a href="#生成证书颁发机构">生成证书颁发机构</a></li>
+        <li><a href="#为每个成员创建证书">为每个成员创建证书</a></li>
+        <li><a href="#复制证书和-kubeadm-配置">复制证书和 kubeadm 配置</a></li>
+        <li><a href="#请检查证书文件是否都存在">请检查证书文件是否都存在</a></li>
+        <li><a href="#创建etcd的pod清单">创建Etcd的Pod清单</a></li>
+        <li><a href="#检查etcd的pod是否运行">检查Etcd的Pod是否运行</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="has-image main-article">
+    <header class="article-header">
+        <div class="article-image">
+            <a href="https://blog.mletter.cn/tech/kubernetes/install-etcd-ha/">
+                
+                    <img src="https://img.linux.net.cn/data/attachment/album/201501/29/141718izklanww82qm888k.png" loading="lazy" alt="Featured image of post 使用Kubeadm创建一个高可用的ETCD集群" />
+                
+            </a>
+        </div>
+    
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="https://blog.mletter.cn/categories/kubernetes/" >
+                Kubernetes
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="https://blog.mletter.cn/tech/kubernetes/install-etcd-ha/">使用Kubeadm创建一个高可用的ETCD集群</a>
+        </h2>
+    
+        
+        <h3 class="article-subtitle">
+            默认情况下，kubeadm 在每个控制平面节点上运行一个本地 etcd 实例。也可以使用外部的 etcd 集群，并在不同的主机上提供 etcd 实例。 这两种方法的区别在 高可用拓扑的选项 页面中阐述。这个任务将指导你创建一个由三个成员组成的高可用外部 etcd 集群，该集群在创建过程中可被 kubeadm 使用。
+        </h3>
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Feb 26, 2023</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    阅读时长: 3 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <h2 id="使用kubeadm创建一个高可用的etcd集群"></h>使用Kubeadm创建一个高可用的Etcd集群
+</h2><p>默认情况下，kubeadm 在每个控制平面节点上运行一个本地 etcd 实例。也可以使用外部的 etcd 集群，并在不同的主机上提供 etcd 实例。 这两种方法的区别在 高可用拓扑的选项 页面中阐述。</p>
+<p>这个任务将指导你创建一个由三个成员组成的高可用外部 etcd 集群，该集群在创建过程中可被 kubeadm 使用。</p>
+<h2 id="准备开始"></h>准备开始
+</h2><ul>
+<li>三个可以通过 2379 和 2380 端口相互通信的主机。本文档使用这些作为默认端口。不过，它们可以通过 kubeadm 的配置文件进行自定义。</li>
+<li>每个主机必须安装 systemd 和 bash 兼容的 shell。</li>
+<li>每台主机必须安装<code>有容器运行时</code>、<code>kubelet</code> 和 <code>kubeadm</code></li>
+<li>每个主机都应该能够访问 Kubernetes 容器镜像仓库 (<a class="link" href="http://registry.k8s.io/"  target="_blank" rel="noopener"
+    >registry.k8s.io</a>)， 或者使用 kubeadm config images list/pull 列出/拉取所需的 etcd 镜像。 本指南将把 etcd 实例设置为由 kubelet 管理的静态 Pod。</li>
+<li>一些可以用来在主机间复制文件的基础设施。例如 ssh 和 scp 就可以满足需求。</li>
+</ul>
+<blockquote>
+<p>本次容器运行时采用<code>Containerd</code>作为Runtime</p></blockquote>
+<h3 id="将kubelet配置为etcd的服务启动管理器"></h>将Kubelet配置为Etcd的服务启动管理器
+</h3><blockquote>
+<p>你必须在要运行 etcd 的所有主机上执行此操作。</p></blockquote>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">cat <span class="s">&lt;&lt; EOF &gt; /usr/lib/systemd/system/kubelet.service.d/20-etcd-service-manager.conf 
+</span></span></span><span class="line"><span class="cl"><span class="s">[Service]
+</span></span></span><span class="line"><span class="cl"><span class="s">ExecStart=
+</span></span></span><span class="line"><span class="cl"><span class="s">ExecStart=/usr/bin/kubelet --address=127.0.0.1 --pod-manifest-path=/etc/kubernetes/manifests --cgroup-driver=systemd  --container-runtime=remote --container-runtime-endpoint=unix:///run/containerd/containerd.sock
+</span></span></span><span class="line"><span class="cl"><span class="s">Restart=always
+</span></span></span><span class="line"><span class="cl"><span class="s">EOF</span>
+</span></span></code></pre></div><p>启动kubelet</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">systemctl daemon-reload
+</span></span><span class="line"><span class="cl">systemctl restart kubelet
+</span></span></code></pre></div><blockquote>
+<p>注意: 请执行完毕后务必确保<code>kubelet</code>处于<code>running</code>状态。</p></blockquote>
+<h3 id="为kubeadm创建配置文件"></h>为Kubeadm创建配置文件
+</h3><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 使用你的主机 IP 替换 HOST0、HOST1 和 HOST2 的 IP 地址</span>
+</span></span><span class="line"><span class="cl"><span class="nb">export</span> <span class="nv">HOST0</span><span class="o">=</span>10.1.6.48
+</span></span><span class="line"><span class="cl"><span class="nb">export</span> <span class="nv">HOST1</span><span class="o">=</span>10.1.6.24
+</span></span><span class="line"><span class="cl"><span class="nb">export</span> <span class="nv">HOST2</span><span class="o">=</span>10.1.6.45
+</span></span><span class="line"><span class="cl"><span class="c1"># 使用你的主机名更新 NAME0、NAME1 和 NAME2</span>
+</span></span><span class="line"><span class="cl"><span class="nb">export</span> <span class="nv">NAME0</span><span class="o">=</span><span class="s2">&#34;containerd-master1&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="nb">export</span> <span class="nv">NAME1</span><span class="o">=</span><span class="s2">&#34;containerd-master2&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="nb">export</span> <span class="nv">NAME2</span><span class="o">=</span><span class="s2">&#34;containerd-master3&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 创建临时目录来存储将被分发到其它主机上的文件</span>
+</span></span><span class="line"><span class="cl">mkdir -p /tmp/<span class="si">${</span><span class="nv">HOST0</span><span class="si">}</span>/ /tmp/<span class="si">${</span><span class="nv">HOST1</span><span class="si">}</span>/ /tmp/<span class="si">${</span><span class="nv">HOST2</span><span class="si">}</span>/
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nv">HOSTS</span><span class="o">=(</span><span class="si">${</span><span class="nv">HOST0</span><span class="si">}</span> <span class="si">${</span><span class="nv">HOST1</span><span class="si">}</span> <span class="si">${</span><span class="nv">HOST2</span><span class="si">}</span><span class="o">)</span>
+</span></span><span class="line"><span class="cl"><span class="nv">NAMES</span><span class="o">=(</span><span class="si">${</span><span class="nv">NAME0</span><span class="si">}</span> <span class="si">${</span><span class="nv">NAME1</span><span class="si">}</span> <span class="si">${</span><span class="nv">NAME2</span><span class="si">}</span><span class="o">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">for</span> i in <span class="s2">&#34;</span><span class="si">${</span><span class="p">!HOSTS[@]</span><span class="si">}</span><span class="s2">&#34;</span><span class="p">;</span> <span class="k">do</span>
+</span></span><span class="line"><span class="cl"><span class="nv">HOST</span><span class="o">=</span><span class="si">${</span><span class="nv">HOSTS</span><span class="p">[</span><span class="nv">$i</span><span class="p">]</span><span class="si">}</span>
+</span></span><span class="line"><span class="cl"><span class="nv">NAME</span><span class="o">=</span><span class="si">${</span><span class="nv">NAMES</span><span class="p">[</span><span class="nv">$i</span><span class="p">]</span><span class="si">}</span>
+</span></span><span class="line"><span class="cl">cat <span class="s">&lt;&lt; EOF &gt; /tmp/${HOST}/kubeadmcfg.yaml
+</span></span></span><span class="line"><span class="cl"><span class="s">---
+</span></span></span><span class="line"><span class="cl"><span class="s">apiVersion: &#34;kubeadm.k8s.io/v1beta3&#34;
+</span></span></span><span class="line"><span class="cl"><span class="s">kind: InitConfiguration
+</span></span></span><span class="line"><span class="cl"><span class="s">nodeRegistration:
+</span></span></span><span class="line"><span class="cl"><span class="s">    name: ${NAME}
+</span></span></span><span class="line"><span class="cl"><span class="s">localAPIEndpoint:
+</span></span></span><span class="line"><span class="cl"><span class="s">    advertiseAddress: ${HOST}
+</span></span></span><span class="line"><span class="cl"><span class="s">---
+</span></span></span><span class="line"><span class="cl"><span class="s">apiVersion: &#34;kubeadm.k8s.io/v1beta3&#34;
+</span></span></span><span class="line"><span class="cl"><span class="s">kind: ClusterConfiguration
+</span></span></span><span class="line"><span class="cl"><span class="s">etcd:
+</span></span></span><span class="line"><span class="cl"><span class="s">    local:
+</span></span></span><span class="line"><span class="cl"><span class="s">        dataDir: /var/lib/etcds
+</span></span></span><span class="line"><span class="cl"><span class="s">        serverCertSANs:
+</span></span></span><span class="line"><span class="cl"><span class="s">        - &#34;${HOST}&#34;
+</span></span></span><span class="line"><span class="cl"><span class="s">        peerCertSANs:
+</span></span></span><span class="line"><span class="cl"><span class="s">        - &#34;${HOST}&#34;
+</span></span></span><span class="line"><span class="cl"><span class="s">        extraArgs:
+</span></span></span><span class="line"><span class="cl"><span class="s">            initial-cluster: ${NAMES[0]}=https://${HOSTS[0]}:2380,${NAMES[1]}=https://${HOSTS[1]}:2380,${NAMES[2]}=https://${HOSTS[2]}:2380
+</span></span></span><span class="line"><span class="cl"><span class="s">            initial-cluster-state: new
+</span></span></span><span class="line"><span class="cl"><span class="s">            name: ${NAME}
+</span></span></span><span class="line"><span class="cl"><span class="s">            listen-peer-urls: https://${HOST}:2380
+</span></span></span><span class="line"><span class="cl"><span class="s">            listen-client-urls: https://${HOST}:2379
+</span></span></span><span class="line"><span class="cl"><span class="s">            advertise-client-urls: https://${HOST}:2379
+</span></span></span><span class="line"><span class="cl"><span class="s">            initial-advertise-peer-urls: https://${HOST}:2380
+</span></span></span><span class="line"><span class="cl"><span class="s">imageRepository: registry.aliyuncs.com/google_containers
+</span></span></span><span class="line"><span class="cl"><span class="s">EOF</span>
+</span></span><span class="line"><span class="cl"><span class="k">done</span>
+</span></span></code></pre></div><h3 id="生成证书颁发机构"></h>生成证书颁发机构
+</h3><p>如果你还没有 CA，则在 $HOST0（你为 kubeadm 生成配置文件的位置）上运行此命令。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">kubeadm init phase certs etcd-ca
+</span></span></code></pre></div><ul>
+<li>这一操作将会生成
+<ul>
+<li><code>/etc/kubernetes/pki/etcd/ca.crt</code></li>
+<li><code>/etc/kubernetes/pki/etcd/ca.key</code></li>
+</ul>
+</li>
+</ul>
+<h3 id="为每个成员创建证书"></h>为每个成员创建证书
+</h3><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">kubeadm init phase certs etcd-server --config<span class="o">=</span>/tmp/<span class="si">${</span><span class="nv">HOST2</span><span class="si">}</span>/kubeadmcfg.yaml
+</span></span><span class="line"><span class="cl">kubeadm init phase certs etcd-peer --config<span class="o">=</span>/tmp/<span class="si">${</span><span class="nv">HOST2</span><span class="si">}</span>/kubeadmcfg.yaml
+</span></span><span class="line"><span class="cl">kubeadm init phase certs etcd-healthcheck-client --config<span class="o">=</span>/tmp/<span class="si">${</span><span class="nv">HOST2</span><span class="si">}</span>/kubeadmcfg.yaml
+</span></span><span class="line"><span class="cl">kubeadm init phase certs apiserver-etcd-client --config<span class="o">=</span>/tmp/<span class="si">${</span><span class="nv">HOST2</span><span class="si">}</span>/kubeadmcfg.yaml
+</span></span><span class="line"><span class="cl">cp -R /etc/kubernetes/pki /tmp/<span class="si">${</span><span class="nv">HOST2</span><span class="si">}</span>/
+</span></span><span class="line"><span class="cl"><span class="c1"># 清理不可重复使用的证书</span>
+</span></span><span class="line"><span class="cl">find /etc/kubernetes/pki -not -name ca.crt -not -name ca.key -type f -delete
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">kubeadm init phase certs etcd-server --config<span class="o">=</span>/tmp/<span class="si">${</span><span class="nv">HOST1</span><span class="si">}</span>/kubeadmcfg.yaml
+</span></span><span class="line"><span class="cl">kubeadm init phase certs etcd-peer --config<span class="o">=</span>/tmp/<span class="si">${</span><span class="nv">HOST1</span><span class="si">}</span>/kubeadmcfg.yaml
+</span></span><span class="line"><span class="cl">kubeadm init phase certs etcd-healthcheck-client --config<span class="o">=</span>/tmp/<span class="si">${</span><span class="nv">HOST1</span><span class="si">}</span>/kubeadmcfg.yaml
+</span></span><span class="line"><span class="cl">kubeadm init phase certs apiserver-etcd-client --config<span class="o">=</span>/tmp/<span class="si">${</span><span class="nv">HOST1</span><span class="si">}</span>/kubeadmcfg.yaml
+</span></span><span class="line"><span class="cl">cp -R /etc/kubernetes/pki /tmp/<span class="si">${</span><span class="nv">HOST1</span><span class="si">}</span>/
+</span></span><span class="line"><span class="cl">find /etc/kubernetes/pki -not -name ca.crt -not -name ca.key -type f -delete
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># HOST0不需要进行移动</span>
+</span></span><span class="line"><span class="cl">kubeadm init phase certs etcd-server --config<span class="o">=</span>/tmp/<span class="si">${</span><span class="nv">HOST0</span><span class="si">}</span>/kubeadmcfg.yaml
+</span></span><span class="line"><span class="cl">kubeadm init phase certs etcd-peer --config<span class="o">=</span>/tmp/<span class="si">${</span><span class="nv">HOST0</span><span class="si">}</span>/kubeadmcfg.yaml
+</span></span><span class="line"><span class="cl">kubeadm init phase certs etcd-healthcheck-client --config<span class="o">=</span>/tmp/<span class="si">${</span><span class="nv">HOST0</span><span class="si">}</span>/kubeadmcfg.yaml
+</span></span><span class="line"><span class="cl">kubeadm init phase certs apiserver-etcd-client --config<span class="o">=</span>/tmp/<span class="si">${</span><span class="nv">HOST0</span><span class="si">}</span>/kubeadmcfg.yaml
+</span></span></code></pre></div><h3 id="复制证书和-kubeadm-配置"></h>复制证书和 kubeadm 配置
+</h3><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">scp -r /tmp/<span class="si">${</span><span class="nv">HOST1</span><span class="si">}</span>/* root@<span class="si">${</span><span class="nv">HOST1</span><span class="si">}</span>:
+</span></span><span class="line"><span class="cl">scp -r /tmp/<span class="si">${</span><span class="nv">HOST2</span><span class="si">}</span>/* root@<span class="si">${</span><span class="nv">HOST2</span><span class="si">}</span>:
+</span></span><span class="line"><span class="cl">chown -R root:root pki/
+</span></span><span class="line"><span class="cl">mv pki /etc/kubernetes/
+</span></span></code></pre></div><h3 id="请检查证书文件是否都存在"></h>请检查证书文件是否都存在
+</h3><p>检查<code>$HOST0</code></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">[</span>root@containerd-master1 ~<span class="o">]</span><span class="c1"># tree /etc/kubernetes/pki/</span>
+</span></span><span class="line"><span class="cl">/etc/kubernetes/pki/
+</span></span><span class="line"><span class="cl">├── apiserver-etcd-client.crt
+</span></span><span class="line"><span class="cl">├── apiserver-etcd-client.key
+</span></span><span class="line"><span class="cl">└── etcd
+</span></span><span class="line"><span class="cl">    ├── ca.crt
+</span></span><span class="line"><span class="cl">    ├── ca.key
+</span></span><span class="line"><span class="cl">    ├── healthcheck-client.crt
+</span></span><span class="line"><span class="cl">    ├── healthcheck-client.key
+</span></span><span class="line"><span class="cl">    ├── peer.crt
+</span></span><span class="line"><span class="cl">    ├── peer.key
+</span></span><span class="line"><span class="cl">    ├── server.crt
+</span></span><span class="line"><span class="cl">    └── server.key
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="m">1</span> directory, <span class="m">10</span> files
+</span></span></code></pre></div><p>检查<code>$HOST1</code></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">[</span>root@containerd-master2 ~<span class="o">]</span><span class="c1"># tree /etc/kubernetes/pki/</span>
+</span></span><span class="line"><span class="cl">/etc/kubernetes/pki/
+</span></span><span class="line"><span class="cl">├── apiserver-etcd-client.crt
+</span></span><span class="line"><span class="cl">├── apiserver-etcd-client.key
+</span></span><span class="line"><span class="cl">└── etcd
+</span></span><span class="line"><span class="cl">    ├── ca.crt
+</span></span><span class="line"><span class="cl">    ├── healthcheck-client.crt
+</span></span><span class="line"><span class="cl">    ├── healthcheck-client.key
+</span></span><span class="line"><span class="cl">    ├── peer.crt
+</span></span><span class="line"><span class="cl">    ├── peer.key
+</span></span><span class="line"><span class="cl">    ├── server.crt
+</span></span><span class="line"><span class="cl">    └── server.key
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="m">1</span> directory, <span class="m">9</span> files
+</span></span></code></pre></div><p>检查<code>$HOST2</code></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">[</span>root@containerd-master3 ~<span class="o">]</span><span class="c1"># tree /etc/kubernetes/pki/</span>
+</span></span><span class="line"><span class="cl">/etc/kubernetes/pki/
+</span></span><span class="line"><span class="cl">├── apiserver-etcd-client.crt
+</span></span><span class="line"><span class="cl">├── apiserver-etcd-client.key
+</span></span><span class="line"><span class="cl">└── etcd
+</span></span><span class="line"><span class="cl">    ├── ca.crt
+</span></span><span class="line"><span class="cl">    ├── healthcheck-client.crt
+</span></span><span class="line"><span class="cl">    ├── healthcheck-client.key
+</span></span><span class="line"><span class="cl">    ├── peer.crt
+</span></span><span class="line"><span class="cl">    ├── peer.key
+</span></span><span class="line"><span class="cl">    ├── server.crt
+</span></span><span class="line"><span class="cl">    └── server.key
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="m">1</span> directory, <span class="m">9</span> files
+</span></span></code></pre></div><h3 id="创建etcd的pod清单"></h>创建Etcd的Pod清单
+</h3><p>请在<code>$HOST0</code>进行执行</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">kubeadm init phase etcd <span class="nb">local</span> --config<span class="o">=</span>/tmp/<span class="si">${</span><span class="nv">HOST0</span><span class="si">}</span>/kubeadmcfg.yaml
+</span></span></code></pre></div><p>请在<code>$HOST1</code>进行执行</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">kubeadm init phase etcd <span class="nb">local</span> --config<span class="o">=</span><span class="nv">$HOME</span>/kubeadmcfg.yaml
+</span></span></code></pre></div><p>请在<code>$HOST2</code>进行执行</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">kubeadm init phase etcd <span class="nb">local</span> --config<span class="o">=</span><span class="nv">$HOME</span>/kubeadmcfg.yaml
+</span></span></code></pre></div><h3 id="检查etcd的pod是否运行"></h>检查Etcd的Pod是否运行
+</h3><ul>
+<li>三台Etcd主机全部使用<code>crictl ps -a </code>进行查看EtcdPod是否处于<code>running</code>状态</li>
+</ul>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">[</span>root@containerd-master1 ~<span class="o">]</span><span class="c1"># crictl ps -a</span>
+</span></span><span class="line"><span class="cl">CONTAINER           IMAGE               CREATED             STATE               NAME                ATTEMPT             POD ID              POD
+</span></span><span class="line"><span class="cl">0a183925d2542       <span class="m">0048118155842</span>       <span class="m">52</span> seconds ago      Running     
+</span></span></code></pre></div>
+</section>
+
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="https://blog.mletter.cn/tags/kubernetes/">Kubernetes</a>
+        
+            <a href="https://blog.mletter.cn/tags/etcd/">Etcd</a>
+        
+    </section>
+
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">相关文章</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="has-image">
+    <a href="https://blog.mletter.cn/tech/kubernetes/sealos/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://img10.360buyimg.com/ddimg/jfs/t1/244560/31/7618/14121/661de12eFfa7f6ba5/0239fa873abb0bd5.jpg" loading="lazy" data-key="" data-hash="https://img10.360buyimg.com/ddimg/jfs/t1/244560/31/7618/14121/661de12eFfa7f6ba5/0239fa873abb0bd5.jpg"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">基于SealOS部署高可用的kubernetes集群</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="https://blog.mletter.cn/tech/kubernetes/install-efk/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://img14.360buyimg.com/ddimg/jfs/t1/177175/31/35833/30306/64cb08eeF5ba90f46/1da6311bbbec8921.jpg" loading="lazy" data-key="" data-hash="https://img14.360buyimg.com/ddimg/jfs/t1/177175/31/35833/30306/64cb08eeF5ba90f46/1da6311bbbec8921.jpg"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">kubernetes基于EFK的日志落地实现</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="https://blog.mletter.cn/tech/kubernetes/architectural-design/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://img13.360buyimg.com/ddimg/jfs/t1/164078/6/34165/22231/654ba81fFe1bf21d7/9d02bd791b795b3b.jpg" loading="lazy" data-key="" data-hash="https://img13.360buyimg.com/ddimg/jfs/t1/164078/6/34165/22231/654ba81fFe1bf21d7/9d02bd791b795b3b.jpg"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Kubernetes的架构设计和对象属性基本理解</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="https://blog.mletter.cn/tech/kubernetes/openebs/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://openebs.io/docs/assets/images/control-plane-overview-93c59878e3356a11f03029dd0fc1cd6b.svg" loading="lazy" data-key="" data-hash="https://openebs.io/docs/assets/images/control-plane-overview-93c59878e3356a11f03029dd0fc1cd6b.svg"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">OpenEBS存储的使用</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="https://blog.mletter.cn/tech/kubernetes/traefik/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://doc.traefik.io/traefik/assets/img/traefik-architecture.png" loading="lazy" data-key="" data-hash="https://doc.traefik.io/traefik/assets/img/traefik-architecture.png"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Traekfik基础使用指南</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    <script src="//lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/twikoo/1.4.18/twikoo.all.min.js"></script>
+<div id="tcomment"></div>
+<style>
+    .twikoo {
+        background-color: var(--card-background);
+        border-radius: var(--card-border-radius);
+        box-shadow: var(--shadow-l1);
+        padding: var(--card-padding);
+    }
+    :root[data-scheme="dark"] {
+        --twikoo-body-text-color-main: rgba(255, 255, 255, 0.9);
+        --twikoo-body-text-color: rgba(255, 255, 255, 0.7);
+    }
+    .twikoo .el-input-group__prepend,
+    .twikoo .tk-action-icon,
+    .twikoo .tk-submit-action-icon,
+    .twikoo .tk-time,
+    .twikoo .tk-comments-no,
+    .twikoo .tk-comments-count {
+        color: var(--twikoo-body-text-color);
+    }
+    .twikoo .el-input__inner,
+    .twikoo .el-textarea__inner,
+    .twikoo .tk-preview-container,
+    .twikoo .tk-content,
+    .twikoo .tk-nick,
+    .twikoo .tk-send {
+        color: var(--twikoo-body-text-color-main);
+    }
+    .twikoo .el-button{
+        color: var(--twikoo-body-text-color)!important;
+    }
+    .twikoo .el-input__count {
+        color: var(--twikoo-body-text-color) !important;
+    }
+    .OwO .OwO-body {
+        background-color: var(--body-background) !important;
+        color: var(--body-text-color) !important;
+    }
+</style><script>
+    twikoo.init({
+        envId: 'https:\/\/twikoo.mletter.cn\/',
+        el: '#tcomment',lang: 'zh-cn',})
+</script>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2020 - 
+        
+        2025 Live and learn. 🌱
+    </section>
+    
+    <section class="powerby">
+        Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo By Netlify</a> <br />
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.21.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://lf26-cdn-tos.bytecdntp.com/cdn/expire-1-M/photoswipe/4.1.3/photoswipe.min.js"crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://lf26-cdn-tos.bytecdntp.com/cdn/expire-1-M/photoswipe/4.1.3/photoswipe-ui-default.min.js"crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/photoswipe/4.1.3/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://lf26-cdn-tos.bytecdntp.com/cdn/expire-1-M/photoswipe/4.1.3/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://lf9-cdn-tos.bytecdntp.com/cdn/expire-1-M/vibrant.js/1.0.0/Vibrant.min.js"crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="https://blog.mletter.cn/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+<script src="https://lf26-cdn-tos.bytecdntp.com/cdn/expire-1-M/nprogress/0.2.0/nprogress.min.js" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://lf26-cdn-tos.bytecdntp.com/cdn/expire-1-M/nprogress/0.2.0/nprogress.css" crossorigin="anonymous" />
+<script>
+    NProgress.start();
+    document.addEventListener("readystatechange", () => {
+        if (document.readyState === "interactive") NProgress.inc(0.8);
+        if (document.readyState === "complete") NProgress.done();
+    });
+</script>
+    </body>
+</html>
+>>>>>>> e6c11e7684b5a835a7809ddc8609bc9f39cdf2c5

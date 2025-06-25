@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!doctype html><html lang=zh dir=auto><head><meta charset=utf-8><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=robots content="index, follow"><title>OpenEBS存储的使用 | Heartbeat Diary</title>
 <meta name=keywords content="kubernetes"><meta name=description content="OpenEBS存储使用
 OpenEBS 是一种模拟了 AWS 的 EBS、阿里云的云盘等块存储实现的基于容器的存储开源软件。OpenEBS 是一种基于 CAS(Container Attached Storage) 理念的容器解决方案，其核心理念是存储和应用一样采用微服务架构，并通过 Kubernetes 来做资源编排。其架构实现上，每个卷的 Controller 都是一个单独的 Pod，且与应用 Pod 在同一个节点，卷的数据使用多个 Pod 进行管理。
@@ -155,3 +156,971 @@ spec:
 <a href=https://gohugo.io/ rel="noopener noreferrer" target=_blank>Hugo</a> &
         <a href=https://github.com/adityatelange/hugo-PaperMod/ rel=noopener target=_blank>PaperMod</a></span></footer><a href=#top aria-label="go to top" title="Go to Top (Alt + G)" class=top-link id=top-link accesskey=g><svg viewBox="0 0 12 6" fill="currentcolor"><path d="M12 6H0l6-6z"/></svg>
 </a><script>let menu=document.getElementById("menu");menu&&(menu.scrollLeft=localStorage.getItem("menu-scroll-position"),menu.onscroll=function(){localStorage.setItem("menu-scroll-position",menu.scrollLeft)}),document.querySelectorAll('a[href^="#"]').forEach(e=>{e.addEventListener("click",function(e){e.preventDefault();var t=this.getAttribute("href").substr(1);window.matchMedia("(prefers-reduced-motion: reduce)").matches?document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView():document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView({behavior:"smooth"}),t==="top"?history.replaceState(null,null," "):history.pushState(null,null,`#${t}`)})})</script><script>var mybutton=document.getElementById("top-link");window.onscroll=function(){document.body.scrollTop>800||document.documentElement.scrollTop>800?(mybutton.style.visibility="visible",mybutton.style.opacity="1"):(mybutton.style.visibility="hidden",mybutton.style.opacity="0")}</script><script>document.getElementById("theme-toggle").addEventListener("click",()=>{document.body.className.includes("dark")?(document.body.classList.remove("dark"),localStorage.setItem("pref-theme","light")):(document.body.classList.add("dark"),localStorage.setItem("pref-theme","dark"))})</script></body></html>
+=======
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='OpenEBS存储使用 OpenEBS 是一种模拟了 AWS 的 EBS、阿里云的云盘等块存储实现的基于容器的存储开源软件。OpenEBS 是一种基于 CAS(Container Attached Storage) 理念的容器解决方案，其核心理念是存储和应用一样采用微服务架构，并通过 Kubernetes 来做资源编排。其架构实现上，每个卷的 Controller 都是一个单独的 Pod，且与应用 Pod 在同一个节点，卷的数据使用多个 Pod 进行管理。
+'>
+<title>OpenEBS存储的使用</title>
+
+<link rel='canonical' href='https://blog.mletter.cn/tech/kubernetes/openebs/'>
+
+<link rel="stylesheet" href="https://blog.mletter.cn/scss/style.min.2c3f3a6a02fe235acfd19dc07e83848e5bd9f7fd12e5b755e3f9d0c92e1059be.css"><meta property='og:title' content='OpenEBS存储的使用'>
+<meta property='og:description' content='OpenEBS存储使用 OpenEBS 是一种模拟了 AWS 的 EBS、阿里云的云盘等块存储实现的基于容器的存储开源软件。OpenEBS 是一种基于 CAS(Container Attached Storage) 理念的容器解决方案，其核心理念是存储和应用一样采用微服务架构，并通过 Kubernetes 来做资源编排。其架构实现上，每个卷的 Controller 都是一个单独的 Pod，且与应用 Pod 在同一个节点，卷的数据使用多个 Pod 进行管理。
+'>
+<meta property='og:url' content='https://blog.mletter.cn/tech/kubernetes/openebs/'>
+<meta property='og:site_name' content='太阳可以是蓝色'>
+<meta property='og:type' content='article'><meta property='article:section' content='Posts' /><meta property='article:tag' content='kubernetes' /><meta property='article:published_time' content='2023-05-14T00:00:00&#43;00:00'/><meta property='article:modified_time' content='2023-05-14T00:00:00&#43;00:00'/><meta property='og:image' content='https://openebs.io/docs/assets/images/control-plane-overview-93c59878e3356a11f03029dd0fc1cd6b.svg' />
+<meta name="twitter:title" content="OpenEBS存储的使用">
+<meta name="twitter:description" content="OpenEBS存储使用 OpenEBS 是一种模拟了 AWS 的 EBS、阿里云的云盘等块存储实现的基于容器的存储开源软件。OpenEBS 是一种基于 CAS(Container Attached Storage) 理念的容器解决方案，其核心理念是存储和应用一样采用微服务架构，并通过 Kubernetes 来做资源编排。其架构实现上，每个卷的 Controller 都是一个单独的 Pod，且与应用 Pod 在同一个节点，卷的数据使用多个 Pod 进行管理。
+"><meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content='https://openebs.io/docs/assets/images/control-plane-overview-93c59878e3356a11f03029dd0fc1cd6b.svg' />
+    <link rel="shortcut icon" href="wechat.svg" />
+<style>
+  :root {
+       
+      --sys-font-family: -apple-system, "PingFang SC", Georgia, 'Nimbus Roman No9 L', 'Hiragino Sans GB', 'Noto Serif SC', 'Microsoft Yahei', 'WenQuanYi Micro Hei', 'ST Heiti', sans-serif;
+      --code-font-family: "JetBrains Mono", Menlo, Monaco, Consolas, "Courier New";
+      --article-font-family: -apple-system, "PingFang SC", var(--base-font-family);
+  }
+</style>
+
+
+
+
+
+
+<script src="https://blog.mletter.cn/view-image.min.js"></script>
+
+<script>
+  window.ViewImage && ViewImage.init('.article-content img');
+</script>
+
+
+
+<link rel="stylesheet" href="https://cdn.staticfile.net/highlight.js/11.9.0/styles/tokyo-night-dark.min.css">
+<script src="https://lf26-cdn-tos.bytecdntp.com/cdn/expire-1-M/highlight.js/11.4.0/highlight.min.js"></script>
+<script src="https://cdn.staticfile.net/highlight.js/11.9.0/es/languages/go.min.js"></script>
+
+<script>hljs.initHighlightingOnLoad();</script>
+<script>document.addEventListener('DOMContentLoaded', (event) => {document.querySelectorAll('pre code').forEach((el) => {hljs.highlightElement(el);});});</script>
+
+
+
+
+
+
+<script async src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+<script>
+    mermaid.init(undefined, '.language-mermaid');
+</script>
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="https://blog.mletter.cn/">
+                
+                    <img src="https://img14.360buyimg.com/ddimg/jfs/t1/77628/23/27254/26944/66bc1a36Fc596606a/d912965b8bba22af.jpg" width="300" height="300" class="site-logo" loading="lazy" alt="Avatar">
+                
+                </a>
+                
+                    <span class="emoji">🍥</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="https://blog.mletter.cn/">太阳可以是蓝色</a></h1>
+            <h2 class="site-description">Live and learn. 🌱</h2>
+        </div>
+    </header><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='https://blog.mletter.cn/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>搜索</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='https://blog.mletter.cn/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>首页</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='https://blog.mletter.cn/posts' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-inbox" width="24" height="24" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 4m0 2a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2z" /><path d="M4 13h3l3 3h4l3 -3h3" /></svg>
+                
+                <span>文章</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='https://blog.mletter.cn/archives' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>归档</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='https://mletter.cn' target="_blank">
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-health-recognition" width="24" height="24" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 8v-2a2 2 0 0 1 2 -2h2" /><path d="M4 16v2a2 2 0 0 0 2 2h2" /><path d="M16 4h2a2 2 0 0 1 2 2v2" /><path d="M16 20h2a2 2 0 0 0 2 -2v-2" /><path d="M8.603 9.61a2.04 2.04 0 0 1 2.912 0l.485 .39l.5 -.396a2.035 2.035 0 0 1 2.897 .007a2.104 2.104 0 0 1 0 2.949l-3.397 3.44l-3.397 -3.44a2.104 2.104 0 0 1 0 -2.95z" /></svg>
+                
+                <span>主页</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='https://pic.mletter.cn' target="_blank">
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-photo-cog" width="24" height="24" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M15 8h.01" /><path d="M12 21h-6a3 3 0 0 1 -3 -3v-12a3 3 0 0 1 3 -3h12a3 3 0 0 1 3 3v6" /><path d="M3 16l5 -5c.928 -.893 2.072 -.893 3 0l3 3" /><path d="M14 14l1 -1c.48 -.461 1.016 -.684 1.551 -.67" /><path d="M19.001 19m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" /><path d="M19.001 15.5v1.5" /><path d="M19.001 21v1.5" /><path d="M22.032 17.25l-1.299 .75" /><path d="M17.27 20l-1.3 .75" /><path d="M15.97 17.25l1.3 .75" /><path d="M20.733 20l1.3 .75" /></svg>
+                
+                <span>相册</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='https://blog.mletter.cn/friends' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>友联</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='https://blog.mletter.cn/about' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>关于</span>
+            </a>
+        </li>
+        
+
+        <div class="menu-bottom-section">
+                
+            
+            
+            
+                <li id="dark-mode-toggle">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                    <span>暗色模式</span>
+                </li>
+            
+        </div>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">目录</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ul>
+    <li><a href="#控制平面">控制平面</a></li>
+    <li><a href="#openebs-local-pv">OpenEBS Local Pv</a></li>
+    <li><a href="#节点磁盘管理器ndm">节点磁盘管理器(NDM)</a></li>
+    <li><a href="#启用openebs">启用OpenEBS</a>
+      <ul>
+        <li><a href="#安装openebs">安装OpenEBS</a></li>
+      </ul>
+    </li>
+    <li><a href="#修改openebs的hostpath默认存储">修改OpenEBS的HostPath默认存储</a></li>
+  </ul>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="has-image main-article">
+    <header class="article-header">
+        <div class="article-image">
+            <a href="https://blog.mletter.cn/tech/kubernetes/openebs/">
+                
+                    <img src="https://openebs.io/docs/assets/images/control-plane-overview-93c59878e3356a11f03029dd0fc1cd6b.svg" loading="lazy" alt="Featured image of post OpenEBS存储的使用" />
+                
+            </a>
+        </div>
+    
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="https://blog.mletter.cn/categories/kubernetes/" >
+                Kubernetes
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="https://blog.mletter.cn/tech/kubernetes/openebs/">OpenEBS存储的使用</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">May 14, 2023</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    阅读时长: 5 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <h1 id="openebs存储使用"></h>OpenEBS存储使用
+</h1><p><a class="link" href="https://openebs.io/"  target="_blank" rel="noopener"
+    >OpenEBS</a> 是一种模拟了 AWS 的 EBS、阿里云的云盘等块存储实现的基于容器的存储开源软件。OpenEBS 是一种基于 CAS(Container Attached Storage) 理念的容器解决方案，其核心理念是存储和应用一样采用微服务架构，并通过 Kubernetes 来做资源编排。其架构实现上，每个卷的 Controller 都是一个单独的 Pod，且与应用 Pod 在同一个节点，卷的数据使用多个 Pod 进行管理。</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <picture>
+  <img class="img-fluid" src="https://openebs.io/docs/assets/images/control-plane-overview-93c59878e3356a11f03029dd0fc1cd6b.svg" alt="openEBS组件" loading="lazy" />
+</picture>
+</p>
+<p>OpenEBS 有很多组件，可以分为以下几类：</p>
+<ul>
+<li>控制平面组件 - 管理 OpenEBS 卷容器，通常会用到容器编排软件的功能</li>
+<li>数据平面组件 - 为应用程序提供数据存储，包含 Jiva 和 cStor 两个存储后端</li>
+<li>节点磁盘管理器 - 发现、监控和管理连接到 Kubernetes 节点的媒体</li>
+<li>与云原生工具的整合 - 与 Prometheus、Grafana、Fluentd 和 Jaeger 进行整合。</li>
+</ul>
+<h2 id="控制平面"></h>控制平面
+</h2><p>OpenEBS 上下文中的控制平面是指部署在集群中的一组工具或组件，它们负责：</p>
+<ul>
+<li>管理 kubernetes 工作节点上可用的存储</li>
+<li>配置和管理数据引擎</li>
+<li>与 CSI 接口以管理卷的生命周期</li>
+<li>与 CSI 和其他工具进行接口，执行快照、克隆、调整大小、备份、恢复等操作。</li>
+<li>集成到其他工具中，如 Prometheus/Grafana 以进行遥测和监控</li>
+<li>集成到其他工具中进行调试、故障排除或日志管理</li>
+</ul>
+<p>OpenEBS 控制平面由一组微服务组成，这些微服务本身由 Kubernetes 管理，使 OpenEBS 真正成为 Kubernetes 原生的。由 OpenEBS 控制平面管理的配置被保存为 Kubernetes 自定义资源。控制平面的功能可以分解为以下各个阶段：</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <picture>
+  <img class="img-fluid" src="https://openebs.io/docs/assets/images/openebs-control-plane-ed2fef338de5f1b10298fc5f5c0f4e3f.svg" alt="控制平面组件" loading="lazy" />
+</picture>
+</p>
+<p>OpenEBS 提供了一个动态供应器，它是标准的 Kubernetes 外部存储插件。OpenEBS PV 供应器的主要任务是向应用 Pod 发起卷供应，并实现Kubernetes 的 PV 规范。</p>
+<p><code>m-apiserver</code> 暴露了存储 REST API，并承担了大部分的卷策略处理和管理。</p>
+<p>控制平面和数据平面之间的连接采用 Kubernetes sidecar 模式。有如下几个场景，控制平面需要与数据平面进行通信。</p>
+<ul>
+<li>对于 IOPS、吞吐量、延迟等卷统计 - 通过 <code>volume-exporter</code> sidecar实现</li>
+<li>用于通过卷控制器 Pod 执行卷策略，以及通过卷复制 Pod 进行<code>磁盘/池</code>管理 - 通过卷管理 sidecar 实现。</li>
+</ul>
+<h2 id="openebs-local-pv"></h>OpenEBS Local Pv
+</h2><p><a class="link" href="https://kubernetes.io/docs/concepts/storage/volumes/#local"  target="_blank" rel="noopener"
+    >OpenEBS 为Kubernetes Local Volumes</a>提供动态 PV 供应器。本地卷意味着存储只能从单个节点使用。本地卷表示已挂载的本地存储设备，例如磁盘、分区或目录。</p>
+<p>由于 Local Volume 只能从单个节点访问，因此本地卷受底层节点可用性的影响，并不适合所有应用程序。如果一个节点变得不健康，那么本地卷也将变得不可访问，使用它的 Pod 将无法运行。使用本地卷的应用程序必须能够容忍这种可用性降低以及潜在的数据丢失，具体取决于底层磁盘的耐用性特征。</p>
+<p>可以从本地卷中受益的良好工作负载示例包括：</p>
+<ul>
+<li>复制数据库，如 MongoDB、Cassandra</li>
+<li>可以使用自己的高可用性配置（如 Elastic、MinIO）配置的有状态工作负载</li>
+<li>通常在单个节点或单节点 Kubernetes 集群中运行的边缘工作负载。</li>
+</ul>
+<p>OpenEBS 通过提供 Kubernetes 当前缺少的功能来帮助用户将本地卷投入生产，例如：</p>
+<ul>
+<li>本地卷的动态 PV Provisioner。</li>
+<li>由 Ext3、XFS、LVM 或 ZFS 等文件系统上的主机路径支持的本地卷。</li>
+<li>监控用于创建本地卷的底层设备或存储的健康状况。</li>
+<li>容量管理功能，如过度配置和/或配额强制执行。</li>
+<li>当本地卷由 ZFS 等高级文件系统支持时，可以使用快照、克隆、压缩等底层存储功能。</li>
+<li>通过 Velero 进行备份和恢复。</li>
+<li>通过 LUKS 或使用底层文件系统（如 ZFS）的内置加密支持来保护本地卷。</li>
+</ul>
+<h2 id="节点磁盘管理器ndm"></h>节点磁盘管理器(NDM)
+</h2><p>节点磁盘管理器（NDM）是OpenEBS架构中的一个重要组件。NDM 将块设备视为需要监控和管理的资源，就像其他资源（如 CPU、内存和网络）一样。它是一个运行在每个节点上的守护进程，根据过滤器检测附加的块设备并将它们作为块设备自定义资源加载到 Kubernetes 中。这些自定义资源旨在通过提供以下功能来帮助超融合存储运营商：</p>
+<ul>
+<li>易于访问 Kubernetes 集群中可用的块设备清单。</li>
+<li>预测磁盘故障以帮助采取预防措施。</li>
+<li>允许动态地将磁盘附加/分离到存储 pod，而无需重新启动在磁盘附加/分离的节点上运行的相应 NDM pod。</li>
+<li><code>Node Disk Manager</code>在<code>Kubernetes</code>中是以<code>DaemonSet</code>的方式进行运行的</li>
+<li><a class="link" href="https://openebs.io/docs/concepts/ndm"  target="_blank" rel="noopener"
+    >Node Disk Manager</a></li>
+</ul>
+<p>尽管执行了上述所有操作，但 NDM 有助于整体简化持久卷的配置。</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <picture>
+  <img class="img-fluid" src="https://openebs.io/docs/assets/files/ndm-96fc51e849ddea8084d8b800d0e08975.svg" alt="NDM" loading="lazy" />
+</picture>
+</p>
+<blockquote>
+<p>NDM 在安装 OpenEBS 期间部署为守护进程。NDM daemonset 发现每个节点上的磁盘并创建称为块设备或 BD 的自定义资源。</p></blockquote>
+<h2 id="启用openebs"></h>启用OpenEBS
+</h2><p>由于 OpenEBS 通过 iSCSI 协议提供存储支持，因此，需要在所有 Kubernetes 节点上都安装 iSCSI 客户端（启动器）。</p>
+<p>比如我们这里使用的是Rocky的系统，执行下面的命令安装启动 iSCSI 启动器：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">dnf install iscsi-initiator-utils -y
+</span></span><span class="line"><span class="cl"><span class="c1"># 查看iSCSI状态是否正常</span>
+</span></span><span class="line"><span class="cl">cat /etc/iscsi/initiatorname.iscsi
+</span></span><span class="line"><span class="cl"><span class="c1"># 启动iSCSI</span>
+</span></span><span class="line"><span class="cl">systemctl start iscsid.service
+</span></span><span class="line"><span class="cl">systemctl status iscsid.service
+</span></span></code></pre></div><h3 id="安装openebs"></h>安装OpenEBS
+</h3><ol>
+<li>使用<code>kubectl</code>的方式进行安装</li>
+</ol>
+<ul>
+<li>Helm部署也是可选的: <a class="link" href="https://openebs.io/docs/user-guides/installation#installation-through-helm"  target="_blank" rel="noopener"
+    >地址</a></li>
+</ul>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">[</span>root@Online-Beijing-master1 ~<span class="o">]</span><span class="c1"># kubectl apply -f https://openebs.github.io/charts/openebs-operator.yaml</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 检查是否安装完成,正常应该都是Running即可</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>root@Online-Beijing-master1 ~<span class="o">]</span><span class="c1"># kubectl get pods -n openebs</span>
+</span></span><span class="line"><span class="cl">NAME                                           READY   STATUS    RESTARTS   AGE
+</span></span><span class="line"><span class="cl">openebs-localpv-provisioner-846c6bdc56-vvvsv   1/1     Running   <span class="m">0</span>          6m11s
+</span></span><span class="line"><span class="cl">openebs-ndm-5sfdk                              1/1     Running   <span class="m">0</span>          6m11s
+</span></span><span class="line"><span class="cl">openebs-ndm-cluster-exporter-b49987ffb-vjq87   1/1     Running   <span class="m">0</span>          6m11s
+</span></span><span class="line"><span class="cl">openebs-ndm-kthfj                              1/1     Running   <span class="m">0</span>          6m11s
+</span></span><span class="line"><span class="cl">openebs-ndm-node-exporter-94zhh                1/1     Running   <span class="m">0</span>          6m11s
+</span></span><span class="line"><span class="cl">openebs-ndm-node-exporter-q9h5p                1/1     Running   <span class="m">0</span>          6m11s
+</span></span><span class="line"><span class="cl">openebs-ndm-node-exporter-x7z9t                1/1     Running   <span class="m">0</span>          6m11s
+</span></span><span class="line"><span class="cl">openebs-ndm-operator-6469f6bb4c-95kss          1/1     Running   <span class="m">0</span>          6m11s
+</span></span><span class="line"><span class="cl">openebs-ndm-wf9k2                              1/1     Running   <span class="m">0</span>          6m11s
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 正常我们会有两个StorageClass</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>root@Online-Beijing-master1 ~<span class="o">]</span><span class="c1"># kubectl get sc</span>
+</span></span><span class="line"><span class="cl">NAME               PROVISIONER        RECLAIMPOLICY   VOLUMEBINDINGMODE      ALLOWVOLUMEEXPANSION   AGE
+</span></span><span class="line"><span class="cl">openebs-device     openebs.io/local   Delete          WaitForFirstConsumer   <span class="nb">false</span>                  20m
+</span></span><span class="line"><span class="cl">openebs-hostpath   openebs.io/local   Delete          WaitForFirstConsumer   <span class="nb">false</span>                  20m
+</span></span></code></pre></div><ol>
+<li>我们自己创建一个<code>Pvc</code>对象来给我们的<code>Deployment</code>来进行使用</li>
+</ol>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">apiVersion: v1
+</span></span><span class="line"><span class="cl">kind: PersistentVolumeClaim
+</span></span><span class="line"><span class="cl">metadata:
+</span></span><span class="line"><span class="cl">  name: local-hostpath-pvc
+</span></span><span class="line"><span class="cl">spec:
+</span></span><span class="line"><span class="cl">  storageClassName: openebs-hostpath
+</span></span><span class="line"><span class="cl">  accessModes:
+</span></span><span class="line"><span class="cl">    - ReadWriteOnce
+</span></span><span class="line"><span class="cl">  resources:
+</span></span><span class="line"><span class="cl">    requests:
+</span></span><span class="line"><span class="cl">      storage: 1Gi
+</span></span></code></pre></div><ol>
+<li>创建一个Pod进行测试</li>
+</ol>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">v1</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">Pod</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">metadata</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">hello-local-hostpath-pod</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">spec</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">volumes</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">local-storage</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">persistentVolumeClaim</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">claimName</span><span class="p">:</span><span class="w"> </span><span class="l">local-hostpath-pvc</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">containers</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">hello-container</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l">busybox</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">command</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">       </span>- <span class="l">sh</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">       </span>- -<span class="l">c</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">       </span>- <span class="s1">&#39;while true; do echo &#34;`date` [`hostname`] Hello from OpenEBS Local PV.&#34; &gt;&gt; /mnt/store/greet.txt; sleep $(($RANDOM % 5 + 300)); done&#39;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">volumeMounts</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span>- <span class="nt">mountPath</span><span class="p">:</span><span class="w"> </span><span class="l">/data</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">local-storage</span><span class="w">
+</span></span></span></code></pre></div><blockquote>
+<p>注意：如果你想知道这个Pvc具体挂载位置可以使用<code>kubectl describe pv pv名称</code>,其中的<code>Ptah: /var/openebs/local/pvc-e011f2a1-27dc-46d0-ba34-9ad44ba03188</code>就是我们所在节点的路径</p></blockquote>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">[</span>root@Online-Beijing-master1 ~<span class="o">]</span><span class="c1"># kubectl get pv</span>
+</span></span><span class="line"><span class="cl">NAME                                       CAPACITY   ACCESS MODES   RECLAIM POLICY   STATUS   CLAIM                        STORAGECLASS       REASON   AGE
+</span></span><span class="line"><span class="cl">example-local                              20Gi       RWO            Delete           Bound    default/bound-tasknginx      local-storage               26d
+</span></span><span class="line"><span class="cl">pvc-e011f2a1-27dc-46d0-ba34-9ad44ba03188   1Gi        RWO            Delete           Bound    default/local-hostpath-pvc   openebs-hostpath            3m53s
+</span></span><span class="line"><span class="cl"><span class="o">[</span>root@Online-Beijing-master1 ~<span class="o">]</span><span class="c1"># kubectl describe pv pvc-e011f2a1-27dc-46d0-ba34-9ad44ba03188</span>
+</span></span><span class="line"><span class="cl">Name:              pvc-e011f2a1-27dc-46d0-ba34-9ad44ba03188
+</span></span><span class="line"><span class="cl">Labels:            openebs.io/cas-type<span class="o">=</span>local-hostpath
+</span></span><span class="line"><span class="cl">Annotations:       pv.kubernetes.io/provisioned-by: openebs.io/local
+</span></span><span class="line"><span class="cl">Finalizers:        <span class="o">[</span>kubernetes.io/pv-protection<span class="o">]</span>
+</span></span><span class="line"><span class="cl">StorageClass:      openebs-hostpath
+</span></span><span class="line"><span class="cl">Status:            Bound
+</span></span><span class="line"><span class="cl">Claim:             default/local-hostpath-pvc
+</span></span><span class="line"><span class="cl">Reclaim Policy:    Delete
+</span></span><span class="line"><span class="cl">Access Modes:      RWO
+</span></span><span class="line"><span class="cl">VolumeMode:        Filesystem
+</span></span><span class="line"><span class="cl">Capacity:          1Gi
+</span></span><span class="line"><span class="cl">Node Affinity:     
+</span></span><span class="line"><span class="cl">  Required Terms:  
+</span></span><span class="line"><span class="cl">    Term 0:        kubernetes.io/hostname in <span class="o">[</span>online-beijing-node1<span class="o">]</span>
+</span></span><span class="line"><span class="cl">Message:           
+</span></span><span class="line"><span class="cl">Source:
+</span></span><span class="line"><span class="cl">    Type:  LocalVolume <span class="o">(</span>a persistent volume backed by <span class="nb">local</span> storage on a node<span class="o">)</span>
+</span></span><span class="line"><span class="cl">    Path:  /var/openebs/local/pvc-e011f2a1-27dc-46d0-ba34-9ad44ba03188
+</span></span><span class="line"><span class="cl">Events:    &lt;none&gt;
+</span></span></code></pre></div><ol>
+<li>进入所在节点的目录进行验证</li>
+</ol>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="nb">cd</span>  /var/openebs/local/pvc-e011f2a1-27dc-46d0-ba34-9ad44ba03188
+</span></span><span class="line"><span class="cl"><span class="c1"># 随便创建一个文件</span>
+</span></span><span class="line"><span class="cl">touch openebs.txt
+</span></span><span class="line"><span class="cl"><span class="c1"># 进入容器内部</span>
+</span></span><span class="line"><span class="cl">kubectl <span class="nb">exec</span> -it nginx-67fbcff654-glklg bash
+</span></span><span class="line"><span class="cl"><span class="c1"># 查看所挂载openebs的路径是否成功有openebs.txt</span>
+</span></span><span class="line"><span class="cl">root@nginx-67fbcff654-glklg:/# ls /data/
+</span></span><span class="line"><span class="cl">1.txt  openebs.txt
+</span></span></code></pre></div><h2 id="修改openebs的hostpath默认存储"></h>修改OpenEBS的HostPath默认存储
+</h2><ol>
+<li>修改名字为<code>openebs-hostpath</code>的<code>StorageClass</code>当中的<code>BasePath</code>即可</li>
+</ol>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">storage.k8s.io/v1</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">StorageClass</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">metadata</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">openebs-hostpath</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">annotations</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">openebs.io/cas-type</span><span class="p">:</span><span class="w"> </span><span class="l">local</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">cas.openebs.io/config</span><span class="p">:</span><span class="w"> </span><span class="p">|</span><span class="sd">
+</span></span></span><span class="line"><span class="cl"><span class="sd">      #hostpath type will create a PV by 
+</span></span></span><span class="line"><span class="cl"><span class="sd">      # creating a sub-directory under the
+</span></span></span><span class="line"><span class="cl"><span class="sd">      # BASEPATH provided below.
+</span></span></span><span class="line"><span class="cl"><span class="sd">      - name: StorageType
+</span></span></span><span class="line"><span class="cl"><span class="sd">        value: &#34;hostpath&#34;
+</span></span></span><span class="line"><span class="cl"><span class="sd">      #Specify the location (directory) where
+</span></span></span><span class="line"><span class="cl"><span class="sd">      # where PV(volume) data will be saved. 
+</span></span></span><span class="line"><span class="cl"><span class="sd">      # A sub-directory with pv-name will be 
+</span></span></span><span class="line"><span class="cl"><span class="sd">      # created. When the volume is deleted, 
+</span></span></span><span class="line"><span class="cl"><span class="sd">      # the PV sub-directory will be deleted.
+</span></span></span><span class="line"><span class="cl"><span class="sd">      #Default value is /var/openebs/local
+</span></span></span><span class="line"><span class="cl"><span class="sd">      - name: BasePath
+</span></span></span><span class="line"><span class="cl"><span class="sd">        value: &#34;/var/openebs/local/&#34;</span><span class="w">
+</span></span></span></code></pre></div>
+</section>
+
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="https://blog.mletter.cn/tags/kubernetes/">Kubernetes</a>
+        
+    </section>
+
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">相关文章</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="has-image">
+    <a href="https://blog.mletter.cn/tech/kubernetes/sealos/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://img10.360buyimg.com/ddimg/jfs/t1/244560/31/7618/14121/661de12eFfa7f6ba5/0239fa873abb0bd5.jpg" loading="lazy" data-key="" data-hash="https://img10.360buyimg.com/ddimg/jfs/t1/244560/31/7618/14121/661de12eFfa7f6ba5/0239fa873abb0bd5.jpg"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">基于SealOS部署高可用的kubernetes集群</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="https://blog.mletter.cn/tech/kubernetes/install-efk/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://img14.360buyimg.com/ddimg/jfs/t1/177175/31/35833/30306/64cb08eeF5ba90f46/1da6311bbbec8921.jpg" loading="lazy" data-key="" data-hash="https://img14.360buyimg.com/ddimg/jfs/t1/177175/31/35833/30306/64cb08eeF5ba90f46/1da6311bbbec8921.jpg"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">kubernetes基于EFK的日志落地实现</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="https://blog.mletter.cn/tech/kubernetes/architectural-design/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://img13.360buyimg.com/ddimg/jfs/t1/164078/6/34165/22231/654ba81fFe1bf21d7/9d02bd791b795b3b.jpg" loading="lazy" data-key="" data-hash="https://img13.360buyimg.com/ddimg/jfs/t1/164078/6/34165/22231/654ba81fFe1bf21d7/9d02bd791b795b3b.jpg"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Kubernetes的架构设计和对象属性基本理解</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="https://blog.mletter.cn/tech/kubernetes/traefik/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://doc.traefik.io/traefik/assets/img/traefik-architecture.png" loading="lazy" data-key="" data-hash="https://doc.traefik.io/traefik/assets/img/traefik-architecture.png"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Traekfik基础使用指南</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="https://blog.mletter.cn/tech/kubernetes/local-storage/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://img14.360buyimg.com/ddimg/jfs/t1/164569/9/40677/14419/65bc6e4cFa1d8c0c3/5ccf7e6caadc9b83.jpg" loading="lazy" data-key="" data-hash="https://img14.360buyimg.com/ddimg/jfs/t1/164569/9/40677/14419/65bc6e4cFa1d8c0c3/5ccf7e6caadc9b83.jpg"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Kubernetes-本地存储</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    <script src="//lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/twikoo/1.4.18/twikoo.all.min.js"></script>
+<div id="tcomment"></div>
+<style>
+    .twikoo {
+        background-color: var(--card-background);
+        border-radius: var(--card-border-radius);
+        box-shadow: var(--shadow-l1);
+        padding: var(--card-padding);
+    }
+    :root[data-scheme="dark"] {
+        --twikoo-body-text-color-main: rgba(255, 255, 255, 0.9);
+        --twikoo-body-text-color: rgba(255, 255, 255, 0.7);
+    }
+    .twikoo .el-input-group__prepend,
+    .twikoo .tk-action-icon,
+    .twikoo .tk-submit-action-icon,
+    .twikoo .tk-time,
+    .twikoo .tk-comments-no,
+    .twikoo .tk-comments-count {
+        color: var(--twikoo-body-text-color);
+    }
+    .twikoo .el-input__inner,
+    .twikoo .el-textarea__inner,
+    .twikoo .tk-preview-container,
+    .twikoo .tk-content,
+    .twikoo .tk-nick,
+    .twikoo .tk-send {
+        color: var(--twikoo-body-text-color-main);
+    }
+    .twikoo .el-button{
+        color: var(--twikoo-body-text-color)!important;
+    }
+    .twikoo .el-input__count {
+        color: var(--twikoo-body-text-color) !important;
+    }
+    .OwO .OwO-body {
+        background-color: var(--body-background) !important;
+        color: var(--body-text-color) !important;
+    }
+</style><script>
+    twikoo.init({
+        envId: 'https:\/\/twikoo.mletter.cn\/',
+        el: '#tcomment',lang: 'zh-cn',})
+</script>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2020 - 
+        
+        2025 Live and learn. 🌱
+    </section>
+    
+    <section class="powerby">
+        Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo By Netlify</a> <br />
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.21.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://lf26-cdn-tos.bytecdntp.com/cdn/expire-1-M/photoswipe/4.1.3/photoswipe.min.js"crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://lf26-cdn-tos.bytecdntp.com/cdn/expire-1-M/photoswipe/4.1.3/photoswipe-ui-default.min.js"crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/photoswipe/4.1.3/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://lf26-cdn-tos.bytecdntp.com/cdn/expire-1-M/photoswipe/4.1.3/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://lf9-cdn-tos.bytecdntp.com/cdn/expire-1-M/vibrant.js/1.0.0/Vibrant.min.js"crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="https://blog.mletter.cn/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+<script src="https://lf26-cdn-tos.bytecdntp.com/cdn/expire-1-M/nprogress/0.2.0/nprogress.min.js" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://lf26-cdn-tos.bytecdntp.com/cdn/expire-1-M/nprogress/0.2.0/nprogress.css" crossorigin="anonymous" />
+<script>
+    NProgress.start();
+    document.addEventListener("readystatechange", () => {
+        if (document.readyState === "interactive") NProgress.inc(0.8);
+        if (document.readyState === "complete") NProgress.done();
+    });
+</script>
+    </body>
+</html>
+>>>>>>> e6c11e7684b5a835a7809ddc8609bc9f39cdf2c5

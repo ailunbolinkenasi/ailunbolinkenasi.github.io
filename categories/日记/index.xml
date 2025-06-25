@@ -1,15 +1,10 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
-    <title>日记 on 太阳可以是蓝色</title>
+    <title>日记 on Heartbeat Diary</title>
     <link>https://blog.mletter.cn/categories/%E6%97%A5%E8%AE%B0/</link>
-    <description>Recent content in 日记 on 太阳可以是蓝色</description>
-    <image>
-      <title>太阳可以是蓝色</title>
-      <url>https://blog.mletter.cn/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</url>
-      <link>https://blog.mletter.cn/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</link>
-    </image>
-    <generator>Hugo -- 0.145.0</generator>
+    <description>Recent content in 日记 on Heartbeat Diary</description>
+    <generator>Hugo -- 0.146.5</generator>
     <language>zh</language>
     <lastBuildDate>Wed, 01 Jan 2025 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://blog.mletter.cn/categories/%E6%97%A5%E8%AE%B0/index.xml" rel="self" type="application/rss+xml" />
@@ -122,13 +117,11 @@
 
 <h2 id="生活感悟">生活感悟</h2>
 <p>生活是工作的调味剂，这一年我也努力平衡二者。坚持隔一段时间就出门转转，放松放松自己疲惫的心情。</p>
-<p>这一年我走过了[广州、秦皇岛、张北、天津、东莞、深圳、江门]等多个城市，漫步在异地街头，感受不同风土人情。</p>
+<p>这一年我走过了<code>[广州、秦皇岛、张北、天津、东莞、深圳、江门]</code>等多个城市，漫步在异地街头，感受不同风土人情。</p>
 <p>并且计划在 2025 年购买一本《中国国家地理》，从第一座城市的第一个地理位置开始新的旅程。</p>
 <ul>
-<li><a class="link" href="http://www.dili360.com/Cng/"  target="_blank" rel="noopener"
-    >中国国家地理</a></li>
-<li><a class="link" href="https://blog.mletter.cn/tourists/qinhuangdao/"  target="_blank" rel="noopener"
-    >秦皇岛</a></li>
+<li><a href="http://www.dili360.com/Cng/">中国国家地理</a></li>
+<li><a href="https://blog.mletter.cn/tourists/qinhuangdao/">秦皇岛</a></li>
 <li>更多攻略请站内浏览&hellip;</li>
 </ul>
 <blockquote>
@@ -169,7 +162,7 @@
 <p>岁末之际，忙碌如藤蔓缠心，渴望逃离的念头愈发强烈，说白了就是年底了，要出去玩儿了，不想干活了。
 也想找个地方好好放松放松一下吧，以此为跌宕起伏的2024年画上一个惬意愉悦的句号，让那些或疲惫、或激昂、或平淡的过往，都消融在这一场看海的旅程之中，继而整理行囊、怀揣新的期冀迈向新岁的征途。</p>
 <h2 id="买票出发">买票出发</h2>
-<p><img style="max-width: 100%; height: auto;" loading="lazy" alt="火车票" loading="lazy" src="https://img14.360buyimg.com/ddimg/jfs/t1/230366/26/28208/45199/6759926aFcdee76e7/ed6113e5ddac5071.jpg"></p>
+<p><img alt="火车票" loading="lazy" src="https://img14.360buyimg.com/ddimg/jfs/t1/230366/26/28208/45199/6759926aFcdee76e7/ed6113e5ddac5071.jpg"></p>
 <h2 id="车轮上的遐想">车轮上的遐想</h2>
 <p>踏入北京站，列车缓缓启动，城市的繁华如幻灯片般后退。高楼大厦渐成模糊剪影，市井烟火化为轻烟飘散，视野逐渐开阔，乡野的翠绿与山峦的连绵交替映入眼帘。车厢内，人百态，或三两低语分享趣事，或独自静赏窗外飞逝的景色，而我沉浸于对远方的海，那片无垠的蔚蓝，在心中荡漾，虽未知冬日海滨的模样，但那份对大海的执念如炽热火焰，驱散旅途的困倦，牵引着灵魂奔赴那未知却迷人的海岸，只因坚信：远方有诗，路上有梦吧。</p>
 <h2 id="便宜小屋">便宜小屋</h2>
@@ -289,8 +282,7 @@
 &lt;p&gt;随之而来的，便是我踏上了寻觅镜像源的漫漫征程。起初，我尝试了中科大、清华、阿里云的源，可基本上都不太顺遂，时不时就会碰到无法解析的状况。最终，在尝试了华为云的源之后，问题得以完美解决。在此声明，并非为任何厂商打广告，只要能切实解决咱们的问题，那就是好的！&lt;/p&gt;
 &lt;p&gt;更新一下最新可用的镜像源：&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://mirrors.huaweicloud.com/home&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
-    &gt;HuaWeiCloud&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://mirrors.huaweicloud.com/home&#34;&gt;HuaWeiCloud&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;blockquote&gt;
 &lt;p&gt;虽然华为在手机方面总是不尽人意，但是在技术方面我愿称之为“中华有为”！！！&lt;/p&gt;&lt;/blockquote&gt;
@@ -300,8 +292,7 @@
 &lt;p&gt;称得上是一款让玩家&lt;code&gt;氪服困难&lt;/code&gt;的一款SLG游戏，但是咱也不骂了都知道SLG就这样，事实上是比隔壁率土良心多了。&lt;/p&gt;
 &lt;p&gt;总的来讲，我在这个游戏里小充值了8000+。体验方面还算可以，但抽卡环节就不那么尽如人意了，总有种被锁卡的感觉。不得不提的是，这个游戏的策划似乎有些摸不着头脑，不晓得该如何规划这款游戏。也许吧，每个策划都有着自己独特的想法。毕竟开服首月签到200金币，次月签到100金币，没点脑子的策划是想不出来的。&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://game.bilibili.com/nslg/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
-    &gt;三国·谋定天下&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://game.bilibili.com/nslg/&#34;&gt;三国·谋定天下&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;可玩性：⭐️⭐️⭐️⭐️⭐️&lt;/p&gt;
 &lt;p&gt;氪金度：⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐️&lt;/p&gt;
@@ -399,8 +390,7 @@ Vivo在影像技术上的投入一直以来也很出色，它所呈现出的画�
 <p>随之而来的，便是我踏上了寻觅镜像源的漫漫征程。起初，我尝试了中科大、清华、阿里云的源，可基本上都不太顺遂，时不时就会碰到无法解析的状况。最终，在尝试了华为云的源之后，问题得以完美解决。在此声明，并非为任何厂商打广告，只要能切实解决咱们的问题，那就是好的！</p>
 <p>更新一下最新可用的镜像源：</p>
 <ul>
-<li><a class="link" href="https://mirrors.huaweicloud.com/home"  target="_blank" rel="noopener"
-    >HuaWeiCloud</a></li>
+<li><a href="https://mirrors.huaweicloud.com/home">HuaWeiCloud</a></li>
 </ul>
 <blockquote>
 <p>虽然华为在手机方面总是不尽人意，但是在技术方面我愿称之为“中华有为”！！！</p></blockquote>
@@ -410,8 +400,7 @@ Vivo在影像技术上的投入一直以来也很出色，它所呈现出的画�
 <p>称得上是一款让玩家<code>氪服困难</code>的一款SLG游戏，但是咱也不骂了都知道SLG就这样，事实上是比隔壁率土良心多了。</p>
 <p>总的来讲，我在这个游戏里小充值了8000+。体验方面还算可以，但抽卡环节就不那么尽如人意了，总有种被锁卡的感觉。不得不提的是，这个游戏的策划似乎有些摸不着头脑，不晓得该如何规划这款游戏。也许吧，每个策划都有着自己独特的想法。毕竟开服首月签到200金币，次月签到100金币，没点脑子的策划是想不出来的。</p>
 <ul>
-<li><a class="link" href="https://game.bilibili.com/nslg/"  target="_blank" rel="noopener"
-    >三国·谋定天下</a></li>
+<li><a href="https://game.bilibili.com/nslg/">三国·谋定天下</a></li>
 </ul>
 <p>可玩性：⭐️⭐️⭐️⭐️⭐️</p>
 <p>氪金度：⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐️</p>
@@ -791,7 +780,7 @@ The original intention of life is happiness</p>
 &lt;p&gt;话说 22 年的时候我入手过一台&lt;code&gt;力刻（ARIIC）318系列 冬奥灵感版&lt;/code&gt;当时一咬牙就花&lt;code&gt;28800&lt;/code&gt;元拿下,落地&lt;code&gt;30000&lt;/code&gt;呢！&lt;/p&gt;
 &lt;p&gt;这车子前双碟、对向八活塞卡钳、浮动碟盘，后碟单向双活塞卡钳，还有 BOCH 双通道 ABS 系统，那制动效果，杠杠的！车架高强高钢，操控起来人车合一，钢管轻量化还机器人焊接呢！风格简约又有后现代气质，三段式设计，隔热空间也优化得不错。可惜呀，没陪我走到&lt;code&gt;318&lt;/code&gt;就拜拜啦。&lt;/p&gt;
 &lt;p&gt;仅此图片纪念一下大哥318&lt;/p&gt;
-&lt;p&gt;&lt;img style=&#34;max-width: 100%; height: auto;&#34; loading=&#34;lazy&#34; alt=&#34;力刻（ARIIC）318系列 冬奥灵感版&#34; loading=&#34;lazy&#34; src=&#34;https://img13.360buyimg.com/ddimg/jfs/t1/164292/13/46166/71267/66574370F54106823/f7334614b39a2a9a.jpg&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img alt=&#34;力刻（ARIIC）318系列 冬奥灵感版&#34; loading=&#34;lazy&#34; src=&#34;https://img13.360buyimg.com/ddimg/jfs/t1/164292/13/46166/71267/66574370F54106823/f7334614b39a2a9a.jpg&#34;&gt;&lt;/p&gt;
 &lt;p&gt;&lt;code&gt;300cc&lt;/code&gt;踏板动力嘛，提速猛是猛，但车也是真肉啊，再加上是国产车，总有人说&lt;code&gt;国产垃圾&lt;/code&gt;的，但是车真的没什么问题。后来我就因为个人原因把它卖啦。好啦好啦，今天重点是我这新车&lt;code&gt;飞戈 250&lt;/code&gt;哟。&lt;/p&gt;
 &lt;h2 id=&#34;选型日记&#34;&gt;选型日记&lt;/h2&gt;
 &lt;p&gt;先说说我选车的事儿哈，我本来就不想搞个太大的踏板车，又沉又不喜欢。我在摩托苑里瞅来瞅去，就盯上&lt;code&gt;维多利亚300&lt;/code&gt;和&lt;code&gt;维多利亚250&lt;/code&gt;了，可&lt;code&gt;维多利亚300&lt;/code&gt;没新车，&lt;code&gt;维多利亚250&lt;/code&gt;新车发布还得等一阵，那我就去淘二手呗，天天跟车商们周旋，就想找个合适价格。嘿，这时候巧了，朋友说有个车叫&lt;code&gt;飞戈&lt;/code&gt;，我当时就懵了，啥？&lt;code&gt;飞戈&lt;/code&gt;是啥玩意儿啊？哈哈！于是，我开始深入了解它，查看各种评测和资料。后来我发现，原来是辆新车，基础参数和测评真的很少。&lt;/p&gt;
@@ -877,13 +866,13 @@ The original intention of life is happiness</p>
     &lt;/body&gt;
 &lt;/html&gt;
 
-&lt;p&gt;&lt;img style=&#34;max-width: 100%; height: auto;&#34; loading=&#34;lazy&#34; alt=&#34;飞戈250&#34; loading=&#34;lazy&#34; src=&#34;https://img11.360buyimg.com/ddimg/jfs/t1/230118/35/18596/65287/66588c39Ff160a58f/2d89511d823f9e5e.jpg&#34;&gt;&lt;/p&gt;</description>
+&lt;p&gt;&lt;img alt=&#34;飞戈250&#34; loading=&#34;lazy&#34; src=&#34;https://img11.360buyimg.com/ddimg/jfs/t1/230118/35/18596/65287/66588c39Ff160a58f/2d89511d823f9e5e.jpg&#34;&gt;&lt;/p&gt;</description>
       <content:encoded><![CDATA[<h1 id="小摩托-飞戈入手记">小摩托-飞戈入手记</h1>
 <p>Hello 大家好，好久不见啦，最近博客没怎么更新因为工作实在是有点慢(小声嘀咕：狗屁就是不想更新)。开玩笑的啦，忙碌是事实，但一直未能有闲暇时间出游亦是实情，而其中无车亦是关键因素哈哈哈。</p>
 <p>话说 22 年的时候我入手过一台<code>力刻（ARIIC）318系列 冬奥灵感版</code>当时一咬牙就花<code>28800</code>元拿下,落地<code>30000</code>呢！</p>
 <p>这车子前双碟、对向八活塞卡钳、浮动碟盘，后碟单向双活塞卡钳，还有 BOCH 双通道 ABS 系统，那制动效果，杠杠的！车架高强高钢，操控起来人车合一，钢管轻量化还机器人焊接呢！风格简约又有后现代气质，三段式设计，隔热空间也优化得不错。可惜呀，没陪我走到<code>318</code>就拜拜啦。</p>
 <p>仅此图片纪念一下大哥318</p>
-<p><img style="max-width: 100%; height: auto;" loading="lazy" alt="力刻（ARIIC）318系列 冬奥灵感版" loading="lazy" src="https://img13.360buyimg.com/ddimg/jfs/t1/164292/13/46166/71267/66574370F54106823/f7334614b39a2a9a.jpg"></p>
+<p><img alt="力刻（ARIIC）318系列 冬奥灵感版" loading="lazy" src="https://img13.360buyimg.com/ddimg/jfs/t1/164292/13/46166/71267/66574370F54106823/f7334614b39a2a9a.jpg"></p>
 <p><code>300cc</code>踏板动力嘛，提速猛是猛，但车也是真肉啊，再加上是国产车，总有人说<code>国产垃圾</code>的，但是车真的没什么问题。后来我就因为个人原因把它卖啦。好啦好啦，今天重点是我这新车<code>飞戈 250</code>哟。</p>
 <h2 id="选型日记">选型日记</h2>
 <p>先说说我选车的事儿哈，我本来就不想搞个太大的踏板车，又沉又不喜欢。我在摩托苑里瞅来瞅去，就盯上<code>维多利亚300</code>和<code>维多利亚250</code>了，可<code>维多利亚300</code>没新车，<code>维多利亚250</code>新车发布还得等一阵，那我就去淘二手呗，天天跟车商们周旋，就想找个合适价格。嘿，这时候巧了，朋友说有个车叫<code>飞戈</code>，我当时就懵了，啥？<code>飞戈</code>是啥玩意儿啊？哈哈！于是，我开始深入了解它，查看各种评测和资料。后来我发现，原来是辆新车，基础参数和测评真的很少。</p>
@@ -969,10 +958,10 @@ The original intention of life is happiness</p>
     </body>
 </html>
 
-<p><img style="max-width: 100%; height: auto;" loading="lazy" alt="飞戈250" loading="lazy" src="https://img11.360buyimg.com/ddimg/jfs/t1/230118/35/18596/65287/66588c39Ff160a58f/2d89511d823f9e5e.jpg"></p>
+<p><img alt="飞戈250" loading="lazy" src="https://img11.360buyimg.com/ddimg/jfs/t1/230118/35/18596/65287/66588c39Ff160a58f/2d89511d823f9e5e.jpg"></p>
 <p>看到车的这一瞬间我就想给它打上标签叫做：<code>复古</code>、<code>迷你</code>&hellip;
 然后我把这车发给我身边朋友让他揣摩揣摩，朋友跟我说：“哥们 你要买电驴了吗？” 我当时想说：“wocao” 这是辆摩托车。但是可能乍一看和普通的电动车有些相似之处，简直是太像一辆电动车了。说实话一开始没听过<code>飞戈</code>这个牌子，其实<code>力刻</code>这个牌子也是没听过的，所以我选择了做个急先锋，初五闯关东。
-<img style="max-width: 100%; height: auto;" loading="lazy" loading="lazy" src="https://img14.360buyimg.com/ddimg/jfs/t1/206390/11/43613/14325/66574707F3700c093/215055eed3a76800.jpg"></p>
+<img loading="lazy" src="https://img14.360buyimg.com/ddimg/jfs/t1/206390/11/43613/14325/66574707F3700c093/215055eed3a76800.jpg"></p>
 <h2 id="配置说明">配置说明</h2>
 <p>整车的配置看起来是相当的不错，有<code>玛吉斯轮胎</code>、<code>自带行车记录仪</code>、<code>TFT液晶仪表</code>、<code>TBOX车联网+地图导航投屏</code>、<code>ABS+TSC</code>的高端组合。</p>
 <p>另外车机这方面我觉得还是不错的，如果官方看到了偷偷问一句：是不是外包做滴！
@@ -1685,7 +1674,7 @@ The original intention of life is happiness</p>
     </body>
 </html>
 
-<p>需要原图联系: <a class="link" href="mailto:beilanzhisen@163.com" >beilanzhisen@163.com</a></p>
+<p>需要原图联系: <a href="mailto:beilanzhisen@163.com">beilanzhisen@163.com</a></p>
 ]]></content:encoded>
     </item>
     <item>
@@ -2630,21 +2619,21 @@ The original intention of life is happiness</p>
 </ul>
 <h2 id="看海">看海</h2>
 <p>看海是我觉得人生中最快乐的事情(对海有一种爱不释手的感觉),每次一看到海就能感觉到让自己的全身放空,真的太好看了。把烂事丢在2022!
-<img style="max-width: 100%; height: auto;" loading="lazy" alt="来自天津市-东堤公园 采用SonyA6000拍摄" loading="lazy" src="https://img10.360buyimg.com/ddimg/jfs/t1/192467/32/27749/244772/63b4f0ddFecb30642/8dfc70bdb56006c7.jpg"></p>
+<img alt="来自天津市-东堤公园 采用SonyA6000拍摄" loading="lazy" src="https://img10.360buyimg.com/ddimg/jfs/t1/192467/32/27749/244772/63b4f0ddFecb30642/8dfc70bdb56006c7.jpg"></p>
 <h2 id="我在天津很想你">我在天津很想你</h2>
 <p>这个应该是店家自己买的,来拍照的人不算很多,但是也是一个标志性的柱子了(哈哈).
 里面是一个川小馆,由于我朋友不能在外面吃饭(无缘品尝了)
-<img style="max-width: 100%; height: auto;" loading="lazy" alt="来自天津市-网红路牌 采用SonyA6000拍摄" loading="lazy" src="https://img10.360buyimg.com/ddimg/jfs/t1/14973/10/19996/948674/63b4f0ddFc4d8f54e/186a20f36a7f1d89.jpg"></p>
+<img alt="来自天津市-网红路牌 采用SonyA6000拍摄" loading="lazy" src="https://img10.360buyimg.com/ddimg/jfs/t1/14973/10/19996/948674/63b4f0ddFc4d8f54e/186a20f36a7f1d89.jpg"></p>
 <h2 id="城市夜景">城市夜景</h2>
 <p>不得不说,我觉得天津真的比北京有烟火气的多。
 我在解放桥海河上看到了天津的烟花,足足地放了2个多小时…是一个适合生活的城市,路上的行人也非常非常的多(不知道是不是因为节假日的原因)。路上顺带拍了几张天津的城市夜景。</p>
-<p><img style="max-width: 100%; height: auto;" loading="lazy" alt="那晚的车流给我的感觉是这座城市很温暖" loading="lazy" src="https://img12.360buyimg.com/ddimg/jfs/t1/90556/2/28103/44100/649b0724Fc7c4af42/4973059a199e8cd7.jpg">
+<p><img alt="那晚的车流给我的感觉是这座城市很温暖" loading="lazy" src="https://img12.360buyimg.com/ddimg/jfs/t1/90556/2/28103/44100/649b0724Fc7c4af42/4973059a199e8cd7.jpg">
 自己给它取个名字(格林威治大钟) &ndash;可以听听五月天的《步步》
 格林威治大钟前 归零超载的伤悲
 背着我和我的诺言 一起计划的路线对照孤单的旅店
-<img style="max-width: 100%; height: auto;" loading="lazy" alt="来自天津市-格林威治大钟(自己瞎bb的) 采用SonyA6000拍摄" loading="lazy" src="https://img12.360buyimg.com/ddimg/jfs/t1/128591/24/28537/103196/63b4f0ddF530e294f/1c7cc13adabbda36.jpg">
+<img alt="来自天津市-格林威治大钟(自己瞎bb的) 采用SonyA6000拍摄" loading="lazy" src="https://img12.360buyimg.com/ddimg/jfs/t1/128591/24/28537/103196/63b4f0ddF530e294f/1c7cc13adabbda36.jpg">
 街头随便拍的-回来搞了个德国街头的调色
-<img style="max-width: 100%; height: auto;" loading="lazy" alt="来自天津市-自己街边随便拍的 采用SonyA6000拍摄" loading="lazy" src="https://img12.360buyimg.com/ddimg/jfs/t1/52521/8/22190/1015219/63b4f0deFd2378228/7dd2825c978f8f8c.jpg"></p>
+<img alt="来自天津市-自己街边随便拍的 采用SonyA6000拍摄" loading="lazy" src="https://img12.360buyimg.com/ddimg/jfs/t1/52521/8/22190/1015219/63b4f0deFd2378228/7dd2825c978f8f8c.jpg"></p>
 ]]></content:encoded>
     </item>
   </channel>

@@ -1,15 +1,10 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
-    <title>Gin on 太阳可以是蓝色</title>
+    <title>Gin on Heartbeat Diary</title>
     <link>https://blog.mletter.cn/tags/gin/</link>
-    <description>Recent content in Gin on 太阳可以是蓝色</description>
-    <image>
-      <title>太阳可以是蓝色</title>
-      <url>https://blog.mletter.cn/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</url>
-      <link>https://blog.mletter.cn/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</link>
-    </image>
-    <generator>Hugo -- 0.145.0</generator>
+    <description>Recent content in Gin on Heartbeat Diary</description>
+    <generator>Hugo -- 0.146.5</generator>
     <language>zh</language>
     <lastBuildDate>Sun, 20 Oct 2024 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://blog.mletter.cn/tags/gin/index.xml" rel="self" type="application/rss+xml" />
@@ -25,8 +20,7 @@
 </ul>
 <p>在这里你可以获得什么</p>
 <ul>
-<li><a class="link" href="https://modao.cc/proto/TyzvXils5n5ou2EsZJL0y/sharing?view_mode=device&amp;screen=skaq6903TtBu1pIiDaez7l&amp;canvasId=sskaq690TtBu1pJioveDem"  target="_blank" rel="noopener"
-    >维扣原型</a></li>
+<li><a href="https://modao.cc/proto/TyzvXils5n5ou2EsZJL0y/sharing?view_mode=device&amp;screen=skaq6903TtBu1pIiDaez7l&amp;canvasId=sskaq690TtBu1pJioveDem">维扣原型</a></li>
 <li>作品分享: 展示你的精彩照片，收获点赞、评论和关注。</li>
 <li>热门作品推荐: 发现更多优秀摄影师和精彩照片。</li>
 <li>赛事制度：摄影挑战与活动，激发创作灵感，赢取丰厚奖品.(当然了要等到有钱的时候！)</li>

@@ -1,15 +1,10 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
-    <title>Ansible on 太阳可以是蓝色</title>
+    <title>Ansible on Heartbeat Diary</title>
     <link>https://blog.mletter.cn/tags/ansible/</link>
-    <description>Recent content in Ansible on 太阳可以是蓝色</description>
-    <image>
-      <title>太阳可以是蓝色</title>
-      <url>https://blog.mletter.cn/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</url>
-      <link>https://blog.mletter.cn/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</link>
-    </image>
-    <generator>Hugo -- 0.145.0</generator>
+    <description>Recent content in Ansible on Heartbeat Diary</description>
+    <generator>Hugo -- 0.146.5</generator>
     <language>zh</language>
     <lastBuildDate>Mon, 29 Aug 2022 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://blog.mletter.cn/tags/ansible/index.xml" rel="self" type="application/rss+xml" />
@@ -364,8 +359,7 @@
 </span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">command</span><span class="p">:</span><span class="w">  </span><span class="l">install redis</span><span class="w"> </span><span class="c"># 当前执行的具体命令操作</span><span class="w">
 </span></span></span></code></pre></div><h2 id="10-playbook核心元素">1.0 PlayBook核心元素</h2>
 <ul>
-<li>Hosts：playbook中的每一个play的目的都是为了让特定主机以某个指定的用户身份执行任务,hosts用于指定要执行指定任务的主机，须事先定义在主机清单中.<a class="link" href="https://cdn.mletter.cn/ansible%e5%9f%ba%e7%a1%80%e5%90%88%e9%9b%86/#203-ansible%e7%9a%84host-pattern"  target="_blank" rel="noopener"
-    >详细请看</a></li>
+<li>Hosts：playbook中的每一个play的目的都是为了让特定主机以某个指定的用户身份执行任务,hosts用于指定要执行指定任务的主机，须事先定义在主机清单中.<a href="https://cdn.mletter.cn/ansible%E5%9F%BA%E7%A1%80%E5%90%88%E9%9B%86/#203-ansible%E7%9A%84host-pattern">详细请看</a></li>
 <li><code>remote_user</code>: 可用于Host和task中。也可以通过指定其通过sudo的方式在远程主机上执行任务，其可用于play全局或某任务.此外，甚至可以在sudo时使用sudo_user指定sudo时切换的用户.</li>
 <li><code>varniables</code>: 内置变量或自定义变量在playbook中调用</li>
 <li><code>Templates模板 </code>: 可替换模板文件中的变量并实现一些简单逻辑的文件</li>

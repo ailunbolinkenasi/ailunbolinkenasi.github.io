@@ -1,15 +1,10 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
-    <title>工具分享 on 太阳可以是蓝色</title>
+    <title>工具分享 on Heartbeat Diary</title>
     <link>https://blog.mletter.cn/categories/%E5%B7%A5%E5%85%B7%E5%88%86%E4%BA%AB/</link>
-    <description>Recent content in 工具分享 on 太阳可以是蓝色</description>
-    <image>
-      <title>太阳可以是蓝色</title>
-      <url>https://blog.mletter.cn/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</url>
-      <link>https://blog.mletter.cn/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</link>
-    </image>
-    <generator>Hugo -- 0.145.0</generator>
+    <description>Recent content in 工具分享 on Heartbeat Diary</description>
+    <generator>Hugo -- 0.146.5</generator>
     <language>zh</language>
     <lastBuildDate>Thu, 10 Aug 2023 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://blog.mletter.cn/categories/%E5%B7%A5%E5%85%B7%E5%88%86%E4%BA%AB/index.xml" rel="self" type="application/rss+xml" />
@@ -37,12 +32,10 @@
 <li>自动生成文档：使用 Swagger 工具和插件，将 Swagger 文档与代码（如后端服务代码）集成在一起，并生成 API 文档。这些工具可以根据 Swagger 文档自动生成可交互式的 API 文档和UI界面。</li>
 <li>调试和测试：使用 Swagger 提供的内置功能，可以在 Swagger UI 中直接进行 API 调试和测试。通过 Swagger UI，您可以轻松地发送请求，查看响应并检查请求和响应的详细信息。</li>
 </ol>
-<p><img style="max-width: 100%; height: auto;" loading="lazy" alt="Swagger" loading="lazy" src="https://img12.360buyimg.com/ddimg/jfs/t1/88771/29/40939/35711/649d4162F0ae5e8a1/e58acb23c8d137cc.jpg"></p>
+<p><img alt="Swagger" loading="lazy" src="https://img12.360buyimg.com/ddimg/jfs/t1/88771/29/40939/35711/649d4162F0ae5e8a1/e58acb23c8d137cc.jpg"></p>
 <blockquote>
-<p><strong>项目地址：</strong> <a class="link" href="https://swagger.io/"  target="_blank" rel="noopener"
-    >点我进入</a></p>
-<p><strong>Demo地址：</strong> <a class="link" href="https://petstore.swagger.io/?_ga=2.236281281.1352811789.1688009658-1749052190.1688009657"  target="_blank" rel="noopener"
-    >点我进入</a></p></blockquote>
+<p><strong>项目地址：</strong> <a href="https://swagger.io/">点我进入</a></p>
+<p><strong>Demo地址：</strong> <a href="https://petstore.swagger.io/?_ga=2.236281281.1352811789.1688009658-1749052190.1688009657">点我进入</a></p></blockquote>
 <h2 id="eolinker"><strong>eolinker</strong></h2>
 <p>eolinker是一款用于API管理和接口测试的工具。它提供了一个用户友好的界面，可以帮助开发人员和团队更好地管理和测试他们的API接口。</p>
 <p>eolinker的主要功能包括：</p>
@@ -52,11 +45,10 @@
 <li>接口联调：可以方便地进行接口联调，支持多人协作，提高开发效率。</li>
 <li>接口监控：可以实时监控接口的状态和性能，及时发现和解决问题。</li>
 <li>接口权限管理：可以对接口进行权限控制，保证接口的安全性和机密性。
-<img style="max-width: 100%; height: auto;" loading="lazy" alt="eolinker" loading="lazy" src="https://img14.360buyimg.com/ddimg/jfs/t1/217216/15/31386/73720/64a23de7Fd01c77b7/2ac787495d2a64cc.jpg%22"></li>
+<img alt="eolinker" loading="lazy" src="https://img14.360buyimg.com/ddimg/jfs/t1/217216/15/31386/73720/64a23de7Fd01c77b7/2ac787495d2a64cc.jpg%22"></li>
 </ol>
 <blockquote>
-<p>项目地址：<a class="link" href="https://www.eolink.com/apikit"  target="_blank" rel="noopener"
-    >点我进入</a></p></blockquote>
+<p>项目地址：<a href="https://www.eolink.com/apikit">点我进入</a></p></blockquote>
 <h2 id="showdoc"><strong>ShowDoc</strong></h2>
 <p>首先这是我最推荐的一个API管理工具，因为界面简单，风格清晰，个人觉得很好看的UI界面！！！</p>
 <p>ShowDoc的主要功能包括：</p>
@@ -67,13 +59,11 @@
 <li>版本控制：支持对文档的版本控制，可以查看历史版本，并进行比较和恢复。</li>
 <li>权限管理：可以对文档进行权限控制，设置不同的用户角色和权限，保证文档的安全性和机密性。</li>
 <li>导出和分享：支持将文档导出为HTML、PDF和Markdown格式，方便分享和发布。
-<img style="max-width: 100%; height: auto;" loading="lazy" alt="ShowDoc" loading="lazy" src="https://img11.360buyimg.com/ddimg/jfs/t1/120366/32/35885/27184/64a24181F7497ff67/58deb560821eb1b2.jpg"></li>
+<img alt="ShowDoc" loading="lazy" src="https://img11.360buyimg.com/ddimg/jfs/t1/120366/32/35885/27184/64a24181F7497ff67/58deb560821eb1b2.jpg"></li>
 </ol>
 <blockquote>
-<p>项目地址：<a class="link" href="https://www.showdoc.com.cn/"  target="_blank" rel="noopener"
-    >点我进入</a></p>
-<p>Demo：<a class="link" href="https://www.showdoc.com.cn/demo/9"  target="_blank" rel="noopener"
-    >点我进入</a></p></blockquote>
+<p>项目地址：<a href="https://www.showdoc.com.cn/">点我进入</a></p>
+<p>Demo：<a href="https://www.showdoc.com.cn/demo/9">点我进入</a></p></blockquote>
 ]]></content:encoded>
     </item>
   </channel>

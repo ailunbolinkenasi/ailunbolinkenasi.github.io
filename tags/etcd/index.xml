@@ -1,15 +1,10 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
-    <title>Etcd on 太阳可以是蓝色</title>
+    <title>Etcd on Heartbeat Diary</title>
     <link>https://blog.mletter.cn/tags/etcd/</link>
-    <description>Recent content in Etcd on 太阳可以是蓝色</description>
-    <image>
-      <title>太阳可以是蓝色</title>
-      <url>https://blog.mletter.cn/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</url>
-      <link>https://blog.mletter.cn/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</link>
-    </image>
-    <generator>Hugo -- 0.145.0</generator>
+    <description>Recent content in Etcd on Heartbeat Diary</description>
+    <generator>Hugo -- 0.146.5</generator>
     <language>zh</language>
     <lastBuildDate>Sun, 26 Feb 2023 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://blog.mletter.cn/tags/etcd/index.xml" rel="self" type="application/rss+xml" />
@@ -27,8 +22,7 @@
 <li>三个可以通过 2379 和 2380 端口相互通信的主机。本文档使用这些作为默认端口。不过，它们可以通过 kubeadm 的配置文件进行自定义。</li>
 <li>每个主机必须安装 systemd 和 bash 兼容的 shell。</li>
 <li>每台主机必须安装<code>有容器运行时</code>、<code>kubelet</code> 和 <code>kubeadm</code></li>
-<li>每个主机都应该能够访问 Kubernetes 容器镜像仓库 (<a class="link" href="http://registry.k8s.io/"  target="_blank" rel="noopener"
-    >registry.k8s.io</a>)， 或者使用 kubeadm config images list/pull 列出/拉取所需的 etcd 镜像。 本指南将把 etcd 实例设置为由 kubelet 管理的静态 Pod。</li>
+<li>每个主机都应该能够访问 Kubernetes 容器镜像仓库 (<a href="http://registry.k8s.io/">registry.k8s.io</a>)， 或者使用 kubeadm config images list/pull 列出/拉取所需的 etcd 镜像。 本指南将把 etcd 实例设置为由 kubelet 管理的静态 Pod。</li>
 <li>一些可以用来在主机间复制文件的基础设施。例如 ssh 和 scp 就可以满足需求。</li>
 </ul>
 <blockquote>

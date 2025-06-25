@@ -1,15 +1,10 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
-    <title>Traefik on 太阳可以是蓝色</title>
+    <title>Traefik on Heartbeat Diary</title>
     <link>https://blog.mletter.cn/tags/traefik/</link>
-    <description>Recent content in Traefik on 太阳可以是蓝色</description>
-    <image>
-      <title>太阳可以是蓝色</title>
-      <url>https://blog.mletter.cn/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</url>
-      <link>https://blog.mletter.cn/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</link>
-    </image>
-    <generator>Hugo -- 0.145.0</generator>
+    <description>Recent content in Traefik on Heartbeat Diary</description>
+    <generator>Hugo -- 0.146.5</generator>
     <language>zh</language>
     <lastBuildDate>Fri, 07 Apr 2023 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://blog.mletter.cn/tags/traefik/index.xml" rel="self" type="application/rss+xml" />
@@ -19,23 +14,17 @@
       <pubDate>Fri, 07 Apr 2023 00:00:00 +0000</pubDate>
       <guid>https://blog.mletter.cn/tech/kubernetes/traefik/</guid>
       <description>&lt;h2 id=&#34;traekfik是什么&#34;&gt;Traekfik是什么&lt;/h2&gt;
-&lt;p&gt;Traefik 是一种&lt;a class=&#34;link&#34; href=&#34;https://github.com/traefik/traefik&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
-    &gt;开源&lt;/a&gt; &lt;em&gt;边缘路由器&lt;/em&gt;，它使您发布服务成为一种有趣而轻松的体验。它代表您的系统接收请求并找出哪些组件负责处理它们。&lt;/p&gt;
+&lt;p&gt;Traefik 是一种&lt;a href=&#34;https://github.com/traefik/traefik&#34;&gt;开源&lt;/a&gt; &lt;em&gt;边缘路由器&lt;/em&gt;，它使您发布服务成为一种有趣而轻松的体验。它代表您的系统接收请求并找出哪些组件负责处理它们。&lt;/p&gt;
 &lt;p&gt;Traefik 的与众不同之处在于，除了它的许多功能之外，它还可以自动为您的服务发现正确的配置。当 Traefik 检查您的基础架构时，奇迹就会发生，它会在其中找到相关信息并发现哪个服务服务于哪个请求。&lt;/p&gt;
-&lt;p&gt;Traefik 原生兼容所有主要的集群技术，例如 Kubernetes、Docker、Docker Swarm、AWS、Mesos、Marathon，&lt;a class=&#34;link&#34; href=&#34;https://doc.traefik.io/traefik/providers/overview/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
-    &gt;等等&lt;/a&gt;；并且可以同时处理很多。（它甚至适用于在裸机上运行的遗留软件。）&lt;/p&gt;
+&lt;p&gt;Traefik 原生兼容所有主要的集群技术，例如 Kubernetes、Docker、Docker Swarm、AWS、Mesos、Marathon，&lt;a href=&#34;https://doc.traefik.io/traefik/providers/overview/&#34;&gt;等等&lt;/a&gt;；并且可以同时处理很多。（它甚至适用于在裸机上运行的遗留软件。）&lt;/p&gt;
 &lt;p&gt;使用 Traefik，无需维护和同步单独的配置文件：一切都自动实时发生（无需重启，无连接中断）。使用 Traefik，您可以花时间为系统开发和部署新功能，而不是配置和维护其工作状态。&lt;/p&gt;
-&lt;p&gt;&lt;img style=&#34;max-width: 100%; height: auto;&#34; loading=&#34;lazy&#34; loading=&#34;lazy&#34; src=&#34;https://doc.traefik.io/traefik/assets/img/traefik-architecture.png&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img loading=&#34;lazy&#34; src=&#34;https://doc.traefik.io/traefik/assets/img/traefik-architecture.png&#34;&gt;&lt;/p&gt;
 &lt;h3 id=&#34;边缘路由器&#34;&gt;边缘路由器&lt;/h3&gt;
-&lt;p&gt;Traefik 是一个&lt;em&gt;Edge Router&lt;/em&gt;，这意味着它是您平台的大门，它拦截并路由每个传入请求：它知道确定哪些服务处理哪些请求的所有逻辑和每条规则（基于&lt;a class=&#34;link&#34; href=&#34;https://doc.traefik.io/traefik/routing/routers/#rule&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
-    &gt;path&lt;/a&gt;，&lt;a class=&#34;link&#34; href=&#34;https://doc.traefik.io/traefik/routing/routers/#rule&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
-    &gt;host&lt;/a&gt;，&lt;a class=&#34;link&#34; href=&#34;https://doc.traefik.io/traefik/routing/routers/#rule&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
-    &gt;标头&lt;/a&gt;，&lt;a class=&#34;link&#34; href=&#34;https://doc.traefik.io/traefik/routing/routers/#rule&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
-    &gt;等等&lt;/a&gt;…）。&lt;/p&gt;
-&lt;p&gt;&lt;img style=&#34;max-width: 100%; height: auto;&#34; loading=&#34;lazy&#34; alt=&#34;边缘路由&#34; loading=&#34;lazy&#34; src=&#34;https://doc.traefik.io/traefik/assets/img/traefik-concepts-1.png&#34;&gt;&lt;/p&gt;
+&lt;p&gt;Traefik 是一个&lt;em&gt;Edge Router&lt;/em&gt;，这意味着它是您平台的大门，它拦截并路由每个传入请求：它知道确定哪些服务处理哪些请求的所有逻辑和每条规则（基于&lt;a href=&#34;https://doc.traefik.io/traefik/routing/routers/#rule&#34;&gt;path&lt;/a&gt;，&lt;a href=&#34;https://doc.traefik.io/traefik/routing/routers/#rule&#34;&gt;host&lt;/a&gt;，&lt;a href=&#34;https://doc.traefik.io/traefik/routing/routers/#rule&#34;&gt;标头&lt;/a&gt;，&lt;a href=&#34;https://doc.traefik.io/traefik/routing/routers/#rule&#34;&gt;等等&lt;/a&gt;…）。&lt;/p&gt;
+&lt;p&gt;&lt;img alt=&#34;边缘路由&#34; loading=&#34;lazy&#34; src=&#34;https://doc.traefik.io/traefik/assets/img/traefik-concepts-1.png&#34;&gt;&lt;/p&gt;
 &lt;h3 id=&#34;自动服务发现&#34;&gt;自动服务发现&lt;/h3&gt;
 &lt;p&gt;传统上边缘路由器（或反向代理）需要一个配置文件，其中包含到您的服务的每条可能路径，Traefik 从服务本身获取它们。部署您的服务，您附加信息告诉 Traefik 服务可以处理的请求的特征。&lt;/p&gt;
-&lt;p&gt;&lt;img style=&#34;max-width: 100%; height: auto;&#34; loading=&#34;lazy&#34; alt=&#34;供应商&#34; loading=&#34;lazy&#34; src=&#34;https://doc.traefik.io/traefik/assets/img/providers.png&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img alt=&#34;供应商&#34; loading=&#34;lazy&#34; src=&#34;https://doc.traefik.io/traefik/assets/img/providers.png&#34;&gt;&lt;/p&gt;
 &lt;p&gt;首先，当启动 Traefik 时，需要定义 &lt;code&gt;entrypoints&lt;/code&gt;（入口点），然后，根据连接到这些 entrypoints 的&lt;strong&gt;路由&lt;/strong&gt;来分析传入的请求，来查看他们是否与一组&lt;strong&gt;规则&lt;/strong&gt;相匹配，如果匹配，则路由可能会将请求通过一系列&lt;strong&gt;中间件&lt;/strong&gt;转换过后再转发到你的&lt;strong&gt;服务&lt;/strong&gt;上去。在了解 Traefik 之前有几个核心概念我们必须要了解：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;code&gt;Providers&lt;/code&gt; 用来自动发现平台上的服务，可以是编排工具、容器引擎或者 key-value 存储等，比如 Docker、Kubernetes、File&lt;/li&gt;
@@ -46,25 +35,85 @@
 &lt;/ul&gt;
 &lt;h2 id=&#34;部署traefik&#34;&gt;部署Traefik&lt;/h2&gt;
 &lt;blockquote&gt;
-&lt;p&gt;Traefik的配置可以使用两种方式：&lt;code&gt;静态配置&lt;/code&gt;和&lt;code&gt;动态配置&lt;/code&gt;&lt;/p&gt;</description>
+&lt;p&gt;Traefik的配置可以使用两种方式：&lt;code&gt;静态配置&lt;/code&gt;和&lt;code&gt;动态配置&lt;/code&gt;&lt;/p&gt;&lt;/blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;静态配置：在 Traefik 中定义静态配置选项有三种不同的、互斥的即你只能同时使用一种）方式。
+&lt;ul&gt;
+&lt;li&gt;在配置文件中&lt;/li&gt;
+&lt;li&gt;在命令行参数中&lt;/li&gt;
+&lt;li&gt;作为环境变量&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;动态配置：Traefik从&lt;a href=&#34;https://doc.traefik.io/traefik/providers/overview/&#34;&gt;提供者处获取其&lt;/a&gt;&lt;em&gt;动态配置&lt;/em&gt;：无论是编排器、服务注册表还是普通的旧配置文件。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 使用Helm的方式进行部署Traefik2.9.x&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;root@Online-Beijing-master1 ~&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;# helm repo add traefik https://traefik.github.io/charts&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;root@Online-Beijing-master1 ~&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;# helm repo update&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;root@Online-Beijing-master1 yaml&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;# helm fetch traefik/traefik&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;root@Online-Beijing-master1 yaml&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;# tar -zxf traefik-21.1.0.tgz&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;ol&gt;
+&lt;li&gt;修改一下&lt;code&gt;value.yaml&lt;/code&gt;中的部分内容，改动大概如下部分的内容&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-yaml&#34; data-lang=&#34;yaml&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nt&#34;&gt;deployment&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; 
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;  &lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;initContainers&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; 
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;    &lt;/span&gt;&lt;span class=&#34;c&#34;&gt;# The &amp;#34;volume-permissions&amp;#34; init container is required if you run into permission issues.&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;    &lt;/span&gt;&lt;span class=&#34;c&#34;&gt;# Related issue: https://github.com/traefik/traefik/issues/6825&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;    &lt;/span&gt;- &lt;span class=&#34;nt&#34;&gt;name&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;l&#34;&gt;volume-permissions&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;      &lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;image&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;l&#34;&gt;busybox:1.35&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;      &lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;command&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;sh&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;-c&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;touch /data/acme.json &amp;amp;&amp;amp; chmod -Rv 600 /data/* &amp;amp;&amp;amp; chown 65532:65532 /data/acme.json&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;      &lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;volumeMounts&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;        &lt;/span&gt;- &lt;span class=&#34;nt&#34;&gt;name&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;l&#34;&gt;data&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;          &lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;mountPath&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;l&#34;&gt;/data&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;  &lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;websecure&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;    &lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;port&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;m&#34;&gt;8443&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;    &lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;hostPort&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;m&#34;&gt;443&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;    &lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;expose&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;kc&#34;&gt;true&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;    &lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;exposedPort&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;m&#34;&gt;443&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;    &lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;protocol&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;l&#34;&gt;TCP&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;  &lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;web&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;    &lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;port&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;m&#34;&gt;8000&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;    &lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;hostPort&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;m&#34;&gt;80&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;    &lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;expose&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;kc&#34;&gt;true&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;    &lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;exposedPort&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;m&#34;&gt;80&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;    &lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;protocol&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;l&#34;&gt;TCP&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;service&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;  &lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;enabled&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;kc&#34;&gt;false&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;ingressRoute&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;  &lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;dashboard&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;    &lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;enabled&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;kc&#34;&gt;false&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;nodeSelector&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; 
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;  &lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;node.kubernetes.io/traefik-manager&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;true&amp;#39;&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;tolerations&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; 
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;  &lt;/span&gt;- &lt;span class=&#34;nt&#34;&gt;key&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;node-role.kubernetes.io/master&amp;#34;&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;    &lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;operator&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;Equal&amp;#34;&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;    &lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;effect&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;NoSchedule&amp;#34;&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;  &lt;/span&gt;- &lt;span class=&#34;nt&#34;&gt;key&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;node-role.kubernetes.io/control-plane&amp;#34;&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;    &lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;operator&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;Equal&amp;#34;&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;    &lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;effect&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;NoSchedule&amp;#34;&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;ol&gt;
+&lt;li&gt;创建一个&lt;code&gt;traefik-v2&lt;/code&gt;的名称空间&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;root@Online-Beijing-master1 yaml&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;# kubectl create ns traefik-v2&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;ol&gt;
+&lt;li&gt;部署Traefik&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;root@Online-Beijing-master1 yaml&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;# helm install traefik ./traefik -f ./traefik/values.yaml --namespace traefik-v2&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;root@Online-Beijing-master1 yaml&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;# kubectl get pods traefik-67b8896675-4xdrx -n traefik-v2 -o yaml&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;其中 &lt;code&gt;entryPoints&lt;/code&gt; 属性定义了 &lt;code&gt;web&lt;/code&gt; 和 &lt;code&gt;websecure&lt;/code&gt; 这两个入口点的，并开启 &lt;code&gt;kubernetesingress&lt;/code&gt; 和 &lt;code&gt;kubernetescrd&lt;/code&gt; 这两个 provider，也就是我们可以使用 Kubernetes 原本的 Ingress 资源对象，也可以使用 Traefik 自己扩展的 IngressRoute 这样的 CRD 资源对象&lt;/p&gt;</description>
       <content:encoded><![CDATA[<h2 id="traekfik是什么">Traekfik是什么</h2>
-<p>Traefik 是一种<a class="link" href="https://github.com/traefik/traefik"  target="_blank" rel="noopener"
-    >开源</a> <em>边缘路由器</em>，它使您发布服务成为一种有趣而轻松的体验。它代表您的系统接收请求并找出哪些组件负责处理它们。</p>
+<p>Traefik 是一种<a href="https://github.com/traefik/traefik">开源</a> <em>边缘路由器</em>，它使您发布服务成为一种有趣而轻松的体验。它代表您的系统接收请求并找出哪些组件负责处理它们。</p>
 <p>Traefik 的与众不同之处在于，除了它的许多功能之外，它还可以自动为您的服务发现正确的配置。当 Traefik 检查您的基础架构时，奇迹就会发生，它会在其中找到相关信息并发现哪个服务服务于哪个请求。</p>
-<p>Traefik 原生兼容所有主要的集群技术，例如 Kubernetes、Docker、Docker Swarm、AWS、Mesos、Marathon，<a class="link" href="https://doc.traefik.io/traefik/providers/overview/"  target="_blank" rel="noopener"
-    >等等</a>；并且可以同时处理很多。（它甚至适用于在裸机上运行的遗留软件。）</p>
+<p>Traefik 原生兼容所有主要的集群技术，例如 Kubernetes、Docker、Docker Swarm、AWS、Mesos、Marathon，<a href="https://doc.traefik.io/traefik/providers/overview/">等等</a>；并且可以同时处理很多。（它甚至适用于在裸机上运行的遗留软件。）</p>
 <p>使用 Traefik，无需维护和同步单独的配置文件：一切都自动实时发生（无需重启，无连接中断）。使用 Traefik，您可以花时间为系统开发和部署新功能，而不是配置和维护其工作状态。</p>
-<p><img style="max-width: 100%; height: auto;" loading="lazy" loading="lazy" src="https://doc.traefik.io/traefik/assets/img/traefik-architecture.png"></p>
+<p><img loading="lazy" src="https://doc.traefik.io/traefik/assets/img/traefik-architecture.png"></p>
 <h3 id="边缘路由器">边缘路由器</h3>
-<p>Traefik 是一个<em>Edge Router</em>，这意味着它是您平台的大门，它拦截并路由每个传入请求：它知道确定哪些服务处理哪些请求的所有逻辑和每条规则（基于<a class="link" href="https://doc.traefik.io/traefik/routing/routers/#rule"  target="_blank" rel="noopener"
-    >path</a>，<a class="link" href="https://doc.traefik.io/traefik/routing/routers/#rule"  target="_blank" rel="noopener"
-    >host</a>，<a class="link" href="https://doc.traefik.io/traefik/routing/routers/#rule"  target="_blank" rel="noopener"
-    >标头</a>，<a class="link" href="https://doc.traefik.io/traefik/routing/routers/#rule"  target="_blank" rel="noopener"
-    >等等</a>…）。</p>
-<p><img style="max-width: 100%; height: auto;" loading="lazy" alt="边缘路由" loading="lazy" src="https://doc.traefik.io/traefik/assets/img/traefik-concepts-1.png"></p>
+<p>Traefik 是一个<em>Edge Router</em>，这意味着它是您平台的大门，它拦截并路由每个传入请求：它知道确定哪些服务处理哪些请求的所有逻辑和每条规则（基于<a href="https://doc.traefik.io/traefik/routing/routers/#rule">path</a>，<a href="https://doc.traefik.io/traefik/routing/routers/#rule">host</a>，<a href="https://doc.traefik.io/traefik/routing/routers/#rule">标头</a>，<a href="https://doc.traefik.io/traefik/routing/routers/#rule">等等</a>…）。</p>
+<p><img alt="边缘路由" loading="lazy" src="https://doc.traefik.io/traefik/assets/img/traefik-concepts-1.png"></p>
 <h3 id="自动服务发现">自动服务发现</h3>
 <p>传统上边缘路由器（或反向代理）需要一个配置文件，其中包含到您的服务的每条可能路径，Traefik 从服务本身获取它们。部署您的服务，您附加信息告诉 Traefik 服务可以处理的请求的特征。</p>
-<p><img style="max-width: 100%; height: auto;" loading="lazy" alt="供应商" loading="lazy" src="https://doc.traefik.io/traefik/assets/img/providers.png"></p>
+<p><img alt="供应商" loading="lazy" src="https://doc.traefik.io/traefik/assets/img/providers.png"></p>
 <p>首先，当启动 Traefik 时，需要定义 <code>entrypoints</code>（入口点），然后，根据连接到这些 entrypoints 的<strong>路由</strong>来分析传入的请求，来查看他们是否与一组<strong>规则</strong>相匹配，如果匹配，则路由可能会将请求通过一系列<strong>中间件</strong>转换过后再转发到你的<strong>服务</strong>上去。在了解 Traefik 之前有几个核心概念我们必须要了解：</p>
 <ul>
 <li><code>Providers</code> 用来自动发现平台上的服务，可以是编排工具、容器引擎或者 key-value 存储等，比如 Docker、Kubernetes、File</li>
@@ -84,8 +133,7 @@
 <li>作为环境变量</li>
 </ul>
 </li>
-<li>动态配置：Traefik从<a class="link" href="https://doc.traefik.io/traefik/providers/overview/"  target="_blank" rel="noopener"
-    >提供者处获取其</a><em>动态配置</em>：无论是编排器、服务注册表还是普通的旧配置文件。</li>
+<li>动态配置：Traefik从<a href="https://doc.traefik.io/traefik/providers/overview/">提供者处获取其</a><em>动态配置</em>：无论是编排器、服务注册表还是普通的旧配置文件。</li>
 </ul>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 使用Helm的方式进行部署Traefik2.9.x</span>
 </span></span><span class="line"><span class="cl"><span class="o">[</span>root@Online-Beijing-master1 ~<span class="o">]</span><span class="c1"># helm repo add traefik https://traefik.github.io/charts</span>
@@ -340,17 +388,14 @@
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span>- <span class="nt">main</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;*.qingyang.com&#34;</span><span class="w">
 </span></span></span></code></pre></div><p>只需要将 tls 部分改成我们定义的 <code>ali</code> 这个证书解析器，如果我们想要生成一个通配符的域名证书的话可以定义 <code>domains</code> 参数来指定，然后更新 <code>IngressRoute </code>对象，这个时候我们再去用 HTTPS 访问我们的应用（当然需要将域名在阿里云 DNS 上做解析）</p>
 <h2 id="中间件">中间件</h2>
-<p>连接到路由器的中间件是一种在将请求发送到您的<a class="link" href="https://doc.traefik.io/traefik/routing/services/"  target="_blank" rel="noopener"
-    >服务</a>之前（或在将服务的答案发送到客户端之前）调整请求的方法。</p>
+<p>连接到路由器的中间件是一种在将请求发送到您的<a href="https://doc.traefik.io/traefik/routing/services/">服务</a>之前（或在将服务的答案发送到客户端之前）调整请求的方法。</p>
 <p>Traefik 中有几个可用的中间件，有的可以修改请求，headers，有的负责重定向，有的添加认证等等。</p>
 <p>使用相同协议的中间件可以组合成链以适应各种场景。</p>
 <ul>
-<li><a class="link" href="https://doc.traefik.io/traefik/middlewares/http/overview/"  target="_blank" rel="noopener"
-    >HTTP中间件列表</a></li>
-<li><a class="link" href="https://doc.traefik.io/traefik/middlewares/tcp/overview/"  target="_blank" rel="noopener"
-    >TCP中间件列表</a></li>
+<li><a href="https://doc.traefik.io/traefik/middlewares/http/overview/">HTTP中间件列表</a></li>
+<li><a href="https://doc.traefik.io/traefik/middlewares/tcp/overview/">TCP中间件列表</a></li>
 </ul>
-<p><img style="max-width: 100%; height: auto;" loading="lazy" alt="img" loading="lazy" src="https://doc.traefik.io/traefik/assets/img/middleware/overview.png"></p>
+<p><img alt="img" loading="lazy" src="https://doc.traefik.io/traefik/assets/img/middleware/overview.png"></p>
 <h3 id="强制跳转https">强制跳转Https</h3>
 <p>Traefik 中也是可以配置强制跳转的，只是这个功能现在是通过中间件来提供的了。如下所示，我们使用 <code>redirectScheme</code> 中间件来创建提供强制跳转服务</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="c"># Redirect to https</span><span class="w">
@@ -382,8 +427,7 @@
 </span></span></span></code></pre></div><blockquote>
 <p>如果你有具体需求的话请前往官网文档查看更多中间件的适用方法。</p></blockquote>
 <h2 id="traefik-pilot">Traefik Pilot</h2>
-<p>虽然 Traefik 已经默认实现了很多中间件，可以满足大部分我们日常的需求，但是在实际工作中，用户仍然还是有自定义中间件的需求，这就 <a class="link" href="https://pilot.traefik.io/"  target="_blank" rel="noopener"
-    >Traefik Pilot</a> 的功能了。</p>
+<p>虽然 Traefik 已经默认实现了很多中间件，可以满足大部分我们日常的需求，但是在实际工作中，用户仍然还是有自定义中间件的需求，这就 <a href="https://pilot.traefik.io/">Traefik Pilot</a> 的功能了。</p>
 <p>Traefik Pilot 是一个 SaaS 平台，和 Traefik 进行链接来扩展其功能，它提供了很多功能，通过一个全局控制面板和 Dashboard 来增强对 Traefik 的观测和控制：</p>
 <ul>
 <li>Traefik 代理和代理组的网络活动的指标</li>
@@ -502,8 +546,7 @@
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">mongo</span><span class="p">:</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="m">27017</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">hostPort</span><span class="p">:</span><span class="w"> </span><span class="m">27017</span><span class="w">
-</span></span></span></code></pre></div><p>这里给入口点添加 <code>hostPort</code> 是为了能够通过节点的端口访问到服务，关于 entryPoints 入口点的更多信息，可以查看文档 <a class="link" href="https://www.qikqiak.com/traefik-book/routing/entrypoints/"  target="_blank" rel="noopener"
-    >entrypoints</a> 了解更多信息。</p>
+</span></span></span></code></pre></div><p>这里给入口点添加 <code>hostPort</code> 是为了能够通过节点的端口访问到服务，关于 entryPoints 入口点的更多信息，可以查看文档 <a href="https://www.qikqiak.com/traefik-book/routing/entrypoints/">entrypoints</a> 了解更多信息。</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">helm upgrade --install traefik ./traefik -f ./traefik/values.yaml -n traefik-v2
 </span></span></code></pre></div><ol start="2">
 <li>由于 Traefik 中使用 TCP 路由配置需要 <code>SNI</code>，而 <code>SNI</code> 又是依赖 <code>TLS</code> 的，所以我们需要配置证书才行，如果没有证书的话，我们可以使用通配符 <code>*</code> 进行配置，我们这里创建一个 <code>IngressRouteTCP</code> 类型的 CRD</li>

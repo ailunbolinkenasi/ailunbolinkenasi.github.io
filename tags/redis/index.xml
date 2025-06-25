@@ -1,15 +1,10 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
-    <title>Redis on 太阳可以是蓝色</title>
+    <title>Redis on Heartbeat Diary</title>
     <link>https://blog.mletter.cn/tags/redis/</link>
-    <description>Recent content in Redis on 太阳可以是蓝色</description>
-    <image>
-      <title>太阳可以是蓝色</title>
-      <url>https://blog.mletter.cn/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</url>
-      <link>https://blog.mletter.cn/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</link>
-    </image>
-    <generator>Hugo -- 0.145.0</generator>
+    <description>Recent content in Redis on Heartbeat Diary</description>
+    <generator>Hugo -- 0.146.5</generator>
     <language>zh</language>
     <lastBuildDate>Fri, 19 Feb 2021 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://blog.mletter.cn/tags/redis/index.xml" rel="self" type="application/rss+xml" />
@@ -100,8 +95,7 @@
 <p>如果您使用的是<code>Redis 5</code>或更高版本，这很容易完成，因为嵌入到中的Redis Cluster命令行实用程序为我们提供了帮助，该实用程序<code>redis-cli</code>可用于创建新集群，检查或重新分片现有集群等。</p>
 <p>对于Redis版本3或4，有一个称为的旧工具<code>redis-trib.rb</code>，它非常相似。您可以<code>src</code>在Redis源代码分发的目录中找到它。您需要安装<code>redis</code>gem才能运行<code>redis-trib</code>。</p>
 <blockquote>
-<p>如果你是用的是Redis3.x或者4.x 请前往官网链接 <a class="link" href="https://redis.io/topics/cluster-tutorial"  target="_blank" rel="noopener"
-    >点我进入</a></p></blockquote>
+<p>如果你是用的是Redis3.x或者4.x 请前往官网链接 <a href="https://redis.io/topics/cluster-tutorial">点我进入</a></p></blockquote>
 <ul>
 <li>此方法为<code>Redis5</code>或者更高版本</li>
 </ul>

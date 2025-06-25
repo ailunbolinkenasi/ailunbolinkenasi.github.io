@@ -1,15 +1,10 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
-    <title>Sealos on 太阳可以是蓝色</title>
+    <title>Sealos on Heartbeat Diary</title>
     <link>https://blog.mletter.cn/tags/sealos/</link>
-    <description>Recent content in Sealos on 太阳可以是蓝色</description>
-    <image>
-      <title>太阳可以是蓝色</title>
-      <url>https://blog.mletter.cn/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</url>
-      <link>https://blog.mletter.cn/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</link>
-    </image>
-    <generator>Hugo -- 0.145.0</generator>
+    <description>Recent content in Sealos on Heartbeat Diary</description>
+    <generator>Hugo -- 0.146.5</generator>
     <language>zh</language>
     <lastBuildDate>Mon, 15 Apr 2024 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://blog.mletter.cn/tags/sealos/index.xml" rel="self" type="application/rss+xml" />
@@ -19,8 +14,7 @@
       <pubDate>Mon, 15 Apr 2024 00:00:00 +0000</pubDate>
       <guid>https://blog.mletter.cn/tech/kubernetes/sealos/</guid>
       <description>基于SealOS来部署高可用的kubernetes集群</description>
-      <content:encoded><![CDATA[<p>配套Bilibili视频已经更新：<a class="link" href="https://www.bilibili.com/video/BV1Pr421V7PT/?share_source=copy_web&amp;vd_source=2cac9fa5f0a3fb896b7f6b1468993554"  target="_blank" rel="noopener"
-    >点我观看</a></p>
+      <content:encoded><![CDATA[<p>配套Bilibili视频已经更新：<a href="https://www.bilibili.com/video/BV1Pr421V7PT/?share_source=copy_web&amp;vd_source=2cac9fa5f0a3fb896b7f6b1468993554">点我观看</a></p>
 <h2 id="准备sealos">准备SealOS</h2>
 <p>机器信息如下：</p>
 <table>
@@ -67,8 +61,7 @@
 <h3 id="通过sealos部署的前提条件">通过SealOS部署的前提条件</h3>
 <ul>
 <li>
-<p><a class="link" href="https://sealos.io/zh-Hans/docs/self-hosting/lifecycle-management/quick-start/deploy-kubernetes"  target="_blank" rel="noopener"
-    >SealOS For Kubernetes</a></p>
+<p><a href="https://sealos.io/zh-Hans/docs/self-hosting/lifecycle-management/quick-start/deploy-kubernetes">SealOS For Kubernetes</a></p>
 </li>
 <li>
 <p>每个集群节点应该有不同的主机名。主机名不要带下划线。</p>

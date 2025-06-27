@@ -6,7 +6,7 @@
     <description>Recent content on Heartbeat Diary</description>
     <generator>Hugo -- 0.146.5</generator>
     <language>zh</language>
-    <lastBuildDate>Mon, 24 Mar 2025 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 26 Jun 2025 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://blog.mletter.cn/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>维扣图元-专属你的拍照摄影社区</title>
@@ -112,6 +112,195 @@
 <li><input disabled="" type="checkbox"> 画板服务设计</li>
 <li><input disabled="" type="checkbox"> 审核服务设计</li>
 <li><input disabled="" type="checkbox"> 私信服务设计</li>
+</ul>
+]]></content:encoded>
+    </item>
+    <item>
+      <title>Docker日志太多？磁盘爆了？一篇教你搞定容器日志问题</title>
+      <link>https://blog.mletter.cn/tech/docker/docker-container-logging-troubleshooting/</link>
+      <pubDate>Thu, 26 Jun 2025 00:00:00 +0000</pubDate>
+      <guid>https://blog.mletter.cn/tech/docker/docker-container-logging-troubleshooting/</guid>
+      <description>&lt;p&gt;在使用 Docker 时，容器日志的无限制增长可能会导致磁盘空间被快速占满，甚至引发服务崩溃。哥们带你将从&lt;strong&gt;问题定位、临时解决方案、长期优化策略&lt;/strong&gt;三个层面，手把手教你彻底解决 Docker 日志问题。&lt;/p&gt;
+&lt;h2 id=&#34;一问题定位日志文件在哪&#34;&gt;一、问题定位：日志文件在哪？&lt;/h2&gt;
+&lt;p&gt;通常情况下位于Docker容器的日志默认存储在宿主机的以下路径中：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;/var/lib/docker/containers/&amp;lt;container_id&amp;gt;/&amp;lt;container_id&amp;gt;-json.log
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;blockquote&gt;
+&lt;p&gt;取决于你的 docker 存储目录，如需修改请结合个人环境以及项目条件进行修改，每个容器生成的日志文件通常以 &lt;code&gt;*-json.log&lt;/code&gt; 结尾。&lt;/p&gt;&lt;/blockquote&gt;
+&lt;p&gt;&lt;strong&gt;快速检查磁盘占用：&lt;/strong&gt;&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 查看磁盘使用情况 &lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;df -h 
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 找出日志目录占用空间最大的容器 &lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nb&#34;&gt;cd&lt;/span&gt; /var/lib/docker/containers/ 
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;du -sh * &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; sort -nr &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; head -n &lt;span class=&#34;m&#34;&gt;20&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;二临时解决方案快速释放磁盘空间&#34;&gt;二、临时解决方案：快速释放磁盘空间&lt;/h2&gt;
+&lt;h3 id=&#34;方法一使用-truncate-清空日志&#34;&gt;方法一：使用 &lt;code&gt;truncate&lt;/code&gt; 清空日志&lt;/h3&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 替换为实际容器ID&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nv&#34;&gt;container_id&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;your_container_id&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;truncate -s &lt;span class=&#34;m&#34;&gt;0&lt;/span&gt; /var/lib/docker/containers/&lt;span class=&#34;si&#34;&gt;${&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;container_id&lt;/span&gt;&lt;span class=&#34;si&#34;&gt;}&lt;/span&gt;/*-json.log
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;优势&lt;/strong&gt;：保留文件 inode，不会中断正在写入的日志进程。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;方法二使用-echo-清空日志&#34;&gt;方法二：使用 &lt;code&gt;echo&lt;/code&gt; 清空日志&lt;/h3&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nb&#34;&gt;echo&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;&amp;#34;&lt;/span&gt; &amp;gt; /var/lib/docker/containers/&lt;span class=&#34;si&#34;&gt;${&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;container_id&lt;/span&gt;&lt;span class=&#34;si&#34;&gt;}&lt;/span&gt;/*-json.log
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;注意&lt;/strong&gt;：可能导致日志文件 inode 变化，建议优先使用 &lt;code&gt;truncate&lt;/code&gt;。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;blockquote&gt;
+&lt;p&gt;其实某些情况下你也可以使用&lt;code&gt;docker system prune -a&lt;/code&gt;来进行清理未使用的容器、镜像、网络和卷。&lt;/p&gt;&lt;/blockquote&gt;
+&lt;h2 id=&#34;三长期优化策略&#34;&gt;三、长期优化策略&lt;/h2&gt;
+&lt;h3 id=&#34;方法一配置日志轮转log-rotation&#34;&gt;方法一：配置日志轮转（Log Rotation）&lt;/h3&gt;
+&lt;p&gt;通过 &lt;code&gt;logrotate&lt;/code&gt; 工具自动管理日志文件的大小和保留时间。&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;创建配置文件 &lt;code&gt;/etc/logrotate.d/docker-container-logs&lt;/code&gt;：&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;vim /etc/logrotate.d/docker-container-logs
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;/var/lib/docker/containers/*/*.log &lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    rotate &lt;span class=&#34;m&#34;&gt;7&lt;/span&gt;        &lt;span class=&#34;c1&#34;&gt;# 保留7天日志&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    daily           &lt;span class=&#34;c1&#34;&gt;# 每天轮转一次&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    compress        &lt;span class=&#34;c1&#34;&gt;# 压缩旧日志&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    missingok       &lt;span class=&#34;c1&#34;&gt;# 文件缺失不报错&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    notifempty      &lt;span class=&#34;c1&#34;&gt;# 空文件不轮转&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    copytruncate    &lt;span class=&#34;c1&#34;&gt;# 截断原始文件前复制&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;方法二限制单个日志文件大小&#34;&gt;方法二：限制单个日志文件大小&lt;/h3&gt;
+&lt;p&gt;在启动容器时，通过 &lt;code&gt;--log-opt&lt;/code&gt; 参数限制日志文件的大小和数量：&lt;/p&gt;</description>
+      <content:encoded><![CDATA[<p>在使用 Docker 时，容器日志的无限制增长可能会导致磁盘空间被快速占满，甚至引发服务崩溃。哥们带你将从<strong>问题定位、临时解决方案、长期优化策略</strong>三个层面，手把手教你彻底解决 Docker 日志问题。</p>
+<h2 id="一问题定位日志文件在哪">一、问题定位：日志文件在哪？</h2>
+<p>通常情况下位于Docker容器的日志默认存储在宿主机的以下路径中：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">/var/lib/docker/containers/&lt;container_id&gt;/&lt;container_id&gt;-json.log
+</span></span></code></pre></div><blockquote>
+<p>取决于你的 docker 存储目录，如需修改请结合个人环境以及项目条件进行修改，每个容器生成的日志文件通常以 <code>*-json.log</code> 结尾。</p></blockquote>
+<p><strong>快速检查磁盘占用：</strong></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 查看磁盘使用情况 </span>
+</span></span><span class="line"><span class="cl">df -h 
+</span></span><span class="line"><span class="cl"><span class="c1"># 找出日志目录占用空间最大的容器 </span>
+</span></span><span class="line"><span class="cl"><span class="nb">cd</span> /var/lib/docker/containers/ 
+</span></span><span class="line"><span class="cl">du -sh * <span class="p">|</span> sort -nr <span class="p">|</span> head -n <span class="m">20</span>
+</span></span></code></pre></div><h2 id="二临时解决方案快速释放磁盘空间">二、临时解决方案：快速释放磁盘空间</h2>
+<h3 id="方法一使用-truncate-清空日志">方法一：使用 <code>truncate</code> 清空日志</h3>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 替换为实际容器ID</span>
+</span></span><span class="line"><span class="cl"><span class="nv">container_id</span><span class="o">=</span><span class="s2">&#34;your_container_id&#34;</span>
+</span></span><span class="line"><span class="cl">truncate -s <span class="m">0</span> /var/lib/docker/containers/<span class="si">${</span><span class="nv">container_id</span><span class="si">}</span>/*-json.log
+</span></span></code></pre></div><ul>
+<li><strong>优势</strong>：保留文件 inode，不会中断正在写入的日志进程。</li>
+</ul>
+<h3 id="方法二使用-echo-清空日志">方法二：使用 <code>echo</code> 清空日志</h3>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="nb">echo</span> <span class="s2">&#34;&#34;</span> &gt; /var/lib/docker/containers/<span class="si">${</span><span class="nv">container_id</span><span class="si">}</span>/*-json.log
+</span></span></code></pre></div><ul>
+<li><strong>注意</strong>：可能导致日志文件 inode 变化，建议优先使用 <code>truncate</code>。</li>
+</ul>
+<blockquote>
+<p>其实某些情况下你也可以使用<code>docker system prune -a</code>来进行清理未使用的容器、镜像、网络和卷。</p></blockquote>
+<h2 id="三长期优化策略">三、长期优化策略</h2>
+<h3 id="方法一配置日志轮转log-rotation">方法一：配置日志轮转（Log Rotation）</h3>
+<p>通过 <code>logrotate</code> 工具自动管理日志文件的大小和保留时间。</p>
+<ol>
+<li>创建配置文件 <code>/etc/logrotate.d/docker-container-logs</code>：</li>
+</ol>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">vim /etc/logrotate.d/docker-container-logs
+</span></span><span class="line"><span class="cl">/var/lib/docker/containers/*/*.log <span class="o">{</span>
+</span></span><span class="line"><span class="cl">    rotate <span class="m">7</span>        <span class="c1"># 保留7天日志</span>
+</span></span><span class="line"><span class="cl">    daily           <span class="c1"># 每天轮转一次</span>
+</span></span><span class="line"><span class="cl">    compress        <span class="c1"># 压缩旧日志</span>
+</span></span><span class="line"><span class="cl">    missingok       <span class="c1"># 文件缺失不报错</span>
+</span></span><span class="line"><span class="cl">    notifempty      <span class="c1"># 空文件不轮转</span>
+</span></span><span class="line"><span class="cl">    copytruncate    <span class="c1"># 截断原始文件前复制</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span></code></pre></div><h3 id="方法二限制单个日志文件大小">方法二：限制单个日志文件大小</h3>
+<p>在启动容器时，通过 <code>--log-opt</code> 参数限制日志文件的大小和数量：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">docker run -d <span class="se">\ </span>
+</span></span><span class="line"><span class="cl">--log-opt max-size<span class="o">=</span>10m <span class="se">\ </span><span class="c1"># 单个日志文件最大10MB </span>
+</span></span><span class="line"><span class="cl">--log-opt max-file<span class="o">=</span><span class="m">3</span> <span class="se">\ </span><span class="c1"># 最多保留3个日志文件 </span>
+</span></span><span class="line"><span class="cl">your_image_name
+</span></span></code></pre></div><p>如果修改的是已经启动的容器配置</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">docker stop &lt;container&gt;
+</span></span><span class="line"><span class="cl">docker update <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>  --log-driver<span class="o">=</span>json-file <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>  --log-opt max-size<span class="o">=</span>10m <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>  --log-opt max-file<span class="o">=</span><span class="m">3</span> &lt;container&gt;
+</span></span><span class="line"><span class="cl">docker start &lt;container&gt;
+</span></span></code></pre></div><p>下面是我觉得一些比较适合自己公司环境的最佳实践：</p>
+<table>
+  <thead>
+      <tr>
+          <th><strong>场景</strong></th>
+          <th><strong>推荐方案</strong></th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><strong>紧急处理</strong></td>
+          <td>使用 <code>truncate</code> 清空日志文件，或运行清理脚本。</td>
+      </tr>
+      <tr>
+          <td><strong>开发/测试环境</strong></td>
+          <td>配置 <code>max-size</code> 和 <code>max-file</code> 限制日志大小。</td>
+      </tr>
+      <tr>
+          <td><strong>生产环境</strong></td>
+          <td>结合 <code>logrotate</code> + 外部日志系统（如 ELK、云日志服务）+ 监控告警。</td>
+      </tr>
+      <tr>
+          <td><strong>混合云/多集群环境</strong></td>
+          <td>使用中心化日志系统（如 Loki、Graylog）统一管理日志。</td>
+      </tr>
+  </tbody>
+</table>
+<h2 id="四常见问题解答">四、常见问题解答</h2>
+<h3 id="q1清空日志后容器异常怎么办">Q1：清空日志后容器异常怎么办？</h3>
+<p>A：使用 <code>truncate -s 0</code> 清空日志是安全的，不会中断容器运行。但如果直接删除日志文件，需重启容器才能恢复日志记录功能。</p>
+<h3 id="q2如何避免日志无限增长">Q2：如何避免日志无限增长？</h3>
+<p>A：核心策略是<strong>限制日志大小</strong>（<code>max-size</code>）和<strong>集中存储</strong>（外部日志系统）。</p>
+<h3 id="q3日志清理后磁盘空间未释放">Q3：日志清理后磁盘空间未释放？</h3>
+<p>A：可能是文件被其他进程占用，尝试重启 Docker 服务：</p>
+<h2 id="五生产环境开发环境和测试环境大小限制">五、生产环境、开发环境和测试环境大小限制</h2>
+<p>可以通过设置<code>/etc/docker/daemon.json</code></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-json" data-lang="json"><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;log-driver&#34;</span><span class="p">:</span> <span class="s2">&#34;json-file&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;log-opts&#34;</span><span class="p">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;max-size&#34;</span><span class="p">:</span> <span class="s2">&#34;100m&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;max-file&#34;</span><span class="p">:</span> <span class="s2">&#34;5&#34;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><table>
+  <thead>
+      <tr>
+          <th><strong>环境类型</strong></th>
+          <th><strong>max-size</strong></th>
+          <th><strong>max-file</strong></th>
+          <th><strong>日志驱动</strong></th>
+          <th><strong>适用场景</strong></th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>生产环境</td>
+          <td>100MB</td>
+          <td>5</td>
+          <td>syslog/journald</td>
+          <td>稳定性优先，集中日志管理</td>
+      </tr>
+      <tr>
+          <td>开发环境</td>
+          <td>10MB</td>
+          <td>3</td>
+          <td>json-file</td>
+          <td>调试友好，磁盘占用低</td>
+      </tr>
+      <tr>
+          <td>测试环境</td>
+          <td>50MB</td>
+          <td>3</td>
+          <td>gelf/fluentd</td>
+          <td>平衡日志量与资源消耗，支持测试</td>
+      </tr>
+  </tbody>
+</table>
+<h3 id="注意事项">注意事项</h3>
+<ul>
+<li><strong>现有容器不生效</strong>：修改 <code>daemon.json</code> 后，仅对新创建的容器生效。旧容器需手动更新日志配置（删除并重新创建）。</li>
+<li><strong>性能影响</strong>：频繁的日志轮转（小 <code>max-size</code>）可能增加 I/O 负载，生产环境需谨慎调整。</li>
+<li><strong>日志丢失风险</strong>：<code>max-file=0</code> 表示禁用日志轮转，可能导致磁盘爆满；<code>max-file=1</code> 会覆盖旧日志。</li>
 </ul>
 ]]></content:encoded>
     </item>

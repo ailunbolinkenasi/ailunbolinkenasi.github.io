@@ -163,7 +163,7 @@ export const integ: IntegrationUserConfig = {
       },
       imageUploader: false
     }
-  },
+  }
 }
 
 export const terms: CardListData = {

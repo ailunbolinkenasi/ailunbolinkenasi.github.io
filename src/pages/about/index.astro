@@ -4,7 +4,7 @@ import { Button, Collapse, Spoiler, Timeline } from 'astro-pure/user'
 import PageLayout from '@/layouts/CommonPage.astro'
 import Substats from '@/components/about/Substats.astro'
 import ToolSection from '@/components/about/ToolSection.astro'
-import { Aside } from 'astro-pure/user'
+import Twikoo from '@/components/Twikoo.astro';
 
 const headings = [
   { depth: 2, slug: 'hobbies', text: '爱好' },
@@ -259,5 +259,9 @@ const headings = [
       >
     </li>
   </ul>
+  <Fragment slot='bottom'>
+    { <Twikoo/>}
+  </Fragment>
   <Comment slot='bottom' />
+  
 </PageLayout>

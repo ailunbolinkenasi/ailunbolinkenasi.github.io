@@ -1,11 +1,32 @@
-<div id="tcomment"></div>
-<script src="https://cdn.jsdelivr.net/npm/twikoo@1.6.44/dist/twikoo.min.js"></script>
-<script>
-twikoo.init({
-  envId: 'https://twikoo.mletter.cn', // 腾讯云环境填 envId；Vercel 环境填地址（https://xxx.vercel.app）
-  el: '#tcomment', // 容器元素
-  // region: 'ap-guangzhou', // 环境地域，默认为 ap-shanghai，腾讯云环境填 ap-shanghai 或 ap-guangzhou；Vercel 环境不填
-  // path: location.pathname, // 用于区分不同文章的自定义 js 路径，如果您的文章路径不是 location.pathname，需传此参数
-  // lang: 'zh-CN', // 用于手动设定评论区语言，支持的语言列表 https://github.com/twikoojs/twikoo/blob/main/src/client/utils/i18n/index.js
-})
+---
+// src/components/Comments.astro
+interface Props {
+  path?: string;
+}
+
+const { path } = Astro.props;
+const commentPath = path || Astro.url.pathname;
+---
+
+<div id="twikoo"></div>
+
+<script is:inline>
+  // 使用 CDN 方式
+  const twikooScript = document.createElement('script');
+  twikooScript.src = 'https://lf9-cdn-tos.bytecdntp.com/cdn/expire-1-M/twikoo/1.4.18/twikoo.all.min.js';
+  twikooScript.onload = () => {
+    twikoo.init({
+      envId: 'https://twikoo.mletter.cn', // 腾讯云环境ID 或 Vercel 地址
+      el: '#twikoo',
+      path: '{commentPath}', // 用于区分不同文章
+      lang: 'zh-CN' // 语言，可选
+    });
+  };
+  document.head.appendChild(twikooScript);
 </script>
+
+<style>
+  #twikoo {
+    margin-top: 2rem;
+  }
+</style>

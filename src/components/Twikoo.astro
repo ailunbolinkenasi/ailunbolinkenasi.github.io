@@ -1,0 +1,31 @@
+---
+// Twikoo.astro
+export interface Props {
+  /** 当前文章路径，用做评论唯一标识 */
+  path?: string;
+}
+
+const { path = location.pathname } = Astro.props;
+const envId = 'https://twikoo.mletter.cn/'; // ← 改成你的 envId
+---
+
+<div id="tcomment" class="twikoo-wrap"></div>
+
+<!-- 官方 CDN -->
+<script
+  is:inline
+  src="https://cdn.staticfile.org/twikoo/1.6.44/twikoo.all.min.js"
+></script>
+
+<script is:inline define:vars={{ envId, path }}>
+  document.addEventListener('astro:page-load', () => {
+    if (!window.twikoo) return;
+    twikoo.init({ envId, el: '#tcomment', path });
+  });
+</script>
+
+<style>
+  .twikoo-wrap {
+    margin-top: 3rem;
+  }
+</style>

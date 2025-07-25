@@ -17,8 +17,6 @@ const commentPath = path || Astro.url.pathname;
   twikooScript.onload = () => {
     twikoo.init({
       envId: 'https://twikoo.mletter.cn', // 腾讯云环境ID 或 Vercel 地址
-      el: '#twikoo',
-      path: '{commentPath}', // 用于区分不同文章
       lang: 'zh-CN' // 语言，可选
     });
   };

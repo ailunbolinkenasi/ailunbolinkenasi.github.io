@@ -10,7 +10,7 @@ heroImage: {
 }
 publishDate: 2023-05-14 00:00:00
 slug: "/tech/kubernetes/openebs"
-description: OpenEBS 是一种模拟了 AWS 的 EBS、阿里云的云盘等块存储实现的基于容器的存储开源软件。OpenEBS 是一种基于 CAS(Container Attached Storage) 理念的容器解决方案，其核心理念是存储和应用一样采用微服务架构，并通过 Kubernetes 来做资源编排。其架构实现上，每个卷的 Controller 都是一个单独的 Pod，且与应用 Pod 在同一个节点，卷的数据使用多个 Pod 进行管理。
+description: OpenEBS 是一种模拟了 AWS 的 EBS、阿里云的云盘等块存储实现的基于容器的存储开源软件。OpenEBS 是一种基于 CAS(Container Attached Storage) 理念的容器解决方案。
 ---
 # OpenEBS存储使用
 

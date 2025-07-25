@@ -1,0 +1,131 @@
+---
+import { Image } from 'astro:assets'
+
+import { Quote } from 'astro-pure/advanced'
+import { PostPreview } from 'astro-pure/components/pages'
+import { getBlogCollection, sortMDByDate } from 'astro-pure/server'
+import { Button, Card, Icon, Label } from 'astro-pure/user'
+import PageLayout from '@/layouts/BaseLayout.astro'
+import ProjectCard from '@/components/home/ProjectCard.astro'
+import Section from '@/components/home/Section.astro'
+import SkillLayout from '@/components/home/SkillLayout.astro'
+import avatar from '@/assets/avatar.png'
+import config from '@/site-config'
+
+const MAX_POSTS = 10
+const allPosts = await getBlogCollection()
+const allPostsByDate = sortMDByDate(allPosts).slice(0, MAX_POSTS)
+---
+
+<PageLayout meta={{ title: '首页' }} highlightColor='#659EB9'>
+  <main class='flex w-full flex-col items-center'>
+    <section class='animate mb-10 flex flex-col items-center gap-y-7' id='content-header'>
+      <Image
+      src="https://img13.360buyimg.com/ddimg/jfs/t1/239095/17/9691/19853/664d82dfF34a0990c/c4198876146be2d4.jpg"
+        alt="描述文字"
+        width={800}
+        height={600}
+        alt='profile'
+        class='h-28 w-auto rounded-full border p-1'
+        loading='eager'
+      />
+
+      <div class='flex flex-col items-center gap-y-4'>
+        <h1 class='text-3xl font-bold'>{config.author}</h1>
+        <div class='flex flex-wrap justify-center gap-x-7 gap-y-3'>
+          <Label title='中国·北京'>
+            <Icon name='location' class='size-5' slot='icon' />
+          </Label>
+          <Label
+            title='源代码'
+            as='a'
+            href='https://github.com/cworld1/astro-theme-pure'
+            target='_blank'
+          >
+            <Icon name='github' class='size-5' slot='icon' />
+          </Label>
+        </div>
+      </div>
+
+      {/* 获取模板 */}
+      <a
+        href='https://github.com/cworld1/astro-theme-pure'
+        target='_blank'
+        class='flex flex-row items-center gap-x-3 rounded-full border bg-background px-4 py-2 text-sm shadow-sm transition-shadow hover:shadow-md'
+      >
+        <span class='relative flex items-center justify-center'>
+          <span
+            class='absolute size-2 animate-ping rounded-full border border-green-400 bg-green-400 opacity-75'
+          ></span>
+          <span class='size-2 rounded-full bg-green-400'></span>
+        </span>
+        <p class='font-medium text-muted-foreground'>获取本项目</p>
+      </a>
+    </section>
+
+    <div id='content' class='animate flex flex-col gap-y-10 md:w-4/5 lg:w-5/6'>
+      <Section title='关于我'>
+        <p class='text-muted-foreground'>运维开发工程师</p>
+        <p class='text-muted-foreground'>
+          你好，我是本站的主理人！很高兴能在这里与你相遇。
+
+          在这里，我会记录一些思考、分享一些发现，愿文字能为你带来片刻的愉悦或启发。
+          本小站选用的是简洁美观的 Pure 主题。
+          如果你也喜欢这个主题的设计，不妨去 GitHub 为其点亮一颗 ⭐，或者把它分享给更多正在寻找博客主题的朋友！
+          请随意浏览，希望你能找到感兴趣的内容。祝你阅读愉快！
+        </p>
+        <Button title='了解更多' class='w-fit self-end' href='/about' style='ahead' />
+      </Section>
+      {
+        allPostsByDate.length > 0 && (
+          <Section title='最新文章'>
+            <ul class='flex flex-col gap-y-1.5 sm:gap-y-2'>
+              {allPostsByDate.map((p) => (
+                <li class='flex flex-col gap-x-2 sm:flex-row'>
+                  <PostPreview post={p} />
+                </li>
+              ))}
+            </ul>
+            <Button title='更多文章' class='w-fit self-end' href='/posts' style='ahead' />
+          </Section>
+        )
+      }
+
+      <Section title='推荐项目'>
+        <div class='grid grid-cols-1 gap-3 sm:grid-cols-2'>
+          <ProjectCard
+            href='https://www.bootcdn.cn/'
+            heading='BootCDN'
+            subheading='BootCDN 是一个免费的公共 CDN 服务，用于加速静态资源的加载。'
+            imagePath='/src/assets/projects/alex-tyson-2BAXJ7ha74s-unsplash.jpg'
+          />
+          <ProjectCard
+            href='https://kubernetes.io/'
+            heading='Kubernetes'
+            subheading='Kubernetes 是一个开源的容器编排平台，用于自动化部署、扩展和管理容器化应用程序。'
+            imagePath='/src/assets/projects/angelica-teran-Bk9hpaXHK4o-unsplash.jpg'
+          />
+          <ProjectCard
+            href='https://www.youtube.com/watch?v=dQw4w9WgXcQ'
+            heading='Lorem ipsum'
+            subheading='dolor sit amet, oratio ornatus explicari pro ex'
+            imagePath='/src/assets/projects/kseniia-zapiatkina-yATU3rg8tNI-unsplash.jpg'
+          />
+          <ProjectCard
+            href='/projects'
+            heading='更多项目'
+            subheading='查看更多的项目'
+            imagePath='/src/assets/projects/wen-qiao-g_w8I64FiO0-unsplash.jpg'
+          />
+        </div>
+      </Section>
+
+      <Section title='我的技能'>
+        <SkillLayout title='编程语言' skills={['Python', 'Shell', 'Go', 'YAML']} />
+        <SkillLayout title='DevOps' skills={['Docker', 'Kubernetes', 'CI/CD', 'Terraform']} />
+        <SkillLayout title='监控系统' skills={['Prometheus', 'Grafana', 'ELK', 'Zabbix']} />
+      </Section>
+    </div>
+    <Quote class='mt-12' />
+  </main>
+</PageLayout>

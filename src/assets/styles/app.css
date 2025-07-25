@@ -1,0 +1,141 @@
+/* Font */
+/* @font-face {
+  font-family: 'Satoshi';
+  src: url('/fonts/Satoshi-Variable.ttf');
+  font-style: normal;
+  font-display: swap;
+} */
+@font-face {
+  font-family: 'Maple Mono';
+  src: url('/fonts/MapleMono-SemiBold.woff2');
+  font-style: normal;
+  font-display: swap;
+}
+
+.astro-code {
+  
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+  border-radius: 0.5rem;
+  background-color: hsl(var(--muted) / var(--un-bg-opacity, 1)) !important;
+
+  /* Code container */
+  & pre {
+    font-family: 'Maple Mono', monospace;
+    margin: 0;
+    padding-inline: 0;
+    background: none;
+    overflow-x: scroll;
+
+    & code {
+      font-family: 'Maple Mono', monospace;
+      display: block;
+      width: fit-content;
+      min-width: 100%;
+      min-height: 1.5rem;
+      counter-reset: step;
+      counter-increment: step 0;
+      &::before {
+        font-family: 'Maple Mono', monospace;
+        position: absolute;
+        inset-inline-start: 0;
+        width: 2.75rem;
+        top: 0.8571429em;
+        bottom: 0;
+        content: '';
+        display: block;
+        background-color: hsl(var(--muted) / var(--un-bg-opacity, 1));
+        z-index: 1;
+      }
+      & .line {
+        font-family: 'Maple Mono', monospace;
+        padding-inline-end: 3rem;
+        &::before {
+          position: sticky;
+          content: counter(step);
+          counter-increment: step;
+          color: hsl(var(--muted-foreground) / 0.6);
+          background-color: hsl(var(--muted) / var(--un-bg-opacity, 1));
+          inset-inline-start: 0;
+          justify-content: end;
+          display: inline-flex;
+          width: 2rem;
+          padding-inline-end: 0.75rem;
+          box-sizing: content-box;
+          z-index: 2;
+        }
+        &:last-child:empty,
+        &:last-child:has(> span:empty:only-child) {
+          display: none;
+        }
+      }
+    }
+  }
+}
+
+body {
+  font-family: 'LXGW WenKai TC', cursive;
+}
+html {
+  font-family: 'Maple Mono', sans-serif;
+}
+
+
+/* Theme */
+:root {
+  --background: 210 33% 99%;
+  --foreground: 240 10% 3.9%;
+  --card: 0 0% 100%;
+  --card-foreground: 240 10% 3.9%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 240 10% 3.9%;
+  --primary: 200 29% 45%;
+  --primary-foreground: 0 0% 92.5%;
+  --secondary: 240 4.8% 95.9%;
+  --secondary-foreground: 240 5.9% 10%;
+  --muted: 240 4.8% 95%;
+  --muted-foreground: 240 3.8% 28.1%;
+  --accent: 240 4.8% 95.9%;
+  --accent-foreground: 240 5.9% 10%;
+  --destructive: 0 72.22% 50.59%;
+  --destructive-foreground: 0 0% 98%;
+  --border: 240 5.9% 88%;
+  --input: 240 5.9% 90%;
+  --ring: 240 5.9% 10%;
+  --radius: 0.5rem;
+}
+.dark {
+  --background: 240 20.54% 5.2%;
+  --foreground: 0 0% 98%;
+  --card: 240 10% 3.9%;
+  --card-foreground: 0 0% 98%;
+  --popover: 240 10% 3.9%;
+  --popover-foreground: 0 0% 98%;
+  --primary: 195 95% 85%;
+  --primary-foreground: 240 3.7% 15.9%;
+  --secondary: 240 3.7% 15.9%;
+  --secondary-foreground: 0 0% 98%;
+  --muted: 240 5.9% 12%;
+  --muted-foreground: 240 5% 74.9%;
+  --accent: 240 3.7% 15.9%;
+  --accent-foreground: 0 0% 98%;
+  --destructive: 0 62.8% 30.6%;
+  --destructive-foreground: 0 0% 98%;
+  --border: 240 3.7% 19.9%;
+  --input: 240 3.7% 15.9%;
+  --ring: 240 4.9% 83.9%;
+}
+:root {
+  --un-default-border-color: hsl(var(--border) / 1);
+}
+html.dark {
+  color-scheme: dark;
+}
+
+/* Global */
+a {
+  transition: color 0.2s ease;
+  &:hover {
+    color: hsl(var(--primary) / var(--un-text-opacity, 1));
+  }
+}

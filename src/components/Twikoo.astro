@@ -3,6 +3,7 @@
 export interface Props {
   /** 当前文章路径，用做评论唯一标识 */
   path?: string;
+  class?: string; // 添加 class 属性
 }
 
 const { path = location.pathname } = Astro.props;

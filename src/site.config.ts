@@ -147,7 +147,7 @@ export const integ: IntegrationUserConfig = {
   },
   // Comment system
   waline: {
-    enable: true,
+    enable: false,
     // Server service link
     server: 'https://astro-theme-pure-waline.arthals.ink/',
     // Refer https://waline.js.org/en/guide/features/emoji.html
@@ -163,7 +163,7 @@ export const integ: IntegrationUserConfig = {
       },
       imageUploader: false
     }
-  }
+  },
 }
 
 export const terms: CardListData = {

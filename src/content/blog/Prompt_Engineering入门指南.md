@@ -17,6 +17,7 @@ description: >-
   Prompt（提示词）是用户与AI模型对话的"钥匙"，它决定了AI如何理解需求并生成响应。Prompt Engineering则是通过系统化设计和优化输入内容，让AI输出更符合预期的结果。就像与人类专家沟通一样，一个优质的问题往往包含答案的种子。
 slug: "/tech/aiops/prompt-engineering-guide"
 publishDate: 2025-03-24 00:00:00
+comment: true
 ---
 
 *通过优化Prompt，让AI生成更精准的响应*

@@ -1,5 +1,5 @@
 ---
-title: Nginx简单的常规优化
+title: Nginx Web 常规优化内容
 tags:
   - nginx
 categories:

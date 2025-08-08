@@ -1,21 +1,22 @@
 ---
-title: 利用Kubeadm进行多Master高可用部署
+title: 录制课程-集群部署-1-利用Kubeadm进行多Master高可用部署
 tags:
   - kubernetes
+  - 录制课程一阶段
 categories:
   - kubernetes
 description: 如何使用kubeadm方案来安装高可用的kubernetes集群
 heroImage: { src: "https://img14.360buyimg.com/ddimg/jfs/t1/164569/9/40677/14419/65bc6e4cFa1d8c0c3/5ccf7e6caadc9b83.jpg",inferSize: true }
 slug: "/tech/kubernetes/install-kubernetes-ha"
-publishDate: 2022-12-29 00:00:00
+publishDate: 2025-01-01 00:00:00
 ---
 # 利用Kubeadm创建高可用集群
 
 - 使用具有堆叠的控制平面节点。这种方法所需基础设施较少。etcd 成员和控制平面节点位于同一位置。
 - 使用外部 etcd 集群。这种方法所需基础设施较多。控制平面的节点和 etcd 成员是分开的。
   在下一步之前，你应该仔细考虑哪种方法更好地满足你的应用程序和环境的需求。 高可用拓扑选项 讲述了每种方法的优缺点。
-- [如何安装Kubectl和Kubeadm](https://blog.mletter.cn/kubernetes/InstallKubernetes1.22.10)
-- [如何安装外部的Etcd集群](https://blog.mletter.cn/kubernetes/InstallEtcdHA)
+- [如何安装Kubectl和Kubeadm](http://blog.mletter.cn/blog//tech/kubernetes/install-kubernetes-1220  )
+- [如何安装外部的Etcd集群](http://blog.mletter.cn/blog//tech/kubernetes/install-etcd-ha)
   
 ## 参与主机列表
   

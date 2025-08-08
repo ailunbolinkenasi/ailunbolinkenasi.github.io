@@ -1,13 +1,14 @@
 ---
-title: kubernetes1.22.0单节点集群部署
+title: 录制课程-集群部署-3-部署kubernetes1.22.10
 tags:
   - kubernetes
+  - 录制课程一阶段
 categories:
   - kubernetes
 description: kubeadm版部署kubernetes方案
 heroImage: { src: "https://img14.360buyimg.com/ddimg/jfs/t1/164569/9/40677/14419/65bc6e4cFa1d8c0c3/5ccf7e6caadc9b83.jpg",inferSize: true }
 slug: "/tech/kubernetes/install-kubernetes-1220"
-publishDate: 2022-12-29 00:00:00
+publishDate: 2024-12-29 00:00:00
 ---
 ## kubernetes1.22.10部署
 

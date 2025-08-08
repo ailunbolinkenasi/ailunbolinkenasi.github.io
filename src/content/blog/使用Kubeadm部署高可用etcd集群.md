@@ -1,8 +1,8 @@
 ---
-title: 使用Kubeadm创建一个高可用的ETCD集群
+title: 录制课程-集群部署-2-创建高可用外部etcd集群
 tags:
   - kubernetes
-  - etcd
+  - 录制课程一阶段
 categories:
   - kubernetes
 description: >-
@@ -10,7 +10,7 @@ description: >-
   这两种方法的区别在 高可用拓扑的选项 页面中阐述。这个任务将指导你创建一个由三个成员组成的高可用外部 etcd 集群，该集群在创建过程中可被 kubeadm
   使用。
 heroImage: {src: 'https://img.linux.net.cn/data/attachment/album/201501/29/141718izklanww82qm888k.png', inferSize: true}
-publishDate: 2023-02-26 00:00:00
+publishDate: 2025-01-01 00:00:00
 slug: "/tech/kubernetes/install-etcd-ha"
 ---
 

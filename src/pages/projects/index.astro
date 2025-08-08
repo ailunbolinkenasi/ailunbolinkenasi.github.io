@@ -22,21 +22,6 @@ const headings = [
 ---
 
 <PageLayout title='项目' {headings} info={{ slug: '/projects', hideComment: true }}>
-  <p>Github 活动:</p>
-  <p>
-    <Image
-      src='https://ghchart.rshah.org/659eb9/cworld1'
-      alt='github 活动'
-      inferSize={true}
-      loading='lazy'
-    />
-  </p>
-  <p>
-    如果你觉得某个项目有用或有趣，可以捐赠支持我的工作或联系我讨论合作项目。
-  </p>
-  <Button title='查看赞助详情' class='w-fit' href='#sponsorship'>
-    <Icon class='size-5' name='receive-money' slot='before' />
-  </Button>
 
   <h2 id='theme'>主题</h2>
   <ProjectSection
@@ -107,8 +92,8 @@ const headings = [
     class='my-2'
     projects={[
       {
-        name: 'Rust Learning',
-        description: 'CWorld 学习 Rust 的一些笔记和代码',
+        name: 'Low Learning',
+        description: '我在学习法律的一些笔记和内容',
         links: [{ type: 'github', href: 'https://github.com/cworld1/rust-learning' }]
       },
       {
@@ -140,14 +125,6 @@ const headings = [
     ]}
   />
 
-  <!-- gpg signature -->
-  <h2 id='gpg-signature'>GPG 签名</h2>
-  <p>
-    您可以通过检查 GPG 签名来验证我签署文件的真实性。我的 GPG 密钥是 <code>114514</code>，您可以在 opengpg 密钥服务器上找到它或从中下载。
-  </p>
-  <Button href='https://keys.openpgp.org/search?q=114514' title='查看我的密钥' target='_blank'>
-    <KeyIcon class='size-5' slot='before' />
-  </Button>
 
   <!-- sponsorship -->
   <h2 id='sponsorship'>赞助</h2>

@@ -73,23 +73,23 @@ const headings = [
     title='生产力工具'
     tools={[
       {
-        name: 'Chrome',
-        description: '浏览器',
+        name: 'Google Chrome',
+        description: 'Google 浏览器',
         href: 'https://www.google.com/chrome/',
         icon: import('@/assets/tools/chrome.svg?raw')
       },
       {
-        name: 'Firefox',
-        description: '浏览器',
-        href: 'https://www.mozilla.org/en-US/firefox',
-        icon: import('@/assets/tools/firefox.svg?raw')
+        name: 'Microsoft Edge',
+        description: 'Egde 浏览器',
+        href: 'https://www.microsoft.com/zh-cn/edge/download',
+        icon: import('@/assets/tools/microsoft_edge.svg?raw')
         
       },
       {
-        name: 'Notion',
+        name: 'Obsidian',
         description: '笔记应用',
-        href: 'https://www.notion.so/',
-        icon: import('@/assets/tools/notion.svg?raw')
+        href: 'https://obsidian.md/',
+        icon: import('@/assets/tools/obsidian.svg?raw')
       },
       {
         name: 'Typora',
@@ -110,9 +110,9 @@ const headings = [
         icon: import('@/assets/tools/vscode.svg?raw')
       },
       {
-        name: 'Neovim',
-        description: '集成开发环境',
-        href: 'https://neovim.io/',
+        name: 'Trea',
+        description: 'AI集成一体化代码开发工具',
+        href: 'https://www.trae.com',
         icon: import('@/assets/tools/neovim.svg?raw')
       },
       {
@@ -122,7 +122,7 @@ const headings = [
         icon: import('@/assets/tools/sublime.svg?raw')
       },
         {
-        name: 'Idea',
+        name: 'Goland',
         description: '集成开发环境',
         href: 'https://www.jetbrains.com/idea/',
         icon: import('@/assets/tools/idea.svg?raw')
@@ -131,13 +131,13 @@ const headings = [
   />
   <ToolSection
     class='mb-5'
-    title='操作系统环境'
+    title='操作系统环境-用过的'
     tools={[
       {
-        name: 'Arch Linux',
+        name: 'Manjaro Linux',
         description: 'Linux发行版',
-        href: 'https://archlinux.org/',
-        icon: import('@/assets/tools/archlinux.svg?raw')
+        href: 'https://manjaro.org/',
+        icon: import('@/assets/tools/manjaro.svg?raw')
       },
       {
         name: 'Ubuntu 24.04 LTS',
@@ -147,7 +147,7 @@ const headings = [
       },
       {
         name: 'MacOS Tahoe',
-        description: 'MacBook Air',
+        description: 'MacBook Pro 2020',
         href: 'https://www.apple.com/macos/',
         icon: import('@/assets/tools/apple.svg?raw')
       },
@@ -160,53 +160,10 @@ const headings = [
     ]}
   />
 
-  {/* social-networks */}
-  <h2 id='social-networks'>社交网络</h2>
-  <p>
-    以下是我的一些社交网络账号，欢迎关注和交流。
-  </p>
-  <Substats
-    stats={[
-      {
-        platform: 'GitHub',
-        icon: 'github',
-        link: 'https://github.com/cworld1',
-        text: '关注者',
-        api: 'github/cworld1'
-      },
-      {
-        platform: 'Telegram',
-        icon: 'telegram',
-        color: '#2ca5e0',
-        link: 'https://t.me/cworld0_cn',
-        text: '订阅者',
-        api: 'telegram/cworld0_cn'
-      },
-      {
-        platform: 'Weibo',
-        icon: 'weibo',
-        color: '#e71f19',
-        link: 'https://weibo.com/cworld0',
-        text: '粉丝',
-        api: 'weibo/5501674056'
-      },
-      {
-        platform: 'Steam',
-        icon: 'steam',
-        color: '#50769d',
-        link: 'https://steamcommunity.com/id/cworld',
-        text: '游戏',
-        api: 'steamgames/76561199021278120'
-      }
-    ]}
-  />
-
   {/* gossips */}
   <h2 id='gossips'>闲话</h2>
   <Collapse title='Lorem ipsum'>
-    Lorem ipsum dolor sit amet, vidit suscipit at mei. Quem denique mea id. Usu ei regione indoctum
-    dissentiunt, cu meliore fuisset mei, vel quod voluptua ne. Ex dicat impedit mel, at eum oratio
-    possit voluptatum.
+    <p class='text-gray-500'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Facilis, quibusdam.</p>
   </Collapse>
 
   {/* about-blog */}
@@ -215,26 +172,17 @@ const headings = [
   <Timeline
     events={[
       {
-        date: '2024-04-29',
+        date: '2025-06-29',
         content:
-          '网站使用 <a href="https://astro.build/" target="_blank">Astro</a> 和 <a href="https://github.com/srleom/astro-theme-resume" target="_blank">Astro Theme Resume</a> 重构'
+          '网站使用 <a href="https://astro.build/" target="_blank">Astro</a>重构'
       },
-      {
-        date: '2024-07-26',
-        content:
-          '网站抽象为主题并发布在 <a href="https://github.com/cworld1/astro-theme-pure"target="_blank">Github</a>'
-      },
-      {
-        date: '2024-07-27',
-        content: '开始编写网站文档'
-      }
     ]}
   />
   <p>
     网站的平稳运行和个性化定制也依赖于以下优秀项目/服务提供商提供的资源和技术支持:
   </p>
   <ul>
-    <li>域名: <a href='#' target='_blank'>Vercel</a></li>
+    <li>域名: <a href='https://www.aliyun.com/' target='_blank'>aliyun</a></li>
     <li>
       框架 & 主题: <a href='https://astro.build/' target='_blank'>Astro</a> + <a
         href='https://github.com/cworld1/astro-theme-pure'
@@ -244,20 +192,8 @@ const headings = [
     <li>
       网站托管: <a href='https://vercel.com/' target='_blank'>Vercel</a>
     </li>
-    <li>
-      CI/CD: <a href='https://vercel.com/workflow' target='_blank'>Vercel Workflow</a>
-    </li>
     <!-- <li>资源加速: <a href='https://cdn.cbd.int/' target='_blank'>CBD CDN</a></li> -->
-    <li>评论系统: <a href='https://waline.js.org' target='_blank'>Waline</a></li>
-    <li>
-      访问统计: <a href='https://supabase.com/' target='_blank'>Supabase</a> +
-      <a href='https://waline.js.org/' target='_blank'>Waline</a>
-    </li>
-    <li>
-      其他统计: <a href='https://github.com/spencerwooo/substats' target='_blank'
-        >Substats</a
-      >
-    </li>
+    <li>评论系统: <a href='https://twikoo.js.org/' target='_blank'>二次集成 Twikoo</a></li>
   </ul>
   <Fragment slot='bottom'>
     { <Twikoo/>}

@@ -1,0 +1,53 @@
+---
+import type { MarkdownHeading } from 'astro'
+import { TOC } from 'astro-pure/components/pages'
+
+interface Props {
+  headings: MarkdownHeading[]
+}
+
+const { headings } = Astro.props
+---
+
+<TOC headings={headings} />
+
+<script>
+  // 修复 headingProgress 未定义的问题
+  document.addEventListener('DOMContentLoaded', () => {
+    // 等待自定义元素定义完成
+    customElements.whenDefined('toc-heading').then(() => {
+      const tocElements = document.querySelectorAll('toc-heading');
+      
+      tocElements.forEach((tocElement: any) => {
+        // 保存原始的 updatePositionAndStyle 方法
+        const originalUpdate = tocElement.updatePositionAndStyle;
+        
+        if (originalUpdate) {
+          tocElement.updatePositionAndStyle = function() {
+            try {
+              // 确保 headingProgress 对象存在
+              if (!this.headingProgress) {
+                this.headingProgress = {};
+              }
+              
+              // 确保所有 tocLinks 都有对应的 headingProgress 条目
+              if (this.tocLinks) {
+                this.tocLinks.forEach((link: any) => {
+                  const { slug } = link;
+                  if (slug && !this.headingProgress[slug]) {
+                    this.headingProgress[slug] = { inView: false, progress: 0 };
+                  }
+                });
+              }
+              
+              // 调用原始更新方法
+              return originalUpdate.call(this);
+            } catch (error) {
+              console.error('Error in TOC updatePositionAndStyle:', error);
+            }
+          };
+        }
+      });
+    });
+  });
+</script>

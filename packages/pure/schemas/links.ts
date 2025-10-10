@@ -22,7 +22,7 @@ export const FriendLinksSchema = () =>
         { name: 'Name', val: 'Heartbeat Diary' },
         { name: 'Desc', val: 'Live and learn. 🌱' },
         { name: 'Link', val: 'https://blog.mletter.cn' },
-        { name: 'Avatar', val: 'https://img13.360buyimg.com/ddimg/jfs/t1/239095/17/9691/19853/664d82dfF34a0990c/c4198876146be2d4.jpg' }
+        { name: 'Avatar', val: 'https://img13.360buyimg.com/ddimg/jfs/t1/339806/2/18159/60207/68e72b0aF0cd09e9e/f498b59838834b98.jpg' }
       ]
     })
     .describe('Friend links for your website.')

@@ -3,9 +3,9 @@ import type { CardListData, Config, IntegrationUserConfig, ThemeUserConfig } fro
 export const theme: ThemeUserConfig = {
   // === Basic configuration ===
   /** Title for your website. Will be used in metadata and as browser tab title. */
-  title: '春日心动日记',
+  title: 'iren',
   /** Will be used in index page & copyright declaration */
-  author: '春日心动日记',
+  author: 'iren.',
   /** Description metadata for your website. Can be used in page metadata. */
   description: 'Stay hungry, stay foolish',
   /** The default favicon for your site which should be a path to an image in the `public/` directory. */
@@ -76,7 +76,7 @@ export const theme: ThemeUserConfig = {
       },
       // Privacy Policy link
       {
-        title: 'Site Policy',
+        title: '站点策略',
         link: '/terms/list',
         pos: 2 // position set to 2 will be appended to copyright line
       }

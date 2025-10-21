@@ -5,7 +5,7 @@ import PageLayout from '@/layouts/CommonPage.astro'
 import Substats from '@/components/about/Substats.astro'
 import ToolSection from '@/components/about/ToolSection.astro'
 import Twikoo from '@/components/Twikoo.astro';
-
+import { Image } from 'astro:assets';
 const headings = [
   { depth: 2, slug: 'hobbies', text: '爱好' },
   { depth: 2, slug: 'tools', text: '工具' },
@@ -20,8 +20,7 @@ const headings = [
     <li>运维开发工程师</li>
     <li>擅长 Ai、Fw、Fl、Br、Ae、Pr、Id、Ps 等软件的安装与卸载，精通 CSS、JavaScript、PHP、ASP、C、C++、C#、Java、Ruby、Perl、Lisp、Python、Objective-C、ActionScript、Pascal 等单词的拼写，熟悉 Windows、Linux、OS X、Android、iOS、WP8 等系统的开关机。</li>
   </ul>
-  <img src="https://oss.suning.com/mbap/mbapbk/d8283bfe6fad9e0befd61f6037046a70.gif?SDOSSAccessKeyId=42IA0GY51YZ1397N&Expires=1721188435&Signature=iJziwOkGV2MlrJJI81fh51kyg5Q%3D" />
-
+  <Image src="https://oss.suning.com/mbap/mbapbk/d8283bfe6fad9e0befd61f6037046a70.gif?SDOSSAccessKeyId=42IA0GY51YZ1397N&Expires=1721188435&Signature=iJziwOkGV2MlrJJI81fh51kyg5Q%3D" alt="A description of my image." width="200" height="50" />
   <!-- <Button title='Sponsor Me' class='w-fit' href='/projects#sponsorship' style='ahead' /> -->
 
   {/* general-talk */}

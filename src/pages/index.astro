@@ -34,7 +34,7 @@ const latestNotes = allNotes.sort(collectionDateSort).slice(0, MAX_NOTES);
 		</div>
 
 		<!-- Hero Content -->
-		<div class="relative z-10 w-full max-w-2xl px-4 text-center">
+		<div class="relative z-10 w-full max-w-2xl px-4 text-center" style="pointer-events: none;">
 			<!-- Title -->
 			<h1 class="mb-6 text-4xl font-bold tracking-tight md:text-5xl animate-fade-in-up opacity-0" style="animation-fill-mode: forwards;">
 				<span class="bg-gradient-to-r from-accent-two via-accent-one to-accent-two bg-clip-text text-transparent bg-[length:200%_auto] animate-gradient">
@@ -50,7 +50,7 @@ const latestNotes = allNotes.sort(collectionDateSort).slice(0, MAX_NOTES);
 			</p>
 
 			<!-- CTA Button -->
-			<div class="flex justify-center gap-4 animate-fade-in-up opacity-0 animation-delay-500" style="animation-fill-mode: forwards;">
+			<div class="flex justify-center gap-4 animate-fade-in-up opacity-0 animation-delay-500" style="animation-fill-mode: forwards; pointer-events: auto;">
 				<a href="/blog/" 
 				   class="group relative flex items-center justify-center h-11 px-8 rounded-full bg-white/50 dark:bg-white/10 backdrop-blur-md border border-white/40 dark:border-white/10 shadow-sm hover:shadow-[0_0_25px_rgba(var(--accent-one),0.2)] hover:scale-[1.03] hover:bg-white/70 dark:hover:bg-white/20 transition-all duration-500 ease-out">
 					<span class="font-medium text-gray-700 dark:text-gray-100 group-hover:text-accent-two transition-colors duration-300 relative z-10">

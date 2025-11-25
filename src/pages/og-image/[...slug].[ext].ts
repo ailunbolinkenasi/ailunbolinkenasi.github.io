@@ -1,7 +1,5 @@
-import SFProRoundedBold from "@/assets/fonts/SF-Pro-Rounded-Bold.latin.base.ttf";
-import SFProRoundedSemibold from "@/assets/fonts/SF-Pro-Rounded-Semibold.latin.base.ttf";
-import SFProRoundedMedium from "@/assets/fonts/SF-Pro-Rounded-Medium.latin.base.ttf";
-import SFProRoundedRegular from "@/assets/fonts/SF-Pro-Rounded-Regular.latin.base.ttf";
+// src/pages/og-image/[...slug].[ext].ts
+
 import { getAllPosts } from "@/data/post";
 import { siteConfig } from "@/site.config";
 import { getFormattedDate } from "@/utils/date";
@@ -9,45 +7,51 @@ import { Resvg } from "@resvg/resvg-js";
 import type { APIContext, InferGetStaticPropsType } from "astro";
 import satori, { type SatoriOptions } from "satori";
 import { html } from "satori-html";
+// 引入 Node.js 文件系统模块
+import fs from "node:fs";
+import path from "node:path"; 
+
+// --- 字体加载逻辑 ---
+
+// 1. 定义字体文件路径（请确保文件为 .ttf 或 .otf 格式，并位于 public/fonts 目录下）
+const FONT_FILENAME = 'MapleMono-SemiBold.woff2'; // 请修改为你实际的文件名
+const FONT_PATH = path.join(process.cwd(), 'public', 'fonts', FONT_FILENAME); 
+
+// 2. 同步读取字体文件 Buffer
+// 注意：如果在构建阶段出错，可能是因为字体路径或格式不正确
+let fontData: Buffer;
+try {
+  fontData = fs.readFileSync(FONT_PATH);
+} catch (e) {
+  console.error(`[OG-IMAGE Error] 无法加载字体文件: ${FONT_PATH}`);
+  // 生产环境应该有更健壮的错误处理
+  throw new Error(`无法加载字体文件：请检查路径和格式是否正确（应为 TTF/OTF）`);
+}
+
+// --- Satori 配置 ---
 
 const ogOptions: SatoriOptions = {
   // debug: true,
   fonts: [
     {
-      data: Buffer.from(SFProRoundedRegular),
-      name: "SF Pro Rounded",
+      data: fontData, // 直接传入 Buffer
+      name: "Maple Mono SemiBold", // 推荐使用字体的真实名称
       style: "normal",
-      weight: 400,
+      weight: 600, // 根据字重配置
     },
-	
-    {
-      data: Buffer.from(SFProRoundedMedium),
-      name: "SF Pro Rounded",
-      style: "normal",
-      weight: 500,
-    },
-    {
-      data: Buffer.from(SFProRoundedSemibold),
-      name: "SF Pro Rounded",
-      style: "normal",
-      weight: 600,
-    },
-    {
-      data: Buffer.from(SFProRoundedBold),
-      name: "SF Pro Rounded",
-      style: "normal",
-      weight: 700,
-    },
+    // 如果你只需要这一种字重，其他重复的配置可以删除
   ],
   height: 630,
   width: 1200,
 };
 
+// --- HTML 模板 ---
+
 const markup = (title: string, pubDate: string) =>
   html` <div tw="flex flex-col w-full h-full bg-[#f2f2f2] text-[#6b6b6b]">
     <div tw="flex flex-col flex-1 w-full p-10 justify-center">
       <p tw="text-3xl mb-6 text-[#8e8e8e] font-medium">${pubDate}</p>
-      <h1 tw="text-6xl font-semibold leading-snug text-[#224d67]">${title}</h1>
+      <h1 tw="text-6xl font-semibold leading-snug text-[#224d67]" style="font-family: 'Maple Mono SemiBold';">${title}</h1>
     </div>
     <div
       tw="flex items-end justify-between w-full p-10 border-t border-[#dbdbdb] text-3xl text-[#6b6b6b]"
@@ -122,9 +126,13 @@ export async function GET(context: APIContext) {
     month: "long",
     weekday: "long",
   });
+  
+  // 生成 SVG
   const svg = await satori(markup(title, postDate), ogOptions);
 
-  // Проверяем, запрашивает ли пользователь PNG
+  // --- 格式处理 ---
+  
+  // 检查是否请求 PNG
   if (context.url.pathname.endsWith(".png")) {
     const png = new Resvg(svg).render().asPng();
     return new Response(png, {
@@ -135,7 +143,7 @@ export async function GET(context: APIContext) {
     });
   }
 
-  // Проверяем, запрашивает ли пользователь SVG
+  // 检查是否请求 SVG
   if (context.url.pathname.endsWith(".svg")) {
     return new Response(svg, {
       headers: {
@@ -145,7 +153,7 @@ export async function GET(context: APIContext) {
     });
   }
 
-  // Если запрос не заканчивается на .png или .svg, возвращаем ошибку
+  // 如果请求格式不支持，返回错误
   return new Response("Unsupported format", { status: 400 });
 }
 
@@ -154,16 +162,18 @@ export async function getStaticPaths() {
   return posts
     .filter(({ data }) => !data.ogImage)
     .flatMap((post) => {
+      // id 作为 slug
+      const slug = post.id.replace(/\.md$/, ''); 
       return [
         {
-          params: { slug: post.id, ext: "png" },
+          params: { slug: slug, ext: "png" },
           props: {
             pubDate: post.data.updatedDate ?? post.data.publishDate,
             title: post.data.title,
           },
         },
         {
-          params: { slug: post.id, ext: "svg" },
+          params: { slug: slug, ext: "svg" },
           props: {
             pubDate: post.data.updatedDate ?? post.data.publishDate,
             title: post.data.title,

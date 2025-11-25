@@ -1,0 +1,140 @@
+---
+title: 录制课程-集群部署-4-基于SealOS部署高可用的kubernetes集群
+tags:
+  - kubernetes
+  - 录制课程一阶段
+categories:
+  - kubernetes
+  - 录制课程一阶段
+description: 基于SealOS来部署高可用的kubernetes集群
+coverImage:
+  src: "https://img10.360buyimg.com/ddimg/jfs/t1/244560/31/7618/14121/661de12eFfa7f6ba5/0239fa873abb0bd5.jpg"
+  alt: "配图"
+publishDate: 2025-04-15 00:00:00
+slug: "/tech/kubernetes/sealos"
+---
+
+配套Bilibili视频已经更新：[点我观看](https://www.bilibili.com/video/BV1Pr421V7PT/?share_source=copy_web&vd_source=2cac9fa5f0a3fb896b7f6b1468993554)
+
+## 准备SealOS
+
+机器信息如下：
+
+| 服务器名称                    | IP          | Role          |
+| ------------------------ | ----------- | ------------- |
+| ready-kubernetes-master1 | 10.1.11.100 | Control-Plane |
+| ready-kubernetes-master2 | 10.1.11.101 | Control-Plane |
+| ready-kubernetes-master3 | 10.1.11.102 | Control-Plane |
+| ready-kubernetes-node1   | 10.1.11.103 | Node          |
+| ready-kubernetes-node2   | 10.1.11.104 | Node          |
+| ready-kubernetes-node3   | 10.1.11.105 | Node          |
+
+### 通过SealOS部署的前提条件
+
+- [SealOS For Kubernetes](https://sealos.io/zh-Hans/docs/self-hosting/lifecycle-management/quick-start/deploy-kubernetes)
+
+
+:::tip[注意事项]
+- 每个集群节点应该有不同的主机名。主机名不要带下划线。
+- 所有节点的时间需要同步。
+- 需要在 K8s 集群的第一个 master 节点上运行 sealos run 命令，目前集群外的节点不支持集群安装。
+- 建议使用干净的操作系统来创建集群。不要自己装 `Docker`！
+- 支持大多数 Linux 发行版，例如：Ubuntu、CentOS、Rocky linux。
+- 支持 Docker Hub 中的所有 Kubernetes 版本。
+- 支持使用 Containerd 作为容器运行时。
+- 在公有云上安装请使用私有 IP。
+:::
+
+
+1. 获取当前稳定版本的`SealOS`列表
+```bash
+# 获取非beta版本
+curl --silent "https://api.github.com/repos/labring/sealos/releases" | jq -r 'map(select(.tag_name | test("beta"; "i") | not)) | .[].tag_name'
+```
+
+2. 下载最新稳定版本的`SealOS`，版本号为`v4.3.7`
+```bash
+# 在一台主机上执行就行了
+VERSION=v4.3.7
+wget https://mirror.ghproxy.com/https://github.com/labring/sealos/releases/download/${VERSION}/sealos_${VERSION#v}_linux_amd64.tar.gz \
+  && tar zxvf sealos_${VERSION#v}_linux_amd64.tar.gz sealos && chmod +x sealos && mv sealos /usr/bin
+```
+
+3. 验证`SealOS`是否安装完成
+```bash
+[root@localhost ~]# sealos version
+SealosVersion:
+  buildDate: "2023-10-30T16:19:05Z"
+  compiler: gc
+  gitCommit: f39b2339
+  gitVersion: 4.3.7
+  goVersion: go1.20.10
+  platform: linux/amd64
+```
+
+> 正常能显示出来版本号信息就表示安装正常。
+
+
+## 快速部署高可用集群
+
+- 默认使用的容器运行时为`Containerd`
+
+1. 开始使用`sealOS`来部署多节点集群
+
+```bash
+sealos run registry.cn-shanghai.aliyuncs.com/labring/kubernetes:v1.27.7 registry.cn-shanghai.aliyuncs.com/labring/helm:v3.9.4 registry.cn-shanghai.aliyuncs.com/labring/cilium:v1.13.4 \
+     --masters 10.1.11.100,10.1.11.101,10.1.11.102 \
+     --nodes 10.1.11.103,10.1.11.104,10.1.11.105  -p 123..com
+```
+- `--masters`: kubernetes-master的节点地址列表
+- `--nodes`:  kubernetes-node的节点地址列表
+- `-p`: 远程主机的SSH登录密码
+
+
+:::tip[注意事项]
+注意部署的时候注意服务器的`HostName`必须唯一不冲突
+:::
+
+2. 检查是否安装成功 出现如下内容表示安装成功
+```bash
+2024-04-11T15:20:01 info Executing pipeline RunGuest in CreateProcessor.
+ℹ️  Using Cilium version 1.13.4
+🔮 Auto-detected cluster name: kubernetes
+🔮 Auto-detected datapath mode: tunnel
+🔮 Auto-detected kube-proxy has been installed
+2024-04-11T15:20:03 info succeeded in creating a new cluster, enjoy it!
+2024-04-11T15:20:03 info 
+      ___           ___           ___           ___       ___           ___
+     /\  \         /\  \         /\  \         /\__\     /\  \         /\  \
+    /::\  \       /::\  \       /::\  \       /:/  /    /::\  \       /::\  \
+   /:/\ \  \     /:/\:\  \     /:/\:\  \     /:/  /    /:/\:\  \     /:/\ \  \
+  _\:\~\ \  \   /::\~\:\  \   /::\~\:\  \   /:/  /    /:/  \:\  \   _\:\~\ \  \
+ /\ \:\ \ \__\ /:/\:\ \:\__\ /:/\:\ \:\__\ /:/__/    /:/__/ \:\__\ /\ \:\ \ \__\
+ \:\ \:\ \/__/ \:\~\:\ \/__/ \/__\:\/:/  / \:\  \    \:\  \ /:/  / \:\ \:\ \/__/
+  \:\ \:\__\    \:\ \:\__\        \::/  /   \:\  \    \:\  /:/  /   \:\ \:\__\
+   \:\/:/  /     \:\ \/__/        /:/  /     \:\  \    \:\/:/  /     \:\/:/  /
+    \::/  /       \:\__\         /:/  /       \:\__\    \::/  /       \::/  /
+     \/__/         \/__/         \/__/         \/__/     \/__/         \/__/
+
+                  Website: https://www.sealos.io/
+                  Address: github.com/labring/sealos
+                  Version: 4.3.7-f39b2339
+```
+
+3. 简单的验证一下`kubernetes`工作是否正常
+
+```bash
+[root@ready-kubernetes-master1 ~]# kubectl get nodes
+NAME                       STATUS   ROLES           AGE     VERSION
+ready-kubernetes-master1   Ready    control-plane   5m26s   v1.27.7
+ready-kubernetes-master2   Ready    control-plane   4m50s   v1.27.7
+ready-kubernetes-master3   Ready    control-plane   4m      v1.27.7
+ready-kubernetes-node1     Ready    <none>          3m48s   v1.27.7
+ready-kubernetes-node2     Ready    <none>          3m47s   v1.27.7
+ready-kubernetes-node3     Ready    <none>          3m49s   v1.27.7
+```
+
+
+
+
+

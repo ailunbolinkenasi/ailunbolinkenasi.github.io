@@ -1,137 +1,177 @@
 ---
-import { Image } from 'astro:assets'
+import { type CollectionEntry, getCollection } from "astro:content";
+// import SocialList from "@/components/SocialList.astro"; 
+import PostPreview from "@/components/blog/PostPreview.astro";
+import Note from "@/components/note/Note.astro";
+import { getAllPosts } from "@/data/post";
+import PageLayout from "@/layouts/Base.astro";
+import { collectionDateSort } from "@/utils/date";
 
-import { Quote } from 'astro-pure/advanced'
-import { PostPreview } from 'astro-pure/components/pages'
-import { getBlogCollection, sortMDByDate } from 'astro-pure/server'
-import { Button, Card, Icon, Label } from 'astro-pure/user'
-import PageLayout from '@/layouts/BaseLayout.astro'
-import ProjectCard from '@/components/home/ProjectCard.astro'
-import Section from '@/components/home/Section.astro'
-import SkillLayout from '@/components/home/SkillLayout.astro'
-import avatar from '@/assets/avatar.png'
-import config from '@/site-config'
+// Posts
+const MAX_POSTS = 10;
+const allPosts = await getAllPosts();
+const allPostsByDate = allPosts
+	.sort(collectionDateSort)
+	.slice(0, MAX_POSTS) as CollectionEntry<"post">[];
 
-const MAX_POSTS = 10
-const allPosts = await getBlogCollection()
-const allPostsByDate = sortMDByDate(allPosts).slice(0, MAX_POSTS)
+// Notes
+const MAX_NOTES = 2;
+const allNotes = await getCollection("note");
+const latestNotes = allNotes.sort(collectionDateSort).slice(0, MAX_NOTES);
 ---
 
-<PageLayout meta={{ title: '首页' }} highlightColor='#659EB9'>
-  <main class='flex w-full flex-col items-center'>
-    <section class='animate mb-10 flex flex-col items-center gap-y-7' id='content-header'>
-      <Image
-      src="https://img13.360buyimg.com/ddimg/jfs/t1/339806/2/18159/60207/68e72b0aF0cd09e9e/f498b59838834b98.jpg"
-        alt="描述文字"
-        width={800}
-        height={600}
-        alt='profile'
-        class='h-28 w-auto rounded-full border p-1'
-        loading='eager'
-      />
+<PageLayout meta={{ title: "iren" }}>
+	<!-- Hero Section -->
+	<section class="relative flex min-h-[calc(100vh-4rem)] flex-col justify-center items-center py-16 overflow-hidden">
+		<!-- Background Blur Blobs (极致慢速呼吸效果) -->
+		<div class="absolute inset-0 overflow-hidden pointer-events-none -z-10">
+			<!-- Blob 1 -->
+			<div class="animate-blob absolute top-[-10%] left-1/2 w-[70vw] h-[70vw] md:w-[45rem] md:h-[45rem] -translate-x-1/2 bg-gradient-to-b from-rose-100/40 via-pink-50/20 to-transparent rounded-full blur-[100px] opacity-50 dark:from-rose-900/20 dark:via-purple-900/10 dark:opacity-30 mix-blend-multiply dark:mix-blend-screen"></div>
+			<!-- Blob 2 (Delayed) -->
+			<div class="animate-blob animation-delay-4000 absolute top-[20%] left-[-10%] w-[60vw] h-[60vw] md:w-[40rem] md:h-[40rem] bg-gradient-to-r from-amber-100/30 via-orange-50/20 to-transparent rounded-full blur-[100px] opacity-40 dark:from-amber-900/20 dark:opacity-20 mix-blend-multiply dark:mix-blend-screen"></div>
+			<!-- Blob 3 (More Delayed) -->
+			<div class="animate-blob animation-delay-8000 absolute bottom-[-10%] right-[-10%] w-[60vw] h-[60vw] md:w-[40rem] md:h-[40rem] bg-gradient-to-l from-blue-100/30 via-teal-50/20 to-transparent rounded-full blur-[100px] opacity-40 dark:from-blue-900/20 dark:opacity-20 mix-blend-multiply dark:mix-blend-screen"></div>
+		</div>
 
-      <div class='flex flex-col items-center gap-y-4'>
-        <h1 class='text-3xl font-bold'>{config.author}</h1>
-        <div class='flex flex-wrap justify-center gap-x-7 gap-y-3'>
-          <Label title='中国·北京'>
-            <Icon name='location' class='size-5' slot='icon' />
-          </Label>
-          <Label
-            title='项目源码'
-            as='a'
-            href='https://github.com/cworld1/astro-theme-pure'
-            target='_blank'
-          >
-            <Icon name='github' class='size-5' slot='icon' />
-          </Label>
-        </div>
-      </div>
+		<!-- Hero Content -->
+		<div class="relative z-10 w-full max-w-2xl px-4 text-center">
+			<!-- Title -->
+			<h1 class="mb-6 text-4xl font-bold tracking-tight md:text-5xl animate-fade-in-up opacity-0" style="animation-fill-mode: forwards;">
+				<span class="bg-gradient-to-r from-accent-two via-accent-one to-accent-two bg-clip-text text-transparent bg-[length:200%_auto] animate-gradient">
+					你好，我是本站的主理人！
+				</span>
+			</h1>
+			
+			<!-- Description -->
+			<p class="mb-8 text-lg leading-relaxed text-gray-600 dark:text-gray-300/90 animate-fade-in-up opacity-0 animation-delay-300" style="animation-fill-mode: forwards;">
+				很高兴能在这里与你相遇。在这里，我会记录一些思考、分享一些发现，愿文字能为你带来片刻的愉悦或启发。
+				<br class="hidden md:inline" />
+				本小站选用的是简洁美观的 Astro Citrus 主题。如果你也喜欢这个主题的设计，不妨去 GitHub 为其点亮一颗 ⭐，或者分享给更多朋友！
+			</p>
 
-      {/* 获取模板 */}
-      <a
-        href='https://github.com/cworld1/astro-theme-pure'
-        target='_blank'
-        class='flex flex-row items-center gap-x-3 rounded-full border bg-background px-4 py-2 text-sm shadow-sm transition-shadow hover:shadow-md'
-      >
-        <span class='relative flex items-center justify-center'>
-          <span
-            class='absolute size-2 animate-ping rounded-full border border-green-400 bg-green-400 opacity-75'
-          ></span>
-          <span class='size-2 rounded-full bg-green-400'></span>
-        </span>
-        <p class='font-medium text-muted-foreground'>获取本项目</p>
-      </a>
-    </section>
+			<!-- CTA Button -->
+			<div class="flex justify-center gap-4 animate-fade-in-up opacity-0 animation-delay-500" style="animation-fill-mode: forwards;">
+				<a href="/blog/" 
+				   class="group relative flex items-center justify-center h-11 px-8 rounded-full bg-white/50 dark:bg-white/10 backdrop-blur-md border border-white/40 dark:border-white/10 shadow-sm hover:shadow-[0_0_25px_rgba(var(--accent-one),0.2)] hover:scale-[1.03] hover:bg-white/70 dark:hover:bg-white/20 transition-all duration-500 ease-out">
+					<span class="font-medium text-gray-700 dark:text-gray-100 group-hover:text-accent-two transition-colors duration-300 relative z-10">
+						阅览小站
+					</span>
+					<!-- Button Glow Effect -->
+					<div class="absolute inset-0 rounded-full opacity-0 group-hover:opacity-10 bg-gradient-to-r from-accent-one to-accent-two transition-opacity duration-500"></div>
+				</a>
+			</div>
+		</div>
+	</section>
 
-    <div id='content' class='animate flex flex-col gap-y-10 md:w-4/5 lg:w-5/6'>
-      <Section title='关于我'>
-        <p class='text-muted-foreground'>运维开发工程师</p>
-        <p class='text-muted-foreground'>
-          你好，我是本站的主理人！很高兴能在这里与你相遇。
+	<!-- Content Wrapper -->
+	<!-- 整体内容延迟显示，保持节奏感 -->
+	<div class="max-w-3xl mx-auto px-4 pb-24 space-y-20 animate-fade-in-up opacity-0 animation-delay-700" style="animation-fill-mode: forwards;">
+		
+		<!-- Posts Section -->
+		<section aria-label="Blog post list">
+			<div class="flex items-center justify-between mb-8">
+				<h2 class="text-2xl font-bold text-accent-two flex items-center gap-2">
+					<span class="w-2 h-8 rounded-full bg-accent-two/80 block shadow-[0_0_15px_rgba(var(--accent-two),0.5)]"></span>
+					<a href="/blog/" class="hover:opacity-70 transition-opacity duration-300">文章列表</a>
+				</h2>
+				<a href="/blog/" class="group flex items-center text-sm font-medium text-gray-500 hover:text-accent-two transition-colors duration-300 hidden sm:flex">
+					查看全部 
+					<span class="ml-1 transform group-hover:translate-x-1 transition-transform duration-300 ease-out">&rarr;</span>
+				</a>
+			</div>
+			
+			<ul class="space-y-4" role="list">
+				{
+					allPostsByDate.map((p) => (
+						<li class="group relative p-4 -mx-4 rounded-2xl transition-all duration-500 hover:bg-gray-50/80 dark:hover:bg-white/5 border border-transparent hover:border-gray-100/50 dark:hover:border-white/5">
+							<PostPreview post={p} />
+						</li>
+					))
+				}
+			</ul>
+		</section>
 
-          在这里，我会记录一些思考、分享一些发现，愿文字能为你带来片刻的愉悦或启发。
-          本小站选用的是简洁美观的 Pure 主题。
-          如果你也喜欢这个主题的设计，不妨去 GitHub 为其点亮一颗 ⭐，或者把它分享给更多正在寻找博客主题的朋友！
-          请随意浏览，希望你能找到感兴趣的内容。祝你阅读愉快！
-        </p>
-        <Button title='了解更多' class='w-fit self-end' href='/about' style='ahead' />
-      </Section>
-      {
-        allPostsByDate.length > 0 && (
-          <Section title='最新文章'>
-            <ul class='flex flex-col gap-y-1.5 sm:gap-y-2'>
-              {allPostsByDate.map((p) => (
-                <li class='flex flex-col gap-x-2 sm:flex-row'>
-                  <PostPreview post={p} />
-                </li>
-              ))}
-            </ul>
-            <Button title='更多文章' class='w-fit self-end' href='/blog' style='ahead' />
-          </Section>
-        )
-      }
+		<!-- Notes Section -->
+		{
+			latestNotes.length > 0 && (
+				<section aria-label="Notes list">
+					<div class="flex items-center justify-between mb-8">
+						<h2 class="text-2xl font-bold text-accent-two flex items-center gap-2">
+							<span class="w-2 h-8 rounded-full bg-accent-one/80 block shadow-[0_0_15px_rgba(var(--accent-one),0.5)]"></span>
+							<a href="/notes/" class="hover:opacity-70 transition-opacity duration-300">我的记录</a>
+						</h2>
+						<a href="/notes/" class="group flex items-center text-sm font-medium text-gray-500 hover:text-accent-two transition-colors duration-300 hidden sm:flex">
+							更多记录 
+							<span class="ml-1 transform group-hover:translate-x-1 transition-transform duration-300 ease-out">&rarr;</span>
+						</a>
+					</div>
 
-      <Section title='推荐项目'>
-        <div class='grid grid-cols-1 gap-3 sm:grid-cols-2'>
-          <ProjectCard
-            href='https://kubernetes.io/'
-            heading='Kubernetes'
-            subheading='Kubernetes 是一个开源的容器编排平台，用于自动化部署、扩展和管理容器化应用程序。'
-            imagePath='/src/assets/projects/angelica-teran-Bk9hpaXHK4o-unsplash.jpg'
-          />
-          <ProjectCard
-            href='https://www.docker.com/'
-            heading='Docker'
-            subheading='Docker 是一个开源的容器化平台，用于将应用程序和依赖项打包到一个可移植的包中，并运行在任何地方。'
-            imagePath='/src/assets/projects/angelica-teran-Bk9hpaXHK4o-unsplash.jpg'
-          />
-          <ProjectCard
-            href='https://www.nginx.com/'
-            heading='Nginx'
-            subheading='Nginx 是一个开源的 Web 服务器和反向代理服务器，用于处理 HTTP 请求和响应。'
-            imagePath='/src/assets/projects/angelica-teran-Bk9hpaXHK4o-unsplash.jpg'
-          />
-          <ProjectCard
-            href='https://www.redis.com/'
-            heading='Redis'
-            subheading='Redis 是一个开源的内存数据库，用于存储和检索数据。'
-            imagePath='/src/assets/projects/angelica-teran-Bk9hpaXHK4o-unsplash.jpg'
-          />
-
-          <ProjectCard
-            href='/projects'
-            heading='更多项目'
-            subheading='查看更多的项目'
-            imagePath='/src/assets/projects/wen-qiao-g_w8I64FiO0-unsplash.jpg'
-          />
-        </div>
-      </Section>
-
-      <Section title='我的技能'>
-        <SkillLayout title='编程语言' skills={['Python', 'Shell', 'Go', 'YAML']} />
-        <SkillLayout title='DevOps' skills={['Docker', 'Kubernetes', 'CI/CD', 'Terraform']} />
-        <SkillLayout title='监控系统' skills={['Prometheus', 'Grafana', 'ELK', 'Zabbix']} />
-      </Section>
-    </div>
-  </main>
+					<div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
+						{
+							latestNotes.map((note) => (
+								<div class="group relative transform transition-all duration-500 hover:-translate-y-1 hover:shadow-lg rounded-2xl bg-gray-50/50 dark:bg-white/5 p-1 border border-transparent hover:border-gray-100/50 dark:hover:border-white/5">
+									<Note note={note} as="h4" isPreview />
+								</div>
+							))
+						}
+					</div>
+				</section>
+			)
+		}
+	</div>
 </PageLayout>
+
+<style>
+	/* 
+	  优雅动画配置 
+	  核心思路：增加 duration，使用 cubic-bezier 模拟物理惯性
+	*/
+
+	/* 1. 极柔和的入场动画 (1.2s) */
+	@keyframes fade-in-up {
+		0% {
+			opacity: 0;
+			transform: translateY(30px); /* 增加位移距离，配合慢速显得更有分量 */
+		}
+		100% {
+			opacity: 1;
+			transform: translateY(0);
+		}
+	}
+	
+	.animate-fade-in-up {
+		/* 使用 cubic-bezier(0.2, 0.8, 0.2, 1) 模拟高级 UI 的减速效果 */
+		animation: fade-in-up 1.2s cubic-bezier(0.2, 0.8, 0.2, 1);
+	}
+
+	/* 2. 缓慢呼吸背景 (25s 周期) */
+	@keyframes blob {
+		0% { transform: translate(0px, 0px) scale(1); }
+		33% { transform: translate(30px, -50px) scale(1.1); }
+		66% { transform: translate(-20px, 20px) scale(0.95); }
+		100% { transform: translate(0px, 0px) scale(1); }
+	}
+	
+	.animate-blob {
+		animation: blob 25s infinite alternate cubic-bezier(0.4, 0, 0.2, 1);
+	}
+
+	/* 3. 细腻流光文字 (10s 周期) */
+	@keyframes gradient-slow {
+		0% { background-position: 0% 50%; }
+		50% { background-position: 100% 50%; }
+		100% { background-position: 0% 50%; }
+	}
+	
+	.animate-gradient {
+		animation: gradient-slow 10s ease infinite;
+		background-size: 200% 200%;
+	}
+
+	/* 动画延迟序列 - 增加间隔，不拥挤 */
+	.animation-delay-300 { animation-delay: 0.3s; }
+	.animation-delay-500 { animation-delay: 0.5s; }
+	.animation-delay-700 { animation-delay: 0.7s; }
+	.animation-delay-4000 { animation-delay: 4s; }
+	.animation-delay-8000 { animation-delay: 8s; }
+</style>

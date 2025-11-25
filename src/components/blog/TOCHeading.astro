@@ -1,0 +1,28 @@
+---
+import type { TocItem } from "@/utils/generateToc";
+
+interface Props {
+	heading: TocItem;
+}
+
+const {
+	heading: { children, depth, slug, text },
+} = Astro.props;
+---
+
+<li class="mt-2">
+	<!-- 关键修改：把 >{text}</a> 写在同一行，紧贴着写 -->
+	<a
+		aria-label={`Scroll to section: ${text}`}
+		class="block text-light line-clamp-2 break-words transition-colors hover:text-accent-two"
+		href={`#${slug}`}
+	>{text}</a>
+	
+	{!!children.length && (
+		<ol class="pl-4 mt-1 border-l border-special-light/30">
+			{children.map((subheading) => (
+				<Astro.self heading={subheading} />
+			))}
+		</ol>
+	)}
+</li>

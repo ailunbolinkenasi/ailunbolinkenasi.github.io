@@ -1,0 +1,198 @@
+---
+interface Props {
+  class?: string;
+}
+
+const { class: className = "" } = Astro.props;
+---
+
+<div class={`photoswipe-gallery ${className}`}>
+  <slot />
+</div>
+
+<style is:global>
+  /* === 1. 灯箱基础样式 === */
+  .pswp__bg {
+    background: #000 !important;
+  }
+
+  .pswp__img {
+    border-radius: 8px !important; 
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5) !important;
+    transition: border-radius 0.3s ease;
+  }
+
+  /* === 2. 侧边栏样式 (桌面端) === */
+  .pswp__caption-sidebar {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    /* 宽度必须与下方 @media 中的计算值对应 */
+    width: 320px; 
+    background: rgba(18, 18, 18, 0.85); /* 深色背景 */
+    border-left: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 80px 30px 40px; /* 顶部留出空间，防止遮挡右上角关闭按钮 */
+    box-sizing: border-box;
+    color: #e0e0e0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: left;
+    overflow-y: auto;
+    z-index: 1500; /* 确保在背景之上 */
+    opacity: 0;
+    transform: translateX(20px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    pointer-events: auto; 
+  }
+
+  .pswp__caption-sidebar.visible {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  .pswp__caption-title {
+    font-size: 12px;
+    color: #999;
+    margin-bottom: 12px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: bold;
+  }
+
+  .pswp__caption-text {
+    font-size: 15px;
+    line-height: 1.6;
+    color: #f0f0f0;
+  }
+
+  /* === 3. 关键修复：大屏幕下调整按钮位置 === */
+  @media (min-width: 960px) {
+    /* 
+       将“下一张”箭头移到侧边栏左侧 
+       320px (侧边栏宽) + 20px (间距) = 340px
+    */
+    .pswp__button--arrow--next {
+      right: 340px !important; 
+    }
+
+    /* 关闭按钮也稍微往左移一点，或者保持在最右侧（根据喜好）
+       这里我让关闭按钮保持在最右上角，但侧边栏顶部加了 padding 避让
+    */
+    
+    /* 确保侧边栏显示 */
+    .pswp__caption-sidebar {
+      display: flex !important;
+    }
+  }
+
+  /* === 4. 移动端适配 === */
+  @media (max-width: 959px) {
+    /* 窄屏隐藏侧边栏 */
+    .pswp__caption-sidebar {
+      display: none !important;
+    }
+    /* 箭头位置还原 */
+    .pswp__button--arrow--next {
+      right: 10px !important;
+    }
+  }
+
+  /* 页面缩略图样式 */
+  .photoswipe-gallery img {
+    cursor: zoom-in;
+    transition: transform 0.3s ease;
+    border-radius: 8px;
+  }
+  .photoswipe-gallery img:hover {
+    transform: scale(1.02);
+  }
+</style>
+
+<script>
+  import PhotoSwipeLightbox from 'photoswipe/lightbox';
+  import 'photoswipe/style.css';
+
+  document.addEventListener('DOMContentLoaded', () => {
+    requestAnimationFrame(() => {
+      const galleries = document.querySelectorAll('.photoswipe-gallery');
+      
+      galleries.forEach(gallery => {
+        const images = gallery.querySelectorAll('img');
+        if (images.length === 0) return;
+
+        // 配置常量
+        const SIDEBAR_WIDTH = 320; // 侧边栏宽度
+        const BREAKPOINT = 960;    // 启用侧边栏的断点
+
+        const lightbox = new PhotoSwipeLightbox({
+          gallery: gallery,
+          children: 'img',
+          showHideAnimationType: 'zoom',
+          pswpModule: () => import('photoswipe'),
+
+          // === 动态内边距核心逻辑 ===
+          paddingFn: (viewportSize) => {
+            // 如果屏幕宽度大于断点
+            if (viewportSize.x >= BREAKPOINT) {
+              return { 
+                top: 30, 
+                bottom: 30, 
+                left: 30, 
+                // 右侧留出：侧边栏宽度 + 箭头按钮的活动空间
+                // 这里的 80px 是为了让图片不紧贴着移过来的箭头
+                right: SIDEBAR_WIDTH + 80 
+              };
+            }
+            // 移动端默认边距
+            return { top: 20, bottom: 20, left: 20, right: 20 };
+          },
+        });
+
+        lightbox.addFilter('itemData', (itemData, index) => {
+          const img = images[index];
+          if (!img) return itemData;
+          return {
+            src: img.src,
+            w: img.naturalWidth || 1200,
+            h: img.naturalHeight || 800,
+            msrc: img.src,
+            alt: img.alt || '', 
+          };
+        });
+        
+        lightbox.on('uiRegister', () => {
+           lightbox.pswp.ui.registerElement({
+             name: 'sidebar-caption',
+             order: 15, 
+             isButton: false,
+             appendTo: 'wrapper', 
+             html: '',
+             onInit: (el, pswp) => {
+               el.className = 'pswp__caption-sidebar';
+
+               lightbox.pswp.on('change', () => {
+                 const currSlide = lightbox.pswp.currSlide;
+                 // 获取 alt 文字
+                 if (currSlide && currSlide.data && currSlide.data.alt) {
+                   el.innerHTML = `
+                     <div class="pswp__caption-title">照片描述  </div>
+                     <div class="pswp__caption-text">${currSlide.data.alt}</div>
+                   `;
+                   el.classList.add('visible');
+                 } else {
+                   // 如果没有alt，显示默认提示或者隐藏，这里选择显示空状态让布局不塌陷
+                   el.innerHTML = `<div class="pswp__caption-text" style="opacity:0.5">无描述信息</div>`;
+                   el.classList.add('visible');
+                 }
+               });
+             }
+           });
+        });
+
+        lightbox.init();
+      });
+    });
+  });
+</script>

@@ -1,18 +1,13 @@
 ---
-import { Button } from 'astro-pure/user'
-import PageLayout from '@/layouts/BaseLayout.astro'
+import PageLayout from "@/layouts/Base.astro";
 
 const meta = {
-  description: '页面未找到',
-  title: '404'
-}
+	description: "Oops! It looks like this page is lost in space!",
+	title: "Oops! You found a missing page!",
+};
 ---
 
-<PageLayout {meta}>
-  <div class='px-4 py-10 text-center sm:px-6 lg:px-8'>
-    <h1 class='block text-7xl font-bold sm:text-9xl'>404</h1>
-    <p class='mt-3 text-muted-foreground'>糟糕，出错了。</p>
-    <p class='text-lg'>抱歉，我们找不到您要访问的页面。</p>
-    <Button title='返回首页' href='/' style='ahead' class='mt-5' />
-  </div>
+<PageLayout meta={meta}>
+	<h1 class="title mb-6">404 | Oops something went wrong</h1>
+	<p class="mb-8">Please use the navigation to find your way back</p>
 </PageLayout>

@@ -1,0 +1,91 @@
+---
+import { generateToc } from "@/utils/generateToc";
+import type { MarkdownHeading } from "astro";
+import TOCHeading from "./TOCHeading.astro";
+import { Icon } from "astro-icon/components";
+
+interface Props {
+	headings: MarkdownHeading[];
+}
+
+const { headings } = Astro.props;
+
+const toc = generateToc(headings);
+---
+
+<div class="sticky top-20 rounded-t-lg">
+	<div class="sticky top-20 bg-bgColor rounded-t-lg">
+		<div class="sticky top-20 flex pt-4 ps-8 pb-2 items-end title rounded-t-lg bg-color-75 pe-4 gap-x-1 border-t border-l border-r border-special-light">
+			
+			<Icon aria-hidden="true" class="flex-shrink-0 h-8 w-6 py-1" focusable="false" name="solar:clipboard-list-line-duotone" />
+			
+			<h4 class="title">目录列表</h4>
+			<button
+				id="close-toc"
+				class="absolute top-4 right-4 h-8 w-8 flex items-center justify-center rounded-lg bg-accent-base/5 text-accent-base hover:bg-accent-base/10"
+				aria-label="Close TOC"
+			>
+				<Icon aria-hidden="true" class="h-6 w-6" focusable="false" name="hugeicons:cancel-01" />
+			</button>
+			
+		</div>
+	</div>
+	<div class="bg-bgColor rounded-b-lg">
+		<div class="rounded-b-lg pb-6 bg-color-75 border-b border-l border-r border-special-light">
+			<div class="max-h-[calc(100vh-11rem)] h-auto overflow-y-auto overflow-hidden px-6">
+				<!-- 注意：这里改成了 <ol> 并添加了类名 toc-root -->
+				<ol class="toc-root text-sm font-medium text-textColor">
+					{toc.map((heading) => <TOCHeading heading={heading} />)}
+				</ol>
+			</div>
+		</div>
+	</div>
+</div>
+
+<style is:global>
+	/* 初始化计数器 */
+	ol.toc-root {
+		counter-reset: item;
+		list-style: none;
+		padding: 0;
+	}
+
+	/* 每一个子列表也重置自己的计数器，但要继承父级 */
+	ol.toc-root ol {
+		counter-reset: item;
+		list-style: none;
+		padding-left: 1.2rem; /* 缩进 */
+		margin-top: 0.25rem;
+		margin-bottom: 0.25rem;
+	}
+
+	/* 列表项计数器递增 */
+	ol.toc-root li {
+		display: block;
+		counter-increment: item;
+		margin-bottom: 0.25rem;
+	}
+
+	/* 在链接文字前面插入编号 */
+	ol.toc-root li > a::before {
+		/* 核心修改：删除了 ". " 中的空格，变成了 "." */
+		content: counters(item, ".") "."; 
+		
+		color: rgba(var(--accent-base), 0.8); /* 编号颜色 */
+		font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+		font-weight: bold;
+		margin-right: 0.25rem; /* 这里控制数字与标题的间距 */
+		font-size: 0.85em;
+	}
+	
+	/* 链接的基础样式 */
+	ol.toc-root a {
+		display: inline-block;
+		transition: color 0.2s;
+		line-height: 1.4;
+	}
+	
+	ol.toc-root a:hover {
+		color: rgb(var(--accent-base));
+	}
+</style>

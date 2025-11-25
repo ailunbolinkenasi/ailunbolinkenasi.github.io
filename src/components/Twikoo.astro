@@ -5,26 +5,80 @@ interface Props {
 }
 
 const { path } = Astro.props;
-const commentPath = path || Astro.url.pathname;
+// 如果没有传入 path，可以使用当前页面路径（根据你的需求保留或修改）
+// 注意：Twikoo 默认会自动读取 window.location.pathname，通常不需要手动传 path 除非有特殊需求
 ---
 
-<div id="twikoo"></div>
+<div id="twikoo" class="mb-8"></div>
 
 <script is:inline>
-  // 使用 CDN 方式
+  // 动态加载 Twikoo 脚本
   const twikooScript = document.createElement('script');
-  twikooScript.src = 'https://unpkg.com/twikoo@1.4.18/dist/twikoo.all.min.js';
+  twikooScript.src = 'https://unpkg.com/twikoo@1.6.32/dist/twikoo.all.min.js'; // 建议使用较新的版本
+  twikooScript.crossOrigin = "anonymous"; // 跨域属性，有时候能避免一些奇怪的报错
+  
   twikooScript.onload = () => {
-    twikoo.init({
-      envId: 'https://twikoo.mletter.cn', // 腾讯云环境ID 或 Vercel 地址
-      lang: 'zh-CN' // 语言，可选
-    });
+    // 确保 twikoo 对象存在后再初始化
+    if (window.twikoo) {
+      window.twikoo.init({
+        envId: 'https://twikoo.mletter.cn', // 你的 Twikoo 环境地址
+        el: '#twikoo', // 指定挂载容器
+        // path: '...', // 如果需要手动指定文章路径，可在此传入服务端获取的 path 变量
+        lang: 'zh-CN',
+      });
+    }
   };
+  
   document.head.appendChild(twikooScript);
 </script>
 
 <style>
+  /* 
+   * 1. 容器基础样式 
+   * 给一个最小高度，防止加载时高度塌陷导致的页面抖动
+   */
   #twikoo {
-    margin-top: 2rem;
+    min-height: 120px; 
+    position: relative;
+  }
+
+  /* 
+   * 2. 修复加载动画偏左的问题 (核心修复)
+   * 使用 :global() 是因为 .tk-loading 是由 JS 动态生成的，
+   * Astro 默认的 Scoped CSS 无法直接匹配到它。
+   */
+  :global(.tk-loading) {
+    width: 100%;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    padding: 30px 0;
+  }
+  
+  /* 
+   * 3. 自定义 Twikoo 内部样式
+   * 同样需要使用 :global 或 父级限定符来穿透作用域
+   */
+  
+  /* 评论列表区域 */
+  :global(.tk-comments-container) {
+    margin-top: 2rem !important;
+  }
+  
+  /* 评论标题样式 */
+  :global(.tk-comments-title) {
+    margin-bottom: 1.5rem !important;
+    font-size: 1.1rem !important;
+    font-weight: 600 !important;
+  }
+  
+  /* 每个评论项间距 */
+  :global(.tk-comment) {
+    margin-bottom: 1.5rem !important;
+  }
+
+  /* (可选) 调整输入框区域的样式，使其更美观 */
+  :global(.tk-input) {
+    background-color: transparent; 
   }
 </style>

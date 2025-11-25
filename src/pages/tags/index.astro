@@ -1,49 +1,58 @@
 ---
-import { getBlogCollection, getUniqueTagsWithCount } from 'astro-pure/server'
-import { Button } from 'astro-pure/user'
-import { cn } from 'astro-pure/utils'
-import PageLayout from '@/layouts/BaseLayout.astro'
+import Badge from "@/components/Badge.astro";
+import { getAllPosts, getUniqueTagsWithCount } from "@/data/post";
+import PageLayout from "@/layouts/Base.astro";
 
-const allPosts = await getBlogCollection()
-const allTags = getUniqueTagsWithCount(allPosts)
+const allPosts = await getAllPosts();
+const allTags = getUniqueTagsWithCount(allPosts);
 
 const meta = {
-  description: "我所有文章涉及的主题标签列表",
-  title: '所有标签'
-}
+	description: "A list of all the topics I've written about in my posts",
+	title: "All Tags",
+};
 ---
 
-<PageLayout {meta}>
-  <Button title='返回' href='/blog' style='back' />
-  <main class='mt-6 lg:mt-10'>
-    <div id='content-header' class='animate'>
-      <h1 class='mb-6 text-3xl font-medium'>标签</h1>
-    </div>
-
-    <div id='content' class='animate'>
-      {
-        allTags.length > 0 ? (
-          <ul class='flex flex-wrap gap-4'>
-            {allTags.map(([tag, val]) => (
-              <li>
-                <Button
-                  href={`/tags/${tag}`}
-                  style='pill'
-                  class={cn(
-                    'items-start gap-x-1',
-                    val > 2 ? 'rounded-xl px-3 py-1 text-xl' : val > 1 && 'text-lg'
-                  )}
-                >
-                  {tag}
-                  <span class={val > 2 ? 'text-base' : 'text-xs'}>{val}</span>
-                </Button>
-              </li>
-            ))}
-          </ul>
-        ) : (
-          <p>暂无标签。</p>
-        )
-      }
-    </div>
-  </main>
+<PageLayout meta={meta}>
+	<h1 class="title mb-6">标签</h1>
+	<!--
+	<ul class="space-y-4">
+		{
+			allTags.map(([tag, val]) => (
+				<li class="flex items-center gap-x-2">
+					<a
+						class="citrus-link inline-block"
+						data-astro-prefetch
+						href={`/tags/${tag}/`}
+						title={`View posts with the tag: ${tag}`}
+					>
+						&#35;{tag}
+					</a>
+					<a aria-label={`View all posts with the tag: ${tag}`} href={`/tags/${tag}`}>
+						<Badge variant="accent-two" title={tag}>
+							{tag}
+						</Badge>
+					</a>
+					<span class="inline-block">
+						- {val} Post{val > 1 && "s"}
+					</span>
+				</li>
+			))
+		}
+	</ul>
+	-->
+	<div class="flex flex-wrap items-center gap-2">
+		{
+			allTags.map(([tag, val]) => (
+			<div class="flex items-center gap-x-2">
+				<a aria-label={`View all posts with the tag: ${tag}`} href={`/tags/${tag}`}>
+				<Badge variant="muted" title={tag}>
+					<span class="text-xs font-normal">
+						&nbsp;{val} post{val > 1 && "s"}
+					</span>
+				</Badge>
+				</a>
+			</div>
+			))
+		}
+	</div>
 </PageLayout>

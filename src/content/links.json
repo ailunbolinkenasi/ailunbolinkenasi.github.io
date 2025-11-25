@@ -1,0 +1,165 @@
+{
+  "friends": [
+    {
+      "id_name": "cf-links",
+      "desc": "常用链接",
+      "link_list": [
+        {
+          "name": "老麦的书房",
+          "intro": "Go语言(golang)、 云原生、 DevOps、 可视化追踪。",
+          "link": "https://typonotes.com/",
+          "avatar": "https://typonotes.com/logo/avatar.png"
+        },
+        {
+          "name": "提剑追梦",
+          "intro": "曾梦想仗剑走天涯",
+          "link": "http://blog.jkjoy.cn",
+          "avatar": "https://blog.jkjoy.cn/favicon.jpg"
+        },
+        {
+          "name": "快乐小凳凳`Blog",
+          "intro": "Sow nothing, reap nothing.",
+          "link": "https://www.dqywy.top/",
+          "avatar": "https://s1.ax1x.com/2023/06/11/pCVjudK.png"
+        },
+        {
+          "name": "鹿小鼠笔记本",
+          "intro": "鹿小鼠dof单机交流、学习、分享",
+          "link": "https://www.lxs.ink",
+          "avatar": "https://www.lxs.ink/usr/uploads/2023/12/3933133080.png"
+        },
+        {
+          "name": "十二的编程笔记",
+          "intro": "十二的编程笔记",
+          "link": "https://blog.twelveeee.top/",
+          "avatar": "https://twelveeee-top.oss-cn-beijing.aliyuncs.com/images/avatar.jpg"
+        },
+        {
+          "name": "Jack's Space",
+          "intro": "一切都是最好的安排",
+          "link": "https://veryjack.com",
+          "avatar": "https://pix.veryjack.com/i/2023/04/04/fsxnkv.webp"
+        },
+        {
+          "name": "下午倆點半的海德公園",
+          "intro": "平凡生活里的不平凡。",
+          "link": "https://hyde.live",
+          "avatar": "https://hyde.live/avatar.png"
+        },
+        {
+          "name": "刘郎阁",
+          "intro": "一个积极向上的生活探索者！",
+          "link": "https://vjo.cc/",
+          "avatar": "https://vjo.cc/usr/uploads/logo.jpeg"
+        },
+        {
+          "name": "半日闲",
+          "intro": "偷得浮生半日闲",
+          "link": "https://xiaoa.me",
+          "avatar": "https://xiaoa.me/logo.png"
+        },
+        {
+          "name": "肖寒武的博客",
+          "intro": "我歌月徘徊，我舞影凌乱。",
+          "link": "https://www.xiaohanwu.com",
+          "avatar": "https://cdn.xiaohanwu.com/xiaohanwu.jpeg"
+        },
+        {
+          "name": "浮沉流年",
+          "intro": "借一点落日的光与来日方长",
+          "link": "https://www.fcln.net",
+          "avatar": "https://www.ifonce.com/wp-content/uploads/2024/02/20240201200905925-IMG_4296.jpeg"
+        },
+        {
+          "name": "蜡客生活系",
+          "intro": "个人博客，心感记述，电脑技术，软件分享。",
+          "link": "https://www.lknc.vip/",
+          "avatar": "https://cravatar.cn/avatar/1d966b8220e8436a36b96b2426a40c25?d=mm"
+        },
+        {
+          "name": "L1nSn0w's Blog",
+          "intro": "无限进步.🎈",
+          "link": "https://linsnow.cn/",
+          "avatar": "https://linsnow.cn/avatar.png"
+        },
+        {
+          "name": "老孙博客",
+          "intro": "资深网民孙先生",
+          "link": "https://www.imsun.org/",
+          "avatar": "https://img.imsun.org/avatar.jpg"
+        },
+        {
+          "name": "百川的博客🌊",
+          "intro": "追风赶月莫停留，平芜尽处是春山。",
+          "link": "https://www.baichuanweb.cn",
+          "avatar": "https://rockoss-1309912377.cos.ap-beijing.myqcloud.com/picgo/%E7%BA%AFlogo.gif?q-sign-algorithm=sha1&q-ak=AKIDqVTxW5OWTJyPemjcRMLAl7J1WoulZPDs&q-sign-time=1685535078;9000000000&q-key-time=1685535078;9000000000&q-header-list=host&q-url-param-list=&q-signature=06b7bb0bfac998592463532f782c1bafb1e3627e"
+        },
+        {
+          "name": "大海看看",
+          "intro": "记录生活留住美好时刻 ，分享个人学习笔记.",
+          "link": "https://www.dhkk.cn",
+          "avatar": "https://www.dhkk.cn/logo.png"
+        },
+        {
+          "name": "山山而川",
+          "intro": "人生海海 山山而川 不过尔尔",
+          "link": "https://blog.immm.cn/",
+          "avatar": "https://blog.immm.cn/favicon.ico"
+        },
+        {
+          "name": "小骆同学",
+          "intro": "细水流长，静水流深",
+          "link": "https://lovir.cn/",
+          "avatar": "https://cdn.lovir.cn/IMAGE/avater.jpg"
+        },
+        {
+          "name": "Niuren.VIP",
+          "intro": "对牛弹琴，弹，弹，弹！",
+          "link": "https://niuren.vip",
+          "avatar": "https://vip.123pan.cn/1825601452/%E7%9B%B4%E8%BF%9E%E7%A9%BA%E9%97%B4/1ccd6949a46f5b49cf30ad635df8b3b0.png"
+        },
+        {
+          "name": "纸鹿本鹿",
+          "intro": "纸鹿至麓不知路，支炉制露不止漉",
+          "link": "https://blog.zhilu.cyou",
+          "avatar": "https://cravatar.cn/avatar/13aa912754e6bb5e671f3e6654e4712d?s=480"
+        },
+        {
+          "name": "jdeal",
+          "intro": "人生本来就是用来折腾的，希望你永远年轻，永远他妈的热泪盈眶 ！",
+          "link": "https://www.jdeal.cn/",
+          "avatar": "https://www.xalaok.top/friend/jdeal.webp"
+        },
+        {
+          "name": "Jeray大叔",
+          "intro": "人生，就是要有点趣味性，才好玩啊！",
+          "link": "https://hi.jeray.wang",
+          "avatar": "https://hi.jeray.wang/favicon.ico"
+        }
+      ]
+    },
+    {
+      "id_name": "inactive-links",
+      "desc": "状态异常的链接",
+      "link_list": []
+    },
+    {
+      "id_name": "special-links",
+      "desc": "特殊链接",
+      "link_list": [
+        {
+          "name": "虫洞",
+          "intro": "随机前往十年之约的成员博客",
+          "link": "https://www.foreverblog.cn/go.html",
+          "avatar": "/images/wormhole.png"
+        },
+        {
+          "name": "开往",
+          "intro": "随机前往开往的成员博客",
+          "link": "https://www.travellings.cn/go.html",
+          "avatar": "https://www.travellings.cn/assets/travelling.png"
+        }
+      ]
+    }
+  ]
+}

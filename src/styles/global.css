@@ -1,0 +1,386 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+body {
+  font-family: "HarmonyOS Sans", "Inter", sans-serif;
+}
+/* 应用于包裹图片的容器或者是 img 标签本身 */
+.photoswipe-gallery img {
+  /* 1. 限制宽度不贴边，留出呼吸感 */
+  max-width: 92%; 
+  
+  /* 2. 关键：限制高度最多只占屏幕高度的 70% */
+  /* 这样无论图片多大，用户一眼都能看到图片下方的文字，不会产生割裂感 */
+  max-height: 70vh; 
+  
+  /* 3. 让图片保持比例自适应 */
+  width: auto; 
+  height: auto;
+  
+  /* 4. 图片居中显示 */
+  display: block;
+  margin: 20px auto; 
+  
+  /* 5. 保持之前的圆角和阴影 */
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+}
+
+@font-face {
+	font-family: "Maple Mono";
+	src: url("../assets/fonts/MapleMono-SemiBold.woff2") format("truetype");
+	/* font-display: swap; */
+}
+@font-face {
+	font-family: "HarmonyOS Sans";
+	src: url("../assets/fonts/HarmonyOS_Sans_SC_Medium.woff2") format("truetype");
+	/* font-display: swap; */
+}
+
+
+@layer base {
+	:root,
+	:root[data-theme="light"] {
+		color-scheme: light;
+
+		/* Для того чтобы текст имел оттенок фона --fg-hue: var(--hue) и --bg-hue: var(--hue) */
+		/* Для того чтобы текст имел оттенок фона --fg-saturation: var(--saturation) и --bg-saturation: var(--saturation) */
+		
+		/*** ОСНОВНЫЕ ЦВЕТА (Базовый, фон, акценты, текст) ***/
+		/* Базовый цвет-оттенок темы */
+		--hue: 200deg; /* Общий базовый цвет-оттенок элементов темы */
+		--saturation: 10%; /* Общая базовая насыщенность элементов темы, 0% - нет оттенка цвета */
+		
+		/* Фон (background) */
+		--bg-hue: var(--hue); /* Цвет-оттенок фона */
+		--bg-saturation: var(--saturation); /* Насыщенность оттенка фона и некоторых др. элементов, 0% - нет оттенка */
+		--bg-brightness: 96%; /* Ярксть фона, 100% - абсолюнто белый */
+
+		/* Акценты */
+		--theme-accent-base: var(--bg-hue) 53% 27%; /* Основной акцентный цвет */
+		--theme-accent-one: var(--bg-hue) 53% 27%; /* Первый дополнительный акцентный цвет */
+		--theme-accent-two: 351deg 66% 48%; /* Второй дополнительный акцентный цвет */
+		
+		/* Вариант */ /* --theme-accent-two: 344deg 63% 45%; */
+		
+		/* Текст (foreground, цвет-яркость текста рассчитывается ниже на базе --theme-fg) */
+		--fg-hue: var(--hue); /* Общий цвет-оттенок для рассчета градаций цвета */
+		--fg-saturation: var(--saturation); /* Общая насыщенность для рассчета градаций цвета с оттенком, 0% - нет оттенка */
+		--fg-brightness: 9%; /* Яркость для рассчета градаций цвета с оттенком, 0% - начиная от абсолютно черного */
+		--theme-text: var(--theme-color-500); /* Цвет-яркость текста уже с адаптацией под цвет фона */ 
+
+		/*** ВТОРОСТЕПЕННЫЕ ЦВЕТА (Внешние ссылки, нейтральный акцент, цитаты) ***/
+		--theme-link: var(--hue) 97% 31%; /* Цвет внешних ссылок */
+		--theme-accent: var(--theme-color-600); /* Нейтральный акцент, рассчитывается ниже на базе --theme-fg */
+		--theme-quote: var(--theme-text); /* Цвет цитат */
+		
+		/*** ДОПОЛНИТЕЛЬНЫЕ ЦВЕТА ***/
+		--theme-lightest: var(--theme-color-350);
+		--theme-lighter: var(--theme-color-400);
+		--theme-light: var(--theme-color-450);
+		
+		/*** СПЕЦИАЛЬНЫЕ ДЛЯ КАЖДОЙ ТЕМЫ ЦВЕТА ***/
+		--theme-special-lightest: hsl(var(--hue), var(--saturation), 100%);
+		--theme-special-lighter: hsl(var(--hue), var(--saturation), 98%);
+		--theme-special-light: hsl(var(--theme-bg));
+		--theme-special: var(--theme-color-75);
+		
+		/* Подсветка синтаксиса rehype-pretty-code */
+		pre code span {
+			font-family: 'Maple Mono';
+			color: var(--shiki-light) !important;
+			font-style: var(--shiki-light-font-style) !important;
+			font-weight: var(--shiki-light-font-weight) !important;
+			text-decoration: var(--shiki-light-text-decoration) !important;
+		}
+	}
+
+	:root[data-theme="dark"] {
+		color-scheme: dark;
+
+		/* Для того чтобы текст имел оттенок фона --fg-hue: var(--hue) и --bg-hue: var(--hue) */
+		/* Для того чтобы текст имел оттенок фона --fg-saturation: var(--saturation) и --bg-saturation: var(--saturation) */
+		
+		/* --theme-bg: 200deg 93% 10%; /* DeepBlue */
+		/* --theme-bg: 190deg 86% 8%; /* DeepGreen */
+		/* --theme-bg: 237deg 22% 20%; */
+		/* --theme-accent-one: 355deg 61% 88%; /* LightRose */
+		/* --theme-accent-two: 200deg 61% 71%; /* LightBlue */
+
+		/*** ОСНОВНЫЕ ЦВЕТА (Базовый, фон, акценты, текст) ***/
+		/* Базовый цвет-оттенок темы */
+		--hue: 200deg; /* Общий базовый цвет-оттенок элементов темы */
+		--saturation: 53%; /* Общая базовая насыщенность элементов темы, 0% - нет оттенка цвета */
+
+		/* Фон (background) */
+		--bg-hue: var(--hue); /* Цвет-оттенок фона */
+		--bg-saturation: var(--saturation); /* Насыщенность оттенка фона и некоторых др. элементов, 0% - нет оттенка */
+		--bg-brightness: 15%; /* Ярксть фона, 0% - черный */
+		/* Вариант 204deg 51% 14% */
+		/* Вариант 210deg 25% 15% */
+
+		/* Акценты */
+		--theme-accent-base: var(--hue) 10% 85%; 
+		--theme-accent-one: 50deg 49% 80%; /* Первый дополнительный акцентный цвет */
+		--theme-accent-two: 50deg 72% 63%; /* 50deg 72% 63% */ /* Второй дополнительный акцентный цвет (был 45deg 80% 50%) */
+		/* --theme-accent-two: 0deg 75% 89%; */
+		/* --theme-accent-base: var(--hue) 97% 71%; */
+
+		/* Текст (foreground, цвет-яркость текста рассчитывается ниже на базе --theme-fg) */
+		--fg-hue: var(--hue); /* Общий цвет-оттенок для рассчета градаций цвета */
+		--fg-saturation: var(--saturation); /* Общая насыщенность для рассчета градаций цвета с оттенком, 0% - нет оттенка */
+		--fg-brightness: 98%; /* Яркость для рассчета градаций цвета с оттенком, 100% - начиная от абсолютно белого */
+		--theme-text: var(--theme-color-500); /* Цвет-яркость текста адаптированного под цвет фона */ 
+
+		/*** ВТОРОСТЕПЕННЫЕ ЦВЕТА (Внкшние ссылки, нейтральный акцент, цитаты) ***/
+		--theme-link: var(--hue) 61% 71%; /* Цвет внешних ссылок */
+		--theme-accent: var(--theme-color-600); /* Нейтральный акцент относительно текста */
+		--theme-quote: var(--theme-text); /* Цвет цитат */
+
+		/*** ДОПОЛНИТЕЛЬНЫЕ ЦВЕТА ***/
+		--theme-lightest: var(--theme-color-350);
+		--theme-lighter: var(--theme-color-400);
+		--theme-light: var(--theme-color-450);
+
+		/*** СПЕЦИАЛЬНЫЕ ДЛЯ КАЖДОЙ ТЕМЫ ЦВЕТА (!отличающиеся настройки для разных тем) ***/
+		--theme-special-lightest: var(--theme-color-250);
+		--theme-special-lighter: var(--theme-color-200);
+		--theme-special-light: var(--theme-color-150);
+		--theme-special: hsl(var(--hue) var(--saturation) 0% / 0.150);
+
+		/* Подсветка синтаксиса */
+		pre code span {
+			font-family: 'Maple Mono';
+			color: var(--shiki-dark) !important;
+			font-style: var(--shiki-dark-font-style) !important;
+			font-weight: var(--shiki-dark-font-weight) !important;
+			text-decoration: var(--shiki-dark-text-decoration) !important;
+		}
+	}
+
+	/* Общие переменные */
+	:root {
+		--theme-bg: var(--bg-hue) var(--bg-saturation) var(--bg-brightness); /* Цвет фона */
+		--theme-fg: var(--fg-hue) var(--fg-saturation) var(--fg-brightness); /* Базовый цвет для рассчета градации цветов */
+
+		/* Градации базового цвета для текста и элементов */
+		--theme-color-900: hsl(var(--theme-fg) / 1.0000);
+		--theme-color-850: hsl(var(--theme-fg) / 0.9675);
+		--theme-color-800: hsl(var(--theme-fg) / 0.935);
+		--theme-color-750: hsl(var(--theme-fg) / 0.880);
+		--theme-color-700: hsl(var(--theme-fg) / 0.825);
+		--theme-color-650: hsl(var(--theme-fg) / 0.785);
+		--theme-color-600: hsl(var(--theme-fg) / 0.745);
+		--theme-color-550: hsl(var(--theme-fg) / 0.675);
+		--theme-color-500: hsl(var(--theme-fg) / 0.605);
+		--theme-color-450: hsl(var(--theme-fg) / 0.500);
+		--theme-color-400: hsl(var(--theme-fg) / 0.395);
+		--theme-color-350: hsl(var(--theme-fg) / 0.290);
+		--theme-color-300: hsl(var(--theme-fg) / 0.185);
+		--theme-color-250: hsl(var(--theme-fg) / 0.150);
+		--theme-color-200: hsl(var(--theme-fg) / 0.115);
+		--theme-color-150: hsl(var(--theme-fg) / 0.080);
+		--theme-color-100: hsl(var(--theme-fg) / 0.045);
+		--theme-color-75: hsl(var(--theme-fg) / 0.03375);
+		--theme-color-50: hsl(var(--theme-fg) / 0.0225);
+
+		/* Переменные подсветки блоков кода rehype-pretty-code */
+		--code-inline-bg: var(--theme-color-150);
+		--code-bg: var(--theme-special);
+		--code-title-bg: var(--theme-color-200);
+		--code-line-highlight: var(--theme-color-150);
+		--code-line-diff-add: rgba(72, 191, 145, 0.15);
+		--code-line-diff-remove: rgba(248, 85, 82, 0.15);
+	}
+
+	html {
+		letter-spacing: 0.025em;
+	}
+
+	h1 {
+		@apply text-2xl md:pt-[0.0rem] !important;
+	}
+	h2 {
+		@apply text-xl md:pt-[0.215rem] !important;
+	}
+	h3 {
+		@apply text-lg md:pt-[0.250rem] !important; /* было 0.260 проверить!!! */
+	}
+	h4 {
+		@apply text-base md:pt-[0.425rem] !important;
+	}
+	h5 {
+		@apply text-base md:pt-[0.425rem] !important;
+	}
+	h6 {
+		@apply text-base md:pt-[0.425rem] !important;
+	}
+	
+	h1, h2, h3, h4, h5, h6 {
+		@apply min-h-8 h-auto !important;
+	}
+
+	/* Нужно для кнопки копирования кода при отключенном rehype-pretty-code */
+	/*
+	pre {
+		@apply relative;
+	}
+	*/
+}
+
+:root {
+	/* Стиль для блоков кода rehype-pretty-code */
+	figure[data-rehype-pretty-code-figure] {
+		@apply relative m-0 rounded-lg overflow-auto;
+
+		figcaption {
+			@apply m-0;
+		}
+
+		/* Стиль для заголовков в блоках кода */
+		[data-rehype-pretty-code-title] {
+			@apply break-words bg-[var(--code-title-bg)] border-b border-bgColor text-textColor px-4 flex items-center text-sm h-10;
+
+			& + pre {
+				@apply m-0 rounded-t-none; /* Убираем верхний отступ, если есть заголовок */
+				}
+		}
+
+		/* Стиль для блоков кода */
+		pre {
+			@apply m-0 static px-0 py-2 max-h-[612px] text-sm;
+
+			/* Стиль для содержимого кода */
+			> code {
+				counter-reset: line;
+
+				/* Для блоков с номерами строк */
+				&[data-line-numbers] {
+					> [data-line]::before {
+						counter-increment: line;
+						content: counter(line);
+						@apply mr-4 inline-block w-4 text-right text-lightest;
+					}
+				}
+
+				/* Для каждой строки в блоке кода */
+				> [data-line] {
+					@apply px-4 h-6 bg-transparent flex items-center;
+				}
+
+				/* Для выделенных строк */
+				[data-highlighted-line] {
+					background-color: var(--code-line-highlight);
+				}
+
+				[data-highlighted-line-id="add"] {
+					background-color: var(--code-line-diff-add);
+				}
+
+				[data-highlighted-line-id="remove"] {
+					background-color: var(--code-line-diff-remove);
+				}
+
+				/* Для выделенных символов */
+				[data-highlighted-chars] > span {
+					@apply py-[4px];
+				}
+
+				/* Для различий в строках (реализовано выше) */
+				/*
+				.diff {
+					&.add {
+						background-color: var(--code-line-diff-add);
+					}
+					&.remove {
+						background-color: var(--code-line-diff-remove);
+					}
+				}
+				*/
+			}
+		}
+	}
+
+	/* Основной стиль для блока pre */
+	pre {
+		@apply bg-[var(--code-bg)] text-[var(--theme-text)] rounded-lg leading-loose m-0;
+		/* @apply bg-[var(--code-bg)] text-[var(--theme-accent)] rounded-lg leading-loose m-0; */
+	}
+
+	/* Стиль для инлайнового кода (rehype pretty code переопределяет стили в tailwind.config.css) */
+	:not(pre) > code {
+		@apply bg-[var(--code-inline-bg)] px-2 py-1 text-sm rounded-lg;
+	}
+
+	/* Стиль для кнопки копирования кода rehype-pretty-copy (кнопка реализована отдельно) */
+	/*
+	button.rehype-pretty-copy {
+		@apply absolute top-1 right-1 bg-transparent m-auto size-8 rounded-md p-1 backdrop-blur-none;
+		filter: brightness(var(--brightness)) saturate(0%);
+	}
+	*/
+}
+
+/* ПЕРЕПРОВЕРИТЬ !!! */
+@layer components {
+	/* Переопределение стилей для <mark> в статье */
+	article mark {
+		@apply bg-transparent;
+	}
+
+	/* 文章内部图片圆角样式 */
+	.prose img {
+		@apply rounded-lg transition-all duration-300;
+	}
+
+	/* 图片悬停效果 */
+	.prose img:hover {
+		@apply shadow-lg scale-[1.02];
+	}
+
+	/* 确保图片在文章中居中显示 */
+	.prose figure img {
+		@apply mx-auto;
+	}
+
+	/* PhotoSwipe 自定义样式 */
+	.pswp {
+		--pswp-bg: rgba(0, 0, 0, 0.9);
+		--pswp-icon-stroke-color: #fff;
+		--pswp-error-text-color: var(--text-color);
+		--pswp-icon-color: #fff;
+	}
+
+	/* PhotoSwipe 画廊内的图片样式 */
+	.photoswipe-gallery img {
+		@apply rounded-lg transition-all duration-300 cursor-zoom-in;
+	}
+
+	.photoswipe-gallery img:hover {
+		@apply shadow-lg scale-[1.02];
+	}
+
+	/* PhotoSwipe 载入指示器 */
+	.pswp__preloader {
+		position: absolute;
+		width: 44px;
+		height: 44px;
+		left: 50%;
+		top: 50%;
+		margin-left: -22px;
+		margin-top: -22px;
+		opacity: 0;
+		transition: opacity 0.25s ease-out;
+		will-change: opacity;
+	}
+
+	.pswp__preloader--active {
+		opacity: 1;
+	}
+
+	.pswp__preloader__icn {
+		width: 20px;
+		height: 20px;
+		margin: 12px;
+	}
+}

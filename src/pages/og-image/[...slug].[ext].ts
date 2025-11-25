@@ -1,7 +1,7 @@
-import SFProRoundedBold from "@/assets/fonts/source/SF-Pro-Rounded-Bold.latin.base.ttf";
-import SFProRoundedSemibold from "@/assets/fonts/source/SF-Pro-Rounded-Semibold.latin.base.ttf";
-import SFProRoundedMedium from "@/assets/fonts/source/SF-Pro-Rounded-Medium.latin.base.ttf";
-import SFProRoundedRegular from "@/assets/fonts/source/SF-Pro-Rounded-Regular.latin.base.ttf";
+import SFProRoundedBold from "@/assets/fonts/SF-Pro-Rounded-Bold.latin.base.ttf";
+import SFProRoundedSemibold from "@/assets/fonts/SF-Pro-Rounded-Semibold.latin.base.ttf";
+import SFProRoundedMedium from "@/assets/fonts/SF-Pro-Rounded-Medium.latin.base.ttf";
+import SFProRoundedRegular from "@/assets/fonts/SF-Pro-Rounded-Regular.latin.base.ttf";
 import { getAllPosts } from "@/data/post";
 import { siteConfig } from "@/site.config";
 import { getFormattedDate } from "@/utils/date";
